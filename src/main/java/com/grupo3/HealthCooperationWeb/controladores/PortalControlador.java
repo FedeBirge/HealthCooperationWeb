@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  * @author feder
  */
-
 @Controller
 @RequestMapping("/")
 public class PortalControlador {
-    // ff
-        @GetMapping("/")
+
+    @GetMapping("/")
     public String index(ModelMap modelo) {
-        
+
         return "index.html";
     }
 }
