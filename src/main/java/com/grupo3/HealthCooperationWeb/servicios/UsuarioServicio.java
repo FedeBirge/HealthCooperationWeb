@@ -20,11 +20,13 @@ import org.springframework.stereotype.Service;
 public class UsuarioServicio {
 
     @Autowired
-    private UsuarioRepositorio usuarioRepo;
+    private UsuarioRepositorio usuarioRepo; // Repositorio de usuarios
 
     @Transactional
+    // Metodo para crear un usuario
     public void crearUsuario(String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException {
+        // Se validan los datos ingresados
         validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
 
         Usuario usuario = new Usuario();
@@ -53,6 +55,7 @@ public class UsuarioServicio {
     }
 
     @Transactional
+
     public void modificarUsuario(String id, String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac)
             throws MyException, IOException {
@@ -93,6 +96,7 @@ public class UsuarioServicio {
     }
 
     @Transactional
+    // Metodo para eliminar un usuario, se cambia el estado a inactivo
     public void eliminarUsuario(String id) {
         try {
             Optional<Usuario> resp = usuarioRepo.findById(id);
@@ -105,6 +109,7 @@ public class UsuarioServicio {
             System.out.println("No es posible eliminar el ususario");
         }
     }
+
 
     public List<Usuario> listarUsuarios() {
         List<Usuario> aux = new ArrayList();
@@ -124,7 +129,9 @@ public class UsuarioServicio {
             System.out.println("No pudieron ser listados los usuarios");
             return null;
         }
+
     }
+
 
     protected void validar(String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException {
@@ -169,10 +176,12 @@ public class UsuarioServicio {
 
     }
 
+    // Metodo para buscar un usuario por su id
     public Usuario getOne(String id) {
         return usuarioRepo.getOne(id);
     }
 
+    // Pasar un string a date
     private Date pasarStringDate(String fecha) {
 
         String pattern = "yyyy-MM-dd"; // Formato de la cadena de fecha
