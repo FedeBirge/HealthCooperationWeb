@@ -11,36 +11,127 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
+import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
+import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
+import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.ProfesionalRepositorio;
 
 @Service
-public class ProfesionalServicio {
+public class ProfesionalServicio extends UsuarioServicio {
 
     @Autowired
     private ProfesionalRepositorio profesionalRepositorio;
 
-    // puse todos los métodos con return para facilitar tarea front (según entiendo)
-
-    // faltaría agregar atributos restantes por parámetro (descripcion y
-    // especialidad)
+    // faltaría agregar atributos descriocoin por parámetro (
     @Transactional
-    public Profesional crearProfesional(Profesional profesional) {
-        return profesionalRepositorio.save(profesional);
+    public void registrarProfesional(String nombre, String apellido, String dni, String email, String password,
+            String password2, String telefono, String direccion, String fecha_nac, String rol,
+            String especialidad, String valorConsulta) throws MyException {
+        // Se validan los datos especificos de profesional
+        // faltaria descripcion
+
+        if (especialidad == null || especialidad.isEmpty()) {
+            throw new MyException("Debe ingresar una especialidad al profesional");
+        }
+
+        if (valorConsulta == null || valorConsulta.isEmpty()) {
+            throw new MyException("Debe ingresar un valor de consulta");
+        }
+
+        // validamos con el servicio padre
+        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, rol);
+        Profesional profesional = new Profesional();
+        profesional.setNombre(nombre);
+        profesional.setApellido(apellido);
+        profesional.setDni(dni);
+        profesional.setEmail(email);
+        // profesional.setPassword(new BCryptPasswordEncoder().encode(password));
+        profesional.setTelefono(telefono);
+        profesional.setDireccion(direccion);
+        profesional.setFecha_nac(pasarStringDate(fecha_nac));
+        profesional.setActivo(true);
+        profesional.setRol(Rol.MODERADOR);
+        // AUN FALTA LA ENTIDAD IMAGEN
+        // Imagen imagen = imagenServ.guardar(archivo);
+        // profesional.setImagen(imagen);
+        profesionalRepositorio.save(profesional);
+
     }
+
+    // entiendo que la consigna pide que el doctor pueda ver su perfil
+    @Transactional
+    public Optional<Profesional> ingresarMiPerfil(String id) {
+        return profesionalRepositorio.findById(id);
+    }
+
+    // faltaria método verHistoriaClinicaPaciente
+    // faltaria el método registrarVisita
 
     @Transactional
-    public Profesional guardarProfesional(Profesional profesional) {
-        return profesionalRepositorio.save(profesional);
+    // no sé si este método funcione por el enum, la dejo porque es una opcion breve
+    // si no funciona, solo hay que copiar la funcion siguiente y quitarle el método
+    // ordenarPorPrecio
+    public ArrayList<Profesional> buscarPorEspecialidad(Especialidad especialidad) {
+        return profesionalRepositorio.findByEspecialidad(especialidad);
     }
 
-    // ¿acá no hace falta transactional, no?
-    public ArrayList<Profesional> mostrarProfesionales() {
-        return (ArrayList<Profesional>) profesionalRepositorio.findAll();
-    }
-
-    // ¿acá no hace falta transactional, no?
-    public ArrayList<Profesional> ordenarPorValorConsulta() {
+    // opcion 2:
+    @Transactional
+    public ArrayList<Profesional> ordenarEspecialidadYPrecio(String especialidad) {
         ArrayList<Profesional> profesionales = (ArrayList<Profesional>) profesionalRepositorio.findAll();
+
+        try {
+            if (especialidad.equalsIgnoreCase("pediatría")) {
+                for (Profesional profesional : profesionales) {
+                    if (profesional.getEspecialidad().equals(Especialidad.PEDIATRÍA)) {
+                        ArrayList<Profesional> pediatras = new ArrayList<>();
+                        pediatras.add(profesional);
+                        return ordenarPorValorConsulta(pediatras);
+                    }
+                }
+            }
+
+            if (especialidad.equalsIgnoreCase("ginecología")) {
+                for (Profesional profesional : profesionales) {
+                    if (profesional.getEspecialidad().equals(Especialidad.GINECOLOGÍA)) {
+                        ArrayList<Profesional> ginecos = new ArrayList<>();
+                        ginecos.add(profesional);
+                        return ordenarPorValorConsulta(ginecos);
+                    }
+                }
+            }
+
+            if (especialidad.equalsIgnoreCase("clínica")) {
+                for (Profesional profesional : profesionales) {
+                    if (profesional.getEspecialidad().equals(Especialidad.CLÍNICA)) {
+                        ArrayList<Profesional> clinicos = new ArrayList<>();
+                        clinicos.add(profesional);
+                        return ordenarPorValorConsulta(clinicos);
+                    }
+                }
+            }
+
+            if (especialidad.equalsIgnoreCase("cardiología")) {
+                for (Profesional profesional : profesionales) {
+                    if (profesional.getEspecialidad().equals(Especialidad.CARDIOLOGÍA)) {
+                        ArrayList<Profesional> cardios = new ArrayList<>();
+                        cardios.add(profesional);
+                        return ordenarPorValorConsulta(cardios);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(
+                    "No hay médicos disponibles para esa especialidad o no ingresó correctamente la especialidad.");
+        }
+
+        return null;
+    }
+
+    @Transactional
+    public ArrayList<Profesional> ordenarPorValorConsulta(ArrayList<Profesional> profesionales) {
+        // -----ArrayList<Profesional> profesionales = (ArrayList<Profesional>)
+        // profesionalRepositorio.findAll();
         // Ordenar los profesionales por el valor de consulta usando Collections.sort()
         Collections.sort(profesionales, Comparator.comparing(Profesional::getValorConsulta));
         return profesionales;
