@@ -1,7 +1,14 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
+import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,16 +23,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Profesional extends Usuario {
 
-    // --falta el enum de especialidad y la clase Descripcion
+    @Enumerated(EnumType.STRING)
+    protected Especialidad especialidad;
+    protected String valorConsulta;
 
-    // @ManyToOne
-    // @JoinColumn(name = "especialidad_id")
-    // protected Especialidad especialidad;
+    // nos faltaría un ENUM para reputacion del 1 al 5
+    // protected Reputacion reputacion;
 
     // @OneToOne
-    // @JoinColumn(name = "descripcion_id")
     // protected Descripcion descripcion;
-
-    protected Integer valorConsulta;
 
 }

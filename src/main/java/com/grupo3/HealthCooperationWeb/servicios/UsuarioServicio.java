@@ -28,8 +28,7 @@ public class UsuarioServicio {
     public void crearUsuario(String nombre, String apellido, String dni, String email, String password,
             String password2, String telefono, String direccion, String fecha_nac, String rol) throws MyException {
         // Se validan los datos ingresados
-        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, rol
-        );
+        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, rol);
 
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
@@ -137,7 +136,8 @@ public class UsuarioServicio {
     }
 
     protected void validar(String nombre, String apellido, String dni, String email,
-            String password, String password2, String telefono, String direccion, String fecha_nac, String rol) throws MyException {
+            String password, String password2, String telefono, String direccion, String fecha_nac, String rol)
+            throws MyException {
         if (nombre == null || nombre.isEmpty()) {
             throw new MyException("Debe ingresar su nombre");
         }
@@ -185,7 +185,7 @@ public class UsuarioServicio {
     }
 
     // Pasar un string a date
-    private Date pasarStringDate(String fecha) {
+    public Date pasarStringDate(String fecha) {
 
         String pattern = "yyyy-MM-dd"; // Formato de la cadena de fecha
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
