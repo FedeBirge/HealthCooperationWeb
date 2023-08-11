@@ -55,11 +55,11 @@ public class UsuarioServicio {
     }
 
     @Transactional
-    // Metodo para modificar un usuario
+
     public void modificarUsuario(String id, String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac)
             throws MyException, IOException {
-        // Se validan los datos ingresados
+
         validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         Optional<Usuario> respuesta = usuarioRepo.findById(id);
         if (respuesta.isPresent()) {
@@ -110,7 +110,7 @@ public class UsuarioServicio {
         }
     }
 
-    // Metodo para listar todos los usuarios
+
     public List<Usuario> listarUsuarios() {
         List<Usuario> aux = new ArrayList();
         List<Usuario> usuarios = new ArrayList();
@@ -132,7 +132,7 @@ public class UsuarioServicio {
 
     }
 
-    // Metodo para validar los datos ingresados
+
     protected void validar(String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException {
         if (nombre == null || nombre.isEmpty()) {
