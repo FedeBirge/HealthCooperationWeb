@@ -1,10 +1,13 @@
-
 package com.grupo3.HealthCooperationWeb.entidades;
 
+import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
@@ -37,14 +40,15 @@ public class Usuario {
     private String password;
     private String telefono;
     private String direccion;
+    
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha_nac; // Fecha de nacimiento
-    private Boolean activo; // Para indicar si el usuario es eliminado o no, y no borrarlo de la base de
-                            // datos
-    //
-    // @Enumerated(EnumType.STRING)
-    // private Rol rol; // Rol del usuario
-    // @OneToOne
-    // private Imagen imagen; // Imagen de perfil del usuario
+    private Boolean activo; // Para indicar si el usuario es eliminado o no, y no borrarlo de la BD
 
-}
+    @Enumerated(EnumType.STRING)
+    private Rol rol; // Rol del usuario
+//    @OneToOne
+//     private Imagen imagen; // Imagen de perfil del usuario
+
+    }
+
