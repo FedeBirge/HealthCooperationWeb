@@ -18,7 +18,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.context.annotation.Primary;
 
 //
-@Primary
 @Entity
 // Anotaciones Lombok para mejorar la legibilidad del código
 @Getter
