@@ -26,11 +26,8 @@ public class Profesional extends Usuario {
     @Enumerated(EnumType.STRING)
     protected Especialidad especialidad;
     protected String valorConsulta;
+    protected Integer reputacion;
 
-    // nos faltaría un ENUM para reputacion del 1 al 5
-    // protected Reputacion reputacion;
-
-    // @OneToOne
-    // protected Descripcion descripcion;
+    protected String descripcion;
 
 }
