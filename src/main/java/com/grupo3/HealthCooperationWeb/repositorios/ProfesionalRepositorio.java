@@ -15,6 +15,7 @@ public interface ProfesionalRepositorio extends CrudRepository<Profesional, Stri
     // hago un método abstracto findByEspecialidad
     // (podría ser findByLoQueSea, el atributo q necesitemos)
     // haciéndolo abstracto, SpringBoot interpreta la acción buscada
+    
     public abstract ArrayList<Profesional> findByEspecialidad(Especialidad especialidad);
 
 }
