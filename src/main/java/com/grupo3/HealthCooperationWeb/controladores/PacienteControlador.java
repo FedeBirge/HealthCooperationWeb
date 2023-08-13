@@ -20,9 +20,7 @@ public class PacienteControlador {
     @Autowired
     private PacienteServicio pacienteServicio;
 
-    @Autowired
-
-    //@GetMapping("/registrar");//localhost:8080/registrar//esto lo comento porque me tira error
+    @GetMapping("/registrar")//localhost:8080/registrar//esto lo comento porque me tira error
     public String registrarPaciente(ModelMap modelo) {
 
         List<Paciente> pacientes = pacienteServicio.mostrarPacientes();
