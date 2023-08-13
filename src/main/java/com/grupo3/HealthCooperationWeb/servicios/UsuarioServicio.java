@@ -27,6 +27,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Primary
 @Service
@@ -52,7 +53,7 @@ public class UsuarioServicio implements UserDetailsService {
         usuario.setApellido(apellido);
         usuario.setDni(dni);
         usuario.setEmail(email);
-        // usuario.setPassword(new BCryptPasswordEncoder().encode(password));
+        usuario.setPassword(new BCryptPasswordEncoder().encode(password));
         usuario.setTelefono(telefono);
         usuario.setDireccion(direccion);
         usuario.setFecha_nac(pasarStringDate(fecha_nac));
@@ -234,9 +235,9 @@ public class UsuarioServicio implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepo.buscarPorEmail(email);
 
-        if (usuario != null) {
+        if (usuario != null && usuario.getActivo().equals(Boolean.TRUE)) {
             List<GrantedAuthority> permisos = new ArrayList<>();
-            GrantedAuthority p = new SimpleGrantedAuthority("ROLE" + usuario.getRol().toString());
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE " + usuario.getRol().toString());
 
             permisos.add(p);
 
