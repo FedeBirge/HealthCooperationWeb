@@ -3,6 +3,7 @@ package com.grupo3.HealthCooperationWeb.servicios;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -22,7 +23,28 @@ public class ProfesionalServicio extends UsuarioServicio {
     @Autowired
     private ProfesionalRepositorio profesionalRepositorio;
 
-    // faltaría agregar atributos descriocoin por parámetro (
+    // listar todos los médicos
+    @Transactional
+    public List<Profesional> listarProfesionales() {
+        List<Profesional> profAux = new ArrayList<>();
+        List<Profesional> profesionales = new ArrayList<>();
+
+        try {
+            profAux = (ArrayList<Profesional>) profesionalRepositorio.findAll();
+            for (Profesional profesional : profAux) {
+                if (profesional.getActivo().equals(Boolean.TRUE)) {
+                    profesionales.add(profesional);
+                }
+            }
+            return profesionales;
+        } catch (Exception e) {
+            System.out.println("Hubo un error al listar profesionales.");
+            return null;
+        }
+    }
+
+    // faltaría agregar atributos descripcoin por parámetro
+
     @Transactional
     public void registrarProfesional(String nombre, String apellido, String dni, String email, String password,
             String password2, String telefono, String direccion, String fecha_nac, String rol,
@@ -67,13 +89,13 @@ public class ProfesionalServicio extends UsuarioServicio {
     // no sé si este método funcione por el enum, la dejo porque es una opcion breve
     // si no funciona, solo hay que copiar la opcion 2 y quitarle el método
     // ordenarPorPrecio
-    public ArrayList<Profesional> buscarPorEspecialidad(Especialidad especialidad) {
+    public List<Profesional> buscarPorEspecialidad(Especialidad especialidad) {
         return profesionalRepositorio.findByEspecialidad(especialidad);
     }
 
     // opcion 2:
     @Transactional
-    public ArrayList<Profesional> ordenarEspecialidadYPrecio(String especialidad) {
+    public List<Profesional> ordenarEspecialidadYPrecio(String especialidad) {
         ArrayList<Profesional> profesionales = (ArrayList<Profesional>) profesionalRepositorio.findAll();
 
         try {
@@ -125,10 +147,17 @@ public class ProfesionalServicio extends UsuarioServicio {
     }
 
     @Transactional
-    public ArrayList<Profesional> ordenarPorValorConsulta(ArrayList<Profesional> profesionales) {
+    public List<Profesional> ordenarPorValorConsulta(ArrayList<Profesional> profesionales) {
         // -----ArrayList<Profesional> profesionales = (ArrayList<Profesional>)
         // profesionalRepositorio.findAll();
         // Ordenar los profesionales por el valor de consulta usando Collections.sort()
+        Collections.sort(profesionales, Comparator.comparing(Profesional::getValorConsulta));
+        return profesionales;
+    }
+
+    @Transactional
+    public List<Profesional> ordenarPorValorConsulta() {
+        ArrayList<Profesional> profesionales = (ArrayList<Profesional>) profesionalRepositorio.findAll();
         Collections.sort(profesionales, Comparator.comparing(Profesional::getValorConsulta));
         return profesionales;
     }
