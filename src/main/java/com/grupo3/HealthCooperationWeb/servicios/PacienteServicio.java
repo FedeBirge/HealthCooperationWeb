@@ -3,6 +3,7 @@ package com.grupo3.HealthCooperationWeb.servicios;
 
 
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
+import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.PacienteRepositorio;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,9 @@ public class PacienteServicio extends UsuarioServicio{
     private PacienteRepositorio pacienteRepositorio;
     
     @Transactional
-    public void crearPaciente(Paciente paciente ){
+    public void crearPaciente(Paciente paciente )throws MyException{
+        
+        validar(paciente);
        
         pacienteRepositorio.save(paciente);
         
@@ -37,4 +40,12 @@ public class PacienteServicio extends UsuarioServicio{
         
         return pacientes;
     }
+    
+    private void validar(Paciente paciente) throws MyException{
+        
+        if( paciente == null){
+            throw  new MyException("No debe haber campos vacios");
+        }
+    }
+    
 }
