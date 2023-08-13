@@ -143,7 +143,7 @@ public class ProfesionalControlador {
     }
 
     // Listar por especialidad, ordenando según precio consulta:
-    @GetMapping("/especialidades")
+    @GetMapping("/especialidadesYPrecios")
     public String listarEspecialistasXPrecio(ModelMap modelo, String especialidad) {
         try {
             List<Profesional> profesionales = profesionalServicio.ordenarEspecialidadYPrecio(especialidad);
@@ -169,7 +169,7 @@ public class ProfesionalControlador {
     }
 
     // Listar por precio, sin tener en cuenta la especialidad
-    @GetMapping("/especialidades")
+    @GetMapping("/nuestrosPrecios")
     public String listarXEspecialidad(ModelMap modelo) {
         try {
             List<Profesional> profesionales = profesionalServicio.ordenarPorValorConsulta();

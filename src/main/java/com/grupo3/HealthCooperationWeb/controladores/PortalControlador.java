@@ -13,10 +13,22 @@ public class PortalControlador {
     // Controlador para levantar pagina de inicio
     @GetMapping("/")
     public String index(ModelMap modelo) {
-        
+
         Especialidad[] especialidades = Especialidad.values();
         modelo.addAttribute("especialidades", especialidades);
 
         return "index.html";
+    }
+
+    // Spring Security
+
+    @GetMapping("/registrar")
+    public String registrar() {
+        return "registro.html";
+    }
+
+    @GetMapping("/login")
+    public String loguearse() {
+        return "login.html";
     }
 }
