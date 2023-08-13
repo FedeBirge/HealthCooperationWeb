@@ -103,19 +103,20 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/modificarUsuario/{id}") // ruta para modificar un usuario POST
-    public String modificarUsusarios(@PathVariable("id") String id, @RequestParam MultipartFile archivo,
-            @RequestParam String nombre, @RequestParam String email,
-            @RequestParam String password, @RequestParam String password2, @RequestParam String rol,
-            @RequestParam String sueldo, ModelMap modelo) throws IOException {
+    public String modificarUsusarios(MultipartFile archivo,@PathVariable("id") String id, @RequestParam String nombre, @RequestParam String apellido,
+            @RequestParam String dni,
+            @RequestParam String email, @RequestParam String password, @RequestParam String password2,
+            @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
+            @RequestParam String rol, ModelMap modelo) throws IOException {
 
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
             modelo.put("usuario", userServ.getOne(id));
             modelo.addAttribute("id", userServ.getOne(id).getId());
-
-            userServ.modificarUsuario(archivo, id, nombre, sueldo, rol, email, password, password2, sueldo, sueldo,
-                    email, rol);
+//
+            userServ.modificarUsuario(archivo, id, nombre,apellido, dni, email, 
+                    password, password2,telefono, direccion, fecha_nac, rol  );
 
             modelo.put("exito", "!Usuario modificado con exito!");
             List<Usuario> usuarios = userServ.listarUsuarios();
