@@ -8,7 +8,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
-import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,11 +25,9 @@ public class Profesional extends Usuario {
     @Enumerated(EnumType.STRING)
     protected Especialidad especialidad;
     protected String valorConsulta;
-
-    // nos faltaría un ENUM para reputacion del 1 al 5
-    // protected Reputacion reputacion;
-
-    // @OneToOne
-    // protected Descripcion descripcion;
+    protected Integer reputacion;
+    protected String descripcion;
+    // protected AgendaSemanal agenda;
+    // protected Disponibilidad disponible;
 
 }
