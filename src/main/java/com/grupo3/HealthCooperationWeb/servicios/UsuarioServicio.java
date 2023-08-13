@@ -12,21 +12,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Primary
 @Service
-public class UsuarioServicio {
+// Srping Security: para autenticar extiendo de UserDetailsService
+public class UsuarioServicio implements UserDetailsService {
 
     @Autowired
     private UsuarioRepositorio usuarioRepo; // Repositorio de usuarios
 
-      @Autowired
+    @Autowired
     private ImagenServicio imagenServ; // Repositorio de usuarios
+
     @Transactional
     // Metodo para crear un usuario
     public void crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
@@ -46,15 +58,22 @@ public class UsuarioServicio {
         usuario.setFecha_nac(pasarStringDate(fecha_nac));
         usuario.setActivo(true);
 
-        if (rol.equals("ADMINISTRADOR")) {
-            usuario.setRol(Rol.ADMINISTRADOR);
-        }
-        if (rol.equals("USER")) {
-            usuario.setRol(Rol.USUARIO);
-        }
-        if (rol.equals("MODERADOR")) {
-            usuario.setRol(Rol.MODERADOR);
-        }
+        /*
+         * Fede: viendo SpringSecutity, recomiendan que todos al registrarse
+         * tengan el eststuto de USER al momento de registrarse
+         * 
+         * if (rol.equals("ADMINISTRADOR")) {
+         * usuario.setRol(Rol.ADMINISTRADOR);
+         * }
+         * if (rol.equals("USER")) {
+         * usuario.setRol(Rol.USUARIO);
+         * }
+         * if (rol.equals("MODERADOR")) {
+         * usuario.setRol(Rol.MODERADOR);
+         * }
+         */
+
+        usuario.setRol(Rol.USUARIO);
 
         Imagen imagen = imagenServ.guardar(archivo);
         usuario.setImagen(imagen);
@@ -205,6 +224,25 @@ public class UsuarioServicio {
 
             return date;
         } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    // Spring Security
+    // para otorgar permisos de usuario
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepo.buscarPorEmail(email);
+
+        if (usuario != null) {
+            List<GrantedAuthority> permisos = new ArrayList<>();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE" + usuario.getRol().toString());
+
+            permisos.add(p);
+
+            return new User(usuario.getEmail(), usuario.getPassword(), permisos);
+
+        } else {
             return null;
         }
     }

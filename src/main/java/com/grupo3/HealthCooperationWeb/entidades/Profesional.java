@@ -25,6 +25,8 @@ public class Profesional extends Usuario {
     @Enumerated(EnumType.STRING)
     protected Especialidad especialidad;
     protected String valorConsulta;
+    // falta incluir reputación y descripcion como parámetro
+    // en todos los servicios que lo requieran
     protected Integer reputacion;
     protected String descripcion;
     // protected AgendaSemanal agenda;
