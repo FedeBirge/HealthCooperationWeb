@@ -1,5 +1,6 @@
 package com.grupo3.HealthCooperationWeb.servicios;
 
+import com.grupo3.HealthCooperationWeb.entidades.Imagen;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
@@ -15,6 +16,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Primary
 @Service
@@ -23,9 +25,12 @@ public class UsuarioServicio {
     @Autowired
     private UsuarioRepositorio usuarioRepo; // Repositorio de usuarios
 
+      @Autowired
+    private ImagenServicio imagenServ; // Repositorio de usuarios
     @Transactional
     // Metodo para crear un usuario
-    public void crearUsuario(String nombre, String apellido, String dni, String email, String password,
+    public void crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
+            String password,
             String password2, String telefono, String direccion, String fecha_nac, String rol) throws MyException {
         // Se validan los datos ingresados
         validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, rol);
@@ -51,17 +56,17 @@ public class UsuarioServicio {
             usuario.setRol(Rol.MODERADOR);
         }
 
-        // AUN FALTA LA ENTIDAD IMAGEN
-        // Imagen imagen = imagenServ.guardar(archivo);
-        // usuario.setImagen(imagen);
+        Imagen imagen = imagenServ.guardar(archivo);
+        usuario.setImagen(imagen);
         usuarioRepo.save(usuario);
 
     }
 
     @Transactional
-
-    public void modificarUsuario(String id, String nombre, String apellido, String dni, String email,
-            String password, String password2, String telefono, String direccion, String fecha_nac, String rol)
+    // Metodo para modificar un usuario
+    public void modificarUsuario(MultipartFile archivo, String id, String nombre, String apellido, String dni,
+            String email, String password, String password2, String telefono, String direccion, String fecha_nac,
+            String rol)
             throws MyException, IOException {
 
         validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, rol);
@@ -72,9 +77,12 @@ public class UsuarioServicio {
                 throw new MyException("EL mail ingresado ya existe en otro ususario! Ingreso otro!");
             }
             usuario.setNombre(nombre);
+            usuario.setApellido(apellido);
+            usuario.setDni(dni);
             usuario.setEmail(email);
             // usuario.setPassword(new BCryptPasswordEncoder().encode(password));
-
+            usuario.setTelefono(telefono);
+            usuario.setDireccion(direccion);
             usuario.setActivo(true);
             if (rol.equals("ADMINISTRADOR")) {
                 usuario.setRol(Rol.ADMINISTRADOR);
@@ -85,16 +93,16 @@ public class UsuarioServicio {
             if (rol.equals("MODERADOR")) {
                 usuario.setRol(Rol.MODERADOR);
             }
-            // String idImg = null;
-            // if (usuario.getImagen() != null) {
-            // idImg = usuario.getImagen().getId();
-            // }
-            // if (archivo.getBytes().length != 0 ) {
-            // Imagen imagen = imagenServ.actualizar(archivo, idImg);
-            // usuario.setImagen(imagen);
-            // }
-
+            String idImg = null;
+            if (usuario.getImagen() != null) {
+                idImg = usuario.getImagen().getId();
+            }
+            if (archivo.getBytes().length != 0) {
+                Imagen imagen = imagenServ.actualizar(archivo, idImg);
+                usuario.setImagen(imagen);
+            }
             usuarioRepo.save(usuario);
+
         }
 
     }
@@ -114,6 +122,7 @@ public class UsuarioServicio {
         }
     }
 
+    // Metodo para listar todos los usuarios
     public List<Usuario> listarUsuarios() {
         List<Usuario> aux = new ArrayList();
         List<Usuario> usuarios = new ArrayList();
@@ -135,6 +144,7 @@ public class UsuarioServicio {
 
     }
 
+    // Metodo para validar los datos ingresados antes de persistirlos
     protected void validar(String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac, String rol)
             throws MyException {
@@ -179,13 +189,13 @@ public class UsuarioServicio {
 
     }
 
-    // Metodo para buscar un usuario por su id
+    // Metodo para buscar un usuario por su id y devolverlo
     public Usuario getOne(String id) {
         return usuarioRepo.getOne(id);
     }
 
     // Pasar un string a date
-    public Date pasarStringDate(String fecha) {
+    protected Date pasarStringDate(String fecha) {
 
         String pattern = "yyyy-MM-dd"; // Formato de la cadena de fecha
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);

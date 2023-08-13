@@ -15,9 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.context.annotation.Primary;
 
-//
+// Entidad Usuario
 @Entity
 // Anotaciones Lombok para mejorar la legibilidad del código
 @Getter
@@ -39,15 +38,14 @@ public class Usuario {
     private String password;
     private String telefono;
     private String direccion;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha_nac; // Fecha de nacimiento
     private Boolean activo; // Para indicar si el usuario es eliminado o no, y no borrarlo de la BD
 
     @Enumerated(EnumType.STRING)
     private Rol rol; // Rol del usuario
-//    @OneToOne
-//     private Imagen imagen; // Imagen de perfil del usuario
+    @OneToOne
+    private Imagen imagen; // Imagen de perfil del usuario
 
-    }
-
+}
