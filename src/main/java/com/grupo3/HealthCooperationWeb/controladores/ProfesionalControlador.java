@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
+import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
+import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
 
 @Controller
 // @PreAuthorize("hasRole('ROLE_MODERADOR')")
@@ -27,14 +30,28 @@ public class ProfesionalControlador {
 
     @Autowired
     private ProfesionalServicio profesionalServicio;
-    // Faltaría el endpoint para el escritorio tipo "/dashboard", no sé qué iría
+    @Autowired
+    private PacienteServicio pacienteServicio;
+    @Autowired
+    UsuarioServicio usuarioServicio;
+
+    // En el panel, el doc ve la lista de pacientes
+    @GetMapping("/dashboard")
+    public String panelAdministrativo(ModelMap modelo) {
+        List<Paciente> pacientes = pacienteServicio.mostrarPacientes();
+        modelo.addAttribute("pacientes", pacientes);
+        return "panelProfesional.html";
+    }
 
     @GetMapping("/MiPerfil/{id}")
-    public String vistaPerfilProfesional(@PathVariable("id") String id, ModelMap modelo) {
-        profesionalServicio.ingresarMiPerfil(id);
-        Profesional profesional = new Profesional();
-        modelo.addAttribute("id", profesional);
-        return "perfilProfesional.html";
+    public String vistaPerfilProfesional(@PathVariable("id") String id, ModelMap modelo) throws MyException {
+
+        try {
+            modelo.addAttribute("profesional", usuarioServicio.getOne(id).getClass());
+            return "perfilProfesional.html";
+        } catch (Exception e) {
+            return "redirect: /panelProfesional.html";
+        }
     }
 
     @PostMapping("/crearProfesional")

@@ -58,18 +58,14 @@ public class ProfesionalServicio extends UsuarioServicio {
 
     }
 
-    // entiendo que la consigna pide que el doctor pueda ver su perfil
-    @Transactional
-    public Optional<Profesional> ingresarMiPerfil(String id) {
-        return profesionalRepositorio.findById(id);
-    }
+    // para ver el perfil del doc, uso serevicio de Usuario getOne
 
     // faltaria método verHistoriaClinicaPaciente
     // faltaria el método registrarVisita
 
     @Transactional
     // no sé si este método funcione por el enum, la dejo porque es una opcion breve
-    // si no funciona, solo hay que copiar la funcion siguiente y quitarle el método
+    // si no funciona, solo hay que copiar la opcion 2 y quitarle el método
     // ordenarPorPrecio
     public ArrayList<Profesional> buscarPorEspecialidad(Especialidad especialidad) {
         return profesionalRepositorio.findByEspecialidad(especialidad);
