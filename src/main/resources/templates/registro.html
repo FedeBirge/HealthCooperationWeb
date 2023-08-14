@@ -16,6 +16,18 @@
     <div class="container py-5">
         <div class="card m-auto" style="width:500px;">
             <div class="card-body">
+                <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
+                    <div class="card-body">
+                        <h5 class="card-title">Error!</h5>
+                        <p class="card-text" th:text="${error}"></p>
+                    </div>
+                </div>
+                <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                    <div class="card-body">
+                        <h5 class="card-title">Exito!</h5>
+                        <p class="card-text" th:text="${exito}"></p>
+                    </div>
+                </div>
                 <h1 class="text-center mb-5">Registro de Cliente</h1>
                 <form th:action="@{/registro}" method="POST" enctype="multipart/form-data">
                     <div class="input-group mb-4">
