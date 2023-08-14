@@ -1,9 +1,9 @@
+
 package com.grupo3.HealthCooperationWeb.controladores;
 
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
-import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,5 +46,8 @@ public class PacienteControlador {
         }
         return "index.html";
     }
+    
+  
+    
 
 }
