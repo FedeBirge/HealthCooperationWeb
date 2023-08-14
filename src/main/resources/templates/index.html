@@ -1,0 +1,144 @@
+
+
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title>HealtCoorporationWeb</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/index.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/}">
+                    <img src="img/logo.jpg" alt="letra" width="50">
+                    <img src="img/letraLogo.jpg" alt="letra" width="200">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a type="button" class="btn btn-primary" th:if="${session.usuariosession == null}" th:href="@{/registrar}">Registrarse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a type="button" class="btn btn-outline-primary me-2" th:if="${session.usuariosession == null}"  th:href="@{/login}">Login</a>
+                        </li>
+                            <li><a ctype="button" class="btn btn-outline-primary me-2" th:if="${session.usuariosession != null}" th:href="@{/logout}"  >Cerrar Sesión</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+        <div th:if="${error != null}" class="card text-white bg-primary mb-3 mensajeError" >
+                <div class="card-body">
+                    <h5 class="card-title">Error!</h5>
+                    <p class="card-text" th:text="${error}"></p>
+                </div>
+            </div>
+            <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                <div class="card-body">
+                    <h5 class="card-title">Exito!</h5>
+                    <p class="card-text" th:text="${exito}"></p>
+                </div>
+            </div>
+        <main>
+            <div class="container-fluid g-0 overflow-hidden">
+                <div class="row">
+                    <div class="col">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="img/carrusel1.jpg" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="img/carrusel2.jpg" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="img/carrusel3.jpg" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="container py-4">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="./img/cardiologia.jpg" class="img-fluid" alt="cardiologia">
+                    </div>
+                    <div class="col-6 text-center">
+                        <h2>Cardiologia</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga, aliquid saepe porro adipisci non, blanditiis laborum, consequatur quidem iste sed mollitia quibusdam veniam ipsum vero ipsa quis tempore architecto? Facere, assumenda culpa fuga exercitationem quidem sapiente vitae nisi veritatis nam! Aut ad autem nihil consectetur, expedita culpa quidem cumque non.</p>
+                    </div>
+                </div>
+                <hr class="border border-3 border-primary opacity-50">
+                <div class="row py-3">
+                    <div class="col-6 text-center">
+                        <h2>Pediatria</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga, aliquid saepe porro adipisci non, blanditiis laborum, consequatur quidem iste sed mollitia quibusdam veniam ipsum vero ipsa quis tempore architecto? Facere, assumenda culpa fuga exercitationem quidem sapiente vitae nisi veritatis nam! Aut ad autem nihil consectetur, expedita culpa quidem cumque non.</p>
+                    </div>
+                    <div class="col-6">
+                        <img src="./img/pediatria.jpg" class="img-fluid" alt="pediatria">
+                    </div>
+                </div>
+                <hr class="border border-3 border-primary opacity-50">
+                <div class="row py-3">
+                    <div class="col-6">
+                        <img src="./img/ginecologia.jpg" class="img-fluid" alt="ginecologia">
+                    </div>
+                    <div class="col-6 text-center">
+                        <h2>Ginecologia</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga, aliquid saepe porro adipisci non, blanditiis laborum, consequatur quidem iste sed mollitia quibusdam veniam ipsum vero ipsa quis tempore architecto? Facere, assumenda culpa fuga exercitationem quidem sapiente vitae nisi veritatis nam! Aut ad autem nihil consectetur, expedita culpa quidem cumque non.</p>
+                    </div>
+                </div>
+                <hr class="border border-3 border-primary opacity-50">
+                <div class="row py-3">
+                    <div class="col-6 text-center">
+                        <h2>Clinica</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga, aliquid saepe porro adipisci non, blanditiis laborum, consequatur quidem iste sed mollitia quibusdam veniam ipsum vero ipsa quis tempore architecto? Facere, assumenda culpa fuga exercitationem quidem sapiente vitae nisi veritatis nam! Aut ad autem nihil consectetur, expedita culpa quidem cumque non.</p>
+                    </div>
+                    <div class="col-6">
+                        <img src="./img/clinica.jpg" class="img-fluid" alt="clinica">
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <p class="text-center">Copyright &copy; HealthCooperationWeb 2023</p>
+                    </div>
+                </div>
+            </div>
+
+        </footer>    
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    </body>
+</html>
