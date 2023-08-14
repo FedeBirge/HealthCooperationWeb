@@ -47,11 +47,10 @@ public class ProfesionalServicio extends UsuarioServicio {
 
     @Transactional
     public void registrarProfesional(String nombre, String apellido, String dni, String email, String password,
-            String password2, String telefono, String direccion, String fecha_nac, String rol,
-            String especialidad, String valorConsulta) throws MyException {
+            String password2, String telefono, String direccion, String fecha_nac,String especialidad, String valorConsulta) throws MyException {
         // Se validan los datos especificos de profesional
         // faltaria descripcion
-
+        
         if (especialidad == null || especialidad.isEmpty()) {
             throw new MyException("Debe ingresar una especialidad al profesional");
         }
@@ -61,7 +60,7 @@ public class ProfesionalServicio extends UsuarioServicio {
         }
 
         // validamos con el servicio padre
-        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, rol);
+        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         Profesional profesional = new Profesional();
         profesional.setNombre(nombre);
         profesional.setApellido(apellido);

@@ -41,9 +41,17 @@ public class PacienteServicio extends UsuarioServicio{
         return pacientes;
     }
     
-    private void validar(Paciente paciente) throws MyException{
+   
+    
+    public Paciente getOne(String id){
+        return pacienteRepositorio.getOne(id);
+    }
+    
+   
+     
+    private void validar(Paciente usuario) throws MyException{
         
-        if( paciente == null){
+        if( usuario == null){
             throw  new MyException("No debe haber campos vacios");
         }
     }

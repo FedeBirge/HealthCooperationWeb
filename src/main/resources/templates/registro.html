@@ -1,80 +1,80 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="css/estilos.css">
-  <body>
-    <div class="container py-5">
-        <div class="card m-auto" style="width:500px;">
-            <div class="card-body">
-                <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
-                    <div class="card-body">
-                        <h5 class="card-title">Error!</h5>
-                        <p class="card-text" th:text="${error}"></p>
-                    </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Registro</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+            crossorigin="anonymous"
+            />
+        <link rel="stylesheet" href="css/estilos.css">
+    <body>
+        <div class="container py-5">
+            <div class="card m-auto" style="width:500px;">
+                <div class="card-body">
+                    <h1 class="text-center mb-5">Registro de Cliente</h1>
+                    <form th:action="@{/registro}" method="POST" enctype="multipart/form-data">
+                        <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Error!</h5>
+                                <p class="card-text text-center" th:text="${error}"></p>
+                            </div>
+                        </div>
+                        <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Exito!</h5>
+                                <p class="card-text text-center" th:text="${exito}"></p>
+                            </div>
+                        </div>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">Nombre</span>
+                            <input class="form-control" type="text" id="name" placeholder="pepe" name="nombre" th:value="${nombre}">
+                            <span class="input-group-text">Apellido</span>
+                            <input class="form-control" type="text" id="last-name" placeholder="venturas" name="apellido" th:value="${apellido}">
+                        </div>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">Email</span>
+                            <input class="form-control" type="email" id="email" placeholder="example@example.com" name="email" th:value="${email}">
+                        </div>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">Password</span>
+                            <input class="form-control" type="password" id="password" placeholder="*******" name="password" th:value="${password}">
+                            <span class="input-group-text">Password2</span>
+                            <input class="form-control" type="password" id="password2" placeholder="******" name="password2" th:value="${password2}">
+                        </div>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">Direccion</span>
+                            <input class="form-control" type="text" id="address" placeholder="San Martin" name="direccion" th:value="${direccion}">
+                            <span class="input-group-text">Telefono</span>
+                            <input class="form-control" type="number" id="telefono" placeholder="444444444" name="telefono" th:value="${telefono}">
+                        </div>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">Foto</span>
+                            <input class="form-control" type="file" id="foto" name="archivo">
+                        </div>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">DNI</span>
+                            <input class="form-control" type="number" id="dni" placeholder="33333333333" name="dni" th:value="${dni}">
+                        </div>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">Fecha de nacimiento</span>
+                            <input class="form-control" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
+                        </div>
+                        <div class="text-center mb-4">
+                            <button class="btn btn-lg btn-primary" type="submit">Enviar</button>
+                        </div>
+                    </form>
                 </div>
-                <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
-                    <div class="card-body">
-                        <h5 class="card-title">Exito!</h5>
-                        <p class="card-text" th:text="${exito}"></p>
-                    </div>
-                </div>
-                <h1 class="text-center mb-5">Registro de Cliente</h1>
-                <form th:action="@{/registro}" method="POST" enctype="multipart/form-data">
-                    <div class="input-group mb-4">
-                        <span class="input-group-text">Nombre</span>
-                        <input class="form-control" type="text" id="name" placeholder="pepe" name="nombre" th:value="${nombre}">
-                        <span class="input-group-text">Apellido</span>
-                        <input class="form-control" type="text" id="last-name" placeholder="venturas" name="apellido" th:value="${apellido}">
-                    </div>
-                    <div class="input-group mb-4">
-                        <span class="input-group-text">Email</span>
-                        <input class="form-control" type="email" id="email" placeholder="example@example.com" name="email" th:value="${email}">
-                    </div>
-                    <div class="input-group mb-4">
-                        <span class="input-group-text">Password</span>
-                        <input class="form-control" type="password" id="password" placeholder="*******" name="password" th:value="${password}">
-                        <span class="input-group-text">Password2</span>
-                        <input class="form-control" type="password" id="password2" placeholder="******" name="password2" th:value="${password2}">
-                    </div>
-                    <div class="input-group mb-4">
-                        <span class="input-group-text">Direccion</span>
-                        <input class="form-control" type="text" id="address" placeholder="San Martin" name="direccion" th:value="${direccion}">
-                        <span class="input-group-text">Telefono</span>
-                        <input class="form-control" type="number" id="telefono" placeholder="444444444" name="telefono" th:value="${telefono}">
-                    </div>
-                    <div class="input-group mb-4">
-                        <span class="input-group-text">Foto</span>
-                        <input class="form-control" type="file" id="foto" name="archivo">
-                    </div>
-                    <div class="input-group mb-4">
-                        <span class="input-group-text">DNI</span>
-                        <input class="form-control" type="number" id="dni" placeholder="33333333333" name="dni" th:value="${dni}">
-                    </div>
-                    <div class="input-group mb-4">
-                        <span class="input-group-text">Fecha de nacimiento</span>
-                        <input class="form-control" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
-                    </div>
-                    <div class="text-center mb-4">
-                        <button class="btn btn-lg btn-primary" type="submit">Enviar</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"
+        ></script>
+    </body>
 </html>

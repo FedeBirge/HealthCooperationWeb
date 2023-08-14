@@ -43,10 +43,9 @@ public class UsuarioServicio implements UserDetailsService {
     @Transactional
     // Metodo para crear un usuario
     public void crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
-            String password,
-            String password2, String telefono, String direccion, String fecha_nac, String rol) throws MyException {
+            String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException {
         // Se validan los datos ingresados
-        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, rol);
+        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
 
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
@@ -59,21 +58,6 @@ public class UsuarioServicio implements UserDetailsService {
         usuario.setFecha_nac(pasarStringDate(fecha_nac));
         usuario.setActivo(true);
 
-        /*
-         * Fede: viendo SpringSecutity, recomiendan que todos al registrarse
-         * tengan el eststuto de USER al momento de registrarse
-         * 
-         * if (rol.equals("ADMINISTRADOR")) {
-         * usuario.setRol(Rol.ADMINISTRADOR);
-         * }
-         * if (rol.equals("USER")) {
-         * usuario.setRol(Rol.USUARIO);
-         * }
-         * if (rol.equals("MODERADOR")) {
-         * usuario.setRol(Rol.MODERADOR);
-         * }
-         */
-
         usuario.setRol(Rol.USUARIO);
 
         Imagen imagen = imagenServ.guardar(archivo);
@@ -85,11 +69,10 @@ public class UsuarioServicio implements UserDetailsService {
     @Transactional
     // Metodo para modificar un usuario
     public void modificarUsuario(MultipartFile archivo, String id, String nombre, String apellido, String dni,
-            String email, String password, String password2, String telefono, String direccion, String fecha_nac,
-            String rol)
+            String email, String password, String password2, String telefono, String direccion, String fecha_nac)
             throws MyException, IOException {
 
-        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, rol);
+        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         Optional<Usuario> respuesta = usuarioRepo.findById(id);
         if (respuesta.isPresent()) {
             Usuario usuario = respuesta.get();
@@ -100,19 +83,11 @@ public class UsuarioServicio implements UserDetailsService {
             usuario.setApellido(apellido);
             usuario.setDni(dni);
             usuario.setEmail(email);
-            // usuario.setPassword(new BCryptPasswordEncoder().encode(password));
+            usuario.setPassword(new BCryptPasswordEncoder().encode(password));
             usuario.setTelefono(telefono);
             usuario.setDireccion(direccion);
             usuario.setActivo(true);
-            if (rol.equals("ADMINISTRADOR")) {
-                usuario.setRol(Rol.ADMINISTRADOR);
-            }
-            if (rol.equals("USER")) {
-                usuario.setRol(Rol.USUARIO);
-            }
-            if (rol.equals("MODERADOR")) {
-                usuario.setRol(Rol.MODERADOR);
-            }
+
             String idImg = null;
             if (usuario.getImagen() != null) {
                 idImg = usuario.getImagen().getId();
@@ -166,7 +141,7 @@ public class UsuarioServicio implements UserDetailsService {
 
     // Metodo para validar los datos ingresados antes de persistirlos
     protected void validar(String nombre, String apellido, String dni, String email,
-            String password, String password2, String telefono, String direccion, String fecha_nac, String rol)
+            String password, String password2, String telefono, String direccion, String fecha_nac)
             throws MyException {
         if (nombre == null || nombre.isEmpty()) {
             throw new MyException("Debe ingresar su nombre");
@@ -203,9 +178,6 @@ public class UsuarioServicio implements UserDetailsService {
         if (fecha_nac == null || nombre.isEmpty()) {
             throw new MyException("Debe ingresar un nombre");
         }
-        if (rol == null || rol.isEmpty() || rol.equals("Seleccione Rol")) {
-            throw new MyException("Debe ingresar un rol");
-        }
 
     }
 
@@ -237,9 +209,15 @@ public class UsuarioServicio implements UserDetailsService {
 
         if (usuario != null && usuario.getActivo().equals(Boolean.TRUE)) {
             List<GrantedAuthority> permisos = new ArrayList<>();
-            GrantedAuthority p = new SimpleGrantedAuthority("ROLE " + usuario.getRol().toString());
-
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().toString());
+            
             permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("usuariosession", usuario);
 
             return new User(usuario.getEmail(), usuario.getPassword(), permisos);
 

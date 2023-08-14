@@ -52,12 +52,12 @@ public class UsuarioControlador {
             @RequestParam String dni,
             @RequestParam String email, @RequestParam String password, @RequestParam String password2,
             @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
-            @RequestParam String rol, ModelMap modelo) {
+             ModelMap modelo) {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
             userServ.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion,
-                    fecha_nac, rol);
+                    fecha_nac);
             modelo.put("exito", "!Usuario registrado con exito!");
             return "registro.html";
 
@@ -107,7 +107,7 @@ public class UsuarioControlador {
             @RequestParam String dni,
             @RequestParam String email, @RequestParam String password, @RequestParam String password2,
             @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
-            @RequestParam String rol, ModelMap modelo) throws IOException {
+            ModelMap modelo) throws IOException {
 
         try {
             Rol[] roles = Rol.values();
@@ -116,7 +116,7 @@ public class UsuarioControlador {
             modelo.addAttribute("id", userServ.getOne(id).getId());
 //
             userServ.modificarUsuario(archivo, id, nombre,apellido, dni, email, 
-                    password, password2,telefono, direccion, fecha_nac, rol  );
+                    password, password2,telefono, direccion, fecha_nac );
 
             modelo.put("exito", "!Usuario modificado con exito!");
             List<Usuario> usuarios = userServ.listarUsuarios();
