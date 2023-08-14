@@ -7,106 +7,37 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 -->
 <html>
     <head>
-
         <title>HealtCoorporationWeb</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-        <div class="container">
-            <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-              <div class="col-md-3 mb-2 mb-md-0">
-                <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-                    <img src="Logo sin titulo.jpg" alt="6logo" width="100">
-                  <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-                  
-                      <div class="collapse navbar-collapse" id="collapsibleNavId">
-                          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                              <li class="nav-item active">
-                                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="#">Link</a>
-                              </li>
-                              <li class="nav-item dropdown">
-                                  <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                                  <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                      <a class="dropdown-item" href="#">Action 1</a>
-                                      <a class="dropdown-item" href="#">Action 2</a>
-                                  </div>
-                              </li>
-                          </ul>
-                          <form class="form-inline my-2 my-lg-0">
-                              <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                          </form>
-                      </div>
-                  </nav>>
-                </a>
-              </div>
-        
-              <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-                <li><a href="#" class="nav-link px-2">Features</a></li>
-                <li><a href="#" class="nav-link px-2">Pricing</a></li>
-                <li><a href="#" class="nav-link px-2">FAQs</a></li>
-                <li><a href="#" class="nav-link px-2">About</a></li>
-              </ul>
-        
-              <div class="col-md-3 text-end">
-                <button type="button" class="btn btn-outline-primary me-2">Login</button>
-                <button type="button" class="btn btn-primary">Sign-up</button>
-              </div>
-            </header>
-          </div>
+        <link rel="stylesheet" href="css/index.css">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">
-                <img src="letra de logo.jpg" alt="letra" width="200">
+              <a class="navbar-brand" th:href="@{/}">
+                  <img src="img/logo.jpg" alt="letra" width="50">
+                  <img src="img/letraLogo.jpg" alt="letra" width="200">
               </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                      <a class="nav-link active" aria-current="page" th:href="@{/registrar}"><p class="h3">Registrarse</p></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Dropdown
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                      <a class="nav-link active" aria-current="page" th:href="@{/}"><p class="h3">Login</p></a>
                   </li>
                 </ul>
-                <form class="d-flex" role="search">
-                  
-                </form>
+               
               </div>
             </div>
           </nav>
-        
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    </body>
-</html>
-
-    <!-- Main -->
-    <!-- Estamos para tu salud -->
-    <main>
-      <div class="container-fluid">
+        <main>
+      <div class="container-fluid g-0 overflow-hidden">
         <div class="row">
           <div class="col">
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
@@ -117,13 +48,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
               </div>
               <div class="carousel-inner">
                 <div class="carousel-item active">
-                  <img src="./img/carrusel1.jpg" class="d-block w-100" alt="...">
+                  <img src="img/carrusel1.jpg" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
-                  <img src="./img/carrusel2.jpg" class="d-block w-100" alt="...">
+                  <img src="img/carrusel2.jpg" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
-                  <img src="./img/carrusel3.jpg" class="d-block w-100" alt="...">
+                  <img src="img/carrusel3.jpg" class="d-block w-100" alt="...">
                 </div>
               </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -144,7 +75,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
       <div class="container py-4">
         <div class="row">
           <div class="col-6">
-            <img src="./img/cardiologia.jpg" class="img-fluid" alt="">
+            <img src="./img/cardiologia.jpg" class="img-fluid" alt="cardiologia">
           </div>
           <div class="col-6 text-center">
             <h2>Cardiologia</h2>
@@ -158,13 +89,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga, aliquid saepe porro adipisci non, blanditiis laborum, consequatur quidem iste sed mollitia quibusdam veniam ipsum vero ipsa quis tempore architecto? Facere, assumenda culpa fuga exercitationem quidem sapiente vitae nisi veritatis nam! Aut ad autem nihil consectetur, expedita culpa quidem cumque non.</p>
           </div>
           <div class="col-6">
-            <img src="./img/pediatria.jpg" class="img-fluid" alt="">
+            <img src="./img/pediatria.jpg" class="img-fluid" alt="pediatria">
           </div>
         </div>
         <hr class="border border-3 border-primary opacity-50">
         <div class="row py-3">
           <div class="col-6">
-            <img src="./img/ginecologia.jpg" class="img-fluid" alt="">
+            <img src="./img/ginecologia.jpg" class="img-fluid" alt="ginecologia">
           </div>
           <div class="col-6 text-center">
             <h2>Ginecologia</h2>
@@ -178,16 +109,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga, aliquid saepe porro adipisci non, blanditiis laborum, consequatur quidem iste sed mollitia quibusdam veniam ipsum vero ipsa quis tempore architecto? Facere, assumenda culpa fuga exercitationem quidem sapiente vitae nisi veritatis nam! Aut ad autem nihil consectetur, expedita culpa quidem cumque non.</p>
           </div>
           <div class="col-6">
-            <img src="./img/clinica.jpg" class="img-fluid" alt="">
+            <img src="./img/clinica.jpg" class="img-fluid" alt="clinica">
           </div>
         </div>
       </div>
       
     </main>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <p class="text-center">Copyright &copy; HealthCooperationWeb 2023</p>
+          </div>
+        </div>
+      </div>
+      
+  </footer>    
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    </body>
 </html>
