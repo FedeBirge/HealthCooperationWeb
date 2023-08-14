@@ -1,5 +1,5 @@
 
-package com.egg.eggNews.repositorios;
+package com.grupo3.HealthCooperationWeb.repositorios;
 
 /*import com.egg.eggNews.entidades.ObraSocial;*/
 import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;

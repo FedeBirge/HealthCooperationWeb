@@ -1,4 +1,4 @@
-package com.egg.eggNews.repositorios;
+package com.grupo3.HealthCooperationWeb.repositorios;
 
 
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TurnoRepositorio extends JpaRepository<Turno, Long> {
@@ -20,5 +21,7 @@ public interface TurnoRepositorio extends JpaRepository<Turno, Long> {
     El resultado de la consulta es una lista de arrays de 
     objetos, donde cada array contiene un objeto Turno y 
     la cantidad de veces que se repite.*/
+
+    public Optional<Turno> findById(String id);
 }
 

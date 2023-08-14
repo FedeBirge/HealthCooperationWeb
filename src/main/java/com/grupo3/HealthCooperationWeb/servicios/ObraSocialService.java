@@ -4,14 +4,13 @@
  */
 package com.grupo3.HealthCooperationWeb.servicios;
 
-import com.egg.eggNews.repositorios.ObraSocialRepository;
+import com.grupo3.HealthCooperationWeb.repositorios.ObraSocialRepository;
 import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
-/*import com.grupo3.HealthCooperationWeb.repositorios.ObraSocialRepository;*/
+
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
