@@ -1,7 +1,5 @@
 package com.grupo3.HealthCooperationWeb.controladores;
 
-import com.grupo3.HealthCooperationWeb.entidades.Usuario;
-import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
