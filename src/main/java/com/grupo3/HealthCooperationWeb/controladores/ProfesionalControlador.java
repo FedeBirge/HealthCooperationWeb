@@ -68,14 +68,14 @@ public class ProfesionalControlador {
     public String crearProfesional(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
             @RequestParam String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, @RequestParam String telefono, @RequestParam String direccion,
-            @RequestParam String fecha_nac, @RequestParam String rol,
+            @RequestParam String fecha_nac, 
             @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo) throws MyException {
 
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
             profesionalServicio.registrarProfesional(nombre, apellido, dni, email, password, password2, telefono,
-                    direccion, fecha_nac, rol, especialidad, valorConsulta);
+                    direccion, fecha_nac,  especialidad, valorConsulta);
             modelo.put("exito", "¡Profesional registrado con exito!");
             return "registroProfesional.html";
 
