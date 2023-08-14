@@ -1,4 +1,10 @@
-body{
-    background-color: lightblue;
+body {
+    background-image: url('../img/fondo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
+.card{
+    background-color: transparent;
+}

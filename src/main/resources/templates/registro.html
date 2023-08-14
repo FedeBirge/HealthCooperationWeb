@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="htpp://www.thymeleaf.org"> 
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -12,34 +12,33 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="css/estilos.css">
-  </head>
   <body>
     <div class="container py-5">
         <div class="card m-auto" style="width:500px;">
             <div class="card-body">
                 <h1 class="text-center mb-5">Registro de Cliente</h1>
-                <form action="/registro" method="Post">
+                <form th:action="@{/registro}" method="POST" enctype="multipart/form-data">
                     <div class="input-group mb-4">
                         <span class="input-group-text">Nombre</span>
-                        <input class="form-control" type="text" id="name" placeholder="pepe" name="nombre">
+                        <input class="form-control" type="text" id="name" placeholder="pepe" name="nombre" th:value="${nombre}">
                         <span class="input-group-text">Apellido</span>
-                        <input class="form-control" type="text" id="last-name" placeholder="venturas" name="apellido">
+                        <input class="form-control" type="text" id="last-name" placeholder="venturas" name="apellido" th:value="${apellido}">
                     </div>
                     <div class="input-group mb-4">
                         <span class="input-group-text">Email</span>
-                        <input class="form-control" type="email" id="email" placeholder="example@example.com" name="email">
+                        <input class="form-control" type="email" id="email" placeholder="example@example.com" name="email" th:value="${email}">
                     </div>
                     <div class="input-group mb-4">
                         <span class="input-group-text">Password</span>
-                        <input class="form-control" type="password" id="password" placeholder="*******" name="password">
+                        <input class="form-control" type="password" id="password" placeholder="*******" name="password" th:value="${password}">
                         <span class="input-group-text">Password2</span>
-                        <input class="form-control" type="password" id="password2" placeholder="******" name="password2">
+                        <input class="form-control" type="password" id="password2" placeholder="******" name="password2" th:value="${password2}">
                     </div>
                     <div class="input-group mb-4">
                         <span class="input-group-text">Direccion</span>
-                        <input class="form-control" type="text" id="address" placeholder="San Martin" name="direccion">
+                        <input class="form-control" type="text" id="address" placeholder="San Martin" name="direccion" th:value="${direccion}">
                         <span class="input-group-text">Telefono</span>
-                        <input class="form-control" type="number" id="telefono" placeholder="444444444" name="telefono">
+                        <input class="form-control" type="number" id="telefono" placeholder="444444444" name="telefono" th:value="${telefono}">
                     </div>
                     <div class="input-group mb-4">
                         <span class="input-group-text">Foto</span>
@@ -47,11 +46,11 @@
                     </div>
                     <div class="input-group mb-4">
                         <span class="input-group-text">DNI</span>
-                        <input class="form-control" type="number" id="dni" placeholder="33333333333" name="dni">
+                        <input class="form-control" type="number" id="dni" placeholder="33333333333" name="dni" th:value="${dni}">
                     </div>
                     <div class="input-group mb-4">
                         <span class="input-group-text">Fecha de nacimiento</span>
-                        <input class="form-control" type="date" id="fecha-nac" name="fecha_nac">
+                        <input class="form-control" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
                     </div>
                     <div class="text-center mb-4">
                         <button class="btn btn-lg btn-primary" type="submit">Enviar</button>
