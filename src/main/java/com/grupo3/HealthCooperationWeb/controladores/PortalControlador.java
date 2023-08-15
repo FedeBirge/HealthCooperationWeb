@@ -47,7 +47,7 @@ public class PortalControlador {
             @RequestParam String apellido, @RequestParam String dni, @RequestParam String email,
             @RequestParam String password, String password2, @RequestParam String telefono,
             @RequestParam String direccion, @RequestParam String fecha_nac, ModelMap modelo) throws MyException {
-//        String rol = "USUARIO";
+        // String rol = "USUARIO";
         try {
             usuarioServicio.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono,
                     direccion, fecha_nac);
@@ -79,25 +79,28 @@ public class PortalControlador {
         return "login.html";
 
     }
-    
+
     @PreAuthorize("hasAnyRole('ROLE_USUARIO','ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
     @GetMapping("/inicio")
-    public String inicio( ModelMap modelo, HttpSession session) {
+    public String inicio(ModelMap modelo, HttpSession session) {
+
+        // para que según los roles se dirija a las vistas correspondientes
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-           
-            return "inicio.html";
+            if (logueado.getRol().toString().equals("ADMINISTRADOR")) {
+                return "redirect: /admin/dashboardAdmin";
+            } else {
+                return "inicio.html";
+            }
+
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-
             return "login.html";
         }
     }
-    
-     @GetMapping("/contacto")
-    public String contacto(ModelMap modelo) {
 
- 
+    @GetMapping("/contacto")
+    public String contacto(ModelMap modelo) {
 
         return "contacto.html";
     }
