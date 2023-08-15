@@ -4,6 +4,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Getter;
@@ -25,5 +26,13 @@ class Ficha extends Paciente {
     private Date fecha;
 
     private String nota;
+    
+    
+    /*
+        las relaciones en el UML son atributos de alguna entidad
+            y se debe indicar con anotaciones cual es ese tipo de relacion
+    */
+    @OneToOne   
+    private Profesional profesional;
 
 }
