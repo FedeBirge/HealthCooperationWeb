@@ -1,11 +1,12 @@
 
 package com.grupo3.HealthCooperationWeb.entidades;
 
-
 import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,21 +20,23 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Turno extends Usuario{
-   @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
-    private String fecha;
-    private String hora;
-    private EstadoTurno estado;
-    private String motivo;
-    
-     /*
-        las relaciones en el UML son atributos de alguna entidad
-            y se debe indicar con anotaciones cual es ese tipo de relacion
-    */
-      @OneToOne 
-    private Profesional profesional;
+// quito el extends Usuario, porque me genera errores de persistencia
+// cuando lo vinculo al HashMap en AgendaSemanal --Soy Bren
+public class Turno {
+  @Id
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  private String id;
+  private String fecha;
+  private String hora;
+  private EstadoTurno estado;
+  private String motivo;
+
+  /*
+   * las relaciones en el UML son atributos de alguna entidad
+   * y se debe indicar con anotaciones cual es ese tipo de relacion
+   */
+  @OneToOne
+  private Profesional profesional;
 
 }
