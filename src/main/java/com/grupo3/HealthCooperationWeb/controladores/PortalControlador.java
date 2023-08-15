@@ -93,5 +93,13 @@ public class PortalControlador {
             return "login.html";
         }
     }
+    
+     @GetMapping("/contacto")
+    public String contacto(ModelMap modelo) {
+
+ 
+
+        return "contacto.html";
+    }
 
 }

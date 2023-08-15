@@ -35,7 +35,7 @@ public class HistoriaClinicaServicio extends PacienteServicio{
     
     public List<HistoriaClinica> mostrarHistoria(){
         
-        List<HistoriaClinica> historia = new ArrayList();
+      List<HistoriaClinica> historia = new ArrayList();
         
         historia = (List<HistoriaClinica>) historiaClinicaRepositorio.findAll();
         
