@@ -21,25 +21,6 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 
 public class Turno {
-   @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
-    private String fecha;
-    private String hora;
-    private EstadoTurno estado;
-    private String motivo;
-    
-     /*
-        las relaciones en el UML son atributos de alguna entidad
-            y se debe indicar con anotaciones cual es ese tipo de relacion
-    */
-      @OneToOne 
-    private Profesional profesional;
-=======
-// quito el extends Usuario, porque me genera errores de persistencia
-// cuando lo vinculo al HashMap en AgendaSemanal --Soy Bren
-public class Turno {
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
