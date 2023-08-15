@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
+import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profesional extends Usuario {
+public class Profesional extends Usuario implements Serializable {
 
     @Enumerated(EnumType.STRING)
     protected Especialidad especialidad;
