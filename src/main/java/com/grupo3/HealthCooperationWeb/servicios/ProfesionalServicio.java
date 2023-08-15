@@ -180,5 +180,7 @@ public class ProfesionalServicio extends UsuarioServicio {
         return "Lo sentimos, no fue posible dar de baja al profesional";
 
     }
+// Métodos relacionados con el profesional
+   
 
 }
