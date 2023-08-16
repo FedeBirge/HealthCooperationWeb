@@ -22,7 +22,8 @@ public class TurnoServicio {
     private TurnoRepositorio turnoRepo;
 
     @Transactional
-    public Turno crearTurno(String fecha, String hora, EstadoTurno estado, String motivo, String idProf) throws MyException {
+    public Turno crearTurno(String fecha, String hora, EstadoTurno estado, 
+            String motivo, String idProf) throws MyException {
 
         validar(fecha, hora, estado, motivo, idProf);
         Profesional prof = (Profesional) profServ.getOne(idProf);

@@ -22,7 +22,8 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Oferta {
-    
+    // elementos necesarios para detallar lo que ofrece un profesional
+    // a un dia especifico de la semana
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -30,12 +31,10 @@ public class Oferta {
     
     @Enumerated(EnumType.STRING)
     private TipoOferta tipo;
-    
     private String horaInicio;
     private String horaFin;
     private String duracionTurno;
-    private String ubicacion;
-    private String telefono;
+    private String ubicacion;  
     @OneToMany
     private List<ObraSocial> obrasSociales;
     

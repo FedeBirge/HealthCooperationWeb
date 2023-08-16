@@ -56,6 +56,56 @@ public class ProfesionalControlador {
         }
     }
 
+
+    // crear con GET
+    @GetMapping("/crearProfesional")
+    public String crearProfesional(ModelMap modelo) {
+        Rol[] roles = Rol.values();
+        modelo.addAttribute("roles", roles);
+        return "registro.html";
+
+    }
+
+    // crear con POST
+    @PostMapping("/crearProfesional")
+    public String crearProfesional(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
+            @RequestParam String dni, @RequestParam String email, @RequestParam String password,
+            @RequestParam String password2, @RequestParam String telefono, @RequestParam String direccion,
+            @RequestParam String fecha_nac, 
+            @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo) throws MyException, IOException {
+
+        try {
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
+            profesionalServicio.modificarProfesional(dni, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+                   
+            modelo.put("exito", "¡Profesional registrado con exito!");
+            return "registroProfesional.html";
+
+        } catch (MyException ex) {
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
+            modelo.put("error", ex.getMessage());
+            System.out.println("Error de permisos para esta acción");
+            return "registro.html";
+        }
+
+    }
+
+    // listar todos los médicos activos
+    @GetMapping("/listarProfesionales")
+    public String listarProfesionales(ModelMap modelo) {
+        try {
+            List<Profesional> profesionales = profesionalServicio.listarProfesionales();
+            modelo.addAttribute("profesionales", profesionales);
+            return "listar_profesionales.html";
+        } catch (Exception e) {
+            modelo.put("error", e.getMessage());
+            return "redirect: /dashboard";
+        }
+    //}
+
+
     // darse de baja con GET
     @GetMapping("/darseBaja/{id}")
     public String darseBaja(@PathVariable("id") String id, ModelMap modelo) {

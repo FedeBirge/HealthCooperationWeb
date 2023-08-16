@@ -38,11 +38,11 @@ public class UsuarioServicio implements UserDetailsService {
     private UsuarioRepositorio usuarioRepo; // Repositorio de usuarios
 
     @Autowired
-    private ImagenServicio imagenServ; // Repositorio de usuarios
+    private ImagenServicio imagenServ; //
 
     @Transactional
     // Metodo para crear un usuario
-    public void crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
+    public Usuario crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException {
         // Se validan los datos ingresados
         validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
@@ -62,7 +62,7 @@ public class UsuarioServicio implements UserDetailsService {
 
         Imagen imagen = imagenServ.guardar(archivo);
         usuario.setImagen(imagen);
-        usuarioRepo.save(usuario);
+        return usuarioRepo.save(usuario);
 
     }
 
