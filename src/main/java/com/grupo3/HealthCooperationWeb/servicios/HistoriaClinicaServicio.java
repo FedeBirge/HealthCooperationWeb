@@ -1,6 +1,7 @@
 
 package com.grupo3.HealthCooperationWeb.servicios;
 
+import com.grupo3.HealthCooperationWeb.entidades.Ficha;
 import com.grupo3.HealthCooperationWeb.entidades.HistoriaClinica;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.HistoriaClinicaRepositorio;
@@ -17,9 +18,13 @@ public class HistoriaClinicaServicio{
     private HistoriaClinicaRepositorio historiaClinicaRepositorio;
     
     @Transactional
-    public void crearHistoriaClinica(HistoriaClinica historiaClinica) throws MyException{
+    public void crearHistoriaClinica( List<Ficha> fichas) throws MyException{
         
-        validar(historiaClinica);
+       
+        
+        HistoriaClinica historiaClinica = new HistoriaClinica();
+        
+        historiaClinica.setFichas(fichas);
         
         historiaClinicaRepositorio.save(historiaClinica);
         
@@ -47,13 +52,6 @@ public class HistoriaClinicaServicio{
     }
     
     
-    private void validar(HistoriaClinica paciente) throws MyException{
-        
-        if(paciente == null){
-            
-             throw  new MyException("Debe existir un paciente");
-        }
-        
-    }
+   
     
 }
