@@ -33,15 +33,29 @@ public class HistoriaClinicaControlador {
         
     }
     
-    @PostMapping
+    @PostMapping("/historia/registro")
     public String registro(@RequestParam HistoriaClinica paciente, ModelMap modelo) throws MyException{
         
+        try{
+            
         
         historiaClinicaServicio.crearHistoriaClinica(paciente);
         
         modelo.put("exito", "La historia clinica se registro correctamente");
     
-        return null;
+        }catch(MyException ex){
+            
+            List<HistoriaClinica> historia = historiaClinicaServicio.mostrarHistoria();
+            
+            modelo.addAttribute("historia", historia);
+            
+            modelo.put("error", ex.getMessage());
+            
+            return "historia_form.html";//vuelve a cargar el formulario
+        
+        }
+        
+        return "index.html";
         
         }
     

@@ -15,7 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Getter
 @Setter
 
-class Ficha extends Paciente {
+public class Ficha {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -23,16 +23,15 @@ class Ficha extends Paciente {
     private String id;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha;
+    private Date fecha_consulta;
 
     private String nota;
-    
-    
+
     /*
         las relaciones en el UML son atributos de alguna entidad
             y se debe indicar con anotaciones cual es ese tipo de relacion
-    */
-    @OneToOne   
+     */
+    @OneToOne
     private Profesional profesional;
 
 }
