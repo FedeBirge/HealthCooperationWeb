@@ -38,11 +38,11 @@ public class UsuarioServicio implements UserDetailsService {
     private UsuarioRepositorio usuarioRepo; // Repositorio de usuarios
 
     @Autowired
-    private ImagenServicio imagenServ; // Repositorio de usuarios
+    private ImagenServicio imagenServ; //
 
     @Transactional
     // Metodo para crear un usuario
-    public void crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
+    public Usuario crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException {
         // Se validan los datos ingresados
         validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
@@ -62,7 +62,7 @@ public class UsuarioServicio implements UserDetailsService {
 
         Imagen imagen = imagenServ.guardar(archivo);
         usuario.setImagen(imagen);
-        usuarioRepo.save(usuario);
+        return usuarioRepo.save(usuario);
 
     }
 
@@ -146,10 +146,10 @@ public class UsuarioServicio implements UserDetailsService {
         if (nombre == null || nombre.isEmpty()) {
             throw new MyException("Debe ingresar su nombre");
         }
-        if (apellido == null || nombre.isEmpty()) {
+        if (apellido == null || apellido.isEmpty()) {
             throw new MyException("Debe ingresar su apellido");
         }
-        if (dni == null || nombre.isEmpty()) {
+        if (dni == null || dni.isEmpty()) {
             throw new MyException("Debe ingresar su N° de documento");
         }
 
@@ -172,10 +172,10 @@ public class UsuarioServicio implements UserDetailsService {
         if (telefono == null || nombre.isEmpty()) {
             throw new MyException("Debe ingresar un nombre");
         }
-        if (direccion == null || nombre.isEmpty()) {
+        if (direccion == null || direccion.isEmpty()) {
             throw new MyException("Debe ingresar un nombre");
         }
-        if (fecha_nac == null || nombre.isEmpty()) {
+        if (fecha_nac == null || fecha_nac.isEmpty()) {
             throw new MyException("Debe ingresar un nombre");
         }
 
@@ -210,7 +210,7 @@ public class UsuarioServicio implements UserDetailsService {
         if (usuario != null && usuario.getActivo().equals(Boolean.TRUE)) {
             List<GrantedAuthority> permisos = new ArrayList<>();
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().toString());
-            
+
             permisos.add(p);
 
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -225,4 +225,5 @@ public class UsuarioServicio implements UserDetailsService {
             return null;
         }
     }
+
 }

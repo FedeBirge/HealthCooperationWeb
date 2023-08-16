@@ -36,6 +36,7 @@ public class ProfesionalControlador {
     UsuarioServicio usuarioServicio;
 
     // En el panel, el doc ve la lista de pacientes
+    // Falta refinar esto para que sean solo SUS pacientes, no todos
     @GetMapping("/dashboard")
     public String panelAdministrativo(ModelMap modelo) {
         List<Paciente> pacientes = pacienteServicio.mostrarPacientes();
@@ -43,6 +44,7 @@ public class ProfesionalControlador {
         return "panelProfesional.html";
     }
 
+    // Acceden pacientes y profesionales al perfil del profesional
     @GetMapping("/MiPerfil/{id}")
     public String vistaPerfilProfesional(@PathVariable("id") String id, ModelMap modelo) throws MyException {
 
@@ -53,6 +55,7 @@ public class ProfesionalControlador {
             return "redirect: /panelProfesional.html";
         }
     }
+
 
     // crear con GET
     @GetMapping("/crearProfesional")
@@ -69,13 +72,13 @@ public class ProfesionalControlador {
             @RequestParam String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, @RequestParam String telefono, @RequestParam String direccion,
             @RequestParam String fecha_nac, 
-            @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo) throws MyException {
+            @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo) throws MyException, IOException {
 
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
-            profesionalServicio.registrarProfesional(nombre, apellido, dni, email, password, password2, telefono,
-                    direccion, fecha_nac,  especialidad, valorConsulta);
+            profesionalServicio.modificarProfesional(dni, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+                   
             modelo.put("exito", "¡Profesional registrado con exito!");
             return "registroProfesional.html";
 
@@ -100,7 +103,8 @@ public class ProfesionalControlador {
             modelo.put("error", e.getMessage());
             return "redirect: /dashboard";
         }
-    }
+    //}
+
 
     // darse de baja con GET
     @GetMapping("/darseBaja/{id}")
