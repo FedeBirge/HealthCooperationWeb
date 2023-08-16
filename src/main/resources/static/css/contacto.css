@@ -1,23 +1,53 @@
-*
-{
-    margin : 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-    overflow: hidden;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+
+.input-div > .w50 {
+    position: relative;
 }
+
+.input-div > .w50 > h5 {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.input-div > .w50 > input:focus + h5,
+.input-div > .w50 > input:valid + h5 {
+    top: 5px; /* Adjust this value as needed */
+    font-size: 14px;
+    color: #38d39f;
+}
+
+.input-div > .w50:before,
+.input-div > .w50:after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    width: 0%;
+    height: 2px;
+    background-color: #38d39f;
+    transition: 0.4s;
+}
+
 body, h1, h2, h3, p, a, span
  {
     font-family: "Poppins", sans-serif;
     overflow: hidden;
   }
+
+
+  
 section
 {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #32be8f;
+    background: #00c3a5;
 }
 section::before
 {
@@ -27,7 +57,7 @@ top: 0;
 left: 0;
 width: 50%;
 height: 100%;
-background: #32be8f;
+background: #00c3a5;
 }
 .container
 {
@@ -44,7 +74,7 @@ background: #32be8f;
     top: 40px;
     width: 350px;
     height: calc(100% - 88px);
-    background: #32be8f;
+    background: #00c3a5;
     z-index: 1;
     padding: 30px;
     display: flex;
@@ -146,6 +176,9 @@ margin-right: 15px;
 {
     width: 47%;
 }
+
+
+
 .container .contanctoFormulario .formulariobox .inputbox.w100
 {
     width: 100%;
@@ -190,15 +223,25 @@ color: #095a55;
 }
 .container .contanctoFormulario .formulariobox .inputbox input[type="submit"]
 {
-    position: relative;
-    cursor: pointer;
-    background: #32be8f;
-    color: #fff;
+    display: block;
+    width: 50%;
+    height: 50px;
+    border-radius: 25px;
+    outline: none;
     border: none;
-    max-width: 150px;
-    padding: 12px;
+    background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+    background-size: 200%;
+    font-size: 1.2rem;
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    text-transform: uppercase;
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: 0.5s;
 }
 .container .contanctoFormulario .formulariobox .inputbox input[type="submit"]:hover
 {
-    background: #0EA293;
+    background-position: right;
 }
+.rounded-box {
+    border-radius: 10px; }
