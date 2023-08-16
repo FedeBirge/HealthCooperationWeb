@@ -75,7 +75,7 @@ public class ObraSocialServicio {
     }
     }
 
-    private void eliminarObraSocial(String id) throws MyException {
+    public void eliminarObraSocial(String id) throws MyException {
         
         try {
              Optional<ObraSocial> respuesta = obraRepo.findById(id);

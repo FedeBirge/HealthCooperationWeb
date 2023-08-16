@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ObraSocialRepositorio extends JpaRepository<ObraSocial, String> {
-   @Query("SELECT o FROM ObraSocial o WHERE u.email =:email")
+   @Query("SELECT o FROM ObraSocial o WHERE o.email =:email")
     public ObraSocial buscarPorEmail(@Param("email") String email);
    
 }
