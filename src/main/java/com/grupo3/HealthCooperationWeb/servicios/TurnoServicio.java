@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import javax.transaction.Transactional;
 
 @Service
 public class TurnoServicio {
@@ -20,6 +21,7 @@ public class TurnoServicio {
     @Autowired
     private TurnoRepositorio turnoRepo;
 
+    @Transactional
     public Turno crearTurno(String fecha, String hora, EstadoTurno estado, String motivo, String idProf) throws MyException {
 
         validar(fecha, hora, estado, motivo, idProf);
@@ -45,6 +47,7 @@ public class TurnoServicio {
         }
     }
 
+    @Transactional
     public Turno actualizarTurno(String id, String fecha, String hora, String motivo, EstadoTurno estado, String idProf) throws MyException {
 
         validar(fecha, hora, estado, motivo, idProf);
@@ -66,6 +69,7 @@ public class TurnoServicio {
         }
     }
 
+    @Transactional
     public void cancelarTurno(String id) throws MyException {
         Optional<Turno> op = turnoRepo.findById(id);
         if (op.isPresent()) {
@@ -76,7 +80,7 @@ public class TurnoServicio {
             throw new MyException("Turno no encontrado(CANCELAR)");
         }
     }
-
+    @Transactional
     public void reservarTurno(String id) throws MyException {
         Optional<Turno> op = turnoRepo.findById(id);
         if (op.isPresent()) {
@@ -87,7 +91,7 @@ public class TurnoServicio {
             throw new MyException("Turno no encontrado(RESERVAR)");
         }
     }
-
+@Transactional
     public void completarTurno(String id) throws MyException {
         Optional<Turno> op = turnoRepo.findById(id);
         if (op.isPresent()) {
@@ -98,25 +102,25 @@ public class TurnoServicio {
             throw new MyException("Turno no encontrado(COMPLETAR)");
         }
     }
-    
-    public void eliminarTurno(String id){
-         try {
-             Optional<Turno> respuesta = turnoRepo.findById(id);
+@Transactional
+    public void eliminarTurno(String id) {
+        try {
+            Optional<Turno> respuesta = turnoRepo.findById(id);
             if (respuesta.isPresent()) {
-                      Turno turno = (Turno)respuesta.get();
-               turnoRepo.delete(turno);
+                Turno turno = (Turno) respuesta.get();
+                turnoRepo.delete(turno);
             }
         } catch (Exception e) {
             System.out.println("No es posible eliminar el turno");
         }
     }
-    
+
     public List<Turno> listarTurnos() {
-        
+
         List<Turno> turnos = new ArrayList();
 
         try {
-            turnos = turnoRepo.findAll();           
+            turnos = turnoRepo.findAll();
 
             return turnos;
 
@@ -124,7 +128,6 @@ public class TurnoServicio {
             System.out.println("Turno: No pudieron ser listados");
             return null;
         }
-
 
     }
 
@@ -148,6 +151,5 @@ public class TurnoServicio {
         }
 
     }
-
 
 }
