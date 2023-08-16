@@ -87,6 +87,11 @@ public class FichaServicio  {
 
     protected void validar(Date fecha_consulta, String nota) throws MyException {
 
+        
+        if(fecha_consulta == null){
+            throw new MyException("Debe completar la fecha");
+        }
+        
         if (nota == null || nota.isEmpty()) {
 
             throw new MyException("Debe ingresar una descripcion de la consulta");
