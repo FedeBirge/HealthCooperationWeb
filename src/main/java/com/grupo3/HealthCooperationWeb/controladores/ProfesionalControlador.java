@@ -36,6 +36,7 @@ public class ProfesionalControlador {
     UsuarioServicio usuarioServicio;
 
     // En el panel, el doc ve la lista de pacientes
+    // Falta refinar esto para que sean solo SUS pacientes, no todos
     @GetMapping("/dashboard")
     public String panelAdministrativo(ModelMap modelo) {
         List<Paciente> pacientes = pacienteServicio.mostrarPacientes();
@@ -43,6 +44,7 @@ public class ProfesionalControlador {
         return "panelProfesional.html";
     }
 
+    // Acceden pacientes y profesionales al perfil del profesional
     @GetMapping("/MiPerfil/{id}")
     public String vistaPerfilProfesional(@PathVariable("id") String id, ModelMap modelo) throws MyException {
 
@@ -51,54 +53,6 @@ public class ProfesionalControlador {
             return "perfilProfesional.html";
         } catch (Exception e) {
             return "redirect: /panelProfesional.html";
-        }
-    }
-
-    // crear con GET
-    @GetMapping("/crearProfesional")
-    public String crearProfesional(ModelMap modelo) {
-        Rol[] roles = Rol.values();
-        modelo.addAttribute("roles", roles);
-        return "registro.html";
-
-    }
-
-    // crear con POST
-    @PostMapping("/crearProfesional")
-    public String crearProfesional(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
-            @RequestParam String dni, @RequestParam String email, @RequestParam String password,
-            @RequestParam String password2, @RequestParam String telefono, @RequestParam String direccion,
-            @RequestParam String fecha_nac, 
-            @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo) throws MyException {
-
-        try {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            profesionalServicio.registrarProfesional(nombre, apellido, dni, email, password, password2, telefono,
-                    direccion, fecha_nac,  especialidad, valorConsulta);
-            modelo.put("exito", "¡Profesional registrado con exito!");
-            return "registroProfesional.html";
-
-        } catch (MyException ex) {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            modelo.put("error", ex.getMessage());
-            System.out.println("Error de permisos para esta acción");
-            return "registro.html";
-        }
-
-    }
-
-    // listar todos los médicos activos
-    @GetMapping("/listarProfesionales")
-    public String listarProfesionales(ModelMap modelo) {
-        try {
-            List<Profesional> profesionales = profesionalServicio.listarProfesionales();
-            modelo.addAttribute("profesionales", profesionales);
-            return "listar_profesionales.html";
-        } catch (Exception e) {
-            modelo.put("error", e.getMessage());
-            return "redirect: /dashboard";
         }
     }
 
