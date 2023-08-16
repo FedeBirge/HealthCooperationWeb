@@ -57,14 +57,6 @@ public class ProfesionalServicio extends UsuarioServicio {
 
     @Transactional
 
-    public void registrarProfesional(MultipartFile archivo, String nombre, String apellido, String dni, String email, String password,
-            String password2, String telefono, String direccion, String fecha_nac, Especialidad especialidad) throws MyException {
-
-        super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
-        Profesional prof = (Profesional) super.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
-
-        if (especialidad == null) {
-
     public void registrarProfesional(String nombre, String apellido, String dni, String email, String password,
             String password2, String telefono, String direccion, String fecha_nac, String especialidad,
             String valorConsulta) throws MyException {
@@ -75,16 +67,16 @@ public class ProfesionalServicio extends UsuarioServicio {
 
             throw new MyException("Debe ingresar una especialidad al profesional");
         }
-        prof.setEspecialidad(especialidad);
-
-        prof.setAgenda(new AgendaSemanal());
-        prof.setOferta(new Oferta());
-        prof.setDiasDisponibles(new ArrayList());
-        prof.setRol(Rol.MODERADOR);
-        Imagen imagen = imagenServ.guardar(archivo);
-        prof.setImagen(imagen);
-
-        profesionalRepositorio.save(prof);
+//        prof.setEspecialidad(especialidad);
+//
+//        prof.setAgenda(new AgendaSemanal());
+//        prof.setOferta(new Oferta());
+//        prof.setDiasDisponibles(new ArrayList());
+//        prof.setRol(Rol.MODERADOR);
+//        Imagen imagen = imagenServ.guardar(archivo);
+//        prof.setImagen(imagen);
+//
+//        profesionalRepositorio.save(prof);
 
     }
     
@@ -209,4 +201,5 @@ public class ProfesionalServicio extends UsuarioServicio {
         return "Lo sentimos, no fue posible dar de baja al profesional";
 
 
+}
 }
