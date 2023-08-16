@@ -31,7 +31,6 @@ public class Turno {
   @Enumerated(EnumType.STRING)
   private EstadoTurno estado;
   private String motivo;
-
   /*
    * las relaciones en el UML son atributos de alguna entidad
    * y se debe indicar con anotaciones cual es ese tipo de relacion
