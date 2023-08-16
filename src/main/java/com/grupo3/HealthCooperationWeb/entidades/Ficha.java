@@ -15,7 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Getter
 @Setter
 
-public class Ficha extends Paciente {
+public class Ficha {
 
     @Id
     @GeneratedValue(generator = "uuid")
