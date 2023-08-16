@@ -69,13 +69,13 @@ public class ProfesionalControlador {
             @RequestParam String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, @RequestParam String telefono, @RequestParam String direccion,
             @RequestParam String fecha_nac, 
-            @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo) throws MyException {
+            @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo) throws MyException, IOException {
 
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
-            profesionalServicio.registrarProfesional(nombre, apellido, dni, email, password, password2, telefono,
-                    direccion, fecha_nac,  especialidad, valorConsulta);
+            profesionalServicio.modificarProfesional(dni, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+                   
             modelo.put("exito", "¡Profesional registrado con exito!");
             return "registroProfesional.html";
 

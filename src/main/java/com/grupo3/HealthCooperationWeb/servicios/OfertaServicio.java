@@ -21,9 +21,9 @@ public class OfertaServicio {
     @Transactional
     // Metodo para crear oferta
     public void crearOferta(TipoOferta tipo, String horaIni, String horaFin, String duracion,
-            String ubicacion, String telefono, List<ObraSocial> obras) throws MyException {
+            String ubicacion, List<ObraSocial> obras) throws MyException {
         // Se validan los datos ingresados
-        validar(tipo, horaIni, horaFin, duracion, ubicacion, telefono, obras);
+        validar(tipo, horaIni, horaFin, duracion, ubicacion, obras);
 
         Oferta oferta = new Oferta();
         oferta.setTipo(tipo);
@@ -31,7 +31,7 @@ public class OfertaServicio {
         oferta.setHoraFin(horaFin);
         oferta.setDuracionTurno(duracion);
         oferta.setUbicacion(ubicacion);
-        oferta.setTelefono(telefono);
+       
         oferta.setObrasSociales(obras);
 
         ofertaRepo.save(oferta);
@@ -39,12 +39,12 @@ public class OfertaServicio {
     }
 
     @Transactional
-    // Metodo para modificar un usuario
+    // Metodo para modificar una oferta
     public void modificarOferta(String id, TipoOferta tipo, String horaIni, String horaFin,
             String duracion, String ubicacion, String telefono, List<ObraSocial> obras)
             throws MyException {
 
-        validar(tipo, horaIni, horaFin, duracion, ubicacion, telefono, obras);
+        validar(tipo, horaIni, horaFin, duracion, ubicacion, obras);
 
         Optional<Oferta> respuesta = ofertaRepo.findById(id);
 
@@ -57,7 +57,7 @@ public class OfertaServicio {
             oferta.setHoraFin(horaFin);
             oferta.setDuracionTurno(duracion);
             oferta.setUbicacion(ubicacion);
-            oferta.setTelefono(telefono);
+           
             oferta.setObrasSociales(obras);
 
             ofertaRepo.save(oferta);
@@ -67,7 +67,7 @@ public class OfertaServicio {
     }
 
     @Transactional
-    // Metodo para eliminar un usuario, se cambia el estado a inactivo
+    // Metodo para eliminar ua oferta
     public void eliminarOferta(String id) {
         try {
             Optional<Oferta> resp = ofertaRepo.findById(id);
@@ -80,7 +80,7 @@ public class OfertaServicio {
         }
     }
 
-    // Metodo para listar todos los usuarios
+    // Metodo para listar todas las ofertas
     public List<Oferta> listarOfertas() {
         List<Oferta> ofertas = new ArrayList();
      try {
@@ -98,8 +98,7 @@ public class OfertaServicio {
 
     // Metodo para validar los datos ingresados antes de persistirlos
     protected void validar(TipoOferta tipo, String horaIni, String horaFin,
-            String duracion, String ubicacion, String telefono,
-            List<ObraSocial> obras) throws MyException {
+            String duracion, String ubicacion,  List<ObraSocial> obras) throws MyException {
 
         if (tipo == null) {
             throw new MyException("Debe indicar un tipo de oferta");
@@ -114,10 +113,7 @@ public class OfertaServicio {
         if (duracion == null || duracion.isEmpty()) {
             throw new MyException("Debe ingresar cuanto dura un turno");
         }
-
-        if (telefono == null || telefono.isEmpty()) {
-            throw new MyException("Debe ingresar un telefono de contacto");
-        }
+       
         if (ubicacion == null || ubicacion.isEmpty()) {
             throw new MyException("Debe ingresar una ubicacion(direccion)");
         }

@@ -1,5 +1,6 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
+import com.grupo3.HealthCooperationWeb.enumeradores.Dias;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -9,6 +10,8 @@ import javax.persistence.Table;
 
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.ElementCollection;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
@@ -27,13 +30,18 @@ public class Profesional extends Usuario implements Serializable {
     @Enumerated(EnumType.STRING)
     protected Especialidad especialidad;
     protected String valorConsulta;
-    // falta incluir reputación y descripcion como parámetro
-    // en todos los servicios que lo requieran
+
     protected Integer reputacion;
     protected String descripcion;
     @OneToOne
+    protected Oferta oferta;
+    @OneToOne
     protected AgendaSemanal agenda;
-//    @Enumerated(EnumType.STRING)
-//     protected Disponibilidad disponible;
+    
+    @ElementCollection(targetClass = Dias.class)
+    @Enumerated(EnumType.STRING)
+    private List<Dias> diasDisponibles;
+    
+   
 
 }

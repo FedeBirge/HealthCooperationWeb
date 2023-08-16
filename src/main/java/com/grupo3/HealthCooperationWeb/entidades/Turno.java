@@ -22,6 +22,9 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 
 public class Turno {
+    
+    // representa un turno para el paciente, con su fecha y hora, 
+    // y el motivo del mismo, asociado al profesional
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -31,10 +34,7 @@ public class Turno {
   @Enumerated(EnumType.STRING)
   private EstadoTurno estado;
   private String motivo;
-  /*
-   * las relaciones en el UML son atributos de alguna entidad
-   * y se debe indicar con anotaciones cual es ese tipo de relacion
-   */
+  
   @OneToOne
   private Profesional profesional;
 

@@ -1,6 +1,7 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
 
+import com.grupo3.HealthCooperationWeb.enumeradores.Dias;
 import java.util.Map;
 
 
@@ -18,6 +19,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
 import java.util.Date;
+import javax.persistence.EnumType;
+import javax.persistence.MapKeyEnumerated;
 
 
 import lombok.AllArgsConstructor;
@@ -44,6 +47,6 @@ public class AgendaSemanal {
    
     private Map<Date, ArrayList<Turno>> fechaYTurnos;
 
-
+ 
     
 }
