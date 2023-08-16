@@ -16,7 +16,7 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class ObraSocial extends Usuario{
+public class ObraSocial{
 
    @Id
     @GeneratedValue(generator = "uuid")

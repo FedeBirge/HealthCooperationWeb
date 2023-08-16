@@ -1,25 +1,24 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
-import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.OneToMany;
+
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.grupo3.HealthCooperationWeb.enumeradores.Dias;
+
+import java.util.ArrayList;
+import java.util.Date;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,17 +36,14 @@ public class AgendaSemanal {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    /*
-     * @ElementCollection
-     * 
-     * @CollectionTable(name = "agenda_turnos", joinColumns = @JoinColumn(name =
-     * "agenda_id"))
-     * 
-     * @MapKeyEnumerated(EnumType.STRING) // Esto es necesario si "Dias" es un enum
-     * 
-     * @MapKeyColumn(name = "dia")
-     * 
-     * @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-     * private Map<Dias, Turno> turnosXDia = new HashMap<>();
-     */
+  
+   @ElementCollection
+    @CollectionTable(name = "fecha_y_turnos",
+                     joinColumns = @JoinColumn(name = "entidad_principal_id"))
+    @MapKeyColumn(name = "fecha")
+   
+    private Map<Date, ArrayList<Turno>> fechaYTurnos;
+
+
+    
 }
