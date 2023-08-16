@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class ObraSocialServicio {
 
     @Autowired
     private ObraSocialRepositorio obraRepo;
-
+@Transactional
     public void crearObraSocial(String nombre, String email, String telefono) throws MyException {
         // Se validan los datos ingresados
         validar(nombre, email, telefono);
@@ -56,7 +57,7 @@ public class ObraSocialServicio {
 
 
     }
-
+@Transactional
     public void modificarObraSocial(String id,String nombre, String email, String telefono) throws MyException {
         
          validar(nombre, email, telefono);
@@ -74,14 +75,14 @@ public class ObraSocialServicio {
 
     }
     }
-
+    @Transactional
     public void eliminarObraSocial(String id) throws MyException {
         
         try {
              Optional<ObraSocial> respuesta = obraRepo.findById(id);
             if (respuesta.isPresent()) {
                       ObraSocial obra = (ObraSocial)respuesta.get();
-               obraRepo.delete(obra);
+                obraRepo.delete(obra);
             }
         } catch (Exception e) {
             System.out.println("No es posible eliminar el ususario");
