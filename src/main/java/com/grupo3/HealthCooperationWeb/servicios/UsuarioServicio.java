@@ -146,10 +146,10 @@ public class UsuarioServicio implements UserDetailsService {
         if (nombre == null || nombre.isEmpty()) {
             throw new MyException("Debe ingresar su nombre");
         }
-        if (apellido == null || nombre.isEmpty()) {
+        if (apellido == null || apellido.isEmpty()) {
             throw new MyException("Debe ingresar su apellido");
         }
-        if (dni == null || nombre.isEmpty()) {
+        if (dni == null || dni.isEmpty()) {
             throw new MyException("Debe ingresar su N° de documento");
         }
 
@@ -172,10 +172,10 @@ public class UsuarioServicio implements UserDetailsService {
         if (telefono == null || nombre.isEmpty()) {
             throw new MyException("Debe ingresar un nombre");
         }
-        if (direccion == null || nombre.isEmpty()) {
+        if (direccion == null || direccion.isEmpty()) {
             throw new MyException("Debe ingresar un nombre");
         }
-        if (fecha_nac == null || nombre.isEmpty()) {
+        if (fecha_nac == null || fecha_nac.isEmpty()) {
             throw new MyException("Debe ingresar un nombre");
         }
 

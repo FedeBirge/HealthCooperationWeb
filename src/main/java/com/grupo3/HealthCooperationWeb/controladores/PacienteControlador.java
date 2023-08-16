@@ -1,7 +1,10 @@
 
 package com.grupo3.HealthCooperationWeb.controladores;
 
+import com.grupo3.HealthCooperationWeb.entidades.HistoriaClinica;
+import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
+import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import java.util.List;
@@ -31,11 +34,13 @@ public class PacienteControlador {
     }
 
     @PostMapping("/registro")
-    public String registro(@RequestParam Paciente usuario, ModelMap modelo) throws MyException {
+    public String registro(@RequestParam String grupoSanguineo, List<Turno> turnos, HistoriaClinica historia, ObraSocial obraSocial, ModelMap modelo) throws MyException {
         try {
-            pacienteServicio.crearPaciente(usuario);//si todo sale bien retornamos al index
+            
+            pacienteServicio.crearPaciente(grupoSanguineo, turnos, historia, obraSocial);//si todo sale bien retornamos al index
 
             modelo.put("exito", "El paciente se registro con exito");
+        
         } catch (MyException ex) {
             List<Paciente> pacientes = pacienteServicio.mostrarPacientes();
 

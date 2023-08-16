@@ -4,6 +4,7 @@ import com.grupo3.HealthCooperationWeb.entidades.Imagen;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.ImagenRepositorio;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ public class ImagenServicio {
     ImagenRepositorio imagenRepo; // inyectamos el repositorio de imagen
 
     // Guardar imagen
+    @Transactional
     public Imagen guardar(MultipartFile archivo) throws MyException {
         if (archivo != null) {
             try {
@@ -34,6 +36,7 @@ public class ImagenServicio {
     }
 
     // Actualizar imagen
+    @Transactional
     public Imagen actualizar(MultipartFile archivo, String id) throws MyException {
         if (archivo != null) {
             try {
