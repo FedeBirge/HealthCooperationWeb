@@ -3,16 +3,21 @@
     margin : 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
+    overflow: hidden;
 }
-
+body, h1, h2, h3, p, a, span
+ {
+    font-family: "Poppins", sans-serif;
+    overflow: hidden;
+  }
 section
 {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #23E896;
+    background: #32be8f;
 }
 section::before
 {
@@ -22,7 +27,7 @@ top: 0;
 left: 0;
 width: 50%;
 height: 100%;
-background: #187C6E;
+background: #32be8f;
 }
 .container
 {
@@ -39,7 +44,7 @@ background: #187C6E;
     top: 40px;
     width: 350px;
     height: calc(100% - 88px);
-    background: #23E896;
+    background: #32be8f;
     z-index: 1;
     padding: 30px;
     display: flex;
@@ -187,7 +192,7 @@ color: #095a55;
 {
     position: relative;
     cursor: pointer;
-    background: #095a55;
+    background: #32be8f;
     color: #fff;
     border: none;
     max-width: 150px;
@@ -195,5 +200,5 @@ color: #095a55;
 }
 .container .contanctoFormulario .formulariobox .inputbox input[type="submit"]:hover
 {
-    background: #0d948b;
+    background: #0EA293;
 }
