@@ -103,7 +103,7 @@ public class ProfesionalControlador {
             modelo.put("error", e.getMessage());
             return "redirect: /dashboard";
         }
-    //}
+    }
 
 
     // darse de baja con GET
