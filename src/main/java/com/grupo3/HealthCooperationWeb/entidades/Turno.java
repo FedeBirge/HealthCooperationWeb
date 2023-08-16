@@ -3,10 +3,11 @@ package com.grupo3.HealthCooperationWeb.entidades;
 
 import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class Turno {
   private String id;
   private String fecha;
   private String hora;
+  @Enumerated(EnumType.STRING)
   private EstadoTurno estado;
   private String motivo;
 

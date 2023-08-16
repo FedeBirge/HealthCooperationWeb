@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import java.io.Serializable;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "profesionales")
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,7 +31,9 @@ public class Profesional extends Usuario implements Serializable {
     // en todos los servicios que lo requieran
     protected Integer reputacion;
     protected String descripcion;
-    // protected AgendaSemanal agenda;
-    // protected Disponibilidad disponible;
+    @OneToOne
+    protected AgendaSemanal agenda;
+//    @Enumerated(EnumType.STRING)
+//     protected Disponibilidad disponible;
 
 }
