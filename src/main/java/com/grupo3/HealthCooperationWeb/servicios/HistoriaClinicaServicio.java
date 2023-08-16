@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HistoriaClinicaServicio extends PacienteServicio{
+public class HistoriaClinicaServicio{
     
     @Autowired
     private HistoriaClinicaRepositorio historiaClinicaRepositorio;
@@ -42,7 +42,6 @@ public class HistoriaClinicaServicio extends PacienteServicio{
         return historia;
     }
     
-    @Override
     public HistoriaClinica getOne(String id){
         return historiaClinicaRepositorio.getOne(id);
     }

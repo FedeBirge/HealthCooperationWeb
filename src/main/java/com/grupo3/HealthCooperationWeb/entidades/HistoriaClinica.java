@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Getter
 @Setter
-public class HistoriaClinica extends Paciente {
+public class HistoriaClinica  {
 
     @Id
     @GeneratedValue(generator = "uuid")
