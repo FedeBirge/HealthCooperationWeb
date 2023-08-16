@@ -210,7 +210,7 @@ public class UsuarioServicio implements UserDetailsService {
         if (usuario != null && usuario.getActivo().equals(Boolean.TRUE)) {
             List<GrantedAuthority> permisos = new ArrayList<>();
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().toString());
-            
+
             permisos.add(p);
 
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -225,4 +225,5 @@ public class UsuarioServicio implements UserDetailsService {
             return null;
         }
     }
+
 }
