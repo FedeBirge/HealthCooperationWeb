@@ -34,7 +34,7 @@ public class ProfesionalServicio extends UsuarioServicio {
     @Autowired
     private UsuarioRepositorio usuarioRepo;
 
-    // listar todos los médicos
+    // listar todos los médicos ACTIVOS
     @Transactional
     public List<Profesional> listarProfesionales() {
         List<Profesional> profAux = new ArrayList<>();
@@ -56,6 +56,7 @@ public class ProfesionalServicio extends UsuarioServicio {
 
 
     @Transactional
+
     public void registrarProfesional(MultipartFile archivo, String nombre, String apellido, String dni, String email, String password,
             String password2, String telefono, String direccion, String fecha_nac, Especialidad especialidad) throws MyException {
 
@@ -63,6 +64,15 @@ public class ProfesionalServicio extends UsuarioServicio {
         Profesional prof = (Profesional) super.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
 
         if (especialidad == null) {
+
+    public void registrarProfesional(String nombre, String apellido, String dni, String email, String password,
+            String password2, String telefono, String direccion, String fecha_nac, String especialidad,
+            String valorConsulta) throws MyException {
+        // Se validan los datos especificos de profesional
+        // faltaria descripcion
+
+        if (especialidad == null || especialidad.isEmpty()) {
+
             throw new MyException("Debe ingresar una especialidad al profesional");
         }
         prof.setEspecialidad(especialidad);
@@ -198,7 +208,5 @@ public class ProfesionalServicio extends UsuarioServicio {
         }
         return "Lo sentimos, no fue posible dar de baja al profesional";
 
-    }
-// Métodos relacionados con el profesional
 
 }

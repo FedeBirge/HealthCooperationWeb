@@ -36,6 +36,7 @@ public class ProfesionalControlador {
     UsuarioServicio usuarioServicio;
 
     // En el panel, el doc ve la lista de pacientes
+    // Falta refinar esto para que sean solo SUS pacientes, no todos
     @GetMapping("/dashboard")
     public String panelAdministrativo(ModelMap modelo) {
         List<Paciente> pacientes = pacienteServicio.mostrarPacientes();
@@ -43,6 +44,7 @@ public class ProfesionalControlador {
         return "panelProfesional.html";
     }
 
+    // Acceden pacientes y profesionales al perfil del profesional
     @GetMapping("/MiPerfil/{id}")
     public String vistaPerfilProfesional(@PathVariable("id") String id, ModelMap modelo) throws MyException {
 
@@ -53,6 +55,7 @@ public class ProfesionalControlador {
             return "redirect: /panelProfesional.html";
         }
     }
+
 
     // crear con GET
     @GetMapping("/crearProfesional")
@@ -100,7 +103,8 @@ public class ProfesionalControlador {
             modelo.put("error", e.getMessage());
             return "redirect: /dashboard";
         }
-    }
+    //}
+
 
     // darse de baja con GET
     @GetMapping("/darseBaja/{id}")
