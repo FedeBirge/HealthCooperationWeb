@@ -23,7 +23,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
-public class FichaServicio extends HistoriaClinicaServicio {
+public class FichaServicio  {
 
     @Autowired
     private FichaRepositorio fichaRepositorio;
@@ -108,7 +108,6 @@ public class FichaServicio extends HistoriaClinicaServicio {
         }
     }
 
-    @Override
     public UserDetails loadUserByUsername(String email) {
 
         Usuario usuario = UsuarioRepositorio.buscarPorEmail(email);
