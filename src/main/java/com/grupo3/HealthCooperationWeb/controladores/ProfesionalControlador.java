@@ -56,12 +56,10 @@ public class ProfesionalControlador {
         }
     }
 
-
     // crear con GET
-    @GetMapping("/crearProfesional")
+    @GetMapping("/crear")
     public String crearProfesional(ModelMap modelo) {
-        Rol[] roles = Rol.values();
-        modelo.addAttribute("roles", roles);
+
         return "registro.html";
 
     }
@@ -71,24 +69,14 @@ public class ProfesionalControlador {
     public String crearProfesional(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
             @RequestParam String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, @RequestParam String telefono, @RequestParam String direccion,
-            @RequestParam String fecha_nac, 
+            @RequestParam String fecha_nac,
             @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo) throws MyException, IOException {
 
-        try {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            profesionalServicio.modificarProfesional(dni, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
-                   
-            modelo.put("exito", "¡Profesional registrado con exito!");
-            return "registroProfesional.html";
-
-        } catch (MyException ex) {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            modelo.put("error", ex.getMessage());
-            System.out.println("Error de permisos para esta acción");
-            return "registro.html";
-        }
+        Rol[] roles = Rol.values();
+        modelo.addAttribute("roles", roles);
+        profesionalServicio.modificarProfesional(dni, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+        modelo.put("exito", "¡Profesional registrado con exito!");
+        return "registroProfesional.html";
 
     }
 
@@ -104,7 +92,6 @@ public class ProfesionalControlador {
             return "redirect: /dashboard";
         }
     }
-
 
     // darse de baja con GET
     @GetMapping("/darseBaja/{id}")

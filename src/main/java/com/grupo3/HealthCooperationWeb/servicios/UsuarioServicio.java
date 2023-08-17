@@ -137,7 +137,9 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
-
+    public Usuario buscarPorMail(String email){
+        return usuarioRepo.buscarPorEmail(email);
+    }
     // Metodo para validar los datos ingresados antes de persistirlos
     protected void validar(String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac)
