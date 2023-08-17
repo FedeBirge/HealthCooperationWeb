@@ -57,7 +57,7 @@ public class AdminControlador {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
-            profesionalServicio.registrarProfesional(nombre, apellido, dni, email, password, password2, telefono,
+            profesionalServicio.registrarProfesional(archivo,nombre, apellido, dni, email, password, password2, telefono,
                     direccion, fecha_nac, especialidad, valorConsulta);
             modelo.put("exito", "¡Profesional registrado con exito!");
             return "registroProfesional.html";
@@ -71,5 +71,5 @@ public class AdminControlador {
         }
 
     }
-
+ 
 }

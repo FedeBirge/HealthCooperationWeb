@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 // @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
-@RequestMapping("/admin")
+@RequestMapping("/user")
 public class UsuarioControlador {
 
     @Autowired

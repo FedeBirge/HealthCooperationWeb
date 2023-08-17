@@ -18,15 +18,29 @@ public class OfertaServicio {
     @Autowired
     private OfertaRepositorio ofertaRepo;
 
+    
+    // paso el string que viene del controlador al Emun correspondiente
+    private TipoOferta pasarStringTipo(String tipo) throws MyException {
+        switch (tipo) {
+            case "PRESENCIAL":
+                return TipoOferta.PRESENCIAL;
+            case "VIRTUAL":
+                return TipoOferta.VIRTUAL;
+            case "DOMICILIO":
+                return TipoOferta.DOMICILIO;
+            default:
+                throw new MyException("Tipo de oferta no válido: " + tipo);
+        }
+    }
     @Transactional
     // Metodo para crear oferta
-    public void crearOferta(TipoOferta tipo, String horaIni, String horaFin, String duracion,
+    public void crearOferta(String tipo, String horaIni, String horaFin, String duracion,
             String ubicacion, List<ObraSocial> obras) throws MyException {
         // Se validan los datos ingresados
         validar(tipo, horaIni, horaFin, duracion, ubicacion, obras);
 
         Oferta oferta = new Oferta();
-        oferta.setTipo(tipo);
+        oferta.setTipo(pasarStringTipo(tipo));
         oferta.setHoraInicio(horaIni);
         oferta.setHoraFin(horaFin);
         oferta.setDuracionTurno(duracion);
@@ -40,7 +54,7 @@ public class OfertaServicio {
 
     @Transactional
     // Metodo para modificar una oferta
-    public void modificarOferta(String id, TipoOferta tipo, String horaIni, String horaFin,
+    public void modificarOferta(String id, String tipo, String horaIni, String horaFin,
             String duracion, String ubicacion, String telefono, List<ObraSocial> obras)
             throws MyException {
 
@@ -52,7 +66,7 @@ public class OfertaServicio {
             Oferta oerta = respuesta.get();
 
             Oferta oferta = new Oferta();
-            oferta.setTipo(tipo);
+            oferta.setTipo(pasarStringTipo(tipo));
             oferta.setHoraInicio(horaIni);
             oferta.setHoraFin(horaFin);
             oferta.setDuracionTurno(duracion);
@@ -97,10 +111,10 @@ public class OfertaServicio {
     }
 
     // Metodo para validar los datos ingresados antes de persistirlos
-    protected void validar(TipoOferta tipo, String horaIni, String horaFin,
+    protected void validar(String tipo, String horaIni, String horaFin,
             String duracion, String ubicacion,  List<ObraSocial> obras) throws MyException {
 
-        if (tipo == null) {
+        if (tipo == null || tipo.isEmpty()) {
             throw new MyException("Debe indicar un tipo de oferta");
         }
         if (horaIni == null || horaIni.isEmpty()) {
@@ -127,5 +141,5 @@ public class OfertaServicio {
     public Oferta getOne(String id) {
         return ofertaRepo.getOne(id);
     }
-
+  
 }
