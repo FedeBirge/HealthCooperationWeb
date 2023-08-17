@@ -4,16 +4,11 @@ import com.grupo3.HealthCooperationWeb.enumeradores.Dias;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.OneToOne;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
