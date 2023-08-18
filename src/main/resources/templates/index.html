@@ -9,15 +9,15 @@
 
     </head>
     <body>
-        
+
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                
+
                 <a class="navbar-brand" th:href="@{/}">
                     <img src="/img/logo.jpg" alt="letra" width="50">
                     <img src="/img/letraLogo.jpg" alt="letra" width="200">
                 </a>
-                
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -29,25 +29,25 @@
                         <li class="nav-item ">
                             <a type="button" class="btn btn-primary me-2" th:if="${session.usuariosession == null}"  th:href="@{/login}">Login</a>
                         </li>
-                            <li><a ctype="button" class="btn btn-outline-primary me-2" th:if="${session.usuariosession != null}" th:href="@{/logout}"  >Cerrar Sesión</a></li>
-                            <a th:href="@{/contacto}">Contacto</a>
+                        <li><a ctype="button" class="btn btn-outline-primary me-2" th:if="${session.usuariosession != null}" th:href="@{/logout}"  >Cerrar Sesión</a></li>
+                        <a th:href="@{/contacto}">Contacto</a>
                     </ul>
 
                 </div>
             </div>
         </nav>
         <div th:if="${error != null}" class="card text-white bg-primary mb-3 mensajeError" >
-                <div class="card-body">
-                    <h5 class="card-title">Error!</h5>
-                    <p class="card-text" th:text="${error}"></p>
-                </div>
+            <div class="card-body">
+                <h5 class="card-title">Error!</h5>
+                <p class="card-text" th:text="${error}"></p>
             </div>
-            <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
-                <div class="card-body">
-                    <h5 class="card-title">Exito!</h5>
-                    <p class="card-text" th:text="${exito}"></p>
-                </div>
+        </div>
+        <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+            <div class="card-body">
+                <h5 class="card-title">Exito!</h5>
+                <p class="card-text" th:text="${exito}"></p>
             </div>
+        </div>
         <main>
             <div class="container-fluid g-0 overflow-hidden">
                 <div class="row">
