@@ -61,8 +61,7 @@ public class PacienteServicio extends UsuarioServicio {
 
         }
         // No se debería validar el turno para crear un paciente, puesto que esto es
-        // algo que hace luego
-        // más allá de que se haya registrado o no
+        // algo que hace luego de estar registrado- Brenda
         // if(turnos == null || turnos.isEmpty()){
         // throw new MyException("Debe ingresar el turno pedido");
         // }
