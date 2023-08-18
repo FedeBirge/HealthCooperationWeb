@@ -1,64 +1,156 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.grupo3.HealthCooperationWeb.servicios;
 
+import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
+import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.TurnoRepositorio;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 
 @Service
 public class TurnoServicio {
 
-    private final TurnoRepositorio turnoRepositorio;
-
     @Autowired
-    public TurnoServicio(TurnoRepositorio turnoRepositorio) {
-        this.turnoRepositorio = turnoRepositorio;
+    private ProfesionalServicio profServ;
+    @Autowired
+    private TurnoRepositorio turnoRepo;
+
+    @Transactional
+    public Turno crearTurno(String fecha, String hora, EstadoTurno estado, 
+            String motivo, String idProf) throws MyException {
+
+        validar(fecha, hora, estado, motivo, idProf);
+        Profesional prof = (Profesional) profServ.getOne(idProf);
+        if (prof == null) {
+            throw new MyException("No existe profesional asociado al turno!");
+        }
+        Turno turno = new Turno();
+        turno.setFecha(fecha);
+        turno.setHora(hora);
+        turno.setEstado(EstadoTurno.DISPONIBLE);
+        turno.setMotivo(motivo);
+        turno.setProfesional(prof);
+        return turnoRepo.save(turno);
     }
 
-    public List<Turno> obtenerTodosLosTurnos() {
-        return turnoRepositorio.findAll();
-    }
-
-    public Turno obtenerTurnoPorId(String id) throws MyException {
-        Optional<Turno> optionalTurno = turnoRepositorio.findById(id);
+    public Turno buscarTurno(String id) throws MyException {
+        Optional<Turno> optionalTurno = turnoRepo.findById(id);
         if (optionalTurno.isPresent()) {
             return optionalTurno.get();
         } else {
-            throw new MyException("Turno no encontrado con ID: " + id);
+            throw new MyException("Turno no encontrado");
         }
     }
 
-    public Turno crearTurno(Turno turno) {
-        return turnoRepositorio.save(turno);
-    }
+    @Transactional
+    public Turno actualizarTurno(String id, String fecha, String hora, String motivo, EstadoTurno estado, String idProf) throws MyException {
 
-    public Turno actualizarTurno(String id, Turno turnoActualizado) throws MyException {
-        Optional<Turno> optionalTurno = turnoRepositorio.findById(id);
+        validar(fecha, hora, estado, motivo, idProf);
+        Profesional prof = (Profesional) profServ.getOne(idProf);
+        if (prof == null) {
+            throw new MyException("No existe profesional asociado al turno");
+        }
+        Optional<Turno> optionalTurno = turnoRepo.findById(id);
         if (optionalTurno.isPresent()) {
-            Turno turnoExistente = optionalTurno.get();
-            turnoExistente.setFecha(turnoActualizado.getFecha());
-            turnoExistente.setHora(turnoActualizado.getHora());
-            // Actualizar otros atributos según sea necesario
-            return turnoRepositorio.save(turnoExistente);
+            Turno turno = optionalTurno.get();
+            turno.setFecha(fecha);
+            turno.setHora(hora);
+            turno.setEstado(estado);
+            turno.setMotivo(motivo);
+            turno.setProfesional(prof);
+            return turnoRepo.save(turno);
         } else {
-            throw new MyException("Turno no encontrado con ID: " + id);
+            throw new MyException("Turno no encontrado ");
         }
     }
 
-    public void eliminarTurno(String id) throws MyException {
-        Optional<Turno> optionalTurno = turnoRepositorio.findById(id);
-        if (optionalTurno.isPresent()) {
-            turnoRepositorio.delete(optionalTurno.get());
+    @Transactional
+    public void cancelarTurno(String id) throws MyException {
+        Optional<Turno> op = turnoRepo.findById(id);
+        if (op.isPresent()) {
+            Turno turno = op.get();
+            turno.setEstado(EstadoTurno.CANCELADO);
+            turnoRepo.save(turno);
         } else {
-            throw new MyException("Turno no encontrado con ID: " + id);
+            throw new MyException("Turno no encontrado(CANCELAR)");
         }
     }
+    @Transactional
+    public void reservarTurno(String id) throws MyException {
+        Optional<Turno> op = turnoRepo.findById(id);
+        if (op.isPresent()) {
+            Turno turno = op.get();
+            turno.setEstado(EstadoTurno.RESERVADO);
+            turnoRepo.save(turno);
+        } else {
+            throw new MyException("Turno no encontrado(RESERVAR)");
+        }
+    }
+@Transactional
+    public void completarTurno(String id) throws MyException {
+        Optional<Turno> op = turnoRepo.findById(id);
+        if (op.isPresent()) {
+            Turno turno = op.get();
+            turno.setEstado(EstadoTurno.COMPLETADO);
+            turnoRepo.save(turno);
+        } else {
+            throw new MyException("Turno no encontrado(COMPLETAR)");
+        }
+    }
+@Transactional
+    public void eliminarTurno(String id) {
+        try {
+            Optional<Turno> respuesta = turnoRepo.findById(id);
+            if (respuesta.isPresent()) {
+                Turno turno = (Turno) respuesta.get();
+                turnoRepo.delete(turno);
+            }
+        } catch (Exception e) {
+            System.out.println("No es posible eliminar el turno");
+        }
+    }
+
+    public List<Turno> listarTurnos() {
+
+        List<Turno> turnos = new ArrayList();
+
+        try {
+            turnos = turnoRepo.findAll();
+
+            return turnos;
+
+        } catch (Exception e) {
+            System.out.println("Turno: No pudieron ser listados");
+            return null;
+        }
+
+    }
+
+    protected void validar(String fecha, String hora, EstadoTurno estado, String motivo, String idProf)
+            throws MyException {
+        if (fecha == null || fecha.isEmpty()) {
+            throw new MyException("Debe indicar uan fecha para el turno");
+        }
+        if (hora == null || hora.isEmpty()) {
+            throw new MyException("Debe indicar un horario para el turno");
+        }
+        if (motivo == null || motivo.isEmpty()) {
+            throw new MyException("Debe ingresar una descripcion de la visita");
+        }
+
+        if (idProf == null || idProf.isEmpty()) {
+            throw new MyException("El turno debe tener un Profesional Asociado");
+        }
+        if (estado == null) {
+            throw new MyException("El turno debe tener un estado");
+        }
+
+    }
+
 }

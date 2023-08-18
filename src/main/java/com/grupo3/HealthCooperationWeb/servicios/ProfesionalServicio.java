@@ -1,29 +1,37 @@
 package com.grupo3.HealthCooperationWeb.servicios;
 
+import com.grupo3.HealthCooperationWeb.entidades.AgendaSemanal;
+import com.grupo3.HealthCooperationWeb.entidades.Imagen;
+import com.grupo3.HealthCooperationWeb.entidades.Oferta;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.ProfesionalRepositorio;
+import com.grupo3.HealthCooperationWeb.repositorios.UsuarioRepositorio;
+import java.io.IOException;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ProfesionalServicio extends UsuarioServicio {
 
     @Autowired
     private ProfesionalRepositorio profesionalRepositorio;
+    @Autowired
+    private ImagenServicio imagenServ; //
+    @Autowired
+    private UsuarioRepositorio usuarioRepo;
 
-    // listar todos los médicos
+    // listar todos los médicos ACTIVOS
     @Transactional
     public List<Profesional> listarProfesionales() {
         List<Profesional> profAux = new ArrayList<>();
@@ -42,47 +50,72 @@ public class ProfesionalServicio extends UsuarioServicio {
             return null;
         }
     }
-
-    // faltaría agregar atributos descripcoin por parámetro
-
+    
+    
+    private Especialidad pasarStringEspecialidad(String espe) throws MyException {
+        switch (espe) {
+            case "PEDIATRÍA":
+                return Especialidad.PEDIATRÍA;
+            case "GINECOLOGÍA":
+                return Especialidad.GINECOLOGÍA;
+            case "CLÍNICA":
+                return Especialidad.CLÍNICA;
+            case "CARDIOLOGÍA":
+                return Especialidad.CARDIOLOGÍA;
+            default:
+                throw new MyException("Especialidad no válida: " + espe);
+        }
+    }
+    
     @Transactional
-    public void registrarProfesional(String nombre, String apellido, String dni, String email, String password,
-            String password2, String telefono, String direccion, String fecha_nac,String especialidad, String valorConsulta) throws MyException {
+    // el administrador crea un Profesional, luego ´ste actualiza sus atributos particulares
+    public void registrarProfesional(MultipartFile archivo, String nombre, String apellido, String dni, String email, String password,
+            String password2, String telefono, String direccion, String fecha_nac, String especialidad,
+            String valorConsulta) throws MyException {
         // Se validan los datos especificos de profesional
         // faltaria descripcion
-        
-        if (especialidad == null || especialidad.isEmpty()) {
+        super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+        Profesional prof = (Profesional) super.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+        if (especialidad == null) {
+
             throw new MyException("Debe ingresar una especialidad al profesional");
         }
+        prof.setEspecialidad(pasarStringEspecialidad(especialidad));
+        prof.setAgenda(new AgendaSemanal());
+        prof.setOferta(new Oferta());
+        prof.setDiasDisponibles(new ArrayList());
+        prof.setRol(Rol.MODERADOR);
+        Imagen imagen = imagenServ.guardar(archivo);
+        prof.setImagen(imagen);
 
-        if (valorConsulta == null || valorConsulta.isEmpty()) {
-            throw new MyException("Debe ingresar un valor de consulta");
-        }
-
-        // validamos con el servicio padre
-        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
-        Profesional profesional = new Profesional();
-        profesional.setNombre(nombre);
-        profesional.setApellido(apellido);
-        profesional.setDni(dni);
-        profesional.setEmail(email);
-        // profesional.setPassword(new BCryptPasswordEncoder().encode(password));
-        profesional.setTelefono(telefono);
-        profesional.setDireccion(direccion);
-        profesional.setFecha_nac(pasarStringDate(fecha_nac));
-        profesional.setActivo(true);
-        profesional.setRol(Rol.MODERADOR);
-        // AUN FALTA LA ENTIDAD IMAGEN
-        // Imagen imagen = imagenServ.guardar(archivo);
-        // profesional.setImagen(imagen);
-        profesionalRepositorio.save(profesional);
+        profesionalRepositorio.save(prof);
 
     }
 
-    // para ver el perfil del doc, uso serevicio de Usuario getOne
+    @Transactional
+    // mopdificamos como si fuera un usuario, luego metodos especificos cambiar cada cosa
+    public void modificarProfesional(String id, MultipartFile archivo, String nombre,
+            String apellido, String dni, String email, String password,
+            String password2, String telefono, String direccion, String fecha_nac) throws MyException, IOException {
+        super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
 
-    // faltaria método verHistoriaClinicaPaciente
-    // faltaria el método registrarVisita
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+        if (respuesta.isPresent()) {
+            Profesional prof = respuesta.get();
+            if (!usuarioRepo.buscarPorEmail(email).getId().equals(prof.getId())) {
+                throw new MyException("EL mail ingresado ya existe en otro ususario! Ingreso otro!");
+            }
+            super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+            super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono,
+                    direccion, fecha_nac);
+
+            Imagen imagen = imagenServ.guardar(archivo);
+            prof.setImagen(imagen);
+
+            profesionalRepositorio.save(prof);
+
+        }
+    }
 
     @Transactional
     // no sé si este método funcione por el enum, la dejo porque es una opcion breve
@@ -180,7 +213,6 @@ public class ProfesionalServicio extends UsuarioServicio {
         return "Lo sentimos, no fue posible dar de baja al profesional";
 
     }
-// Métodos relacionados con el profesional
-   
-
+    
+    // FALTAN METODOS PARA LA AGENDA, LA OFERTA Y DIAS DISPONIBLES
 }

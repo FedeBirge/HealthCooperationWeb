@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +42,7 @@ public class PortalControlador {
     }
 
     @PostMapping("/registro")
-    public String registro(@RequestParam MultipartFile archivo, @RequestParam String nombre,
+    public String registro(MultipartFile archivo, @RequestParam String nombre,
             @RequestParam String apellido, @RequestParam String dni, @RequestParam String email,
             @RequestParam String password, String password2, @RequestParam String telefono,
             @RequestParam String direccion, @RequestParam String fecha_nac, ModelMap modelo) throws MyException {

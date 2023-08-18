@@ -1,0 +1,48 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 17-ago-2023, 21:06:32
+    Author     : franc
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+body{
+    font-family: "Poppins", sans-serif;
+}
+
+.wave {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    z-index: -1;
+}
+
+.inputEstilos{
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    margin-right: 10px;
+}
+
+::placeholder{
+    color: #444;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+}
+
+
+.carta{
+    background-color: transparent;
+    border: none;
+}
+
+.btnRegistro{
+    color: #fff;
+    background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+    outline: none;
+    border: none;
+}
