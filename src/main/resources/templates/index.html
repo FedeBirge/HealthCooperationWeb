@@ -1,18 +1,11 @@
-
-
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <title>HealtCoorporationWeb</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-        <link rel="stylesheet" href="static/css/index.css">
-        <link rel="stylesheet" href="../static/css/estilos.css" type="text/css"/>
+        <link rel="stylesheet" href="css/index.css">
 
     </head>
     <body>
@@ -60,16 +53,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="row">
                     <div class="col">
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-                            <div class="carousel-inner">
+                            <div class="carousel-inner position-relative">
                                 <div class="carousel-item active">
-                                    <img src="/img/carrusel1.jpg" class="d-block w-100" alt="...">
+                                    <img src="img/carrusel1.png" class="d-block w-100" alt="...">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="/img/carrusel2.jpg" class="d-block w-100" alt="...">
+                                    <img src="img/carrusel2.png" class="d-block w-100" alt="...">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="/img/carrusel3.jpg" class="d-block w-100" alt="...">
+                                    <img src="img/carrusel3.png" class="d-block w-100" alt="...">
                                 </div>
+                                <div class="carousel-item">
+                                    <img src="img/carrusel4.png" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <div class=" cajita position-absolute bottom-0 start-50 translate-middle-x">
+                                <h2 class="h1">¿Quiere sacar un turno?</h2>
+                                <button class="btn btn-success btnCajita"><a href="@">Apriete aquí</a></button>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
