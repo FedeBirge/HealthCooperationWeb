@@ -52,7 +52,7 @@ public class UsuarioControlador {
             @RequestParam String dni,
             @RequestParam String email, @RequestParam String password, @RequestParam String password2,
             @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
-             ModelMap modelo) {
+            ModelMap modelo) {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
@@ -70,13 +70,16 @@ public class UsuarioControlador {
 
     }
 
-    @GetMapping("/listarUsuarios") // ruta para listar los usuarios
+    @GetMapping("/listarUsuarios") // *********ruta para listar los usuarios(LT)
+    // en panel del administrador
     public String listarUsusario(ModelMap modelo) {
         try {
-            List<Usuario> usuarios = userServ.listarUsuarios();
-            modelo.addAttribute("usuarios", usuarios);
-            return "listar_usuarios.html";
+            List<Usuario> users = userServ.listarUsuarios();
+            modelo.addAttribute("users", users);
+            return "lista_usuarios.html";
         } catch (Exception ex) {
+            List<Usuario> users = userServ.listarUsuarios();
+            modelo.addAttribute("users", users);
             modelo.put("error", ex.getMessage());
             return "redirect:/admin/dashboard";
         }
@@ -103,7 +106,7 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/modificarUsuario/{id}") // ruta para modificar un usuario POST
-    public String modificarUsusarios(MultipartFile archivo,@PathVariable("id") String id, @RequestParam String nombre, @RequestParam String apellido,
+    public String modificarUsusarios(MultipartFile archivo, @PathVariable("id") String id, @RequestParam String nombre, @RequestParam String apellido,
             @RequestParam String dni,
             @RequestParam String email, @RequestParam String password, @RequestParam String password2,
             @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
@@ -115,8 +118,8 @@ public class UsuarioControlador {
             modelo.put("usuario", userServ.getOne(id));
             modelo.addAttribute("id", userServ.getOne(id).getId());
 //
-            userServ.modificarUsuario(archivo, id, nombre,apellido, dni, email, 
-                    password, password2,telefono, direccion, fecha_nac );
+            userServ.modificarUsuario(archivo, id, nombre, apellido, dni, email,
+                    password, password2, telefono, direccion, fecha_nac);
 
             modelo.put("exito", "!Usuario modificado con exito!");
             List<Usuario> usuarios = userServ.listarUsuarios();
@@ -134,33 +137,35 @@ public class UsuarioControlador {
 
     }
 
-    @GetMapping("/eliminar/{id}") // ruta para eliminar un usuario(no tiene una vista, es para un boton de la
-                                  // vista listar_usuarios)
+    @GetMapping("/eliminar/{id}") //********** ruta para eliminar un usuario
+    //(no tiene una vista, es para un boton de la vista listar_usuarios)
     public String eliminarU(@PathVariable("id") String id, ModelMap modelo) {
 
         try {
             modelo.put("exito", "Usuario eliminado con exito!");
-            return "redirect:/admin/listarUsuarios";
+            return "redirect:/admin/dashboard";
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-            return "redirect:/admin/listarUsusarios";
+            return "redirect:/admin/dashboard";
         }
 
     }
 
-    @PostMapping("/eliminar/{id}") // ruta para eliminar un usuario(no tiene una vista, es para un boton de la //
-                                   // vista listar_usuarios)
+    @PostMapping("/eliminar/{id}") //********************** ruta para eliminar un usuario
+    //(no tiene una vista, es para un boton de la //
+    // vista listar_usuarios)
     public String eliminarUser(@PathVariable("id") String id, ModelMap modelo) {
-
+        System.out.println("id: " + id);
         try {
-            userServ.eliminarUsuario(id);
-            List<Usuario> usuarios = userServ.listarUsuarios();
-            modelo.addAttribute("usuarios", usuarios);
+            modelo.put("profesional", userServ.getOne(id));
+            modelo.addAttribute("id", userServ.getOne(id).getId());
+            userServ.eliminarUsuario(userServ.getOne(id).getId());
+
             modelo.put("exito", "Usuario eliminado con exito!");
-            return "listar_usuarios.html";
+            return "redirect:/admin/dashboard";
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-            return "redirect:/admin/listarUsusarios";
+            return "redirect:/admin/dashboard";
         }
 
     }

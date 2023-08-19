@@ -80,16 +80,20 @@ public class ProfesionalControlador {
 
     }
 
-    // listar todos los médicos activos
-    @GetMapping("/listarProfesionales")
+  // listar todos los médicos activos(LT) panel del administrador
+    @GetMapping("/listar")
     public String listarProfesionales(ModelMap modelo) {
         try {
-            List<Profesional> profesionales = profesionalServicio.listarProfesionales();
-            modelo.addAttribute("profesionales", profesionales);
-            return "listar_profesionales.html";
+            List<Profesional> users = profesionalServicio.listarProfesionales();
+           
+            modelo.addAttribute("users",users);
+            return "lista_usuarios.html";
         } catch (Exception e) {
+
+            List<Profesional> users = profesionalServicio.listarProfesionales();
+            modelo.addAttribute("users", users);
             modelo.put("error", e.getMessage());
-            return "redirect: /dashboard";
+            return "redirect:/admin/dashboard";
         }
     }
 
