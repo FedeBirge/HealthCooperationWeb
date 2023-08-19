@@ -1,4 +1,3 @@
-
 package com.grupo3.HealthCooperationWeb.controladores;
 
 import java.util.List;
@@ -13,24 +12,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
+import com.grupo3.HealthCooperationWeb.entidades.Usuario;
+import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
+import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminControlador {
 
     @Autowired
+    private UsuarioServicio userServ;
+    @Autowired
+
     private ProfesionalServicio profesionalServicio;
 
-    // listar todos los profesionales ACTIVOS
-    @GetMapping("/dashboardAdmin")
-    public String listarProfesionales(ModelMap modelo) {
+
+    @GetMapping("/dashboard") // Vista principal para el Admin al Logearse (LT)
+    public String panelAdministrador(ModelMap modelo) {
         try {
             List<Profesional> profesionales = profesionalServicio.listarProfesionales();
+            List<Usuario> users = userServ.listarUsuarios();
+
             modelo.addAttribute("profesionales", profesionales);
-            return "listar_profesionales.html";
+            modelo.addAttribute("users", users);
+
+            return "panelAdmin.html";
         } catch (Exception e) {
             modelo.put("error", e.getMessage());
             return "redirect: /dashboard";
@@ -38,38 +48,53 @@ public class AdminControlador {
     }
 
     // crear con GET
-    @GetMapping("/crearProfesional")
-    public String crearProfesional(ModelMap modelo) {
-        Rol[] roles = Rol.values();
-        modelo.addAttribute("roles", roles);
+    @GetMapping("/crearUsuario")  // Boton en el dash de Admin(LT)
+    public String crearProfesional(ModelMap modelo, HttpSession session) {
+
+        List<Profesional> profesionales = profesionalServicio.listarProfesionales();
+        modelo.addAttribute("profesionales", profesionales);
+        Especialidad[] especialidades = Especialidad.values();
+        modelo.addAttribute("especialidades", especialidades);
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+
         return "registro.html";
 
     }
 
     // crear con POST
-    @PostMapping("/crearProfesional")
-    public String crearProfesional(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
-            @RequestParam String dni, @RequestParam String email, @RequestParam String password,
-            @RequestParam String password2, @RequestParam String telefono, @RequestParam String direccion,
-            @RequestParam String fecha_nac,
-            @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo) throws MyException {
+    @PostMapping("/crearUsuario") // POST del form del registro.html LT)
+    public String crearUsuario(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
+            String dni, @RequestParam String email, @RequestParam String password,
+            @RequestParam String password2, String telefono, String direccion,
+            String fecha_nac,
+            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) {
 
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
-            profesionalServicio.registrarProfesional(nombre, apellido, dni, email, password, password2, telefono,
-                    direccion, fecha_nac, especialidad, valorConsulta);
-            modelo.put("exito", "¡Profesional registrado con exito!");
-            return "registroProfesional.html";
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
 
-        } catch (MyException ex) {
+            if (logueado.getRol().toString().equals("ADMINISTRADOR")) {
+                profesionalServicio.registrarProfesional(archivo, nombre, apellido, dni, email, password, password2, telefono,
+                        direccion, fecha_nac, especialidad, valorConsulta);
+                modelo.put("exito", "¡Profesional registrado con exito!");
+                return "redirect:/admin/dashboard";
+            }
+            else{
+                userServ.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+                     modelo.put("exito", "¡Usuario registrado con exito!");  
+                return "inicio.html";
+            }
+            }catch (MyException ex) {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
             modelo.put("error", ex.getMessage());
-            System.out.println("Error de permisos para esta acción");
+            Especialidad[] especialidades = Especialidad.values();
+            modelo.addAttribute("especialidades", especialidades);
+            
             return "registro.html";
         }
 
-    }
+        }
 
-}
+    }

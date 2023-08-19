@@ -22,7 +22,7 @@ public class TurnoServicio {
     private TurnoRepositorio turnoRepo;
 
     @Transactional
-    public Turno crearTurno(String fecha, String hora, EstadoTurno estado, 
+    public Turno crearTurno(String fecha, String hora, EstadoTurno estado,
             String motivo, String idProf) throws MyException {
 
         validar(fecha, hora, estado, motivo, idProf);
@@ -49,7 +49,8 @@ public class TurnoServicio {
     }
 
     @Transactional
-    public Turno actualizarTurno(String id, String fecha, String hora, String motivo, EstadoTurno estado, String idProf) throws MyException {
+    public Turno actualizarTurno(String id, String fecha, String hora, String motivo, EstadoTurno estado, String idProf)
+            throws MyException {
 
         validar(fecha, hora, estado, motivo, idProf);
         Profesional prof = (Profesional) profServ.getOne(idProf);
@@ -81,6 +82,7 @@ public class TurnoServicio {
             throw new MyException("Turno no encontrado(CANCELAR)");
         }
     }
+
     @Transactional
     public void reservarTurno(String id) throws MyException {
         Optional<Turno> op = turnoRepo.findById(id);
@@ -92,7 +94,8 @@ public class TurnoServicio {
             throw new MyException("Turno no encontrado(RESERVAR)");
         }
     }
-@Transactional
+
+    @Transactional
     public void completarTurno(String id) throws MyException {
         Optional<Turno> op = turnoRepo.findById(id);
         if (op.isPresent()) {
@@ -103,7 +106,8 @@ public class TurnoServicio {
             throw new MyException("Turno no encontrado(COMPLETAR)");
         }
     }
-@Transactional
+
+    @Transactional
     public void eliminarTurno(String id) {
         try {
             Optional<Turno> respuesta = turnoRepo.findById(id);

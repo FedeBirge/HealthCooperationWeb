@@ -5,3 +5,23 @@
   display: flex;
   background-color: grey;
 }
+
+.cajita{
+    height: 200px;
+    width: 500px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 2;
+}
+
+.btnCajita{
+    margin-top: 25px;
+    width: 150px;
+}
+
+.btnCajita a{
+    text-decoration: none;
+    color: black;
+}

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,7 +137,9 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
-
+    public Usuario buscarPorMail(String email){
+        return usuarioRepo.buscarPorEmail(email);
+    }
     // Metodo para validar los datos ingresados antes de persistirlos
     protected void validar(String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac)
