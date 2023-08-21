@@ -70,10 +70,33 @@
                                 
                                 <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="number" id="dni" placeholder="Valor de la consulta" name="valorConsulta" th:value="${valorConsulta}">
                             </div>
+                            <div class="contenedorImagen">
+                            <img id="imagenPrevia" src="#" alt="" class="imagenPrevia">
+                        </div>    
                             <div class="input-group mb-4">
-                                <span class="input-group-text">Foto</span>
-                                <input class="form-control" type="file" id="foto" name="archivo">
-                            </div>
+                            <span class="input-group-text">Foto</span>
+                            <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
+                        </div>
+
+
+                        <script>
+                            function previsualizarImagen() {
+                                var archivo = document.getElementById('foto').files[0];
+                                var imagenPrevia = document.getElementById('imagenPrevia');
+
+                                if (archivo) {
+                                    var lector = new FileReader();
+
+                                    lector.onload = function (event) {
+                                        imagenPrevia.src = event.target.result;
+                                    };
+
+                                    lector.readAsDataURL(archivo);
+                                } else {
+                                    imagenPrevia.src = "#";
+                                }
+                            }
+                        </script>
                             <div sec:authorize="hasRole('ADMINISTRADOR')" class="input-group mb-4">
                                 <label class="input-group-text" for="especialidad">Especialidad:</label>
                                 <select  class="input-group-text" id="especialidad" name="especialidad">
