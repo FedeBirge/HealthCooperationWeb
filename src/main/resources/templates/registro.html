@@ -11,18 +11,19 @@
             integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
             crossorigin="anonymous"
             />
-        <link rel="stylesheet" href="css/registro.css">
+        <link rel="stylesheet" href="../css/registro.css">
     <body>
-        <img src="img/olita.png" class="wave" alt="">
+        <img src="../img/olita.png" class="wave" alt="">
         <div class="container py-5">
             <div class="row">
                 <div class="col-6">
-                    <img src="img/fondoRegistro.svg" class="img-fluid imgBg" alt="">
+                    <img src="../img/fondoRegistro.svg" class="img-fluid imgBg" alt="">
                 </div>
                 <div class="col-6 col-12-lg">
                     <div class="card m-auto carta">
                         <div class="card-body">
-                            <h1 class="text-center mb-5"><b> Registro de Usuario</b></h1>
+                            <h1 th:if="${session.usuariosession == null}" class="text-center mb-5"><b> Registro de Usuario</b></h1>
+                             <h1 th:if="${session.usuariosession != null}"  class="text-center mb-5"><b> Registro de Profesional</b></h1>
                             <form th:action="@{/crearUsuario}" method="POST" enctype="multipart/form-data">
 
                                 <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
@@ -102,7 +103,7 @@
                                 </div>
                                 <div th:if="${session.usuariosession != null}" class="input-group mb-4">
 
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="number" id="dni" placeholder="Valor de la consulta" name="valorConsulta" th:value="${valorConsulta}">
+                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="dni" placeholder="Valor de la consulta" name="valorConsulta" th:value="${valorConsulta}">
                                 </div>
                                 <div th:if="${session.usuariosession != null}" class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4">
                                     <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" for="especialidad">Especialidad</label>
