@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +25,7 @@ public class PacienteServicio extends UsuarioServicio {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
+public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2,
             String telefono, String direccion, String fecha_nac, String grupoSanguineo, String obraSocial)
             throws MyException {
@@ -33,10 +34,18 @@ public class PacienteServicio extends UsuarioServicio {
         validar(grupoSanguineo, obraSocial);
 
         Paciente paciente = new Paciente();
-
-        paciente.setTurnos(new ArrayList<Turno>());
-        paciente.setHistoria(new HistoriaClinica());
-        paciente.setObraSocial(new ObraSocial());
+        paciente.setNombre(nombre);
+        paciente.setApellido(apellido);
+        paciente.setDni(dni);
+        paciente.setEmail(email);
+        paciente.setPassword(new BCryptPasswordEncoder().encode(password));
+        paciente.setTelefono(telefono);
+        paciente.setDireccion(direccion);
+        paciente.setFecha_nac(pasarStringDate(fecha_nac));
+        paciente.setActivo(true);
+//        paciente.setTurnos(new ArrayList<Turno>());
+//        paciente.setHistoria(new HistoriaClinica());
+//        paciente.setObraSocial(new ObraSocial());
         paciente.setRol(Rol.USUARIO);
         Imagen imagen = imagenServicio.guardar(archivo);
         paciente.setImagen(imagen);
