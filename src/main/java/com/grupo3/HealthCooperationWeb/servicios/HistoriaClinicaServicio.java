@@ -4,7 +4,6 @@ package com.grupo3.HealthCooperationWeb.servicios;
 import com.grupo3.HealthCooperationWeb.entidades.Ficha;
 import com.grupo3.HealthCooperationWeb.entidades.HistoriaClinica;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
-import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.HistoriaClinicaRepositorio;
 import com.grupo3.HealthCooperationWeb.repositorios.PacienteRepositorio;
@@ -25,57 +24,26 @@ public class HistoriaClinicaServicio {
     @Autowired
     PacienteServicio pacienteServicio;
 
-    // dejo esta opción de crear Historia Clínica, pero agrego opción 2 a evaluar
-    // (bren)
-    @Transactional
-    public void crearHistoriaClinica() throws MyException {
+    // El espacio para CREAR una HistoriaClinica ya está realizado al momento de
+    // crear
+    // un paciente. El paciente se crea, CREANDO a su vez una Historia Clínica.
+    // veo este método innecesario, lo que necesitamos es mostrar esa HC y
+    // agregar fichas (que ese método está en el sesrvicio de Ficha)
+    /*
+     * @Transactional
+     * public void crearHistoriaClinica(String idPaciente) throws MyException {
+     * Paciente paciente = (Paciente) pacienteServicio.getOne(idPaciente);
+     * if (paciente == null) {
+     * throw new MyException("No existe el paciente con ese id");
+     * }
+     * HistoriaClinica historiaClinica = new HistoriaClinica();
+     * historiaClinica.setFichas(new ArrayList<Ficha>());
+     * paciente.setHistoria(historiaClinica);
+     * historiaClinicaRepositorio.save(historiaClinica);
+     * pacienteRepositorio.save(paciente);
+     * }
+     */
 
-        HistoriaClinica historiaClinica = new HistoriaClinica();
-
-        historiaClinica.setFichas(new ArrayList<Ficha>());
-
-        historiaClinicaRepositorio.save(historiaClinica);
-
-    }
-
-    // opcion 2: crear historia clínica con el id de Paciente como un parámetro
-    // (bren)
-    @Transactional
-    public void crearHistoriaClinica(String idPaciente) throws MyException {
-        Paciente paciente = (Paciente) pacienteServicio.getOne(idPaciente);
-
-        if (paciente == null) {
-            throw new MyException("No existe el paciente con ese id");
-        }
-
-        HistoriaClinica historiaClinica = new HistoriaClinica();
-
-        historiaClinica.setFichas(new ArrayList<Ficha>());
-        // al paciente TAL con X id, le agrego su historia clínica creada
-        paciente.setHistoria(historiaClinica);
-        historiaClinicaRepositorio.save(historiaClinica);
-        // DUDA: no sé si es innecesario guardar tanto en el repo de HistoriaClinica
-        // como en el de PACIENTE:
-        pacienteRepositorio.save(paciente);
-
-    }
-
-    @Transactional
-    public void guardarHistoria(HistoriaClinica historiaClinica) {
-
-        historiaClinicaRepositorio.save(historiaClinica);
-    }
-
-    @Transactional
-    // no comprendo este método, la lista debería ser de turnos, cada paciente tiene
-    // una relacion uno a uno con la Historia clínica, dejo opcion 2 (bren)
-    public List<HistoriaClinica> mostrarHistoria() {
-        List<HistoriaClinica> historia = new ArrayList();
-        historia = (List<HistoriaClinica>) historiaClinicaRepositorio.findAll();
-        return historia;
-    }
-
-    // opcion 2
     @Transactional
     // agrego parámetro idPaciente y completo lógica
     // para que se vea la historia clinica de UN paciente (bren)
@@ -83,10 +51,18 @@ public class HistoriaClinicaServicio {
 
         Paciente paciente = (Paciente) pacienteServicio.getOne(idPaciente);
 
-        if (paciente.getHistoria() == null) {
-            throw new MyException("El paciente no tiene Historia Clínica, debe crearla");
-        } else {
+        if (paciente == null) {
+            throw new MyException("No existe un paciente con ese ID");
+        } else if (paciente.getHistoria() == null) {
+            // si no tiene Historia Clínica, nos aseguramos de que se genere el espacio para
+            // crear una, nos retornará su historia vacía:
+            HistoriaClinica historiaClinica = new HistoriaClinica();
+            paciente.setHistoria(historiaClinica);
+            pacienteRepositorio.save(paciente);
             return paciente.getHistoria();
+        } else {
+            // agregué este método findByHistoriaClinica al repo de hisotriaClinica (bren)
+            return historiaClinicaRepositorio.findByPaciente_Id(idPaciente);
         }
     }
 
