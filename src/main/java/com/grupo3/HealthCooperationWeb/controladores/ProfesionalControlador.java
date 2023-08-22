@@ -74,7 +74,7 @@ public class ProfesionalControlador {
 
         Rol[] roles = Rol.values();
         modelo.addAttribute("roles", roles);
-        profesionalServicio.modificarProfesional(dni, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+        profesionalServicio.modificarProfesional(dni, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
         modelo.put("exito", "¡Profesional registrado con exito!");
         return "registroProfesional.html";
 

@@ -42,7 +42,7 @@ public class UsuarioServicio implements UserDetailsService {
     @Transactional
     // Metodo para crear un usuario
     public Usuario crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
-            String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException {
+            String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException, IOException {
         // Se validan los datos ingresados
         validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
 
@@ -92,7 +92,7 @@ public class UsuarioServicio implements UserDetailsService {
                 idImg = usuario.getImagen().getId();
             }
             if (archivo.getBytes().length != 0) {
-                Imagen imagen = imagenServ.actualizar(archivo, idImg);
+                Imagen imagen = imagenServ.actualizar(archivo, id);
                 usuario.setImagen(imagen);
             }
             usuarioRepo.save(usuario);

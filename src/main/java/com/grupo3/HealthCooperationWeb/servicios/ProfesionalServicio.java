@@ -27,9 +27,6 @@ public class ProfesionalServicio extends UsuarioServicio {
     private ProfesionalRepositorio profesionalRepositorio;
     @Autowired
     private ImagenServicio imagenServ; //
-     
-    
-  
 
     // listar todos los médicos ACTIVOS
     @Transactional
@@ -50,8 +47,7 @@ public class ProfesionalServicio extends UsuarioServicio {
             return null;
         }
     }
-    
-    
+
     private Especialidad pasarStringEspecialidad(String espe) throws MyException {
         switch (espe) {
             case "PEDIATRÍA":
@@ -66,12 +62,12 @@ public class ProfesionalServicio extends UsuarioServicio {
                 throw new MyException("Especialidad no válida: " + espe);
         }
     }
-    
+
     @Transactional
     // el administrador crea un Profesional, luego ´ste actualiza sus atributos particulares
     public void registrarProfesional(MultipartFile archivo, String nombre, String apellido, String dni, String email, String password,
             String password2, String telefono, String direccion, String fecha_nac, String especialidad,
-            String valorConsulta) throws MyException {
+            String valorConsulta) throws MyException, IOException {
         // Se validan los datos especificos de profesional
         // faltaria descripcion
         super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
@@ -90,9 +86,11 @@ public class ProfesionalServicio extends UsuarioServicio {
             throw new MyException("Debe ingresar una especialidad al profesional");
         }
         profesional.setEspecialidad(pasarStringEspecialidad(especialidad));
-        profesional.setAgenda(new AgendaSemanal());
-        profesional.setOferta(new Oferta());
-        profesional.setDiasDisponibles(new ArrayList());
+        profesional.setValorConsulta(valorConsulta);
+        // NO esta funcionando
+//        profesional.setAgenda(new AgendaSemanal());
+//        profesional.setOferta(new Oferta());
+//        profesional.setDiasDisponibles(new ArrayList());
         profesional.setRol(Rol.MODERADOR);
         Imagen imagen = imagenServ.guardar(archivo);
         profesional.setImagen(imagen);
@@ -105,19 +103,25 @@ public class ProfesionalServicio extends UsuarioServicio {
     // mopdificamos como si fuera un profesional, luego metodos especificos cambiar cada cosa
     public void modificarProfesional(String id, MultipartFile archivo, String nombre,
             String apellido, String dni, String email, String password,
-            String password2, String telefono, String direccion, String fecha_nac) throws MyException, IOException {
+            String password2, String telefono, String direccion, String fecha_nac, 
+            String especialidad, String valorConsulta) throws MyException, IOException {
         super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
 
         Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
         if (respuesta.isPresent()) {
             Profesional prof = respuesta.get();
-            if (!super.buscarPorMail(email).getId().equals(prof.getId())) {
-                throw new MyException("EL mail ingresado ya existe en otro ususario! Ingreso otro!");
-            }
+//            if (!super.buscarPorMail(email).getId().equals(prof.getId())) {
+//                throw new MyException("EL mail ingresado ya existe en otro ususario! Ingreso otro!");
+//            }
             super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+            if (especialidad == null) {
 
-            Imagen imagen = imagenServ.guardar(archivo);
+                throw new MyException("Debe ingresar una especialidad al profesional");
+            }
+            prof.setEspecialidad(pasarStringEspecialidad(especialidad));
+            prof.setValorConsulta(valorConsulta);
+            Imagen imagen = imagenServ.actualizar(archivo, id);
             prof.setImagen(imagen);
 
             profesionalRepositorio.save(prof);
@@ -221,6 +225,6 @@ public class ProfesionalServicio extends UsuarioServicio {
         return "Lo sentimos, no fue posible dar de baja al profesional";
 
     }
-    
+
     // FALTAN METODOS PARA LA AGENDA, LA OFERTA Y DIAS DISPONIBLES
 }
