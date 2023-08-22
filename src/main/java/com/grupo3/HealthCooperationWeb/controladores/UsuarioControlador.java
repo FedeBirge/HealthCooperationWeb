@@ -53,12 +53,12 @@ public class UsuarioControlador {
     public String registrar(ModelMap modelo, HttpSession session) {
         try{
      
-        return "altaUsuario.html";
+        return "registro.html";
         }
         catch(Exception ex) {
             modelo.put("error", ex.getMessage());
        
-            return "altaUsuario.html";
+            return "registro.html";
         }
     }
 
@@ -74,13 +74,13 @@ public class UsuarioControlador {
             userServ.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
             modelo.put("exito", "!Usuario registrado con exito!");
-            return "registro.html";
+            return "altaProfesional.html";
 
         } catch (MyException ex) {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
             modelo.put("error", ex.getMessage());
-            return "registro.html";
+            return "altaProfesional.html";
         }
 
     }
