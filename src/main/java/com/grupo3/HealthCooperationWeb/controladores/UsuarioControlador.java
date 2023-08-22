@@ -3,10 +3,14 @@ package com.grupo3.HealthCooperationWeb.controladores;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
+import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
+import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
 import java.io.IOException;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +27,11 @@ public class UsuarioControlador {
 
     @Autowired
     private UsuarioServicio userServ; // inyectamos el servicio de usuario
+    @Autowired
+    private ProfesionalServicio profServ;
+
+    @Autowired
+    private PacienteServicio pacienteServ;
 
     @GetMapping("/dashboard") // ruta para el panel administrativo
     public String panelAdministrativo(ModelMap modelo) {
@@ -52,7 +61,7 @@ public class UsuarioControlador {
             @RequestParam String dni,
             @RequestParam String email, @RequestParam String password, @RequestParam String password2,
             @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
-            ModelMap modelo) {
+            ModelMap modelo) throws IOException {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
@@ -86,45 +95,78 @@ public class UsuarioControlador {
 
     }
 
-    @GetMapping("/modificarUsuario/{id}") // ruta para modificar un usuario GET
-    public String modificarUsusario(@PathVariable("id") String id, ModelMap modelo) {
+    @PreAuthorize("hasAnyRole('ROLE_USUARIO','ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
+    @GetMapping("/perfil/{id}")
+    public String perfil(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
 
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
-            modelo.put("usuario", userServ.getOne(id));
-            modelo.addAttribute("id", userServ.getOne(id).getId());
-
-            return "modificar_user.html";
+            Usuario user = (Usuario) session.getAttribute("usuariosession");
+            modelo.put("user", user);
+            modelo.put("id", userServ.getOne(id));
+            return "editarPerfil.html";
         } catch (Exception ex) {
             Rol[] roles = Rol.values();
+            Usuario user = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("roles", roles);
+            modelo.put("user", user);
+            modelo.put("id", userServ.getOne(id));
             modelo.put("error", ex.getMessage());
-            return "modificar_user.html";
+            return "editarPerfil.html";
         }
 
     }
 
-    @PostMapping("/modificarUsuario/{id}") // ruta para modificar un usuario POST
-    public String modificarUsusarios(MultipartFile archivo, @PathVariable("id") String id, @RequestParam String nombre, @RequestParam String apellido,
-            @RequestParam String dni,
-            @RequestParam String email, @RequestParam String password, @RequestParam String password2,
-            @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
-            ModelMap modelo) throws IOException {
+//    @GetMapping("/modificarUsuario/{id}") // ruta para modificar un usuario GET
+//    public String modificarUsusario(@PathVariable("id") String id, ModelMap modelo) {
+//
+//        try {
+//            Rol[] roles = Rol.values();
+//            modelo.addAttribute("roles", roles);
+//            modelo.put("usuario", userServ.getOne(id));
+//            modelo.addAttribute("id", userServ.getOne(id).getId());
+//
+//            return "modificar_user.html";
+//        } catch (Exception ex) {
+//            Rol[] roles = Rol.values();
+//            modelo.addAttribute("roles", roles);
+//            modelo.put("error", ex.getMessage());
+//            return "modificar_user.html";
+//        }
+//
+//    }
+    @PostMapping("/modificarUsuario/{id}") // ******ruta para modificar un usuario POST(LT)
+    public String modificarUsusarios(MultipartFile archivo, @PathVariable("id") String id,
+            @RequestParam String nombre, @RequestParam String apellido,
+            String dni, @RequestParam String email, @RequestParam String password,
+            @RequestParam String password2, String telefono, String direccion,
+            String fecha_nac, String obrasocial, String gruposanguineo,
+            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException, MyException {
 
         try {
             Rol[] roles = Rol.values();
+            Usuario user = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("roles", roles);
             modelo.put("usuario", userServ.getOne(id));
             modelo.addAttribute("id", userServ.getOne(id).getId());
-//
-            userServ.modificarUsuario(archivo, id, nombre, apellido, dni, email,
-                    password, password2, telefono, direccion, fecha_nac);
 
-            modelo.put("exito", "!Usuario modificado con exito!");
-            List<Usuario> usuarios = userServ.listarUsuarios();
-            modelo.put("usuarios", usuarios);
-            return "listar_usuarios.html";
+            if (user.getRol().toString().equals("ADMINISTRADOR")) {
+                userServ.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+                modelo.put("exito", "¡Admin modificadodo con exito!");
+                return "redirect:/admin/dashboard";
+            }
+            if (user.getRol().toString().equals("MODERADOR")) {
+                profServ.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
+                modelo.put("exito", "¡Poresional modificadodo con exito!");
+                return "redirect:/profesional/dashboard";
+            }
+              if (user.getRol().toString().equals("USUARIO")) {
+                  pacienteServ.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
+                modelo.put("exito", "¡Usuario modificadodo con exito!");
+                return "redirect:/";
+            }
+
         } catch (MyException ex) {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
@@ -134,11 +176,12 @@ public class UsuarioControlador {
             modelo.put("error", ex.getMessage());
             return "modificar_user.html";
         }
+          return "redirect:/";
 
     }
 
     @GetMapping("/eliminar/{id}") //********** ruta para eliminar un usuario
-    //(no tiene una vista, es para un boton de la vista listar_usuarios)
+//(no tiene una vista, es para un boton de la vista listar_usuarios)
     public String eliminarU(@PathVariable("id") String id, ModelMap modelo) {
 
         try {
@@ -152,8 +195,8 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/eliminar/{id}") //********************** ruta para eliminar un usuario
-    //(no tiene una vista, es para un boton de la //
-    // vista listar_usuarios)
+//(no tiene una vista, es para un boton de la //
+// vista listar_usuarios)
     public String eliminarUser(@PathVariable("id") String id, ModelMap modelo) {
         System.out.println("id: " + id);
         try {

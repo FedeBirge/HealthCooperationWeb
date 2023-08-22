@@ -6,6 +6,7 @@ import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
+import java.io.IOException;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -80,7 +81,7 @@ public class PortalControlador {
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
             String fecha_nac, String obrasocial, String gruposanguineo,
-            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) {
+            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException {
 
         try {
             Rol[] roles = Rol.values();

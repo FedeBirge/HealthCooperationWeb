@@ -7,6 +7,7 @@ import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
+import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,7 @@ public class PacienteControlador {
             @RequestParam String password, @RequestParam String password2, @RequestParam String telefono,
             @RequestParam String direccion,
             @RequestParam String fecha_nac, @RequestParam String grupoSanguineo, @RequestParam String obraSocial,
-            ModelMap modelo) throws MyException {
+            ModelMap modelo) throws MyException, IOException {
         try {
 
             pacienteServicio.registrarPaciente(archivo, nombre, apellido, dni, email, password, password2, telefono,
