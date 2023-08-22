@@ -39,7 +39,7 @@ public class PacienteControlador {
             @RequestParam String apellido, @RequestParam String dni, @RequestParam String email,
             @RequestParam String password, @RequestParam String password2, @RequestParam String telefono,
             @RequestParam String direccion,
-            @RequestParam String fecha_nac, @RequestParam String grupoSanguineo, @RequestParam ObraSocial obraSocial,
+            @RequestParam String fecha_nac, @RequestParam String grupoSanguineo, @RequestParam String obraSocial,
             ModelMap modelo) throws MyException {
         try {
 

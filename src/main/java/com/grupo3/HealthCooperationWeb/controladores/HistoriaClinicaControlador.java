@@ -14,34 +14,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @Controller
 @RequestMapping("/paciente/historia_clinica")
 public class HistoriaClinicaControlador {
-    
+
     @Autowired
     private HistoriaClinicaServicio historiaClinicaServicio;
-    
+
     @GetMapping("/registrar")
-    public String registrarHistoria(ModelMap modelo){
-        
-       List<HistoriaClinica> historia = historiaClinicaServicio.mostrarHistoria();
-       
-       modelo.addAttribute("historia", historia );
-       
-       return "historia_form.html";
-        
-        
+    public String registrarHistoria(ModelMap modelo) {
+
+        // CHEQUEAR ESTO List<HistoriaClinica> historia =
+        // historiaClinicaServicio.mostrarHistoria();
+
+        // modelo.addAttribute("historia", historia );
+
+        return "historia_form.html";
+
     }
-    
+
+    // CHEQUEAR
     @PostMapping("/historia/registro")
-    public String registro(@RequestParam List<Ficha> fichas, ModelMap modelo) throws MyException{
-        
-        historiaClinicaServicio.crearHistoriaClinica( fichas);
-        modelo.put("exito", "La historia clinica se registro correctamente");
-        
+    public String registro(@RequestParam List<Ficha> fichas, ModelMap modelo) throws MyException {
+
+        // historiaClinicaServicio.crearHistoriaClinica( fichas);
+        // modelo.put("exito", "La historia clinica se registro correctamente");
+
         return "index.html";
-        
-        }
-    
+
+    }
+
 }

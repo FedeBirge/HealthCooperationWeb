@@ -26,7 +26,7 @@ public class PacienteServicio extends UsuarioServicio {
     @Transactional
     public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2,
-            String telefono, String direccion, String fecha_nac, String grupoSanguineo, ObraSocial obraSocial)
+            String telefono, String direccion, String fecha_nac, String grupoSanguineo, String obraSocial)
             throws MyException {
 
         super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
@@ -54,20 +54,19 @@ public class PacienteServicio extends UsuarioServicio {
         return pacientes;
     }
 
-    private void validar(String grupoSanguineo, ObraSocial obraSocial) throws MyException {
+    private void validar(String grupoSanguineo, String obraSocial) throws MyException {
 
         if (grupoSanguineo == null || grupoSanguineo.isEmpty()) {
             throw new MyException("Debe completar el grupo de sangre");
 
         }
         // No se debería validar el turno para crear un paciente, puesto que esto es
-        // algo que hace luego
-        // más allá de que se haya registrado o no
+        // algo que hace luego de estar registrado- Brenda
         // if(turnos == null || turnos.isEmpty()){
         // throw new MyException("Debe ingresar el turno pedido");
         // }
 
-        if (obraSocial == null) {
+        if (obraSocial == null || obraSocial.isEmpty()) {
             throw new MyException("Debe ingresar si tiene obra social o no");
         }
     }
