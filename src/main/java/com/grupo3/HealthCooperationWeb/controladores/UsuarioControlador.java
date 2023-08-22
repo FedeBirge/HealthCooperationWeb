@@ -1,6 +1,7 @@
 package com.grupo3.HealthCooperationWeb.controladores;
 
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
+import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
@@ -48,12 +49,17 @@ public class UsuarioControlador {
 
     }
 
-    @GetMapping("/crearUsuario") // ruta para crear un usuario GET
-    public String crearUsusario(ModelMap modelo) {
-        Rol[] roles = Rol.values();
-        modelo.addAttribute("roles", roles);
-        return "registro.html";
-
+  @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
+    public String registrar(ModelMap modelo, HttpSession session) {
+        try{
+     
+        return "altaUsuario.html";
+        }
+        catch(Exception ex) {
+            modelo.put("error", ex.getMessage());
+       
+            return "altaUsuario.html";
+        }
     }
 
     @PostMapping("/crearUsuario") // ruta para crear un usuario POST
@@ -102,19 +108,32 @@ public class UsuarioControlador {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
-            Usuario user = (Usuario) session.getAttribute("usuariosession");
-            modelo.put("user", user);
-            modelo.put("id", userServ.getOne(id));
-            return "editarPerfil.html";
+         
+            if (userServ.getOne(id).getRol().toString().equals("ADMINISTRADOR")) {
+                modelo.addAttribute("user", userServ.getOne(id));
+                modelo.addAttribute("id", userServ.getOne(id).getId());
+                return "modificar_user.html";
+            }
+            if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
+                 modelo.addAttribute("user", profServ.getOne(id));
+                modelo.addAttribute("id", profServ.getOne(id).getId());
+                Especialidad[] especialidades = Especialidad.values();
+            modelo.addAttribute("especialidades", especialidades);
+                return "modificar_user.html";
+            }
+            if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
+               modelo.addAttribute("user", pacienteServ.getOne(id));
+                modelo.addAttribute("id", pacienteServ.getOne(id).getId());
+                return "modificar_user.html";
+            }
+
         } catch (Exception ex) {
             Rol[] roles = Rol.values();
-            Usuario user = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("roles", roles);
-            modelo.put("user", user);
-            modelo.put("id", userServ.getOne(id));
+
             modelo.put("error", ex.getMessage());
-            return "editarPerfil.html";
+            return "modificar_user.html";
         }
+        return "modificar_user.html";
 
     }
 
@@ -145,24 +164,26 @@ public class UsuarioControlador {
             String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException, MyException {
 
         try {
+           
             Rol[] roles = Rol.values();
-            Usuario user = (Usuario) session.getAttribute("usuariosession");
+            
             modelo.addAttribute("roles", roles);
-            modelo.put("usuario", userServ.getOne(id));
+            modelo.put("user", userServ.getOne(id));
             modelo.addAttribute("id", userServ.getOne(id).getId());
 
-            if (user.getRol().toString().equals("ADMINISTRADOR")) {
+            if (userServ.getOne(id).getRol().toString().equals("ADMINISTRADOR")) {
                 userServ.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
                 modelo.put("exito", "¡Admin modificadodo con exito!");
                 return "redirect:/admin/dashboard";
             }
-            if (user.getRol().toString().equals("MODERADOR")) {
+            if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
+                 System.out.println(profServ.getOne(id).getEspecialidad());
                 profServ.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
                 modelo.put("exito", "¡Poresional modificadodo con exito!");
-                return "redirect:/profesional/dashboard";
+                return "redirect:/admin/dashboard";
             }
-              if (user.getRol().toString().equals("USUARIO")) {
-                  pacienteServ.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
+            if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
+                pacienteServ.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
                 modelo.put("exito", "¡Usuario modificadodo con exito!");
                 return "redirect:/";
             }
@@ -176,7 +197,7 @@ public class UsuarioControlador {
             modelo.put("error", ex.getMessage());
             return "modificar_user.html";
         }
-          return "redirect:/";
+        return "redirect:/";
 
     }
 
@@ -198,7 +219,7 @@ public class UsuarioControlador {
 //(no tiene una vista, es para un boton de la //
 // vista listar_usuarios)
     public String eliminarUser(@PathVariable("id") String id, ModelMap modelo) {
-        System.out.println("id: " + id);
+       
         try {
             modelo.put("profesional", userServ.getOne(id));
             modelo.addAttribute("id", userServ.getOne(id).getId());

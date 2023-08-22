@@ -48,6 +48,10 @@ public class ProfesionalServicio extends UsuarioServicio {
         }
     }
 
+    public Profesional getOne(String id) {
+        return profesionalRepositorio.getOne(id);
+    }
+
     private Especialidad pasarStringEspecialidad(String espe) throws MyException {
         switch (espe) {
             case "PEDIATRÍA":
@@ -103,22 +107,21 @@ public class ProfesionalServicio extends UsuarioServicio {
     // mopdificamos como si fuera un profesional, luego metodos especificos cambiar cada cosa
     public void modificarProfesional(String id, MultipartFile archivo, String nombre,
             String apellido, String dni, String email, String password,
-            String password2, String telefono, String direccion, String fecha_nac, 
+            String password2, String telefono, String direccion, String fecha_nac,
             String especialidad, String valorConsulta) throws MyException, IOException {
         super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
 
         Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
         if (respuesta.isPresent()) {
             Profesional prof = respuesta.get();
-//            if (!super.buscarPorMail(email).getId().equals(prof.getId())) {
-//                throw new MyException("EL mail ingresado ya existe en otro ususario! Ingreso otro!");
-//            }
             super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
             if (especialidad == null) {
 
                 throw new MyException("Debe ingresar una especialidad al profesional");
             }
+            System.out.println("esp "+especialidad);
+            System.out.println("valor" +valorConsulta);
             prof.setEspecialidad(pasarStringEspecialidad(especialidad));
             prof.setValorConsulta(valorConsulta);
             Imagen imagen = imagenServ.actualizar(archivo, id);
