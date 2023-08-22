@@ -38,86 +38,86 @@
                                         <p class="card-text text-center" th:text="${exito}"></p>
                                     </div>
                                 </div> 
-                                <div>
-                                    <img id="imagenPrevia" src="#" alt="" style="max-width: 100%; max-height: 100px;">
-                                </div> 
-                                <div class="input-group mb-4">
-                                    <span class="input-group-text">Foto</span>
-                                    <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
-                                </div>
-
-                                <div class="input-group mb-4 ">
-
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="name" placeholder="Nombre" name="nombre" th:value="${nombre}">
-
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="last-name" placeholder="Apellido" name="apellido" th:value="${apellido}">
-                                </div>
-                                <div class="input-group mb-4">
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="email" id="email" placeholder="Correo electrónico" name="email" th:value="${email}">
-                                </div>
-                                <div class="input-group mb-4">
-
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="password" id="password" placeholder="Contraseña" name="password" th:value="${password}">
-
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="password" id="password2" placeholder="Contraseña" name="password2" th:value="${password2}">
-                                </div>
-                                <div class="input-group mb-4">
-
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
-
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="number" id="telefono" placeholder="Telefono" name="telefono" th:value="${telefono}">
-                                </div>
-                                <div class="input-group mb-4">
-
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="number" id="dni" placeholder="DNI" name="dni" th:value="${dni}">
-                                </div>
-                                <div class="input-group mb-4">
-
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
-                                </div>
-                                <script>
-                                    function previsualizarImagen() {
-                                        var archivo = document.getElementById('foto').files[0];
-                                        var imagenPrevia = document.getElementById('imagenPrevia');
-
-                                        if (archivo) {
-                                            var lector = new FileReader();
-
-                                            lector.onload = function (event) {
-                                                imagenPrevia.src = event.target.result;
-                                            };
-
-                                            lector.readAsDataURL(archivo);
-                                        } else {
-                                            imagenPrevia.src = "#";
-                                        }
-                                    }
-                                </script>
-                                <div th:if="${session.usuariosession == null}" class="input-group mb-4">
-                  
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
-                                </div>
-                                <div th:if="${session.usuariosession == null}" class="input-group mb-4">
-                                    
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
-                                </div>
-                                <div th:if="${session.usuariosession != null}" class="input-group mb-4">
-
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="dni" placeholder="Valor de la consulta" name="valorConsulta" th:value="${valorConsulta}">
-                                </div>
-                                <div th:if="${session.usuariosession != null}" class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4">
-                                    <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" for="especialidad">Especialidad</label>
-                                    <select  class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
-                                        <option value="" disabled selected>Seleccione...</option>
-                                        <option class="input-group-text" th:each="especialidad : ${especialidades}"
-                                                th:value="${especialidad}" th:text="${especialidad}"></option>
-                                    </select><br>
-                                </div>
-                                <div class="d-grid gap-2 col-12 mx-auto ">
-                                    <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Registrarse</button>
-                                </div>
-                            </form>
+                            <div class="input-group mb-4 ">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="name" placeholder="Nombre" name="nombre" th:value="${nombre}">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="last-name" placeholder="Apellido" name="apellido" th:value="${apellido}">
+                            </div>
+                            <div class="input-group mb-4">
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="email" id="email" placeholder="Correo electrónico" name="email" th:value="${email}">
+                            </div>
+                            <div class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="password" id="password" placeholder="Contraseña" name="password" th:value="${password}">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="password" id="password2" placeholder="Contraseña" name="password2" th:value="${password2}">
+                            </div>
+                            <div class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
+                             
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="number" id="telefono" placeholder="Telefono" name="telefono" th:value="${telefono}">
+                            </div>
+                            <div class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="number" id="dni" placeholder="DNI" name="dni" th:value="${dni}">
+                            </div>
+                            <div class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
+                            </div>
+                            <div sec:authorize="hasRole('ADMINISTRADOR')" class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="number" id="dni" placeholder="Valor de la consulta" name="valorConsulta" th:value="${valorConsulta}">
+                            </div>
+                            <div th:if="${session.usuariosession == null}" class="input-group mb-4">
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
+                            </div>
+                            <div th:if="${session.usuariosession == null}" class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
+                            </div>    
+                            <div class="contenedorImagen">
+                            <img id="imagenPrevia" src="#" alt="" class="imagenPrevia">
+                        </div>    
+                            <div class="input-group mb-4">
+                            <span class="input-group-text">Foto</span>
+                            <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
                         </div>
+
+
+                        <script>
+                            function previsualizarImagen() {
+                                var archivo = document.getElementById('foto').files[0];
+                                var imagenPrevia = document.getElementById('imagenPrevia');
+
+                                if (archivo) {
+                                    var lector = new FileReader();
+
+                                    lector.onload = function (event) {
+                                        imagenPrevia.src = event.target.result;
+                                    };
+
+                                    lector.readAsDataURL(archivo);
+                                } else {
+                                    imagenPrevia.src = "#";
+                                }
+                            }
+                        </script>
+                            <div sec:authorize="hasRole('ADMINISTRADOR')" class="input-group mb-4">
+                                <label class="input-group-text" for="especialidad">Especialidad:</label>
+                                <select  class="input-group-text" id="especialidad" name="especialidad">
+                                    <option value="" disabled selected>Seleccione...</option>
+                                    <option class="input-group-text" th:each="especialidad : ${especialidades}"
+                                            th:value="${especialidad}" th:text="${especialidad}"></option>
+                                </select><br>
+                            </div>
+                            
+                            <div class="d-grid gap-2 col-12 mx-auto ">
+                                <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Registrarse</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
