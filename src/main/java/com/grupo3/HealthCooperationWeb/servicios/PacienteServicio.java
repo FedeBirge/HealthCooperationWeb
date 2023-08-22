@@ -44,9 +44,9 @@ public void registrarPaciente(MultipartFile archivo, String nombre, String apell
         paciente.setFecha_nac(pasarStringDate(fecha_nac));
         paciente.setActivo(true);
         paciente.setGrupoSanguineo(grupoSanguineo);
-        ObraSocial obra = new ObraSocial();
-        obra.setNombre(obraSocial);
-        paciente.setObraSocial(obra);
+//        ObraSocial obra = new ObraSocial();
+//        obra.setNombre(obraSocial);
+//        paciente.setObraSocial(obra);
 //        paciente.setTurnos(new ArrayList<Turno>());
 //        paciente.setHistoria(new HistoriaClinica());
 
