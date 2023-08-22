@@ -176,6 +176,7 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Modificar Profesional</h1>
                         </div>
+                        
                         <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/user/modificarUsuario/__${id}__}" method="POST" enctype="multipart/form-data">
                             <input hidden th:value="${id}" name="id">
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
@@ -184,7 +185,7 @@
                                     <p class="card-text text-center" th:text="${error}"></p>
                                 </div>
                             </div>
-                            <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                            <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
                                 <div class="card-body">
                                     <h5 class="card-title text-center">Exito!</h5>
                                     <p class="card-text text-center" th:text="${exito}"></p>
