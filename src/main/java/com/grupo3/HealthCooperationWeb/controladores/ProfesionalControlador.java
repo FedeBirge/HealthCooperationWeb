@@ -16,12 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
+import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
+import javax.servlet.http.HttpSession;
 
 @Controller
 // @PreAuthorize("hasRole('ROLE_MODERADOR')")
@@ -56,38 +58,32 @@ public class ProfesionalControlador {
         }
     }
 
-    // crear con GET
-    @GetMapping("/crear")
-    public String crearProfesional(ModelMap modelo) {
-
-        return "registro.html";
-
+   @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
+    public String registrar(ModelMap modelo, HttpSession session) {
+        try{
+        Especialidad[] especialidades = Especialidad.values();
+        modelo.addAttribute("especialidades", especialidades);
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        return "altaProfesional.html";
+        }
+        catch(Exception ex) {
+            modelo.put("error", ex.getMessage());
+            Especialidad[] especialidades = Especialidad.values();
+        modelo.addAttribute("especialidades", especialidades);
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            return "altaProfesional.html";
+        }
     }
 
-    // crear con POST
-    @PostMapping("/crearProfesional")
-    public String crearProfesional(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
-            @RequestParam String dni, @RequestParam String email, @RequestParam String password,
-            @RequestParam String password2, @RequestParam String telefono, @RequestParam String direccion,
-            @RequestParam String fecha_nac,
-            @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo) throws MyException, IOException {
-
-        Rol[] roles = Rol.values();
-        modelo.addAttribute("roles", roles);
-        profesionalServicio.modificarProfesional(dni, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
-        modelo.put("exito", "¡Profesional registrado con exito!");
-        return "registroProfesional.html";
-
-    }
 
   // listar todos los médicos activos(LT) panel del administrador
     @GetMapping("/listar")
     public String listarProfesionales(ModelMap modelo) {
         try {
             List<Profesional> users = profesionalServicio.listarProfesionales();
-           
+            System.out.println(users);
             modelo.addAttribute("users",users);
-            return "lista_usuarios.html";
+            return "verProfesionales.html";
         } catch (Exception e) {
 
             List<Profesional> users = profesionalServicio.listarProfesionales();

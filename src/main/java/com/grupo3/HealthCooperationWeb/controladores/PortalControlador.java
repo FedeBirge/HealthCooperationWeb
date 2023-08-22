@@ -6,6 +6,7 @@ import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
+import java.io.IOException;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,14 +35,7 @@ public class PortalControlador {
         return "index.html";
     }
 
-    @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
-    public String registrar(ModelMap modelo, HttpSession session) {
-        Especialidad[] especialidades = Especialidad.values();
-        modelo.addAttribute("especialidades", especialidades);
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        return "registro.html";
-    }
-
+ 
     @GetMapping("/login") // Boton para logearme en el index(LT)
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {
 
@@ -65,7 +59,7 @@ public class PortalControlador {
                 if (logueado.getRol().toString().equals("MODERADOR")) {
                     return "redirect:/profesional/dashboard";
                 } else {
-                    return "redirect:/paciente/perfil";
+                    return "redirect:/";
                 }
             }
 
@@ -80,14 +74,13 @@ public class PortalControlador {
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
             String fecha_nac, String obrasocial, String gruposanguineo,
-            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) {
+            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException {
 
-        try {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
+        try {          
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-
             if (logueado != null) {
+                            System.out.println(nombre+ apellido+dni+ email+ password+ password2+ telefono+ direccion+ fecha_nac+ especialidad+ valorConsulta);
+
                 if (logueado.getRol().toString().equals("ADMINISTRADOR")) {
                     profesionalServicio.registrarProfesional(archivo, nombre, apellido,
                             dni, email, password, password2, telefono,
@@ -95,7 +88,6 @@ public class PortalControlador {
                     modelo.put("exito", "¡Profesional registrado con exito!");
                     return "redirect:/admin/dashboard";
                 }
-                return "redirect:/admin/dashboard";
             } else {
                 pacienteServ.registrarPaciente(archivo, nombre, apellido, dni,
                         email, password, password2, telefono, direccion,
@@ -110,8 +102,9 @@ public class PortalControlador {
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
 
-            return "registro.html";
+            return "altaProfesional.html";
         }
+        return "registro.html";
 
     }
 

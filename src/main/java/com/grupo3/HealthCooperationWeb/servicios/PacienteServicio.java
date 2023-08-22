@@ -1,17 +1,18 @@
 package com.grupo3.HealthCooperationWeb.servicios;
 
-import com.grupo3.HealthCooperationWeb.entidades.HistoriaClinica;
 import com.grupo3.HealthCooperationWeb.entidades.Imagen;
 import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
-import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.PacienteRepositorio;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,26 +25,61 @@ public class PacienteServicio extends UsuarioServicio {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
+public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2,
             String telefono, String direccion, String fecha_nac, String grupoSanguineo, String obraSocial)
-            throws MyException {
+            throws MyException, IOException {
 
         super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         validar(grupoSanguineo, obraSocial);
 
         Paciente paciente = new Paciente();
+        paciente.setNombre(nombre);
+        paciente.setApellido(apellido);
+        paciente.setDni(dni);
+        paciente.setEmail(email);
+        paciente.setPassword(new BCryptPasswordEncoder().encode(password));
+        paciente.setTelefono(telefono);
+        paciente.setDireccion(direccion);
+        paciente.setFecha_nac(pasarStringDate(fecha_nac));
+        paciente.setActivo(true);
+        paciente.setGrupoSanguineo(grupoSanguineo);
+//        ObraSocial obra = new ObraSocial();
+//        obra.setNombre(obraSocial);
+//        paciente.setObraSocial(obra);
+//        paciente.setTurnos(new ArrayList<Turno>());
+//        paciente.setHistoria(new HistoriaClinica());
 
-        paciente.setTurnos(new ArrayList<Turno>());
-        paciente.setHistoria(new HistoriaClinica());
-        paciente.setObraSocial(new ObraSocial());
         paciente.setRol(Rol.USUARIO);
         Imagen imagen = imagenServicio.guardar(archivo);
         paciente.setImagen(imagen);
         pacienteRepositorio.save(paciente);
 
     }
+       @Transactional
+    // mopdificamos como si fuera un profesional, luego metodos especificos cambiar cada cosa
+    public void modificarPaciente(String id, MultipartFile archivo, String nombre, String apellido, String dni, String email,
+            String password, String password2,
+            String telefono, String direccion, String fecha_nac, String grupoSanguineo, String obraSocial) throws MyException, IOException {
+        super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
 
+        Optional<Paciente> respuesta = pacienteRepositorio.findById(id);
+        if (respuesta.isPresent()) {
+            Paciente pas = respuesta.get();
+//            if (!super.buscarPorMail(email).getId().equals(prof.getId())) {
+//                throw new MyException("EL mail ingresado ya existe en otro ususario! Ingreso otro!");
+//            }
+            super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+            super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+            pas.setGrupoSanguineo(grupoSanguineo);
+            pas.getObraSocial().setNombre(obraSocial);
+            Imagen imagen = imagenServicio.actualizar(archivo,id);
+            pas.setImagen(imagen);
+
+            pacienteRepositorio.save(pas);
+
+        }
+    }
     // se muestran todos que son activos por ddefecto, no se pueden dar de baja
     public List<Paciente> mostrarPacientes() {
 
