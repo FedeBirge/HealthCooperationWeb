@@ -51,6 +51,7 @@ public class UsuarioControlador {
 
     @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
     public String registrar(ModelMap modelo, HttpSession session) {
+<<<<<<< HEAD
         try {
 
             return "altaUsuario.html";
@@ -58,6 +59,16 @@ public class UsuarioControlador {
             modelo.put("error", ex.getMessage());
 
             return "altaUsuario.html";
+=======
+        try{
+     
+        return "registro.html";
+        }
+        catch(Exception ex) {
+            modelo.put("error", ex.getMessage());
+       
+            return "registro.html";
+>>>>>>> eb8cb9a03dd0e6ec548a9999a4ec3e1f3efe855e
         }
     }
 
@@ -73,13 +84,13 @@ public class UsuarioControlador {
             userServ.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
             modelo.put("exito", "!Usuario registrado con exito!");
-            return "registro.html";
+            return "altaProfesional.html";
 
         } catch (MyException ex) {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
             modelo.put("error", ex.getMessage());
-            return "registro.html";
+            return "altaProfesional.html";
         }
 
     }

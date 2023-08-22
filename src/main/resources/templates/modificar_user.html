@@ -109,7 +109,13 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
+<!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
 
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
 
             </ul>
             <!-- Fin de la barra lateral -->
@@ -141,8 +147,8 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
-                                    <img class="../img-profile rounded-circle"
-                                         src="../img/undraw_profile.svg">
+                                    <img class="/img-profile rounded-circle"
+                                        th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 100px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -282,7 +288,7 @@
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2021</span>
+                            <span>HealtCooperationWeb ©2023</span>
                         </div>
                     </div>
                 </footer>
