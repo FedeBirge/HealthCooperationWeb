@@ -51,16 +51,13 @@ public class UsuarioControlador {
 
     @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
     public String registrar(ModelMap modelo, HttpSession session) {
-
         try {
 
             return "registro.html";
         } catch (Exception ex) {
-            modelo.put("error", ex.getMessage());
-
-            return "registro.html";
-
-        }
+            modelo.put("error", ex.getMessage());     
+        return "registro.html";
+       
     }
 
     @PostMapping("/crearUsuario") // ruta para crear un usuario POST
@@ -182,12 +179,12 @@ public class UsuarioControlador {
             if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
                 System.out.println(profServ.getOne(id).getEspecialidad());
                 profServ.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
-                modelo.put("exito", "¡Poresional modificadodo con exito!");
-                return "modificar_user.html";
+                modelo.put("exito", "¡Profesional modificado con exito!");
+                return "redirect:/admin/dashboard";
             }
             if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
                 pacienteServ.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
-                modelo.put("exito", "¡Usuario modificadodo con exito!");
+                modelo.put("exito", "¡Usuario modificado con exito!");
                 return "modificar_user.html";
             }
 
