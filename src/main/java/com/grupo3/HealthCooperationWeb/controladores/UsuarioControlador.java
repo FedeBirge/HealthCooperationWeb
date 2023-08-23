@@ -168,7 +168,7 @@ public class UsuarioControlador {
             String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException, MyException {
 
         try {
-
+            System.out.println(userServ.getOne(id).getFecha_nac());
             Rol[] roles = Rol.values();
                 Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
@@ -183,12 +183,12 @@ public class UsuarioControlador {
             if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
                 System.out.println(profServ.getOne(id).getEspecialidad());
                 profServ.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
-                modelo.put("exito", "¡Poresional modificadodo con exito!");
-                return "modificar_user.html";
+                modelo.put("exito", "¡Profesional modificado con exito!");
+                return "redirect:/admin/dashboard";
             }
             if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
                 pacienteServ.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
-                modelo.put("exito", "¡Usuario modificadodo con exito!");
+                modelo.put("exito", "¡Usuario modificado con exito!");
                 return "modificar_user.html";
             }
 
