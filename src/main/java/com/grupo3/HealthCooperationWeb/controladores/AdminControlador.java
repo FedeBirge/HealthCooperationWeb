@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 
 @Controller
+@PreAuthorize("hasAnyRole('ROLE_USUARIO')")
 @RequestMapping("/admin")
 public class AdminControlador {
 
