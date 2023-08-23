@@ -57,7 +57,7 @@ public class PortalControlador {
                 return "redirect:/admin/dashboard";
             } else {
                 if (logueado.getRol().toString().equals("MODERADOR")) {
-                    return "redirect:/profesional/dashboard";
+                    return "redirect:/profesionales/dashboard";
                 } else {
                     return "redirect:/";
                 }
@@ -77,16 +77,18 @@ public class PortalControlador {
             String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException {
 
         try {          
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
             if (logueado != null) {
-                            System.out.println(nombre+ apellido+dni+ email+ password+ password2+ telefono+ direccion+ fecha_nac+ especialidad+ valorConsulta);
+                            
 
                 if (logueado.getRol().toString().equals("ADMINISTRADOR")) {
                     profesionalServicio.registrarProfesional(archivo, nombre, apellido,
                             dni, email, password, password2, telefono,
                             direccion, fecha_nac, especialidad, valorConsulta);
                     modelo.put("exito", "¡Profesional registrado con exito!");
-                    return "redirect:/admin/dashboard";
+                      return "panelAdmin.html";
                 }
             } else {
                 pacienteServ.registrarPaciente(archivo, nombre, apellido, dni,

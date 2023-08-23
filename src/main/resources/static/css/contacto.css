@@ -36,7 +36,8 @@
 body, h1, h2, h3, p, a, span
  {
     font-family: "Poppins", sans-serif;
-    overflow: hidden;
+   
+    font-size: 0.9rem;
   }
 
 

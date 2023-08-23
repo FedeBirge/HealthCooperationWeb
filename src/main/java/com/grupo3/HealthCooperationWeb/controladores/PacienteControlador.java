@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,6 +58,38 @@ public class PacienteControlador {
             return "paciente_form.html";// volvemos a cargar el formulario
         }
         return "index.html";
+    }
+      // listar todos los pacientes activos(LT) panel del administrador
+    @GetMapping("/listar")
+    public String listarProfesionales(ModelMap modelo) {
+        try {
+            List<Paciente> users = pacienteServicio.mostrarPacientes();
+            System.out.println(users);
+            modelo.addAttribute("users",users);
+            return "verProfesionales.html";
+        } catch (Exception e) {
+
+            List<Paciente> users = pacienteServicio.mostrarPacientes();
+            modelo.addAttribute("users", users);
+            modelo.put("error", e.getMessage());
+            return "redirect:/admin/dashboard";
+        }
+    }
+    //Listar pacientes asociados al id del profesional logueado(LT)
+     @GetMapping("/listar/{id}")
+    public String listarProfesionales(@PathVariable("id") String id, ModelMap modelo) {
+        try {
+            List<Paciente> users = pacienteServicio.mostrarPacientes();
+            System.out.println(users);
+            modelo.addAttribute("users",users);
+            return "verProfesionales.html";
+        } catch (Exception e) {
+
+            List<Paciente> users = pacienteServicio.mostrarPacientes();
+            modelo.addAttribute("users", users);
+            modelo.put("error", e.getMessage());
+            return "redirect:/admin/dashboard";
+        }
     }
 
 }

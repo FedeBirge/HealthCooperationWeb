@@ -109,7 +109,13 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
 
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
 
             </ul>
             <!-- Fin de la barra lateral -->
@@ -141,8 +147,8 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
-                                    <img class="../img-profile rounded-circle"
-                                         src="../img/undraw_profile.svg">
+                                    <img class="/img-profile rounded-circle"
+                                         th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 100px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -176,6 +182,7 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Modificar Profesional</h1>
                         </div>
+
                         <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/user/modificarUsuario/__${id}__}" method="POST" enctype="multipart/form-data">
                             <input hidden th:value="${id}" name="id">
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
@@ -184,7 +191,7 @@
                                     <p class="card-text text-center" th:text="${error}"></p>
                                 </div>
                             </div>
-                            <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                            <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
                                 <div class="card-body">
                                     <h5 class="card-title text-center">Exito!</h5>
                                     <p class="card-text text-center" th:text="${exito}"></p>
@@ -214,7 +221,8 @@
 
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">Fecha nacimiento</label>
-                                    <input class="form-control form-control-user" type="DATE" id="fecha-nac" name="fecha_nac" th:value="${user.fecha_nac}">
+
+                                    <input class="form-control form-control-user" type="DATE" id="fecha-nac" name="fecha_nac" th:value="${#dates.format(user.fecha_nac, 'yyyy-MM-dd')}">
                                 </div >
 
                                 <div class="col-sm-6 mb-3">
@@ -230,7 +238,7 @@
                                     <input  class="form-control form-control-user" type="text" id="direccion" placeholder="Direccion" name="direccion" th:value="${user.direccion}">
                                 </div>
                                 <div sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" class="col-sm-6 mb-3">
-                                    
+
                                     <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" for="especialidad">Especialidad</label>
                                     <select  class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
                                         <option th:text="${user.especialidad}+ '(Actual)'" disabled selected>+</option>
@@ -242,13 +250,16 @@
                                     <label  class="form-label">Valor Consulta</label>
                                     <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="" id="valorConsulta"  name="valorConsulta" th:value="${user.valorConsulta}">
                                 </div>
-                                <div>
+                                <div class="col-sm-6 mb-3">
+                                    <p class="form-label">¡Actualice su foto aquí!</p>
+                                    <input type="file" class="form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" name="archivo" id="archivoInput" />
+                                    
                                     <a class="d-flex align-items-center">
-                                        <img id="imagenPerfil" class="logo" th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 100px;" />
+                                        <img id="imagenPerfil" class="form-label" th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 100px;" />
                                     </a>
                                 </div> 
-                                <p>¡Actualice su foto aquí!</p>
-                                <input type="file" class="form-control" name="archivo" id="archivoInput" />
+
+
                             </div>
 
                             <script>
@@ -281,7 +292,7 @@
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2021</span>
+                            <span>HealtCooperationWeb ©2023</span>
                         </div>
                     </div>
                 </footer>

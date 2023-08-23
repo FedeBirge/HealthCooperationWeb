@@ -25,7 +25,7 @@ public class PacienteServicio extends UsuarioServicio {
     private ImagenServicio imagenServicio;
 
     @Transactional
-public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
+    public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2,
             String telefono, String direccion, String fecha_nac, String grupoSanguineo, String obraSocial)
             throws MyException, IOException {
@@ -56,7 +56,8 @@ public void registrarPaciente(MultipartFile archivo, String nombre, String apell
         pacienteRepositorio.save(paciente);
 
     }
-       @Transactional
+
+    @Transactional
     // mopdificamos como si fuera un profesional, luego metodos especificos cambiar cada cosa
     public void modificarPaciente(String id, MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2,
@@ -73,21 +74,53 @@ public void registrarPaciente(MultipartFile archivo, String nombre, String apell
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
             pas.setGrupoSanguineo(grupoSanguineo);
             pas.getObraSocial().setNombre(obraSocial);
-            Imagen imagen = imagenServicio.actualizar(archivo,id);
+            Imagen imagen = imagenServicio.actualizar(archivo, id);
             pas.setImagen(imagen);
 
             pacienteRepositorio.save(pas);
 
         }
     }
+
     // se muestran todos que son activos por ddefecto, no se pueden dar de baja
     public List<Paciente> mostrarPacientes() {
 
-        List<Paciente> pacientes = new ArrayList();
+        List<Paciente> aux = new ArrayList<>();
+        List<Paciente> pacientes = new ArrayList<>();
 
-        pacientes = pacienteRepositorio.findAll();
+        try {
+            aux = (ArrayList<Paciente>) pacienteRepositorio.findAll();
+            for (Paciente paciente : aux) {
+                if (paciente.getActivo().equals(Boolean.TRUE)) {
+                    pacientes.add(paciente);
+                }
+            }
+            return pacientes;
+        } catch (Exception e) {
+            System.out.println("Hubo un error al listar profesionales.");
+            return null;
+        }
+    }
 
-        return pacientes;
+    //*****COMPLETAR    para traer los pacientes asociados a un profesional(id)
+    public List<Paciente> listarPacientesXprof(String id) {
+
+//     List<Paciente> aux = new ArrayList<>();
+//        List<Paciente> pacientes = new ArrayList<>();
+//
+//        try {
+//            aux = (ArrayList<Paciente>) pacienteRepositorio.findAll();
+//            for (Paciente paciente : aux) {
+//                if (paciente.getActivo().equals(Boolean.TRUE)) {
+//                    pacientes.add(paciente);
+//                }
+//            }
+//            return pacientes;
+//        } catch (Exception e) {
+//            System.out.println("Hubo un error al listar profesionales.");
+//            return null;
+//        }
+        return null;
     }
 
     private void validar(String grupoSanguineo, String obraSocial) throws MyException {

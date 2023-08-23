@@ -58,34 +58,41 @@ public class ProfesionalControlador {
         }
     }
 
-   @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
+    @GetMapping("/registrar") // *************REgistro de prof por el admin(LT)*****//
     public String registrar(ModelMap modelo, HttpSession session) {
-        try{
-        Especialidad[] especialidades = Especialidad.values();
-        modelo.addAttribute("especialidades", especialidades);
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        return "altaProfesional.html";
-        }
-        catch(Exception ex) {
+        try {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
+            Especialidad[] especialidades = Especialidad.values();
+            modelo.addAttribute("especialidades", especialidades);
+
+            return "altaProfesional.html";
+        } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
             Especialidad[] especialidades = Especialidad.values();
-        modelo.addAttribute("especialidades", especialidades);
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            return "altaProfesional.html";
+            modelo.addAttribute("especialidades", especialidades);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
+            return "redirect:/profesionales/registrar";
         }
     }
 
-
-  // listar todos los médicos activos(LT) panel del administrador
+    // listar todos los médicos activos(LT) panel del administrador
     @GetMapping("/listar")
-    public String listarProfesionales(ModelMap modelo) {
+    public String listarProfesionales(ModelMap modelo,HttpSession session) {
         try {
-            List<Profesional> users = profesionalServicio.listarProfesionales();
-            System.out.println(users);
-            modelo.addAttribute("users",users);
+            List<Profesional> users = profesionalServicio.listarProfesionales();            
+            modelo.addAttribute("users", users);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
             return "verProfesionales.html";
         } catch (Exception e) {
-
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
             List<Profesional> users = profesionalServicio.listarProfesionales();
             modelo.addAttribute("users", users);
             modelo.put("error", e.getMessage());

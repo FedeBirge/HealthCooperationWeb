@@ -3,6 +3,8 @@ package com.grupo3.HealthCooperationWeb.controladores;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
@@ -24,11 +27,24 @@ public class AdminControlador {
     @GetMapping("/dashboard") // Vista principal para el Admin al Logearse (LT)
     public String panelAdministrador(ModelMap modelo) {
         try {
-
             return "panelAdmin.html";
         } catch (Exception e) {
             modelo.put("error", e.getMessage());
             return "redirect: /dashboard";
+        }
+    }
+
+    @GetMapping("/registrar") // *************regsitro de usuario para el admin(LT)*****//
+    public String registrar(ModelMap modelo, HttpSession session) {
+        try {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.put("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
+            return "altaUsuario.html";
+        } catch (Exception ex) {
+            modelo.put("error", ex.getMessage());
+            return "altaUsuario.html";
+
         }
     }
 
