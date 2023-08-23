@@ -37,16 +37,12 @@
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}" th:href="@{/user/registrar}">Registrarme</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}"  th:href="@{/login}">Login</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"  th:href="@{/email/contacto}">Eres un doctor?</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/logout}">Log out</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" href="css/styles.css"> <!-- Enlaza tu archivo CSS externo si lo tienes -->
-            <title>Header con Imagen de Fondo</title>
-        </head>
+        
         <!-- Masthead-->
         <header class="masthead bg-primary text-white text-center">
             <div class="container d-flex align-items-center flex-column">
@@ -62,6 +58,10 @@
                 </div>
                 <!-- Masthead Subheading-->
                 <p class="masthead-subheading font-weight-light mb-0">Para sacar un turno precione aqui..</p>
+                
+                <button class="button">
+    <span class="button-content">TURNO</span>
+</button>
             </div>
         </header>
         <!-- Portfolio Section-->
@@ -83,10 +83,6 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-
-                            <div class=" cajita position-absolute bottom-0 start-50 translate-middle rounded-pill">
-                                <h2 class="h1 textCajita">¿Quiere sacar un turno?</h2>
-                                <button class=" btnCajita rounded-pill"><a href="@">Apriete aquí</a></button>
 
                             <img class="img-fluid" src="assets/img/portfolio/pediatria.jpg" alt="..." />
                         </div>
@@ -207,7 +203,7 @@
                             <!-- an error submitting the form-->
                             <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">¡Error al enviar el mensaje!</div></div>
                             <!-- Submit Button-->
-                            <button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">Enviar</button>
+                            <button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit" th:action=${"/email/contacto"} method="post">Enviar</button>
                         </form>
                     </div>
                 </div>
@@ -382,10 +378,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <!-- * *                               SB Forms JS                               * *-->
-        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
     </body>
 </html>

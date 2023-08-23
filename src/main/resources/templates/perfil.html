@@ -51,59 +51,6 @@
             <!-- Divisor -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Gestion
-            </div>
-
-            <!-- Elemento de navegación: menú Contraer páginas -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-hospital-user"></i>
-                    <span>Profesionales</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Acciones</h6>
-                        <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
-                        <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Elemento de navegación - Menú Contraer utilidades -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-user"></i>
-                    <span>Pacientes</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                    
-                        <a class="collapse-item" th:href="@{/}">Ver Pacientes</a>
-                      
-                    </div>
-                </div>
-            </li>
-              <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-user"></i>
-                    <span>Usuarios</span>
-                </a>
-                <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" th:href="@{/}">Alta Usuarios</a>
-                        <a class="collapse-item" th:href="@{/}">Ver Usuarios</a>
-                        
-                      
-                    </div>
-                </div>
-            </li>
 
 
             <!-- Divider -->
@@ -153,7 +100,7 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" th:href="@{/user/verUsuariol/__${id}__}">
+                                    <a class="dropdown-item" href="#">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
@@ -200,7 +147,36 @@
                                     </div>
                                 </div> 
             <!-- Fin del contenido principal -->
- 
+            <section class="seccion-perfil-usuario">
+        <div class="perfil-usuario-header">
+            <div class="perfil-usuario-portada">
+                <div class="perfil-usuario-avatar">
+                      <img class="/img-profile rounded-circle"
+                                        th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 100px;">
+                    
+            </div>
+        </div>
+        <div class="perfil-usuario-body">
+            <div class="perfil-usuario-bio">
+                <h3 class="titulo" >Maria Alejandra De la Cruz</h3>
+                
+            </div>
+            <div class="perfil-usuario-footer">
+                
+                <ul class="lista-datos">
+                    <li><i class="icono fas fa-map-signs" ></i> Direccion de usuario:</li>
+                    <li><i class="icono fas fa-phone-alt"></i> Telefono:</li>
+                    <li><i class="icono fas fa-briefcase"></i> Trabaja en.</li>
+                    <li><i class="icono fas fa-building"></i> Cargo</li>
+                </ul>
+                <ul class="lista-datos">
+                    <li><i class="icono fas fa-map-marker-alt"></i> Ubicacion.</li>
+                    <li><i class="icono fas fa-calendar-alt"></i> Fecha nacimiento.</li>
+                    
+                </ul>
+            </div>
+          
+        </div>
     </section>
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
