@@ -179,10 +179,10 @@
 
                         <!-- Encabezado de página -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Modificar Paciente</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Modificar Profesional</h1>
                         </div>
 
-                        <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/paciente/modificar/__${id}__}" method="POST" enctype="multipart/form-data">
+                        <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/profesionales/modificar/__${id}__}" method="POST" enctype="multipart/form-data">
                             <input hidden th:value="${id}" name="id">
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                 <div class="card-body">
@@ -236,15 +236,11 @@
                                     <label  class="form-label">Direccion</label>
                                     <input  class="form-control form-control-user" type="text" id="direccion" placeholder="Direccion" name="direccion" th:value="${user.direccion}">
                                 </div>
-                                <div  class="col-sm-6 mb-3">
-                                    <label  class="form-label">Obra Social</label>
-                                    <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
+                                    <div    class="col-sm-6 mb-3">
+                                    <label  class="form-label">Valor Consulta</label>
+                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="" id="valorConsulta"  name="valorConsulta" th:value="${user.valorConsulta}">
                                 </div>
-                                <div  class="col-sm-6 mb-3">
-                                    <label  class="form-label">Grupo Sanguineo</label>
-                                    <input class="form-control form-control-user" type="text" id="grupo" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
-                                </div>    
-                                <div   th:if="${user.rol}=='MODERADOR'" class="col-sm-6 mb-3">
+                                <div class="col-sm-6 mb-3">
 
                                     <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" for="especialidad">Especialidad</label>
                                     <select  class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
@@ -253,10 +249,7 @@
                                                 th:value="${especialidad}" th:text="${especialidad}"></option>
                                     </select><br>
                                 </div>
-                                <div    th:if="${user.rol}=='MODERADOR'" class="col-sm-6 mb-3">
-                                    <label  class="form-label">Valor Consulta</label>
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="" id="valorConsulta"  name="valorConsulta" th:value="${user.valorConsulta}">
-                                </div>
+                                
                                 <div class="col-sm-6 mb-3">
                                     <p class="form-label">¡Actualice su foto aquí!</p>
                                     <input type="file" class="form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" name="archivo" id="archivoInput" />

@@ -18,7 +18,7 @@
             rel="stylesheet">
 
         <!-- Css -->
-        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
     </head>
 
@@ -147,9 +147,9 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${user.nombre}"></span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
                                     <img class="/img-profile rounded-circle"
-                                         th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 25px;">
+                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

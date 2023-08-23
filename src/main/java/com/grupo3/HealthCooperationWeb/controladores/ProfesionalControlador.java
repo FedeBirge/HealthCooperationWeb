@@ -24,6 +24,7 @@ import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
 import javax.servlet.http.HttpSession;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @Controller
 // @PreAuthorize("hasRole('ROLE_MODERADOR')")
@@ -62,7 +63,7 @@ public class ProfesionalControlador {
     public String registrar(ModelMap modelo, HttpSession session) {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("log", logueado);
             modelo.addAttribute("id", logueado.getId());
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
@@ -72,32 +73,119 @@ public class ProfesionalControlador {
             modelo.put("error", ex.getMessage());
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("user", logueado);
-            modelo.addAttribute("id", logueado.getId());
-            return "redirect:/profesionales/registrar";
+           Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            return "altaProfesional.html";
         }
+    }
+
+    @PostMapping("/crear") // ruta para crear un usuario POST
+    public String crearUsuario(HttpSession session, MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
+            @RequestParam String dni,
+            @RequestParam String email, @RequestParam String password, @RequestParam String password2,
+            @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
+            String especialidad, String valorConsulta, ModelMap modelo) throws IOException {
+        try {
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            profesionalServicio.registrarProfesional(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
+            modelo.put("exito", "!Profesional registrado con exito!");
+            return "altaProfesional.html";
+
+        } catch (MyException ex) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            Especialidad[] especialidades = Especialidad.values();
+            modelo.addAttribute("especialidades", especialidades);
+            modelo.put("error", ex.getMessage());
+            return "altaProfesional.html";
+        }
+
     }
 
     // listar todos los médicos activos(LT) panel del administrador
     @GetMapping("/listar")
-    public String listarProfesionales(ModelMap modelo,HttpSession session) {
+    public String listarProfesionales(ModelMap modelo, HttpSession session) {
         try {
-            List<Profesional> users = profesionalServicio.listarProfesionales();            
+            List<Profesional> users = profesionalServicio.listarProfesionales();
             modelo.addAttribute("users", users);
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("log", logueado);
             modelo.addAttribute("id", logueado.getId());
             return "verProfesionales.html";
         } catch (Exception e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("log", logueado);
             modelo.addAttribute("id", logueado.getId());
             List<Profesional> users = profesionalServicio.listarProfesionales();
             modelo.addAttribute("users", users);
             modelo.put("error", e.getMessage());
             return "redirect:/admin/dashboard";
         }
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
+    @GetMapping("/perfil/{id}")
+    public String perfil(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+
+        try {
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
+            Especialidad[] especialidades = Especialidad.values();
+            modelo.addAttribute("especialidades", especialidades);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            modelo.addAttribute("user", profesionalServicio.getOne(id));
+            modelo.addAttribute("id", profesionalServicio.getOne(id).getId());
+
+            return "modificar_prof.html";
+
+        } catch (Exception ex) {
+             modelo.addAttribute("user", profesionalServicio.getOne(id));
+            modelo.addAttribute("id", profesionalServicio.getOne(id).getId());
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.put("error", ex.getMessage());
+            return "modificar_prof.html";
+        }
+
+    }
+
+    @PostMapping("/modificar/{id}") // ******ruta para modificar un usuario POST(LT)
+    public String modificarUsusarios(MultipartFile archivo, @PathVariable("id") String id,
+            @RequestParam String nombre, @RequestParam String apellido,
+            String dni, @RequestParam String email, @RequestParam String password,
+            @RequestParam String password2, String telefono, String direccion,
+            String fecha_nac, String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException, MyException {
+
+        try {
+            Especialidad[] especialidades = Especialidad.values();
+            modelo.addAttribute("especialidades", especialidades);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+             modelo.addAttribute("user", profesionalServicio.getOne(id));
+            modelo.addAttribute("id", profesionalServicio.getOne(id).getId());
+            profesionalServicio.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
+            modelo.put("exito", "¡Profesional modificado con exito!");
+             return "modificar_prof.html";
+        } catch (MyException ex) {
+
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.put("user", profesionalServicio.getOne(id));
+            modelo.addAttribute("id", profesionalServicio.getOne(id).getId());
+            Especialidad[] especialidades = Especialidad.values();
+            modelo.addAttribute("especialidades", especialidades);
+
+            modelo.put("error", ex.getMessage());
+            return "modificar_prof.html";
+        }
+
     }
 
     // darse de baja con GET

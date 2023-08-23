@@ -49,20 +49,10 @@ public class UsuarioControlador {
 
     }
 
-    @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
-    public String registrar(ModelMap modelo, HttpSession session) {
-        try {
-
-            return "registro.html";
-        } catch (Exception ex) {
-            modelo.put("error", ex.getMessage());
-            return "registro.html";
-
-        }
-    }
+  
 
     @PostMapping("/crearUsuario") // ruta para crear un usuario POST
-    public String crearUsuario(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
+    public String crearUsuario(HttpSession session, MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
             @RequestParam String dni,
             @RequestParam String email, @RequestParam String password, @RequestParam String password2,
             @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
@@ -70,6 +60,8 @@ public class UsuarioControlador {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
+                   Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+              modelo.addAttribute("log", logueado);
             userServ.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
             modelo.put("exito", "!Usuario registrado con exito!");
@@ -86,12 +78,16 @@ public class UsuarioControlador {
 
     @GetMapping("/listar") // *********ruta para listar los usuarios(LT)
     // en panel del administrador
-    public String listarUsusario(ModelMap modelo) {
+    public String listarUsusario(ModelMap modelo,HttpSession session) {
         try {
+             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+              modelo.addAttribute("log", logueado);
             List<Usuario> users = userServ.listarUsuarios();
             modelo.addAttribute("users", users);
-            return "verProfesionales.html";
+            return "verUsuarios.html";
         } catch (Exception ex) {
+             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+              modelo.addAttribute("log", logueado);
             List<Usuario> users = userServ.listarUsuarios();
             modelo.addAttribute("users", users);
             modelo.put("error", ex.getMessage());
@@ -109,6 +105,8 @@ public class UsuarioControlador {
             modelo.addAttribute("roles", roles);
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
+                Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+              modelo.addAttribute("log", logueado);
             if (userServ.getOne(id).getRol().toString().equals("ADMINISTRADOR")) {
                 modelo.addAttribute("user", userServ.getOne(id));
                 modelo.addAttribute("id", userServ.getOne(id).getId());
@@ -130,7 +128,8 @@ public class UsuarioControlador {
 
         } catch (Exception ex) {
             Rol[] roles = Rol.values();
-
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+              modelo.addAttribute("log", logueado);
             modelo.put("error", ex.getMessage());
             return "modificar_user.html";
         }
@@ -169,8 +168,8 @@ public class UsuarioControlador {
             Rol[] roles = Rol.values();
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
-            modelo.put("user", userServ.getOne(id));
-            modelo.addAttribute("id", userServ.getOne(id).getId());
+             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+               modelo.addAttribute("log", logueado);
 
             if (userServ.getOne(id).getRol().toString().equals("ADMINISTRADOR")) {
                 userServ.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
@@ -190,9 +189,10 @@ public class UsuarioControlador {
             }
 
         } catch (MyException ex) {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            modelo.put("usuario", userServ.getOne(id));
+           
+              Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+               modelo.addAttribute("log", logueado);
+            modelo.put("user", userServ.getOne(id));
             modelo.addAttribute("id", userServ.getOne(id).getId());
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
@@ -210,16 +210,16 @@ public class UsuarioControlador {
 
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("user", logueado);
-            modelo.addAttribute("id", logueado.getId());
+            modelo.addAttribute("log", logueado);
+
             modelo.put("exito", "Usuario eliminado con exito!");
-            return "redirect:/admin/dashboard";
+             return "panelAdmin.html";
         } catch (Exception ex) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("log", logueado);
             modelo.addAttribute("id", logueado.getId());
             modelo.put("error", ex.getMessage());
-            return "redirect:/admin/dashboard";
+        return "panelAdmin.html";
         }
 
     }
@@ -231,8 +231,8 @@ public class UsuarioControlador {
 
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("user", logueado);
-            modelo.addAttribute("id", logueado.getId());
+            modelo.addAttribute("log", logueado);
+          ;
             modelo.put("profesional", userServ.getOne(id));
             modelo.addAttribute("id", userServ.getOne(id).getId());
             userServ.eliminarUsuario(userServ.getOne(id).getId());
@@ -241,8 +241,9 @@ public class UsuarioControlador {
            return "panelAdmin.html";
         } catch (Exception ex) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("user", logueado);
-            modelo.addAttribute("id", logueado.getId());
+            modelo.addAttribute("log", logueado);
+              modelo.addAttribute("id", userServ.getOne(id).getId());
+            userServ.eliminarUsuario(userServ.getOne(id).getId());
             modelo.put("error", ex.getMessage());
             return "panelAdmin.html";
         }

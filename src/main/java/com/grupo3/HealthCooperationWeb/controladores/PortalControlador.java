@@ -35,7 +35,6 @@ public class PortalControlador {
         return "index.html";
     }
 
- 
     @GetMapping("/login") // Boton para logearme en el index(LT)
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {
 
@@ -53,13 +52,14 @@ public class PortalControlador {
         // para que según los roles se dirija a las vistas correspondientes
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("user", logueado);
             if (logueado.getRol().toString().equals("ADMINISTRADOR")) {
                 return "redirect:/admin/dashboard";
             } else {
                 if (logueado.getRol().toString().equals("MODERADOR")) {
                     return "redirect:/profesionales/dashboard";
                 } else {
-                    return "redirect:/";
+                    return "perfil.html";
                 }
             }
 
@@ -69,44 +69,24 @@ public class PortalControlador {
         }
     }
 
-    @PostMapping("/crearUsuario") //************* POST del form del registro.html LT)
+    @PostMapping("/crear") //************* POST del form del registro.html LT)
     public String crearUsuario(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
             String fecha_nac, String obrasocial, String gruposanguineo,
             String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException {
 
-        try {          
-             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("user", logueado);
-            modelo.addAttribute("id", logueado.getId());
-            if (logueado != null) {
-                            
+        try {
+            pacienteServ.registrarPaciente(archivo, nombre, apellido, dni,
+                    email, password, password2, telefono, direccion,
+                    fecha_nac, gruposanguineo, obrasocial);
+            modelo.put("exito", "¡Usuario registrado con exito!");
+            return "redirect:/";
 
-                if (logueado.getRol().toString().equals("ADMINISTRADOR")) {
-                    profesionalServicio.registrarProfesional(archivo, nombre, apellido,
-                            dni, email, password, password2, telefono,
-                            direccion, fecha_nac, especialidad, valorConsulta);
-                    modelo.put("exito", "¡Profesional registrado con exito!");
-                      return "panelAdmin.html";
-                }
-            } else {
-                pacienteServ.registrarPaciente(archivo, nombre, apellido, dni,
-                        email, password, password2, telefono, direccion,
-                        fecha_nac, gruposanguineo, obrasocial);
-                modelo.put("exito", "¡Usuario registrado con exito!");
-                return "inicio.html";
-            }
         } catch (MyException ex) {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            modelo.put("error", ex.getMessage());
-            Especialidad[] especialidades = Especialidad.values();
-            modelo.addAttribute("especialidades", especialidades);
 
             return "altaProfesional.html";
         }
-        return "registro.html";
 
     }
 

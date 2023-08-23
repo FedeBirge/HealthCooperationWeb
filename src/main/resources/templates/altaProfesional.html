@@ -121,8 +121,9 @@
             <!-- Fin de la barra lateral -->
 
             <!-- Contenedor de contenido -->
-            <div id="content-wrapper" >
-
+            <div id="content-wrapper" class="d-flex flex-column">
+          
+                 
                 <!-- Contenido principal -->
                 <div id="content">
 
@@ -146,9 +147,9 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${user.nombre}"></span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
                                     <img class="/img-profile rounded-circle"
-                                         th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 25px;">
+                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -182,7 +183,7 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Alta Profesional</h1>
                         </div>
-                        <form class= "user" th:action="@{/crearUsuario}" method="POST" enctype="multipart/form-data">
+                        <form class= "user" th:action="@{/profesionales/crear}" method="POST" enctype="multipart/form-data">
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                 <div class="card-body">
                                     <h5 class="card-title text-center">Error!</h5>
@@ -232,7 +233,7 @@
                                     <input  class="form-control form-control-user" type="password" id="password2" placeholder="Repetir Contraseña" name="password2" th:value="${password2}">
                                 </div>
 
-                                <div sec:authorize="hasRole('ADMINISTRADOR')" class="col-sm-6 mb-3">
+                                <div  class="col-sm-6 mb-3">
                                     <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" for="especialidad">Especialidad</label>
                                     <select class="form-control form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
                                         <option value="" disabled selected>Seleccione...</option>
