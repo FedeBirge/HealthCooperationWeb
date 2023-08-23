@@ -20,21 +20,20 @@ import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 
 @Controller
-@PreAuthorize("hasAnyRole('ROLE_USUARIO')")
+@PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
 @RequestMapping("/admin")
 public class AdminControlador {
 
     private ProfesionalServicio profesionalServicio;
 
     @GetMapping("/dashboard") // Vista principal para el Admin al Logearse (LT)
-    public String panelAdministrador(ModelMap modelo) {
+    public String panelAdministrador(ModelMap modelo, HttpSession session) {
         try {
-<<<<<<< HEAD
-=======
+
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("id", logueado.getId());
->>>>>>> developer
+
             return "panelAdmin.html";
         } catch (Exception e) {
               Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -48,15 +47,12 @@ public class AdminControlador {
     @GetMapping("/registrar") // *************regsitro de usuario para el admin(LT)*****//
     public String registrar(ModelMap modelo, HttpSession session) {
         try {
-<<<<<<< HEAD
+
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.put("user", logueado);
             modelo.addAttribute("id", logueado.getId());
-=======
-          Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-              modelo.addAttribute("log", logueado);
-              
->>>>>>> developer
+       
+
             return "altaUsuario.html";
         } catch (Exception ex) {
                    Usuario logueado = (Usuario) session.getAttribute("usuariosession");

@@ -15,6 +15,18 @@
 		</div>
 		<div class="login-content">
 			<form th:action="@{/logincheck}" method="POST">
+                            <div th:if="${error != null}" class="card text-white bg-primary mb-3 mensajeError" >
+                        <div class="card-body">
+                            <h5 class="card-title">Error!</h5>
+                            <p class="card-text" th:text="${error}"></p>
+                        </div>
+                    </div>
+                    <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                        <div class="card-body">
+                            <h5 class="card-title">Exito!</h5>
+                            <p class="card-text" th:text="${exito}"></p>
+                        </div>
+                    </div>
 				<img src="../img/avatar.svg">
 				<h2 class="title">Accede a tu cuenta</h2>
            		<div class="input-div one">
@@ -23,7 +35,7 @@
            		   </div>
            		   <div class="div">
            		   		
-                <input class="form-control fas fa-user " placeholder="Correo electrónico" type="email" id="email"  name="email" >
+                <input class="form-control fas fa-user " placeholder="Correo electrónico" required type="email" id="email"  name="email" >
            		   </div>
            		</div>
            		<div class="input-div pass">
@@ -32,7 +44,7 @@
            		   </div>
            		   <div class="div">
            		    	
-                <input class="form-control fas fa-lock" placeholder="Contraseña" type="password" id="password"  name="password" >
+                <input class="form-control fas fa-lock" placeholder="Contraseña" type="password" required id="password"  name="password" >
             	   </div>
             	</div>
             	
