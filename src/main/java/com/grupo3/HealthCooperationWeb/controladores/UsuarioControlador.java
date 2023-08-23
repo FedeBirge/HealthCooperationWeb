@@ -44,7 +44,7 @@ public class UsuarioControlador {
     @GetMapping("/verUsuario/{id}") // ruta para ver el perfil de un usuario
     public String verPerfilUsusario(@PathVariable("id") String id, ModelMap modelo) {
 
-        modelo.put("usuario", userServ.getOne(id));
+        modelo.put("user", userServ.getOne(id));
         return "perfil.html";
 
     }
@@ -55,9 +55,10 @@ public class UsuarioControlador {
 
             return "registro.html";
         } catch (Exception ex) {
-            modelo.put("error", ex.getMessage());     
-        return "registro.html";
-       
+            modelo.put("error", ex.getMessage());
+            return "registro.html";
+
+        }
     }
 
     @PostMapping("/crearUsuario") // ruta para crear un usuario POST
@@ -72,24 +73,24 @@ public class UsuarioControlador {
             userServ.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
             modelo.put("exito", "!Usuario registrado con exito!");
-            return "altaProfesional.html";
+            return "altaUsuario.html";
 
         } catch (MyException ex) {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
+          Especialidad[] especialidades = Especialidad.values();
+            modelo.addAttribute("especialidades", especialidades);
             modelo.put("error", ex.getMessage());
-            return "altaProfesional.html";
+            return "altaUsuario.html";
         }
 
     }
 
-    @GetMapping("/listarUsuarios") // *********ruta para listar los usuarios(LT)
+    @GetMapping("/listar") // *********ruta para listar los usuarios(LT)
     // en panel del administrador
     public String listarUsusario(ModelMap modelo) {
         try {
             List<Usuario> users = userServ.listarUsuarios();
             modelo.addAttribute("users", users);
-            return "lista_usuarios.html";
+            return "verProfesionales.html";
         } catch (Exception ex) {
             List<Usuario> users = userServ.listarUsuarios();
             modelo.addAttribute("users", users);
@@ -205,12 +206,18 @@ public class UsuarioControlador {
 
     @GetMapping("/eliminar/{id}") //********** ruta para eliminar un usuario
 //(no tiene una vista, es para un boton de la vista listar_usuarios)
-    public String eliminarU(@PathVariable("id") String id, ModelMap modelo) {
+    public String eliminarU(@PathVariable("id") String id, ModelMap modelo,HttpSession session) {
 
         try {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
             modelo.put("exito", "Usuario eliminado con exito!");
             return "redirect:/admin/dashboard";
         } catch (Exception ex) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
             modelo.put("error", ex.getMessage());
             return "redirect:/admin/dashboard";
         }
@@ -220,19 +227,25 @@ public class UsuarioControlador {
     @PostMapping("/eliminar/{id}") //********************** ruta para eliminar un usuario
 //(no tiene una vista, es para un boton de la //
 // vista listar_usuarios)
-    public String eliminarUser(@PathVariable("id") String id, ModelMap modelo) {
+    public String eliminarUser(@PathVariable("id") String id, ModelMap modelo,HttpSession session) {
 
         try {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
             modelo.put("profesional", userServ.getOne(id));
             modelo.addAttribute("id", userServ.getOne(id).getId());
             userServ.eliminarUsuario(userServ.getOne(id).getId());
 
             modelo.put("exito", "Usuario eliminado con exito!");
-            return "redirect:/admin/dashboard";
+           return "panelAdmin.html";
         } catch (Exception ex) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
             modelo.put("error", ex.getMessage());
-            return "redirect:/admin/dashboard";
+            return "panelAdmin.html";
         }
     }
-}
 
+}

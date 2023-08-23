@@ -20,9 +20,7 @@ public class ImagenServicio {
     // Guardar imagen
     @Transactional
     public Imagen guardar(MultipartFile archivo) throws MyException, IOException {
-        if (archivo.isEmpty()) {
-
-        } else {
+        if (archivo != null) {
             try {
                 Imagen imagen = new Imagen();
                 imagen.setMime(archivo.getContentType());
@@ -36,6 +34,7 @@ public class ImagenServicio {
             }
         }
         return null;
+
     }
 
     // Actualizar imagen

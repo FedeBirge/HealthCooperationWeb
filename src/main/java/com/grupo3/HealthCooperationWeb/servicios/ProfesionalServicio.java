@@ -96,6 +96,7 @@ public class ProfesionalServicio extends UsuarioServicio {
 //        profesional.setOferta(new Oferta());
 //        profesional.setDiasDisponibles(new ArrayList());
         profesional.setRol(Rol.MODERADOR);
+
         Imagen imagen = imagenServ.guardar(archivo);
         profesional.setImagen(imagen);
 
@@ -120,8 +121,8 @@ public class ProfesionalServicio extends UsuarioServicio {
 
                 throw new MyException("Debe ingresar una especialidad al profesional");
             }
-            System.out.println("esp "+especialidad);
-            System.out.println("valor" +valorConsulta);
+            System.out.println("esp " + especialidad);
+            System.out.println("valor" + valorConsulta);
             prof.setEspecialidad(pasarStringEspecialidad(especialidad));
             prof.setValorConsulta(valorConsulta);
             Imagen imagen = imagenServ.actualizar(archivo, id);

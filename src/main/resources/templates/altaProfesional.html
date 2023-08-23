@@ -35,7 +35,7 @@
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Panel de Administrador </div>
+                    <div class="sidebar-brand-text mx-3">Panel Administrador </div>
                 </a>
 
                 <!-- Divisor -->
@@ -43,9 +43,9 @@
 
                 <!-- Panel -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" th:href="@{/}">
 
-                        <span>Index</span></a>
+                        <span>Home</span></a>
                 </li>
 
                 <!-- Divisor -->
@@ -66,8 +66,8 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Acciones</h6>
+                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
                             <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
-                            <a class="collapse-item" th:href="@{/profesionales/crear}">Alta Profesionales</a>
                         </div>
                     </div>
                 </li>
@@ -83,7 +83,7 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
 
-                            <a class="collapse-item" th:href="@{/}">Ver Pacientes</a>
+                            <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
                     </div>
@@ -97,8 +97,8 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/}">Alta Usuarios</a>
-                            <a class="collapse-item" th:href="@{/}">Ver Usuarios</a>
+                            <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+                            <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
                         </div>
@@ -121,7 +121,7 @@
             <!-- Fin de la barra lateral -->
 
             <!-- Contenedor de contenido -->
-            <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content-wrapper" >
 
                 <!-- Contenido principal -->
                 <div id="content">
@@ -139,16 +139,16 @@
                         <!-- Barra superior Barra de navegación -->
                         <ul class="navbar-nav ml-auto">
 
-                            
+
                             <div class="topbar-divider d-none d-sm-block"></div>
 
                             <!--Información del usuario -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${user.nombre}"></span>
                                     <img class="/img-profile rounded-circle"
-                                         th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 100px;">
+                                         th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 25px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -240,10 +240,36 @@
                                                 th:value="${especialidad}" th:text="${especialidad}"></option>
                                     </select>
                                 </div>    
+                                 <div class="input-group mb-4">
+                                 <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4">Imagen</label>
+                                 
+                                                                                
+                                            <input  type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
+                                        </div>
+                                          <div class="col-sm-6 mb-3">
+                                   
+                                    <class="contenedorImagen">
+                                        <img id="imagenPrevia" src="#" alt="" class="imagenPrevia" style="max-width: 100%; max-height: 100px;">
+                                        </div> 
 
-                                <div class="grid w-full max-w-xs items-center gap-1.5">
-                                    <label class="text-sm text-gray-400 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Imagen</label>
-                                    <input id="picture" type="file" class="flex h-10 w-full rounded-full border border-input bg-white px-3 py-2 text-sm text-gray-400 file:border-0 file:bg-transparent file:text-gray-600 file:text-sm file:font-medium">
+                                        <script>
+                                            function previsualizarImagen() {
+                                                var archivo = document.getElementById('foto').files[0];
+                                                var imagenPrevia = document.getElementById('imagenPrevia');
+
+                                                if (archivo) {
+                                                    var lector = new FileReader();
+
+                                                    lector.onload = function (event) {
+                                                        imagenPrevia.src = event.target.result;
+                                                    };
+
+                                                    lector.readAsDataURL(archivo);
+                                                } else {
+                                                    imagenPrevia.src = "#";
+                                                }
+                                            }
+                                        </script>
                                 </div>
 
                             </div>

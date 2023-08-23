@@ -152,7 +152,7 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Alta Usuario</h1>
                         </div>
-                        <form class= "user" th:action="@{/}" method="POST" enctype="multipart/form-data">
+                        <form class= "user" th:action="@{/user/crearUsuario}" method="POST" enctype="multipart/form-data">
 
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3">
@@ -198,16 +198,7 @@
                                 <div>
                                     <img id="imagenPrevia" src="#" alt="" style="max-width: 100%; max-height: 100px;">
                                 </div> 
-                                <div class="col-sm-6 mb-3">
-                                   <div sec:authorize="hasRole('ADMINISTRADOR')" class="col-sm-6 mb-3">
-                                    <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" for="especialidad">Especialidad</label>
-                                    <select class="form-control form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
-                                        <option value="" disabled selected>Seleccione...</option>
-                                        <option th:each="especialidad : ${especialidades}"
-                                                th:value="${especialidad}" th:text="${especialidad}"></option>
-                                    </select>
-                                </div>    
-
+                                
                                 <div class="grid w-full max-w-xs items-center gap-1.5">
                                     <label class="text-sm text-gray-400 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Imagen</label>
                                     <input id="picture" type="file" class="flex h-10 w-full rounded-full border border-input bg-white px-3 py-2 text-sm text-gray-400 file:border-0 file:bg-transparent file:text-gray-600 file:text-sm file:font-medium">
