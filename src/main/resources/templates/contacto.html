@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Contactoº</title>
+
+        <link rel="stylesheet" href="../css/contacto.css">
+
+        <link  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+               rel="stylesheet"
+               integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+               crossorigin="anonymous"/>
+    </head>
+    <body>
+        <section>
+            <div class="container">
+                <div class="contactoInfo rounded-box">
+                    <div>
+                        <h2>Contacto</h2>
+                        <ul class="info">
+                            <li>
+
+                                <span><img src="../img/location.png" ></span>
+
+                                <span>Av.Hipotética 123<br>
+                                    Barrio Saludable<br>
+                                    Ciudad Buenos Aires,<br> CBA 54321<br>
+                                    Argentina</span>
+                            </li>
+                            <li>
+
+                                <span><img src="../img/mail.png" ></span>
+                                <span>healthcooperation@gmail.com</span>
+                            </li>
+                            <li>
+                                <span><img src="../img/call.png" ></span>
+
+                                <span>543810000000</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="sci">
+
+                        <li><a href="#"><img src="../img/1.png"></a></li>
+                        <li><a href="#"><img src="../img/2.png"></a></li>
+                        <li><a href="#"><img src="../img/3.png"></a></li>
+                        <li><a href="#"><img src="../img/4.png"></a></li>
+                        <li><a href="#"><img src="../img/5.png"></a></li>
+
+                    </ul>
+                </div>
+                <form th:action=${"/email/contacto"} method="post">
+                    <div th:if="${error != null}" class="card text-white bg-primary mb-3 mensajeError" >
+                        <div class="card-body">
+                            <h5 class="card-title">Error!</h5>
+                            <p class="card-text" th:text="${error}"></p>
+                        </div>
+                    </div>
+                    <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                        <div class="card-body">
+                            <h5 class="card-title">Exito!</h5>
+                            <p class="card-text" th:text="${exito}"></p>
+                        </div>
+                    </div>
+                    <div class="contanctoFormulario rounded-box">
+                        <h2>Enviar Mensaje</h2>
+                        <div class="formulariobox">
+                            <div class="inputbox w50">
+                                <input type="text" required id="nombre" name="nombre">
+                                <span>Nombre</span>
+                            </div>
+                            <div class="inputbox w50">
+                                <input type="text" required id="apellido" name="apellido">
+                                <span>Apellido</span>
+                            </div>
+                            <div class="inputbox w50">
+                                <input type="text" required id="email" name="email">
+                                <span>Direccion de correo electronico</span>
+                            </div>
+                            <div class="inputbox w50">
+                                <input type="text" required id="telefono" name="telefono">
+                                <span>Numero de telefono</span>
+                            </div>
+                            <div class="inputbox w50">
+                                <input type="text" required id="esp" name="esp">
+                                <span>Especialidad</span>
+                            </div>
+                            <div class="inputbox w100">
+                                <textarea required id="msj" name="msj"></textarea>
+                                <span>Escriba mas detalles aqui....</span>
+                            </div>
+                            <div class="inputbox w50">
+                                <input type="submit" value="Enviar">
+                            </div>
+                        </div>
+                    </div>
+                        <form th:action=${"/email/contacto"} method="post">
+                    <div th:if="${error != null}" class="card text-white bg-primary mb-3 mensajeError" >
+                        <div class="card-body">
+                            <h5 class="card-title">Error!</h5>
+                            <p class="card-text" th:text="${error}"></p>
+                        </div>
+                    </div>
+                    <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                        <div class="card-body">
+                            <h5 class="card-title">Exito!</h5>
+                            <p class="card-text" th:text="${exito}"></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en"html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Admin</title>
+
+        <!-- Fuentes personalizadas-->
+        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Css -->
+        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+
+    </head>
+
+    <body id="page-top">
+
+        <!-- Contenedor de páginas-->
+        <div id="wrapper">
+
+            <!-- barra lateral -->
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+                <!-- Barra lateral - Marca -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/admin/dashboard}">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel de Administrador </div>
+                </a>
+
+                <!-- Divisor -->
+                <hr class="sidebar-divider my-0">
+
+                <!-- Panel -->
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}">
+
+                        <span>Index</span></a>
+                </li>
+
+                <!-- Divisor -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Gestion
+                </div>
+
+          
+
+             
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Usuarios</span>
+                    </a>
+                    <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" th:href="@{/}">Alta Usuarios</a>
+                            <a class="collapse-item" th:href="@{/}">Ver Usuarios</a>
+
+
+                        </div>
+                    </div>
+                </li>
+
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+
+<!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+            </ul>
+            <!-- Fin de la barra lateral -->
+
+            <!-- Contenedor de contenido -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Contenido principal -->
+                <div id="content">
+
+                    <!-- Barra superior -->
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                        <!-- Alternar barra lateral (barra superior) -->
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+
+
+                        <!-- Barra superior Barra de navegación -->
+                        <ul class="navbar-nav ml-auto">
+
+
+
+
+                            <!--Información del usuario -->
+                            <li class="nav-item dropdown no-arrow">
+                                <a th:if="${session.usuariosession != null}" class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
+                                    <img class="/img-profile rounded-circle" th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
+                                </a>
+                                <!-- Menú desplegable - Información del usuario-->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                     aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Perfil
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Configuraciones
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar sesión
+                                    </a>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </nav>
+                    <!-- Fin de la barra superior -->
+
+                    <!-- Comenzar contenido de la página -->
+                    <div class="container-fluid">
+
+                        <!-- Encabezado de página -->
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Alta Usuario</h1>
+                        </div>
+                        <form class= "user" th:action="@{/user/crearUsuario}" method="POST" enctype="multipart/form-data">
+
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3">
+                                    <input type="text" class="form-control form-control-user"  id="name" placeholder="Nombre" name="nombre" th:value="${nombre}">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <input type="text" class="form-control form-control-user"   id="last-name" placeholder="Apellido" name="apellido" th:value="${apellido}">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+
+                                    <input class="form-control form-control-user" type="number" id="dni" placeholder="DNI" name="dni" th:value="${dni}">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <input class="form-control form-control-user" type="number" id="telefono" placeholder="Telefono" name="telefono" th:value="${telefono}">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <input class="form-control form-control-user" type="email" id="email" placeholder="Correo electrónico" name="email" th:value="${email}">
+                                </div>
+
+                                <div class="col-sm-6 mb-3">
+
+                                    <input class="form-control form-control-user" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
+                                </div>
+
+                                
+                                <div class="col-sm-6 mb-3">
+                                    <input  class="form-control form-control-user" type="password" id="password" placeholder="Contraseña" name="password" th:value="${password}">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <input  class="form-control form-control-user" type="password" id="password2" placeholder="Repetir Contraseña" name="password2" th:value="${password2}">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <input  class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
+                                </div>
+                                <div  class="col-sm-6 mb-3">
+                  
+                                    <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    
+                                    <input class="form-control form-control-user" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
+                                </div>
+                                <div>
+                                    <img id="imagenPrevia" src="#" alt="" style="max-width: 100%; max-height: 100px;">
+                                </div> 
+                                
+                                <div class="grid w-full max-w-xs items-center gap-1.5">
+                                    <label class="text-sm text-gray-400 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Imagen</label>
+                                    <input id="picture" type="file" class="flex h-10 w-full rounded-full border border-input bg-white px-3 py-2 text-sm text-gray-400 file:border-0 file:bg-transparent file:text-gray-600 file:text-sm file:font-medium">
+                                </div>
+
+                    <div class="d-grid gap-2 col-12 mx-auto text-center">
+                        <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Dar de Alta</button>
+                    </div>
+                    </form>
+                    <!-- Fin del contenido principal -->
+
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>HealtCooperationWeb ©2023</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- Fin del Footer -->
+
+                </div>
+                <!-- Fin del contenedor de contenido -->
+
+            </div>
+            <!-- Envoltura de fin de página -->
+
+            <!-- Desplácese hasta el botón superior-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
+
+            <!-- Cierre de sesión modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bootstrap core JavaScript-->
+            <script src="../vendor/jquery/jquery.min.js"></script>
+            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Core plugin JavaScript-->
+            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+            <!-- Custom scripts for all pages-->
+            <script src="../js/sb-admin-2.min.js"></script>
+
+            <!-- Page level plugins -->
+            <script src="../vendor/chart.js/Chart.min.js"></script>
+
+            <!-- Page level custom scripts -->
+            <script src="../js/demo/chart-area-demo.js"></script>
+            <script src="../js/demo/chart-pie-demo.js"></script>
+
+    </body>
+
+</html>

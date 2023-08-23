@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -11,65 +11,106 @@
             integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
             crossorigin="anonymous"
             />
-        <link rel="stylesheet" href="css/estilos.css">
+        <link rel="stylesheet" href="../css/registro.css">
     <body>
+        <img src="../img/olita.png" class="wave" alt="">
         <div class="container py-5">
-            <div class="card m-auto" style="width:500px;">
-                <div class="card-body">
-                    <h1 class="text-center mb-5">Registro de Cliente</h1>
-                    <form th:action="@{/registro}" method="POST" enctype="multipart/form-data">
-                        <div th:if="${error != null}" class="card text-white bg-primary mb-3 mensajeError" >
-                            <div class="card-body">
-                                <h5 class="card-title">Error!</h5>
-                                <p class="card-text" th:text="${error}"></p>
+            <div class="row">
+                <div class="col-6">
+                    <img src="../img/fondoRegistro.svg" class="img-fluid imgBg" alt="">
+                </div>
+                <div class="col-6 col-12-lg">
+                    <div class="card m-auto carta">
+                        <div class="card-body">
+                            <h1 th:if="${session.usuariosession == null}" class="text-center mb-5"><b> Registro de Usuario</b></h1>
+                            <form th:action="@{/paciente/crear}" method="POST" enctype="multipart/form-data">
+
+                                <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">Error!</h5>
+                                        <p class="card-text text-center" th:text="${error}"></p>
+                                    </div>
+                                </div>
+                                <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">Exito!</h5>
+                                        <p class="card-text text-center" th:text="${exito}"></p>
+                                    </div>
+                                </div> 
+                            <div class="input-group mb-4 ">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="name" placeholder="Nombre" name="nombre" th:value="${nombre}">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="last-name" placeholder="Apellido" name="apellido" th:value="${apellido}">
                             </div>
-                        </div>
-                        <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
-                            <div class="card-body">
-                                <h5 class="card-title">Exito!</h5>
-                                <p class="card-text" th:text="${exito}"></p>
+                            <div class="input-group mb-4">
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="email" id="email" placeholder="Correo electrónico" name="email" th:value="${email}">
                             </div>
-                        </div>
-                        <div class="input-group mb-4">
-                            <span class="input-group-text">Nombre</span>
-                            <input class="form-control" type="text" id="name" placeholder="pepe" name="nombre" th:value="${nombre}">
-                            <span class="input-group-text">Apellido</span>
-                            <input class="form-control" type="text" id="last-name" placeholder="venturas" name="apellido" th:value="${apellido}">
-                        </div>
-                        <div class="input-group mb-4">
-                            <span class="input-group-text">Email</span>
-                            <input class="form-control" type="email" id="email" placeholder="example@example.com" name="email" th:value="${email}">
-                        </div>
-                        <div class="input-group mb-4">
-                            <span class="input-group-text">Password</span>
-                            <input class="form-control" type="password" id="password" placeholder="*******" name="password" th:value="${password}">
-                            <span class="input-group-text">Password2</span>
-                            <input class="form-control" type="password" id="password2" placeholder="******" name="password2" th:value="${password2}">
-                        </div>
-                        <div class="input-group mb-4">
-                            <span class="input-group-text">Direccion</span>
-                            <input class="form-control" type="text" id="address" placeholder="San Martin" name="direccion" th:value="${direccion}">
-                            <span class="input-group-text">Telefono</span>
-                            <input class="form-control" type="number" id="telefono" placeholder="444444444" name="telefono" th:value="${telefono}">
-                        </div>
-                        <div class="input-group mb-4">
+                            <div class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="password" id="password" placeholder="Contraseña" name="password" th:value="${password}">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="password" id="password2" placeholder="Contraseña" name="password2" th:value="${password2}">
+                            </div>
+                            <div class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
+                             
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="number" id="telefono" placeholder="Telefono" name="telefono" th:value="${telefono}">
+                            </div>
+                            <div class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="number" id="dni" placeholder="DNI" name="dni" th:value="${dni}">
+                            </div>
+                            <div class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
+                            </div>
+                          
+                            <div  class="input-group mb-4">
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
+                            </div>
+                            <div  class="input-group mb-4">
+                                
+                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
+                            </div>    
+                            <div class="contenedorImagen">
+                            <img id="imagenPrevia" src="#" alt="" class="imagenPrevia">
+                        </div>    
+                            <div class="input-group mb-4">
                             <span class="input-group-text">Foto</span>
-                            <input class="form-control" type="file" id="foto" name="archivo">
+                            <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
                         </div>
-                        <div class="input-group mb-4">
-                            <span class="input-group-text">DNI</span>
-                            <input class="form-control" type="number" id="dni" placeholder="33333333333" name="dni" th:value="${dni}">
-                        </div>
-                        <div class="input-group mb-4">
-                            <span class="input-group-text">Fecha de nacimiento</span>
-                            <input class="form-control" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
-                        </div>
-                        <div class="text-center mb-4">
-                            <button class="btn btn-lg btn-primary" type="submit">Enviar</button>
-                        </div>
-                    </form>
+
+
+                        <script>
+                            function previsualizarImagen() {
+                                var archivo = document.getElementById('foto').files[0];
+                                var imagenPrevia = document.getElementById('imagenPrevia');
+
+                                if (archivo) {
+                                    var lector = new FileReader();
+
+                                    lector.onload = function (event) {
+                                        imagenPrevia.src = event.target.result;
+                                    };
+
+                                    lector.readAsDataURL(archivo);
+                                } else {
+                                    imagenPrevia.src = "#";
+                                }
+                            }
+                        </script>
+                   
+                            
+                            <div class="d-grid gap-2 col-12 mx-auto ">
+                                <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Registrarse</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+
         </div>
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

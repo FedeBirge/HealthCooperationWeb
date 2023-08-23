@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +37,17 @@ public class UsuarioServicio implements UserDetailsService {
     private UsuarioRepositorio usuarioRepo; // Repositorio de usuarios
 
     @Autowired
-    private ImagenServicio imagenServ; // Repositorio de usuarios
+    private ImagenServicio imagenServ; //
 
     @Transactional
     // Metodo para crear un usuario
-    public void crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
-            String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException {
+    public Usuario crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
+            String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException, IOException {
         // Se validan los datos ingresados
         validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
-
+           if (usuarioRepo.buscarPorEmail(email) != null) {
+            throw new MyException("EL mail ingresado ya existe! Ingreso otro!");
+        }
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);
@@ -62,7 +63,7 @@ public class UsuarioServicio implements UserDetailsService {
 
         Imagen imagen = imagenServ.guardar(archivo);
         usuario.setImagen(imagen);
-        usuarioRepo.save(usuario);
+        return usuarioRepo.save(usuario);
 
     }
 
@@ -76,9 +77,7 @@ public class UsuarioServicio implements UserDetailsService {
         Optional<Usuario> respuesta = usuarioRepo.findById(id);
         if (respuesta.isPresent()) {
             Usuario usuario = respuesta.get();
-            if (!usuarioRepo.buscarPorEmail(email).getId().equals(usuario.getId())) {
-                throw new MyException("EL mail ingresado ya existe en otro ususario! Ingreso otro!");
-            }
+      
             usuario.setNombre(nombre);
             usuario.setApellido(apellido);
             usuario.setDni(dni);
@@ -86,6 +85,7 @@ public class UsuarioServicio implements UserDetailsService {
             usuario.setPassword(new BCryptPasswordEncoder().encode(password));
             usuario.setTelefono(telefono);
             usuario.setDireccion(direccion);
+             usuario.setFecha_nac(pasarStringDate(fecha_nac));
             usuario.setActivo(true);
 
             String idImg = null;
@@ -93,7 +93,7 @@ public class UsuarioServicio implements UserDetailsService {
                 idImg = usuario.getImagen().getId();
             }
             if (archivo.getBytes().length != 0) {
-                Imagen imagen = imagenServ.actualizar(archivo, idImg);
+                Imagen imagen = imagenServ.actualizar(archivo, id);
                 usuario.setImagen(imagen);
             }
             usuarioRepo.save(usuario);
@@ -138,7 +138,9 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
-
+    public Usuario buscarPorMail(String email){
+        return usuarioRepo.buscarPorEmail(email);
+    }
     // Metodo para validar los datos ingresados antes de persistirlos
     protected void validar(String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac)
@@ -146,19 +148,16 @@ public class UsuarioServicio implements UserDetailsService {
         if (nombre == null || nombre.isEmpty()) {
             throw new MyException("Debe ingresar su nombre");
         }
-        if (apellido == null || nombre.isEmpty()) {
+        if (apellido == null || apellido.isEmpty()) {
             throw new MyException("Debe ingresar su apellido");
         }
-        if (dni == null || nombre.isEmpty()) {
+        if (dni == null || dni.isEmpty()) {
             throw new MyException("Debe ingresar su N° de documento");
         }
 
         if (email == null || email.isEmpty()) {
             throw new MyException("Debe ingresar un email");
-        }
-        if (usuarioRepo.buscarPorEmail(email) != null) {
-            throw new MyException("EL mail ingresado ya existe! Ingreso otro!");
-        }
+        }     
 
         if (password == null || password.isEmpty() || password.length() < 6) {
             throw new MyException("Debe ingresar una contraseña válida");
@@ -170,13 +169,13 @@ public class UsuarioServicio implements UserDetailsService {
             throw new MyException("Las contraseñas no coinciden");
         }
         if (telefono == null || nombre.isEmpty()) {
-            throw new MyException("Debe ingresar un nombre");
+            throw new MyException("Debe ingresar un telefono");
         }
-        if (direccion == null || nombre.isEmpty()) {
-            throw new MyException("Debe ingresar un nombre");
+        if (direccion == null || direccion.isEmpty()) {
+            throw new MyException("Debe ingresar una direccion");
         }
-        if (fecha_nac == null || nombre.isEmpty()) {
-            throw new MyException("Debe ingresar un nombre");
+        if (fecha_nac == null || fecha_nac.isEmpty()) {
+            throw new MyException("Debe ingresar una fecha");
         }
 
     }
@@ -210,7 +209,7 @@ public class UsuarioServicio implements UserDetailsService {
         if (usuario != null && usuario.getActivo().equals(Boolean.TRUE)) {
             List<GrantedAuthority> permisos = new ArrayList<>();
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().toString());
-            
+
             permisos.add(p);
 
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -225,4 +224,5 @@ public class UsuarioServicio implements UserDetailsService {
             return null;
         }
     }
+
 }
