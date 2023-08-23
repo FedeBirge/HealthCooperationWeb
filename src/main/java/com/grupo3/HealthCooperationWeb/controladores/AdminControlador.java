@@ -1,27 +1,40 @@
+
 package com.grupo3.HealthCooperationWeb.controladores;
 
-import com.grupo3.HealthCooperationWeb.entidades.Usuario;
-import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
+import java.io.IOException;
+
 import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.grupo3.HealthCooperationWeb.entidades.Usuario;
+import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
+import com.grupo3.HealthCooperationWeb.excepciones.MyException;
+import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 
 @Controller
+@PreAuthorize("hasAnyRole('ROLE_USUARIO')")
 @RequestMapping("/admin")
 public class AdminControlador {
 
-     @Autowired
-    private UsuarioServicio userServ;  
-     
+    private ProfesionalServicio profesionalServicio;
+
     @GetMapping("/dashboard") // Vista principal para el Admin al Logearse (LT)
-    public String panelAdministrador(ModelMap modelo,  HttpSession session) {
+    public String panelAdministrador(ModelMap modelo) {
         try {
+<<<<<<< HEAD
+=======
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("id", logueado.getId());
+>>>>>>> developer
             return "panelAdmin.html";
         } catch (Exception e) {
               Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -31,12 +44,19 @@ public class AdminControlador {
             return "redirect: /dashboard";
         }
     }
-     @GetMapping("/registrar") // *************regsitro de usuario para el admin(LT)*****//
+
+    @GetMapping("/registrar") // *************regsitro de usuario para el admin(LT)*****//
     public String registrar(ModelMap modelo, HttpSession session) {
         try {
+<<<<<<< HEAD
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.put("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
+=======
           Usuario logueado = (Usuario) session.getAttribute("usuariosession");
               modelo.addAttribute("log", logueado);
               
+>>>>>>> developer
             return "altaUsuario.html";
         } catch (Exception ex) {
                    Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -45,6 +65,43 @@ public class AdminControlador {
             return "altaUsuario.html";
 
         }
+    }
+
+    // crear con GET
+    @GetMapping("/crearProfesional")
+    public String crearProfesional(ModelMap modelo) {
+        Rol[] roles = Rol.values();
+        modelo.addAttribute("roles", roles);
+        return "registro.html";
+
+    }
+
+    // crear con POST
+    @PostMapping("/crearProfesional")
+    public String crearProfesional(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
+            @RequestParam String dni, @RequestParam String email, @RequestParam String password,
+            @RequestParam String password2, @RequestParam String telefono, @RequestParam String direccion,
+            @RequestParam String fecha_nac,
+            @RequestParam String especialidad, @RequestParam String valorConsulta, ModelMap modelo)
+            throws MyException, IOException {
+
+        try {
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
+            profesionalServicio.registrarProfesional(archivo, nombre, apellido, dni, email, password, password2,
+                    telefono,
+                    direccion, fecha_nac, especialidad, valorConsulta);
+            modelo.put("exito", "¡Profesional registrado con exito!");
+            return "registroProfesional.html";
+
+        } catch (MyException ex) {
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
+            modelo.put("error", ex.getMessage());
+            System.out.println("Error de permisos para esta acción");
+            return "registro.html";
+        }
+
     }
 
 }
