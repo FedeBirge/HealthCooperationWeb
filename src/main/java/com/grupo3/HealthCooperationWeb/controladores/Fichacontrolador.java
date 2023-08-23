@@ -32,26 +32,26 @@ public class Fichacontrolador {
         
     }
     
-    @PostMapping("/paciente/historia_clinica/ficha")
-    public String registro(String id, Date fecha_consulta, String nota, ModelMap modelo) throws MyException{
-        
-        try{
-            fichaServicio.crearFicha(nota, fecha_consulta, nota);
-            
-            modelo.put("exito", "La ficha ha sido registrada exitosamente");
-            
-            
-        }catch(MyException ex){
-            
-            List<Ficha> fichas = fichaServicio.mostrarFichas();
-            
-            modelo.addAttribute("fichas", fichas);
-            
-            modelo.put("error", ex.getMessage());
-            return "ficha_form.html";//volvemos a cargar el formulario
-        }
-        
-        return "index.html";
-    }
+//    @PostMapping("/paciente/historia_clinica/ficha")
+//    public String registro(String id, Date fecha_consulta, String nota, ModelMap modelo) throws MyException{
+//        
+//        try{
+//            fichaServicio.crearFicha(nota, fecha_consulta, nota);
+//            
+//            modelo.put("exito", "La ficha ha sido registrada exitosamente");
+//            
+//            
+//        }catch(MyException ex){
+//            
+//            List<Ficha> fichas = fichaServicio.mostrarFichas();
+//            
+//            modelo.addAttribute("fichas", fichas);
+//            
+//            modelo.put("error", ex.getMessage());
+//            return "ficha_form.html";//volvemos a cargar el formulario
+//        }
+//        
+//        return "index.html";
+//    }
     
 }

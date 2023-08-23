@@ -23,7 +23,6 @@
                     <div class="card m-auto carta">
                         <div class="card-body">
                             <h1 th:if="${session.usuariosession == null}" class="text-center mb-5"><b> Registro de Usuario</b></h1>
-                             <h1 th:if="${session.usuariosession != null}"  class="text-center mb-5"><b> Registro de Profesional</b></h1>
                             <form th:action="@{/crearUsuario}" method="POST" enctype="multipart/form-data">
 
                                 <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
