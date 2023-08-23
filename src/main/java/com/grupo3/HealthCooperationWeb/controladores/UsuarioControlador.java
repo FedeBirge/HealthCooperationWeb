@@ -51,17 +51,13 @@ public class UsuarioControlador {
 
     @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
     public String registrar(ModelMap modelo, HttpSession session) {
+        try {
 
-        try{
-     
-        return "registro.html";
-        }
-        catch(Exception ex) {
-            modelo.put("error", ex.getMessage());
-       
             return "registro.html";
-
-        }
+        } catch (Exception ex) {
+            modelo.put("error", ex.getMessage());     
+        return "registro.html";
+       
     }
 
     @PostMapping("/crearUsuario") // ruta para crear un usuario POST
@@ -110,8 +106,8 @@ public class UsuarioControlador {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
-                Especialidad[] especialidades = Especialidad.values();
-                modelo.addAttribute("especialidades", especialidades);
+            Especialidad[] especialidades = Especialidad.values();
+            modelo.addAttribute("especialidades", especialidades);
             if (userServ.getOne(id).getRol().toString().equals("ADMINISTRADOR")) {
                 modelo.addAttribute("user", userServ.getOne(id));
                 modelo.addAttribute("id", userServ.getOne(id).getId());
@@ -121,7 +117,7 @@ public class UsuarioControlador {
             if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
                 modelo.addAttribute("user", profServ.getOne(id));
                 modelo.addAttribute("id", profServ.getOne(id).getId());
-              
+
                 modelo.addAttribute("especialidades", especialidades);
                 return "modificar_user.html";
             }
@@ -170,7 +166,7 @@ public class UsuarioControlador {
         try {
             System.out.println(userServ.getOne(id).getFecha_nac());
             Rol[] roles = Rol.values();
-                Especialidad[] especialidades = Especialidad.values();
+            Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
             modelo.put("user", userServ.getOne(id));
             modelo.addAttribute("id", userServ.getOne(id).getId());
@@ -237,7 +233,6 @@ public class UsuarioControlador {
             modelo.put("error", ex.getMessage());
             return "redirect:/admin/dashboard";
         }
-
     }
-
 }
+

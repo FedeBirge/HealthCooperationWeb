@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin</title>
+    <title>Profesional</title>
 
     <!-- Fuentes personalizadas-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -35,7 +35,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-solid fa-lock"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Panel de Administrador </div>
+                <div class="sidebar-brand-text mx-3">Panel Profesional</div>
             </a>
 
             <!-- Divisor -->
@@ -56,21 +56,7 @@
                 Gestion
             </div>
 
-            <!-- Elemento de navegación: menú Contraer páginas -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-hospital-user"></i>
-                    <span>Profesionales</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Acciones</h6>
-                        <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
-                        <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
-                    </div>
-                </div>
-            </li>
+          
 
             <!-- Elemento de navegación - Menú Contraer utilidades -->
             <li class="nav-item">
@@ -88,22 +74,7 @@
                     </div>
                 </div>
             </li>
-              <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-user"></i>
-                    <span>Usuarios</span>
-                </a>
-                <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" th:href="@{/}">Alta Usuarios</a>
-                        <a class="collapse-item" th:href="@{/}">Ver Usuarios</a>
-                        
-                      
-                    </div>
-                </div>
-            </li>
+              
 
 
             <!-- Divider -->
@@ -139,7 +110,7 @@
                     <!-- Barra superior Barra de navegación -->
                     <ul class="navbar-nav ml-auto">
 
-                   
+                     
                             <div class="topbar-divider d-none d-sm-block"></div>
 
                             <!--Información del usuario -->
@@ -153,7 +124,7 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" th:href="@{/user/verUsuariol/__${id}__}">
+                                    <a class="dropdown-item" href="#">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
@@ -200,13 +171,17 @@
                                     </div>
                                 </div> 
             <!-- Fin del contenido principal -->
- 
-    </section>
+<!-- 404 Error Text -->
+                    <div class="text-center">
+                        <div class="error mx-auto" data-text="404">404</div>
+                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
+                        <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
+                        <a href="index.html">&larr; Back to Dashboard</a>
+                    </div>
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        
                         <span>HealtCooperationWeb ©2023</span>
                     </div>
                 </div>
