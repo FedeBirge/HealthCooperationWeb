@@ -69,11 +69,30 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                     
-                        <a class="collapse-item" th:href="@{/}">Ver Pacientes</a>
+                   <a class="collapse-item" th:href="@{/}">Ver Pacientes</a>
+                     
                       
                     </div>
                 </div>
             </li>
+              <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Agenda</span>
+                    </a>
+                    <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" th:href="@{/}">Mi Agenda</a>
+                            <a class="collapse-item" th:href="@{/}">Mi Disponibilidad</a>
+                            <a class="collapse-item" th:href="@{/}">Mi Oferta</a>
+                           
+
+
+                        </div>
+                    </div>
+                </li>
               
 
 

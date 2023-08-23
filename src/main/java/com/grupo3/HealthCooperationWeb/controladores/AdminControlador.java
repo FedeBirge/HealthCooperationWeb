@@ -29,8 +29,17 @@ public class AdminControlador {
     @GetMapping("/dashboard") // Vista principal para el Admin al Logearse (LT)
     public String panelAdministrador(ModelMap modelo) {
         try {
+<<<<<<< HEAD
+=======
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.addAttribute("id", logueado.getId());
+>>>>>>> developer
             return "panelAdmin.html";
         } catch (Exception e) {
+              Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.addAttribute("id", logueado.getId());
             modelo.put("error", e.getMessage());
             return "redirect: /dashboard";
         }
@@ -39,11 +48,19 @@ public class AdminControlador {
     @GetMapping("/registrar") // *************regsitro de usuario para el admin(LT)*****//
     public String registrar(ModelMap modelo, HttpSession session) {
         try {
+<<<<<<< HEAD
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.put("user", logueado);
             modelo.addAttribute("id", logueado.getId());
+=======
+          Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+              modelo.addAttribute("log", logueado);
+              
+>>>>>>> developer
             return "altaUsuario.html";
         } catch (Exception ex) {
+                   Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+              modelo.addAttribute("log", logueado);
             modelo.put("error", ex.getMessage());
             return "altaUsuario.html";
 

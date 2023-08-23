@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es"html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <head>
 
@@ -201,7 +201,7 @@
                         <div class="container-fluid">
 
                             <!-- Page Heading -->
-                            <h1 class="h3 mb-2 text-gray-800">Lista de Profesionales</h1>
+                            <h1 class="h3 mb-2 text-gray-800">Lista de Usuarios</h1>
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                 <div class="card-body">
                                     <h5 class="card-title text-center">Error!</h5>
@@ -216,7 +216,7 @@
                             </div> 
                             <!-- DataTales Example -->
                             <div class="card shadow mb-4">
-                           
+                              
                                 <div class="card-body">
                                     <div class="table-responsive">
 
@@ -240,7 +240,7 @@
                                                     <td th:value="${user.rol}" th:text="${user.rol}"></td>
                                                     <td >
 
-                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/profesionales/perfil/__${user.id}__}"> Modificar </a>
+                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
                                                     </td>
 
                                                     <td >
