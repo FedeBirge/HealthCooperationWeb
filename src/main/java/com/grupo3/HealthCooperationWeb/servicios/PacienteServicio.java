@@ -5,6 +5,7 @@ import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
+import com.grupo3.HealthCooperationWeb.repositorios.ObraSocialRepositorio;
 import com.grupo3.HealthCooperationWeb.repositorios.PacienteRepositorio;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class PacienteServicio extends UsuarioServicio {
     private PacienteRepositorio pacienteRepositorio;
     @Autowired
     private ImagenServicio imagenServicio;
+    private ObraSocialRepositorio obraRepo;
 
     @Transactional
     public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
@@ -44,9 +46,7 @@ public class PacienteServicio extends UsuarioServicio {
         paciente.setFecha_nac(pasarStringDate(fecha_nac));
         paciente.setActivo(true);
         paciente.setGrupoSanguineo(grupoSanguineo);
-//        ObraSocial obra = new ObraSocial();
-//        obra.setNombre(obraSocial);
-//        paciente.setObraSocial(obra);
+      paciente.setObraSocial(obraSocial);
 //        paciente.setTurnos(new ArrayList<Turno>());
 //        paciente.setHistoria(new HistoriaClinica());
 
@@ -73,7 +73,8 @@ public class PacienteServicio extends UsuarioServicio {
             super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
             pas.setGrupoSanguineo(grupoSanguineo);
-            pas.getObraSocial().setNombre(obraSocial);
+          
+            pas.setObraSocial(obraSocial);
             Imagen imagen = imagenServicio.actualizar(archivo, id);
             pas.setImagen(imagen);
 

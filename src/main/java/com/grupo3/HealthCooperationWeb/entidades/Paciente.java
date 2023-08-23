@@ -28,8 +28,8 @@ public class Paciente extends Usuario{
     private List<Turno> turnos;
     @OneToOne 
     private HistoriaClinica historia;
-    @OneToOne 
-    private ObraSocial obraSocial;
+    
+    private String obraSocial;
     
 
    

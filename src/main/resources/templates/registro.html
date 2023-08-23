@@ -23,7 +23,7 @@
                     <div class="card m-auto carta">
                         <div class="card-body">
                             <h1 th:if="${session.usuariosession == null}" class="text-center mb-5"><b> Registro de Usuario</b></h1>
-                            <form th:action="@{/crearUsuario}" method="POST" enctype="multipart/form-data">
+                            <form th:action="@{/paciente/crear}" method="POST" enctype="multipart/form-data">
 
                                 <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                     <div class="card-body">
@@ -66,14 +66,11 @@
                                 
                                 <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
                             </div>
-                            <div sec:authorize="hasRole('ADMINISTRADOR')" class="input-group mb-4">
-                                
-                                <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="number" id="dni" placeholder="Valor de la consulta" name="valorConsulta" th:value="${valorConsulta}">
-                            </div>
-                            <div th:if="${session.usuariosession == null}" class="input-group mb-4">
+                          
+                            <div  class="input-group mb-4">
                                 <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
                             </div>
-                            <div th:if="${session.usuariosession == null}" class="input-group mb-4">
+                            <div  class="input-group mb-4">
                                 
                                 <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
                             </div>    
@@ -104,14 +101,7 @@
                                 }
                             }
                         </script>
-                            <div sec:authorize="hasRole('ADMINISTRADOR')" class="input-group mb-4">
-                                <label class="input-group-text" for="especialidad">Especialidad:</label>
-                                <select  class="input-group-text" id="especialidad" name="especialidad">
-                                    <option value="" disabled selected>Seleccione...</option>
-                                    <option class="input-group-text" th:each="especialidad : ${especialidades}"
-                                            th:value="${especialidad}" th:text="${especialidad}"></option>
-                                </select><br>
-                            </div>
+                   
                             
                             <div class="d-grid gap-2 col-12 mx-auto ">
                                 <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Registrarse</button>
