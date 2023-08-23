@@ -24,12 +24,16 @@ public class ImagenControlador {
     public ResponseEntity<byte[]> imagenUsuario(@PathVariable String id) {
 
         Usuario usuario = userServ.getOne(id);
+        if(usuario.getImagen()!=null){
         byte[] imagen = usuario.getImagen().getContenido();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
 
         return new ResponseEntity<>(imagen, headers, HttpStatus.OK);
-
+        }
+        else{
+        return null;
+        }
     }
 
 }
