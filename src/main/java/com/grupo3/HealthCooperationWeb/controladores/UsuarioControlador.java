@@ -51,15 +51,7 @@ public class UsuarioControlador {
 
     @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
     public String registrar(ModelMap modelo, HttpSession session) {
-<<<<<<< HEAD
-        try {
 
-            return "altaUsuario.html";
-        } catch (Exception ex) {
-            modelo.put("error", ex.getMessage());
-
-            return "altaUsuario.html";
-=======
         try{
      
         return "registro.html";
@@ -68,7 +60,7 @@ public class UsuarioControlador {
             modelo.put("error", ex.getMessage());
        
             return "registro.html";
->>>>>>> eb8cb9a03dd0e6ec548a9999a4ec3e1f3efe855e
+
         }
     }
 
