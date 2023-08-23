@@ -52,7 +52,7 @@ public class PortalControlador {
         // para que según los roles se dirija a las vistas correspondientes
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("user", logueado);
+            modelo.addAttribute("log", logueado);
             if (logueado.getRol().toString().equals("ADMINISTRADOR")) {
                 return "redirect:/admin/dashboard";
             } else {
@@ -64,6 +64,8 @@ public class PortalControlador {
             }
 
         } catch (Exception ex) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
             modelo.put("error", ex.getMessage());
             return "login.html";
         }
