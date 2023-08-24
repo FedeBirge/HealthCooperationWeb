@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
 @RequestMapping("/admin")
 public class AdminControlador {
 
@@ -20,9 +21,11 @@ public class AdminControlador {
     @GetMapping("/dashboard") // Vista principal para el Admin al Logearse (LT)
     public String panelAdministrador(ModelMap modelo, HttpSession session) {
         try {
+
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("id", logueado.getId());
+
             return "panelAdmin.html";
         } catch (Exception e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -36,8 +39,10 @@ public class AdminControlador {
     @GetMapping("/registrar") // **regsitro de usuario para el admin(LT)**//
     public String registrar(ModelMap modelo, HttpSession session) {
         try {
+
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
+            modelo.put("user", logueado);
+            modelo.addAttribute("id", logueado.getId());
 
             return "altaUsuario.html";
         } catch (Exception ex) {
