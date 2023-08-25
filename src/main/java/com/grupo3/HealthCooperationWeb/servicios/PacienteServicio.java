@@ -47,6 +47,16 @@ public class PacienteServicio extends UsuarioServicio {
         paciente.setActivo(true);
         paciente.setGrupoSanguineo(grupoSanguineo);
       paciente.setObraSocial(obraSocial);
+//      ObraSocial obra = new ObraSocial();
+//      obra.setNombre(obraSocial);
+//      obraRepo.save(obra);
+//      paciente.setObraSocial(obra);
+      
+      
+      
+      
+      
+      
 //        paciente.setTurnos(new ArrayList<Turno>());
 //        paciente.setHistoria(new HistoriaClinica());
 
