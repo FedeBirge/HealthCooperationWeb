@@ -51,7 +51,7 @@
                 <!-- Divisor -->
                 <hr class="sidebar-divider">
 
-              
+
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Gestion
@@ -67,7 +67,7 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Acciones</h6>
-                               <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
+                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
                             <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
 
-                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
+                            <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                          <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+                            <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -150,15 +150,15 @@
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-search fa-fw"></i>
                                 </a>
-                              
 
-                            <div class="topbar-divider d-none d-sm-block"></div>
 
-                            <!--Información del usuario -->
+                                <div class="topbar-divider d-none d-sm-block"></div>
+
+                                <!--Información del usuario -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
                                     <img class="/img-profile rounded-circle"
                                          th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
                                 </a>
@@ -214,7 +214,7 @@
                             </div> 
                             <!-- DataTales Example -->
                             <div class="card shadow mb-4">
-                           
+
                                 <div class="card-body">
                                     <div class="table-responsive">
 
@@ -231,22 +231,15 @@
                                             </thead>
 
                                             <tbody>
-
                                                 <tr th:each="user : ${users}">
                                                     <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
                                                     <td th:value="${user.apellido}" th:text="${user.apellido}"></td>
                                                     <td th:value="${user.email}" th:text="${user.email}"></td>
                                                     <td th:value="${user.rol}" th:text="${user.rol}"></td>
                                                     <td >
-
                                                         <a type="button" class="btn btn-success me-md-2" th:href="@{/profesionales/perfil/__${user.id}__}"> Modificar </a>
-                                                    </td>
-
-                                                    <td >
-                                                        <form th:action="@{/user/eliminar/__${user.id}__}" method="POST"> 
-                                                            <button   class="btn btn-success me-md-2"  type="summit">Eliminar</button>
-                                                                     </form>
-                                                         </td>
+                                                        <a type="button" class="btn btn-danger" th:action="@{/user/eliminar/__${user.id}__}"> Eliminar </a>
+                                                    </td>                   
                                             </tbody>
                                         </table>
                                     </div>
@@ -274,6 +267,47 @@
 
             </div>
             <!-- End of Page Wrapper -->
+            <!-- Eliminar usuario modal -->
+            <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">¿Quieres eliminar este usuario?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Selecciona "Eliminar" a continuación si estás seguro de que deseas eliminar este usuario.</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                            <button class="btn btn-danger" id="deleteUserButton" type="button">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // Espera a que el documento esté listo
+                document.addEventListener("DOMContentLoaded", function () {
+                // Obtiene la referencia al botón de abrir modal y al formulario
+                var openModalButton = document.getElementById("openDeleteModal");
+                var deleteUserForm = document.getElementById("deleteUserForm");
+
+                // Agrega un evento de clic al botón de abrir modal
+                openModalButton.addEventListener("click", function () {
+                // Abre el modal de eliminación cuando se hace clic en el botón
+                $('#deleteUserModal').modal('show');
+                });
+
+                // Agrega un evento de clic al botón de eliminar dentro del modal
+                var deleteUserButton = document.getElementById("deleteUserButton");
+                deleteUserButton.addEventListener("click", function () {
+                // Envía el formulario de eliminación cuando se hace clic en el botón
+                deleteUserForm.submit();
+                });
+                });
+            </script>
 
             <!-- Scroll to Top Button-->
             <a class="scroll-to-top rounded" href="#page-top">
@@ -281,23 +315,23 @@
             </a>
 
             <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
 
             <!-- Bootstrap core JavaScript-->

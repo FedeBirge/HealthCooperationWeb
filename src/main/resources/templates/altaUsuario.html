@@ -83,7 +83,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-
+                             <a class="collapse-item" th:href="@{/}">Alta Paciente</a>
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -226,6 +226,14 @@
                                     
                                     <input class="form-control form-control-user" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
                                 </div>
+                                  <div  class="col-sm-6 mb-3">
+                                    <label for="largeSelect" class="form-label">Rol</label>
+
+                                    <select class="form-control form-control inputEstilos border-top-0  border-end-0 border-start-0 border border-4" id="especialidad" name="rol">
+                                        <option value="" disabled selected>Seleccione...</option>
+                                        <option th:each="roles : ${roles}"
+                                                th:value="${roles}" th:text="${roles}"></option>
+                                    </select>
                                 <div>
                                     <img id="imagenPrevia" src="#" alt="" style="max-width: 100%; max-height: 25px;">
                                 </div> 

@@ -178,26 +178,13 @@
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
 
-                        <!-- Encabezado de página -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Alta Profesional</h1>
+                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Alta Paciente</h1>
                         </div>
-                        <form class= "user" th:action="@{/profesionales/crear}" method="POST" enctype="multipart/form-data">
-                            <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Error!</h5>
-                                    <p class="card-text text-center" th:text="${error}"></p>
-                                </div>
-                            </div>
-                            <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Exito!</h5>
-                                    <p class="card-text text-center" th:text="${exito}"></p>
-                                </div>
-                            </div> 
+                        <form class= "user" th:action="@{/user/crearUsuario}" method="POST" enctype="multipart/form-data">
+
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3">
-
                                     <input type="text" class="form-control form-control-user"  id="name" placeholder="Nombre" name="nombre" th:value="${nombre}">
                                 </div>
                                 <div class="col-sm-6 mb-3">
@@ -219,63 +206,32 @@
                                     <input class="form-control form-control-user" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
                                 </div>
 
-                                <div class="col-sm-6 mb-3">
-                                    <input  class="form-control form-control-user" type="number" id="dni" placeholder="Valor de la consulta" name="valorConsulta" th:value="${valorConsulta}">
-                                </div>
-                                <div class="col-sm-6 mb-3">
-                                    <input  class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
-                                </div>
+                                
                                 <div class="col-sm-6 mb-3">
                                     <input  class="form-control form-control-user" type="password" id="password" placeholder="Contraseña" name="password" th:value="${password}">
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <input  class="form-control form-control-user" type="password" id="password2" placeholder="Repetir Contraseña" name="password2" th:value="${password2}">
                                 </div>
-
-                                <div  class="col-sm-6 mb-3">
-                                    <label for="largeSelect" class="form-label">Especialidad</label>
-
-                                    <select class="form-control form-control inputEstilos border-top-0  border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
-                                        <option value="" disabled selected>Seleccione...</option>
-                                        <option th:each="especialidad : ${especialidades}"
-                                                th:value="${especialidad}" th:text="${especialidad}"></option>
-                                    </select>
-                                    
-                                </div>    
-                                 <div class="col-sm-6 mb-3 ">
-                                  <label for="largeSelect" class="form-label">Imagen</label>
-                                 
-                                                                                
-                                            <input  type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
-                                        </div>
-                                          <div class="col-sm-6 mb-3">
-                                   
-                                    <class="contenedorImagen">
-                                        <img id="imagenPrevia" src="#" alt="" class="imagenPrevia" style="max-width: 100%; max-height: 100px;">
-                                        </div> 
-
-                                        <script>
-                                            function previsualizarImagen() {
-                                                var archivo = document.getElementById('foto').files[0];
-                                                var imagenPrevia = document.getElementById('imagenPrevia');
-
-                                                if (archivo) {
-                                                    var lector = new FileReader();
-
-                                                    lector.onload = function (event) {
-                                                        imagenPrevia.src = event.target.result;
-                                                    };
-
-                                                    lector.readAsDataURL(archivo);
-                                                } else {
-                                                    imagenPrevia.src = "#";
-                                                }
-                                            }
-                                        </script>
+                                <div class="col-sm-6 mb-3">
+                                    <input  class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
                                 </div>
-
-                            </div>
-                    </div>
+                                <div  class="col-sm-6 mb-3">
+                  
+                                    <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    
+                                    <input class="form-control form-control-user" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
+                                </div>
+                                <div>
+                                    <img id="imagenPrevia" src="#" alt="" style="max-width: 100%; max-height: 100px;">
+                                </div> 
+                                
+                                <div class="grid w-full max-w-xs items-center gap-1.5">
+                                    <label class="text-sm text-gray-400 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Imagen</label>
+                                    <input id="picture" type="file" class="flex h-10 w-full rounded-full border border-input bg-white px-3 py-2 text-sm text-gray-400 file:border-0 file:bg-transparent file:text-gray-600 file:text-sm file:font-medium">
+                                </div>
 
                     <div class="d-grid gap-2 col-12 mx-auto text-center">
                         <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Dar de Alta</button>

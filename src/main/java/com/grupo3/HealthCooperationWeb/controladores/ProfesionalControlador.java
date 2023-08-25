@@ -195,7 +195,7 @@ public class ProfesionalControlador {
             modelo.put("profesional", usuarioServicio.getOne(id));
             modelo.addAttribute("id", usuarioServicio.getOne(id).getId());
             profesionalServicio.darDeBajaProfesional(id);
-            return "darseBaja.html";
+            return "panelAdmin.html";
         } catch (Exception ex) {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
