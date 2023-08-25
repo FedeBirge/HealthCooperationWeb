@@ -36,16 +36,23 @@
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Panel Paciente </div>
+                    <div class="sidebar-brand-text mx-3">Panel Paciente</div>
                 </a>
 
 
 
                 <!-- Panel -->
+                <li class="nav-item active mt-5 ms-2">
+                    <a class="nav-link" th:href="@{/}">
+                        <h3>Inicio</h3></a>    
+                </li>
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/}">
-
-                        <span>Index</span></a>
+                        <h3>Modificar mi Perfil</h3></a>    
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}">
+                        <h3> Ver mis Turnos</h3></a>    
                 </li>
 
             </ul>
@@ -73,27 +80,17 @@
 
                             <div class="topbar-divider d-none d-sm-block"></div>
 
-                            <!--Información del usuario
+                            
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
-                                    <img class="/img-profile rounded-circle"
-                                        th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 100px;">
-                                </a> -->
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 medium">Paciente</span>
+                                    <img class="/img-profile rounded-circle shake-vertical"
+                                        th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 30px;">
+                                </a> 
                             <!-- Menú desplegable - Información del usuario-->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Perfil
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuraciones
-                                </a>
-
-                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cerrar sesión
@@ -107,74 +104,36 @@
                     <!-- Fin de la barra superior -->
 
                     <!-- Comenzar contenido de la página -->
-                    <div class="container-fluid">
-                        <div class="container-fluid">
-
-
-
-                        </div>
-                        <!-- Encabezado de página -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Admin</h1>
-
-                        </div>
-                        <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Error!</h5>
-                                <p class="card-text text-center" th:text="${error}"></p>
+                    <main>
+                        <div class="container">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <h1 th:text="'Bienvenido '+${log.nombre}" class="text-center"></h1>
+                                <img class="/img-profile rounded-circle shake-vertical" th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 100px;">
                             </div>
-                        </div>
-                        <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Exito!</h5>
-                                <p class="card-text text-center" th:text="${exito}"></p>
-                            </div>
-                        </div> 
-                        <!-- Fin del contenido principal -->
-                        <section class="seccion-perfil-usuario">
-                            <div class="perfil-usuario-header">
-                                <div class="perfil-usuario-portada">
-                                    <div class="perfil-usuario-avatar">
-                                        <img class="/img-profile rounded-circle"
-                                             th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 100px;">
-
-                                    </div>
+                            
+                            <div class="row py-5">
+                                <div class="col-7">
+                                    <h2 th:text="'Nombre: '+ ${log.nombre}"></h2>
+                                    <h2 th:text="'Email: '+ ${log.email}"></h2>
+                                    <h2 th:text="'DNI: '+ ${log.dni}"></h2>
+                                    <h2 th:text="'fecha_nac: '+ ${log.fecha_nac}"></h2>
+                                    <h2 th:text="'Obra Social: '+ ${log.telefono}"></h2>
                                 </div>
-                                <div class="perfil-usuario-body">
-                                    <div class="perfil-usuario-bio">
-                                        <h3 class="titulo" >Maria Alejandra De la Cruz</h3>
-
-                                    </div>
-                                    <div class="perfil-usuario-footer">
-
-                                        <ul class="lista-datos">
-                                            <li><i class="icono fas fa-map-signs" ></i> Direccion de usuario:</li>
-                                            <li><i class="icono fas fa-phone-alt"></i> Telefono:</li>
-                                            <li><i class="icono fas fa-briefcase"></i> Trabaja en.</li>
-                                            <li><i class="icono fas fa-building"></i> Cargo</li>
-                                        </ul>
-                                        <ul class="lista-datos">
-                                            <li><i class="icono fas fa-map-marker-alt"></i> Ubicacion.</li>
-                                            <li><i class="icono fas fa-calendar-alt"></i> Fecha nacimiento.</li>
-
-                                        </ul>
-                                    </div>
-                                     
-                                            </div>
-                        </section>
-                        <!-- Footer -->
-                        <footer class="sticky-footer bg-white">
-                            <div class="container my-auto">
-                                <div class="copyright text-center my-auto">
-
-                                    <span>HealtCooperationWeb ©2023</span>
+                                <div class="col-5">
+                                    <h2 th:text="'Apellido: '+ ${log.apellido}"></h2>
+                                    <h2 th:text="'Direccion: '+ ${log.direccion}"></h2>
+                                    <h2 th:text="'Telefono: '+ ${log.telefono}"></h2>
+                                    <h2 th:text="'Grupo Sanguineo: '+ ${log.nombre}"></h2>
                                 </div>
                             </div>
-                        </footer>
-                        <!-- Fin del Footer -->
-
-                    </div>
+                        </div>
+                    </main>
                     <!-- Fin del contenedor de contenido -->
+                    <footer>
+                        <div class="footer text-center text-black">
+                            <div class="container"><medium>HealtCooperationWeb ©2023</medium></div>
+                        </div>
+                    </footer>
 
                 </div>
                 <!-- Envoltura de fin de página -->
