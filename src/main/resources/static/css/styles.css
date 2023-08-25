@@ -492,41 +492,33 @@ progress {
   font-size: 1.25rem;
   font-weight: 300;
 }
-.button {
-  position: relative;
-  overflow: hidden;
-  height: 3rem;
-  padding: 0 2rem;
-  border-radius: 1.5rem;
+.cssbuttons-io-button {
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 17px;
+  padding: 0.8em 1.5em 0.8em 1.2em;
+  color: white;
   background: #3d3a4e;
-  background-size: 400%;
-  color: #fff;
+   background: linear-gradient(135deg, #32be8f 10.8%, #38d39f 94.3%);
   border: none;
+  box-shadow: 0 0.7em 1.5em -0.5em 3d3a4e;
+  letter-spacing: 0.05em;
+  border-radius: 20em;
   margin-top: 2rem;
 }
 
-.button:hover::before {
-  transform: scaleX(1);
+.cssbuttons-io-button svg {
+  margin-right: 8px;
 }
 
-.button-content {
-  position: relative;
-  z-index: 1;
+.cssbuttons-io-button:hover {
+  box-shadow: 0 0.5em 1.5em -0.5em #4d36d0be;
 }
 
-.button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  width: 100%;
-  height: inherit;
-  border-radius: inherit;
-  background: linear-gradient(135deg, #32be8f 10.8%, #38d39f 94.3%);
-  );
-  transition: all 0.475s;
+.cssbuttons-io-button:active {
+  box-shadow: 0 0.3em 1em -0.5em #4d36d0be;
 }
 .display-1 {
   font-size: calc(1.625rem + 4.5vw);
