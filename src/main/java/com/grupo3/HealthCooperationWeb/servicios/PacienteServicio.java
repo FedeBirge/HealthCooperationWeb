@@ -49,7 +49,6 @@ public class PacienteServicio extends UsuarioServicio {
         paciente.setFecha_nac(pasarStringDate(fecha_nac));
         paciente.setActivo(true);
         paciente.setGrupoSanguineo(grupoSanguineo);
-<<<<<<< HEAD
 
         // Crear obra social
         ObraSocial obraSocial2 = obraSocialServicio.crearObraSocialReturn(obraSocial, "Completar email",
@@ -59,21 +58,6 @@ public class PacienteServicio extends UsuarioServicio {
 
         // paciente.setTurnos(new ArrayList<Turno>());
         // paciente.setHistoria(new HistoriaClinica());
-=======
-      paciente.setObraSocial(obraSocial);
-//      ObraSocial obra = new ObraSocial();
-//      obra.setNombre(obraSocial);
-//      obraRepo.save(obra);
-//      paciente.setObraSocial(obra);
-      
-      
-      
-      
-      
-      
-//        paciente.setTurnos(new ArrayList<Turno>());
-//        paciente.setHistoria(new HistoriaClinica());
->>>>>>> developer
 
         paciente.setRol(Rol.USUARIO);
         Imagen imagen = imagenServicio.guardar(archivo);
