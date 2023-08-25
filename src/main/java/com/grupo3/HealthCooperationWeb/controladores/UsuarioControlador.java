@@ -232,18 +232,14 @@ public class UsuarioControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            System.out.println(id);
-//            modelo.put("profesional", userServ.getOne(id));
-//            modelo.addAttribute("id", userServ.getOne(id).getId());
+            
             userServ.eliminarUsuario(id);
 
             modelo.put("exito", "Usuario eliminado con exito!");
-           return "panelAdmin.html";
+           return "redirect:/user/listar";
         } catch (Exception ex) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-              modelo.addAttribute("id", userServ.getOne(id).getId());
-            userServ.eliminarUsuario(userServ.getOne(id).getId());
+            modelo.addAttribute("log", logueado);                
             modelo.put("error", ex.getMessage());
             return "panelAdmin.html";
         }
