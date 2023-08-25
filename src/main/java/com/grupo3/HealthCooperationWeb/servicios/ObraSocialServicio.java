@@ -24,7 +24,8 @@ public class ObraSocialServicio {
 
     @Autowired
     private ObraSocialRepositorio obraRepo;
-@Transactional
+
+    @Transactional
     public void crearObraSocial(String nombre, String email, String telefono) throws MyException {
         // Se validan los datos ingresados
         validar(nombre, email, telefono);
@@ -38,15 +39,15 @@ public class ObraSocialServicio {
     }
 
     public ObraSocial getObraSocialById(String id) throws MyException {
-           return obraRepo.getById(id);
+        return obraRepo.getById(id);
     }
 
     public List<ObraSocial> listarObrasSociales() {
-        
+
         List<ObraSocial> obras = new ArrayList();
 
         try {
-            obras = obraRepo.findAll();           
+            obras = obraRepo.findAll();
 
             return obras;
 
@@ -55,33 +56,34 @@ public class ObraSocialServicio {
             return null;
         }
 
-
     }
-@Transactional
-    public void modificarObraSocial(String id,String nombre, String email, String telefono) throws MyException {
-        
-         validar(nombre, email, telefono);
-       Optional<ObraSocial> respuesta = obraRepo.findById(id);
+
+    @Transactional
+    public void modificarObraSocial(String id, String nombre, String email, String telefono) throws MyException {
+
+        validar(nombre, email, telefono);
+        Optional<ObraSocial> respuesta = obraRepo.findById(id);
         if (respuesta.isPresent()) {
-             ObraSocial obra = (ObraSocial)respuesta.get();
+            ObraSocial obra = (ObraSocial) respuesta.get();
             if (!obraRepo.buscarPorEmail(email).getId().equals(obra.getId())) {
                 throw new MyException("EL mail ingresado ya existe en otra Obra social! Ingreso otro!");
             }
-        obra.setNombre(nombre);
-        obra.setEmail(email);
-        obra.setTelefono(telefono);
+            obra.setNombre(nombre);
+            obra.setEmail(email);
+            obra.setTelefono(telefono);
 
-        obraRepo.save(obra);
+            obraRepo.save(obra);
 
+        }
     }
-    }
+
     @Transactional
     public void eliminarObraSocial(String id) throws MyException {
-        
+
         try {
-             Optional<ObraSocial> respuesta = obraRepo.findById(id);
+            Optional<ObraSocial> respuesta = obraRepo.findById(id);
             if (respuesta.isPresent()) {
-                      ObraSocial obra = (ObraSocial)respuesta.get();
+                ObraSocial obra = (ObraSocial) respuesta.get();
                 obraRepo.delete(obra);
             }
         } catch (Exception e) {

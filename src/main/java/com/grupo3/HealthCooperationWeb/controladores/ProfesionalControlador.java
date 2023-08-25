@@ -7,13 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
@@ -27,7 +25,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 @Controller
-// @PreAuthorize("hasRole('ROLE_MODERADOR')")
+
 @RequestMapping("/profesionales")
 public class ProfesionalControlador {
 
