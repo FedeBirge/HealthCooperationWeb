@@ -16,9 +16,9 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class ObraSocial{
+public class ObraSocial {
 
-   @Id
+    @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;

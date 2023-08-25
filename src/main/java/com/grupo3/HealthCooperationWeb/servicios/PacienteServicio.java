@@ -24,7 +24,10 @@ public class PacienteServicio extends UsuarioServicio {
     private PacienteRepositorio pacienteRepositorio;
     @Autowired
     private ImagenServicio imagenServicio;
+    @Autowired
     private ObraSocialRepositorio obraRepo;
+    @Autowired
+    ObraSocialServicio obraSocialServicio;
 
     @Transactional
     public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
@@ -46,9 +49,15 @@ public class PacienteServicio extends UsuarioServicio {
         paciente.setFecha_nac(pasarStringDate(fecha_nac));
         paciente.setActivo(true);
         paciente.setGrupoSanguineo(grupoSanguineo);
-      paciente.setObraSocial(obraSocial);
-//        paciente.setTurnos(new ArrayList<Turno>());
-//        paciente.setHistoria(new HistoriaClinica());
+
+        // Crear obra social
+        ObraSocial obraSocial2 = obraSocialServicio.crearObraSocialReturn(obraSocial, "Completar email",
+                "Completar telefono");
+        obraRepo.save(obraSocial2);
+        paciente.setObraSocial(obraSocial2);
+
+        // paciente.setTurnos(new ArrayList<Turno>());
+        // paciente.setHistoria(new HistoriaClinica());
 
         paciente.setRol(Rol.USUARIO);
         Imagen imagen = imagenServicio.guardar(archivo);
@@ -58,23 +67,32 @@ public class PacienteServicio extends UsuarioServicio {
     }
 
     @Transactional
-    // mopdificamos como si fuera un profesional, luego metodos especificos cambiar cada cosa
-    public void modificarPaciente(String id, MultipartFile archivo, String nombre, String apellido, String dni, String email,
+    // mopdificamos como si fuera un profesional, luego metodos especificos cambiar
+    // cada cosa
+    public void modificarPaciente(String id, MultipartFile archivo, String nombre, String apellido, String dni,
+            String email,
             String password, String password2,
-            String telefono, String direccion, String fecha_nac, String grupoSanguineo, String obraSocial) throws MyException, IOException {
+            String telefono, String direccion, String fecha_nac, String grupoSanguineo, String obraSocial)
+            throws MyException, IOException {
         super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
 
         Optional<Paciente> respuesta = pacienteRepositorio.findById(id);
         if (respuesta.isPresent()) {
             Paciente pas = respuesta.get();
-//            if (!super.buscarPorMail(email).getId().equals(prof.getId())) {
-//                throw new MyException("EL mail ingresado ya existe en otro ususario! Ingreso otro!");
-//            }
+            // if (!super.buscarPorMail(email).getId().equals(prof.getId())) {
+            // throw new MyException("EL mail ingresado ya existe en otro ususario! Ingreso
+            // otro!");
+            // }
             super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
-            super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+            super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion,
+                    fecha_nac);
             pas.setGrupoSanguineo(grupoSanguineo);
-          
-            pas.setObraSocial(obraSocial);
+
+            // FALTA PENSAR ESTO
+            // ObraSocial obraSocial1 = new ObraSocial();
+            // obraSocial1.setNombre(obraSocial);
+            // pas.setObraSocial(obraSocial1);
+
             Imagen imagen = imagenServicio.actualizar(archivo, id);
             pas.setImagen(imagen);
 
@@ -103,24 +121,24 @@ public class PacienteServicio extends UsuarioServicio {
         }
     }
 
-    //*****COMPLETAR    para traer los pacientes asociados a un profesional(id)
+    // *****COMPLETAR para traer los pacientes asociados a un profesional(id)
     public List<Paciente> listarPacientesXprof(String id) {
 
-//     List<Paciente> aux = new ArrayList<>();
-//        List<Paciente> pacientes = new ArrayList<>();
-//
-//        try {
-//            aux = (ArrayList<Paciente>) pacienteRepositorio.findAll();
-//            for (Paciente paciente : aux) {
-//                if (paciente.getActivo().equals(Boolean.TRUE)) {
-//                    pacientes.add(paciente);
-//                }
-//            }
-//            return pacientes;
-//        } catch (Exception e) {
-//            System.out.println("Hubo un error al listar profesionales.");
-//            return null;
-//        }
+        // List<Paciente> aux = new ArrayList<>();
+        // List<Paciente> pacientes = new ArrayList<>();
+        //
+        // try {
+        // aux = (ArrayList<Paciente>) pacienteRepositorio.findAll();
+        // for (Paciente paciente : aux) {
+        // if (paciente.getActivo().equals(Boolean.TRUE)) {
+        // pacientes.add(paciente);
+        // }
+        // }
+        // return pacientes;
+        // } catch (Exception e) {
+        // System.out.println("Hubo un error al listar profesionales.");
+        // return null;
+        // }
         return null;
     }
 
