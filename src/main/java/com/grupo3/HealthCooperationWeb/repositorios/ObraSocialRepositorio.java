@@ -10,10 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface ObraSocialRepositorio extends JpaRepository<ObraSocial, String> {
-<<<<<<< HEAD
-=======
-  
->>>>>>> developer
     @Query("SELECT o FROM ObraSocial o WHERE o.email =:email")
     public ObraSocial buscarPorEmail(@Param("email") String email);
 
