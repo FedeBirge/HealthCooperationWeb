@@ -38,6 +38,19 @@ public class ObraSocialServicio {
 
     }
 
+    @Transactional
+    public ObraSocial crearObraSocialReturn(String nombre, String email, String telefono) throws MyException {
+        // Se validan los datos ingresados
+        validar(nombre, email, telefono);
+        ObraSocial obra = new ObraSocial();
+        obra.setNombre(nombre);
+        obra.setEmail(email);
+        obra.setTelefono(telefono);
+
+        obraRepo.save(obra);
+        return obra;
+    }
+
     public ObraSocial getObraSocialById(String id) throws MyException {
         return obraRepo.getById(id);
     }

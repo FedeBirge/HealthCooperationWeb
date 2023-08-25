@@ -1,8 +1,11 @@
 
 package com.grupo3.HealthCooperationWeb.entidades;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -15,22 +18,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Paciente extends Usuario{
-    
+public class Paciente extends Usuario implements Serializable {
+
     protected String grupoSanguineo;
-    
-    /*
-        las relaciones en el UML son atributos de alguna entidad
-            y se debe indicar con anotaciones cual es ese tipo de relacion
-    */
-    
+
     @OneToMany
     private List<Turno> turnos;
-    @OneToOne 
+    @OneToOne
     private HistoriaClinica historia;
-    
-    private String obraSocial;
-    
+    @ManyToOne
+    @JoinColumn(name = "obra_social") // Nombre de la columna de clave externa en la tabla Paciente
+    private ObraSocial obraSocial;
 
-   
 }
