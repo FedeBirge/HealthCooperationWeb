@@ -69,12 +69,15 @@ public class PacienteServicio extends UsuarioServicio {
 
         // paciente.setTurnos(new ArrayList<Turno>());
         // paciente.setHistoria(new HistoriaClinica());
-
         paciente.setRol(Rol.USUARIO);
         Imagen imagen = imagenServicio.guardar(archivo);
         paciente.setImagen(imagen);
         pacienteRepositorio.save(paciente);
 
+    }
+
+    public Paciente getOne(String id) {
+        return pacienteRepositorio.getOne(id);
     }
 
     @Transactional

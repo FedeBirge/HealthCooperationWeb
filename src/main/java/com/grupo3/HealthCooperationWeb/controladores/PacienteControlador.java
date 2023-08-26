@@ -30,6 +30,14 @@ public class PacienteControlador {
     @Autowired
     private PacienteServicio pacienteServicio;
 
+    @GetMapping("/dashboard") // ruta para el panel administrativo
+    public String panelAdministrativo(ModelMap modelo, HttpSession session) {
+        Paciente logueado = (Paciente) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+
+        return "perfil.html";
+    }
+
     @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
     public String registrar(ModelMap modelo) {
         try {
@@ -50,7 +58,7 @@ public class PacienteControlador {
             String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException {
 
         try {
-            System.out.println(obrasocial + gruposanguineo);
+            
             pacienteServicio.registrarPaciente(archivo, nombre, apellido, dni,
                     email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
             modelo.put("exito", "¡Usuario registrado con exito!");
@@ -72,15 +80,15 @@ public class PacienteControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("user", pacienteServicio.getOne(id));
-            modelo.addAttribute("id", pacienteServicio.getOne(id).getId());
-            return "modificar_user.html";
+            
+            return "modificar_paciente.html";
 
         } catch (Exception ex) {
-            Rol[] roles = Rol.values();
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+           Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
+            modelo.addAttribute("user", pacienteServicio.getOne(id));
             modelo.put("error", ex.getMessage());
-            return "modificar_user.html";
+            return "modificar_paciente.html";
         }
 
     }
@@ -98,12 +106,13 @@ public class PacienteControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
+            modelo.addAttribute("user", pacienteServicio.getOne(id));
             pacienteServicio.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono,
                     direccion, fecha_nac, gruposanguineo, idObraSocial,
                     nombreObraSocial, emailObraSocial, telefonoObraSocial);
 
             modelo.put("exito", "¡Paciente modificado con exito!");
-            return "modificar_user.html";
+            return "modificar_paciente.html";
 
         } catch (MyException ex) {
 
@@ -113,7 +122,7 @@ public class PacienteControlador {
             modelo.addAttribute("id", pacienteServicio.getOne(id).getId());
 
             modelo.put("error", ex.getMessage());
-            return "modificar_user.html";
+            return "modificar_paciente.html";
         }
 
     }

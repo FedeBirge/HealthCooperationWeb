@@ -13,7 +13,7 @@
         <title>Mi Perfil</title>
 
         <!-- Fuentes personalizadas-->
-        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
@@ -84,22 +84,22 @@
 
                             <div class="topbar-divider d-none d-sm-block"></div>
 
-                            
+
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 medium">Paciente</span>
                                     <img class="/img-profile rounded-circle shake-vertical"
-                                        th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 30px;">
+                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 30px;">
                                 </a> 
-                            <!-- Menú desplegable - Información del usuario-->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Cerrar sesión
-                                </a>
-                            </div>
+                                <!-- Menú desplegable - Información del usuario-->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                     aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar sesión
+                                    </a>
+                                </div>
                             </li>
 
                         </ul>
@@ -109,7 +109,7 @@
 
                     <!-- Comenzar contenido de la página -->
                     <main>
-                      <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/paciente/modificar/__${id}__}" method="POST" enctype="multipart/form-data">
+                        <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/paciente/modificar/__${id}__}" method="POST" enctype="multipart/form-data">
                             <input hidden th:value="${id}" name="id">
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                 <div class="card-body">
@@ -163,27 +163,11 @@
                                     <label  class="form-label">Direccion</label>
                                     <input  class="form-control form-control-user" type="text" id="direccion" placeholder="Direccion" name="direccion" th:value="${user.direccion}">
                                 </div>
-                                <div  class="col-sm-6 mb-3">
-                                    <label  class="form-label">Obra Social</label>
-                                    <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
-                                </div>
-                                <div  class="col-sm-6 mb-3">
+                                  <div  class="col-sm-6 mb-3">
                                     <label  class="form-label">Grupo Sanguineo</label>
-                                    <input class="form-control form-control-user" type="text" id="grupo" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
+                                    <input class="form-control form-control-user" type="text" id="grupo" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${user.grupoSanguineo}">
                                 </div>    
-                                <div   th:if="${user.rol}=='MODERADOR'" class="col-sm-6 mb-3">
-
-                                    <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" for="especialidad">Especialidad</label>
-                                    <select  class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
-                                        <option th:text="${user.especialidad}+ '(Actual)'" disabled selected>+</option>
-                                        <option class="input-group-text" th:each="especialidad : ${especialidades}"
-                                                th:value="${especialidad}" th:text="${especialidad}"></option>
-                                    </select><br>
-                                </div>
-                                <div    th:if="${user.rol}=='MODERADOR'" class="col-sm-6 mb-3">
-                                    <label  class="form-label">Valor Consulta</label>
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="" id="valorConsulta"  name="valorConsulta" th:value="${user.valorConsulta}">
-                                </div>
+                                   
                                 <div class="col-sm-6 mb-3">
                                     <p class="form-label">¡Actualice su foto aquí!</p>
                                     <input type="file" class="form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" name="archivo" id="archivoInput" />
@@ -192,13 +176,42 @@
                                         <img id="imagenPerfil" class="form-label" th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 100px;" />
                                     </a>
                                 </div> 
+                                <!-- comment: falta difinir la estructura de la obra asocial 
+                                   <div  class="col-sm-6 mb-3">
+                                    <label  class="form-label">Obra Social</label>
+                                    <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="nombreObraSocial" th:value="${user.obrasocial.nombre}">
+                                </div>
+                                    -->
+                                <div class="d-grid gap-2 col-12 mx-auto text-center">
+                                  <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Modificacion</button>
+                                    </div>
+                            </div>
+
+                            <script>
+                                const archivoInput = document.getElementById('archivoInput');
+                                const imagenPerfil = document.getElementById('imagenPerfil');
+
+                                archivoInput.addEventListener('change', function () {
+                                    if (archivoInput.files && archivoInput.files[0]) {
+                                        const reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            imagenPerfil.src = e.target.result;
+                                        };
+                                        reader.readAsDataURL(archivoInput.files[0]);
+                                    } else {
+                                        // No se seleccionó ningún archivo, se mantiene la imagen actual
+                                    }
+                                });
+                            </script>
+
+                        </form>
 
 
-                        
-                        
+
+
                     </main>
                     <!-- Fin del contenedor de contenido -->
-                    
+
 
                 </div>
                 <!-- Envoltura de fin de página -->
@@ -227,38 +240,38 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
 
                 <!-- Bootstrap core JavaScript-->
-                <script src="../vendor/jquery/jquery.min.js"></script>
-                <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <script src="/vendor/jquery/jquery.min.js"></script>
+                <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
                 <!-- Core plugin JavaScript-->
-                <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+                <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
                 <!-- Custom scripts for all pages-->
-                <script src="../js/sb-admin-2.min.js"></script>
+                <script src="/js/sb-admin-2.min.js"></script>
 
                 <!-- Page level plugins -->
-                <script src="../vendor/chart.js/Chart.min.js"></script>
+                <script src="/vendor/chart.js/Chart.min.js"></script>
 
                 <!-- Page level custom scripts -->
-                <script src="../js/demo/chart-area-demo.js"></script>
-                <script src="../js/demo/chart-pie-demo.js"></script>
-                
-                <script>
-        const toggleButton = document.getElementById('toggleButton');
-        const elementToShowHide = document.getElementById('elementToShowHide');
+                <script src="/js/demo/chart-area-demo.js"></script>
+                <script src="/js/demo/chart-pie-demo.js"></script>
 
-        toggleButton.addEventListener('click', function() {
-            if (elementToShowHide.style.display === 'none') {
-                elementToShowHide.style.display = 'block'; // o 'inline', dependiendo del tipo de elemento
-            } else {
-                elementToShowHide.style.display = 'none';
-            }
-        });
-    </script>
+                <script>
+                    const toggleButton = document.getElementById('toggleButton');
+                    const elementToShowHide = document.getElementById('elementToShowHide');
+
+                    toggleButton.addEventListener('click', function () {
+                        if (elementToShowHide.style.display === 'none') {
+                            elementToShowHide.style.display = 'block'; // o 'inline', dependiendo del tipo de elemento
+                        } else {
+                            elementToShowHide.style.display = 'none';
+                        }
+                    });
+                </script>
                 </body>
 
                 </html>
