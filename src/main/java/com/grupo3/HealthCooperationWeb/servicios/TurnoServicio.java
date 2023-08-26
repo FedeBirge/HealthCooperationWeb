@@ -1,5 +1,6 @@
 package com.grupo3.HealthCooperationWeb.servicios;
 
+import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
@@ -153,6 +154,28 @@ public class TurnoServicio {
         }
         if (estado == null) {
             throw new MyException("El turno debe tener un estado");
+        }
+
+    }
+
+    public List<Turno> listarTurnosXProfesional(String idProfesional) {
+        Profesional profesional = new Profesional();
+
+        List<Turno> turnos = turnoRepo.findAll();
+        List<Turno> turnosXProfesional = new ArrayList<>();
+
+        try {
+            profesional = (Profesional) profServ.getOne(idProfesional);
+
+            for (Turno turno : turnos) {
+                if (turno.getProfesional().getId() == profesional.getId()) {
+                    turnosXProfesional.add(turno);
+                }
+            }
+            return turnosXProfesional;
+        } catch (Exception e) {
+            System.out.println("Turno: No pudieron ser listados los turnos de este idProfesional");
+            return null;
         }
 
     }

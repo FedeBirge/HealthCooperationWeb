@@ -39,42 +39,25 @@
                     <div class="sidebar-brand-text mx-3">Panel Paciente</div>
                 </a>
 
-                
-                <!-- Divisor -->
-                <hr class="sidebar-divider my-0">
-                
+
+
                 <!-- Panel -->
+               <li class="nav-item active mt-5 ms-2">
+                    <a class="nav-link" th:href="@{/}">
+                        <h3>Inicio</h3></a>    
+                </li>
+                <li class="nav-item active ms-2">
+                    <a class="nav-link" th:href="@{/inicio}">
+                        <h3>Ver mi Perfil</h3></a>    
+                </li>
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/}">
-                 
-                    <span>Index</span></a>
+                        <h3>Modificar mi Perfil</h3></a>    
                 </li>
-
-            <!-- Divisor -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Gestion
-            </div>
-            
-             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-user"></i>
-                    <span>Pacientes</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                    
-                   <a class="collapse-item" th:href="@{/inicio}">Ver mi Perfil</a>
-                   <a class="collapse-item" th:href="@{/paciente/perfil/__${log.id}__}">Modificar mi Perfil</a>
-                   <a class="collapse-item" th:href="@{/}">Ver mis Turnos</a>
-                      
-                    </div>
-                </div>
-             </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}">
+                        <h3> Ver mis Turnos</h3></a>    
+                </li>
 
             </ul>
             <!-- Fin de la barra lateral -->
@@ -126,31 +109,8 @@
 
                     <!-- Comenzar contenido de la página -->
                     <main>
-                        <div class="container" id='miPerfil'>
-                            <div class="d-flex align-items-center justify-content-center">
-                                <h1 th:text="'Bienvenido '+${log.nombre}" class="text-center"></h1>
-                                <img class="/img-profile rounded-circle shake-vertical" th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 100px;">
-                            </div>
-                            
-                            <div class="row py-5">
-                                <div class="col-7">
-                                    <h2 th:text="'Nombre: '+ ${log.nombre}"></h2>
-                                    <h2 th:text="'Email: '+ ${log.email}"></h2>
-                                    <h2 th:text="'DNI: '+ ${log.dni}"></h2>
-                                    <h2 th:text="'Fecha Nacimiento: '+ ${log.fecha_nac}"></h2>
-                                </div>
-                                <div class="col-5">
-                                    <h2 th:text="'Apellido: '+ ${log.apellido}"></h2>
-                                    <h2 th:text="'Direccion: '+ ${log.direccion}"></h2>
-                                    <h2 th:text="'Telefono: '+ ${log.telefono}"></h2>
-                                   
-                             
-                                </div>
-                            </div>
-                        </div>
                         
-                        
-                       
+                        <h1>EN CONSTRUCCION</h1>
                         
                         
                         
@@ -221,4 +181,3 @@
                 </body>
 
                 </html>
-
