@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/postturno.css" rel="stylesheet">
+    <title>PostTurno</title>
+</head>
+<body>
+    <div class="cookie-card">
+        <img src="doctora.avif" alt="Doctor's Image" class="doctor-image">
+        <span class="title">  Nombre del doctor</span>
+        <p class="description">Descripcion del doctor</a>. </p>
+        <div class="actions">
+            <h3 class="pref">
+                Ubicacion
+            </h3>
+        </div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d26275.05765963241!2d-58.40323675!3d-34.5944955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2sar!4v1693005218530!5m2!1ses-419!2sar" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="appointment-details">
+        <h2>Datos relativos de la cita</h2>
+        <label class="subtitulo" for="motivo">Motivo de visita:</label>
+        <input type="text" id="motivo" name="motivo" placeholder="Motivo de la visita">
+        
+        <label class="subtitulo" for="obra-social">Obra Social:</label>
+        <input type="text" id="obra-social" name="obra-social" placeholder="Obra Social">
+        
+        <label class="subtitulo">¿Es la primera vez que se atiende con este médico?</label>
+        <div class="radio-options">
+            <label>
+                <input type="radio" name="primera-vez" value="si">
+                Sí
+            </label>
+            <label>
+                <input type="radio" name="primera-vez" value="no">
+                No
+            </label>
+        </div>
+        
+        <button class="continue-button">
+            Continuar
+        </button>
+    </div>
+</body>
+</html>
