@@ -237,8 +237,12 @@
                                                     <td th:value="${user.email}" th:text="${user.email}"></td>
                                                     <td th:value="${user.rol}" th:text="${user.rol}"></td>
                                                     <td >
-                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/profesionales/perfil/__${user.id}__}"> Modificar </a>
-                                                        <a type="button" class="btn btn-danger" th:action="@{/user/eliminar/__${user.id}__}"> Eliminar </a>
+                                                           <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
+                                                    </td>
+                                                    <td>
+                                                        <form th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
+                                                            <a class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
+                                                        </form>
                                                     </td>                   
                                             </tbody>
                                         </table>
@@ -267,47 +271,37 @@
 
             </div>
             <!-- End of Page Wrapper -->
-            <!-- Eliminar usuario modal -->
-            <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">¿Quieres eliminar este usuario?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Selecciona "Eliminar" a continuación si estás seguro de que deseas eliminar este usuario.</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                            <button class="btn btn-danger" id="deleteUserButton" type="button">Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+     <div id="confirmationPopup" class="confirmation-popup">
+    <p>¿Estás seguro de que quieres eliminar este Profesional?</p>
+    <button id="confirmButton" class="btn btn-danger" onclick="confirmDeletion()">Confirmar</button>
+    <button id="cancelButton" class="btn btn-secondary" onclick="cancelDeletion()">Cancelar</button>
+</div>
 
-            <script>
-                // Espera a que el documento esté listo
-                document.addEventListener("DOMContentLoaded", function () {
-                // Obtiene la referencia al botón de abrir modal y al formulario
-                var openModalButton = document.getElementById("openDeleteModal");
-                var deleteUserForm = document.getElementById("deleteUserForm");
+<script th:inline="javascript">
+    function showConfirmationPopup(userId) {
+        document.getElementById('confirmationPopup').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+        userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+    }
 
-                // Agrega un evento de clic al botón de abrir modal
-                openModalButton.addEventListener("click", function () {
-                // Abre el modal de eliminación cuando se hace clic en el botón
-                $('#deleteUserModal').modal('show');
-                });
+    function confirmDeletion() {
+        if (confirm('Confirmar')) {
+            document.getElementById('deleteForm_' + userIdToDelete).submit();
+        }
+        closeConfirmationPopup();
+    }
 
-                // Agrega un evento de clic al botón de eliminar dentro del modal
-                var deleteUserButton = document.getElementById("deleteUserButton");
-                deleteUserButton.addEventListener("click", function () {
-                // Envía el formulario de eliminación cuando se hace clic en el botón
-                deleteUserForm.submit();
-                });
-                });
-            </script>
+    function cancelDeletion() {
+        closeConfirmationPopup();
+    }
+
+    function closeConfirmationPopup() {
+        document.getElementById('confirmationPopup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+</script>
+
+<div id="overlay" class="overlay"></div>
 
             <!-- Scroll to Top Button-->
             <a class="scroll-to-top rounded" href="#page-top">
