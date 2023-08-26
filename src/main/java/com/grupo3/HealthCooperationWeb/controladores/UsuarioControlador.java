@@ -49,10 +49,9 @@ public class UsuarioControlador {
 
     }
 
-  
-
     @PostMapping("/crearUsuario") // ruta para crear un usuario POST
-    public String crearUsuario(HttpSession session, MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
+    public String crearUsuario(HttpSession session, MultipartFile archivo, @RequestParam String nombre,
+            @RequestParam String apellido,
             @RequestParam String dni,
             @RequestParam String email, @RequestParam String password, @RequestParam String password2,
             @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
@@ -60,15 +59,15 @@ public class UsuarioControlador {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
-                   Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-              modelo.addAttribute("log", logueado);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
             userServ.crearUsuario(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
             modelo.put("exito", "!Usuario registrado con exito!");
             return "altaUsuario.html";
 
         } catch (MyException ex) {
-          Especialidad[] especialidades = Especialidad.values();
+            Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
             modelo.put("error", ex.getMessage());
             return "altaUsuario.html";
@@ -78,16 +77,16 @@ public class UsuarioControlador {
 
     @GetMapping("/listar") // *********ruta para listar los usuarios(LT)
     // en panel del administrador
-    public String listarUsusario(ModelMap modelo,HttpSession session) {
+    public String listarUsusario(ModelMap modelo, HttpSession session) {
         try {
-             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-              modelo.addAttribute("log", logueado);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
             List<Usuario> users = userServ.listarUsuarios();
             modelo.addAttribute("users", users);
             return "verUsuarios.html";
         } catch (Exception ex) {
-             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-              modelo.addAttribute("log", logueado);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
             List<Usuario> users = userServ.listarUsuarios();
             modelo.addAttribute("users", users);
             modelo.put("error", ex.getMessage());
@@ -105,8 +104,8 @@ public class UsuarioControlador {
             modelo.addAttribute("roles", roles);
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
-                Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-              modelo.addAttribute("log", logueado);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
             if (userServ.getOne(id).getRol().toString().equals("ADMINISTRADOR")) {
                 modelo.addAttribute("user", userServ.getOne(id));
                 modelo.addAttribute("id", userServ.getOne(id).getId());
@@ -129,7 +128,7 @@ public class UsuarioControlador {
         } catch (Exception ex) {
             Rol[] roles = Rol.values();
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-              modelo.addAttribute("log", logueado);
+            modelo.addAttribute("log", logueado);
             modelo.put("error", ex.getMessage());
             return "modificar_user.html";
         }
@@ -137,61 +136,68 @@ public class UsuarioControlador {
 
     }
 
-//    @GetMapping("/modificarUsuario/{id}") // ruta para modificar un usuario GET
-//    public String modificarUsusario(@PathVariable("id") String id, ModelMap modelo) {
-//
-//        try {
-//            Rol[] roles = Rol.values();
-//            modelo.addAttribute("roles", roles);
-//            modelo.put("usuario", userServ.getOne(id));
-//            modelo.addAttribute("id", userServ.getOne(id).getId());
-//
-//            return "modificar_user.html";
-//        } catch (Exception ex) {
-//            Rol[] roles = Rol.values();
-//            modelo.addAttribute("roles", roles);
-//            modelo.put("error", ex.getMessage());
-//            return "modificar_user.html";
-//        }
-//
-//    }
+    // @GetMapping("/modificarUsuario/{id}") // ruta para modificar un usuario GET
+    // public String modificarUsusario(@PathVariable("id") String id, ModelMap
+    // modelo) {
+    //
+    // try {
+    // Rol[] roles = Rol.values();
+    // modelo.addAttribute("roles", roles);
+    // modelo.put("usuario", userServ.getOne(id));
+    // modelo.addAttribute("id", userServ.getOne(id).getId());
+    //
+    // return "modificar_user.html";
+    // } catch (Exception ex) {
+    // Rol[] roles = Rol.values();
+    // modelo.addAttribute("roles", roles);
+    // modelo.put("error", ex.getMessage());
+    // return "modificar_user.html";
+    // }
+    //
+    // }
     @PostMapping("/modificarUsuario/{id}") // ******ruta para modificar un usuario POST(LT)
     public String modificarUsusarios(MultipartFile archivo, @PathVariable("id") String id,
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-            String fecha_nac, String obrasocial, String gruposanguineo,
-            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException, MyException {
+            String fecha_nac, String idObraSocial,
+            String nombreObraSocial, String emailObraSocial, String telefonoObraSocial, String gruposanguineo,
+            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session)
+            throws IOException, MyException {
 
         try {
             System.out.println(userServ.getOne(id).getFecha_nac());
             Rol[] roles = Rol.values();
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
-             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-               modelo.addAttribute("log", logueado);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
 
             if (userServ.getOne(id).getRol().toString().equals("ADMINISTRADOR")) {
-                userServ.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+                userServ.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono,
+                        direccion, fecha_nac);
                 modelo.put("exito", "¡Admin modificadodo con exito!");
                 return "modificar_user.html";
             }
             if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
                 System.out.println(profServ.getOne(id).getEspecialidad());
-                profServ.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
+                profServ.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono,
+                        direccion, fecha_nac, especialidad, valorConsulta);
                 modelo.put("exito", "¡Profesional modificado con exito!");
                 return "redirect:/admin/dashboard";
             }
             if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
-                pacienteServ.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
+                pacienteServ.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono,
+                        direccion, fecha_nac, gruposanguineo, idObraSocial, nombreObraSocial, emailObraSocial,
+                        telefonoObraSocial);
                 modelo.put("exito", "¡Usuario modificado con exito!");
                 return "modificar_user.html";
             }
 
         } catch (MyException ex) {
-           
-              Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-               modelo.addAttribute("log", logueado);
+
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
             modelo.put("user", userServ.getOne(id));
             modelo.addAttribute("id", userServ.getOne(id).getId());
             Especialidad[] especialidades = Especialidad.values();
@@ -204,42 +210,42 @@ public class UsuarioControlador {
 
     }
 
-    @GetMapping("/eliminar/{id}") //********** ruta para eliminar un usuario
-//(no tiene una vista, es para un boton de la vista listar_usuarios)
-    public String eliminarU(@PathVariable("id") String id, ModelMap modelo,HttpSession session) {
+    @GetMapping("/eliminar/{id}") // ********** ruta para eliminar un usuario
+    // (no tiene una vista, es para un boton de la vista listar_usuarios)
+    public String eliminarU(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
 
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
 
             modelo.put("exito", "Usuario eliminado con exito!");
-             return "panelAdmin.html";
+            return "panelAdmin.html";
         } catch (Exception ex) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-           
+
             modelo.put("error", ex.getMessage());
-        return "panelAdmin.html";
+            return "panelAdmin.html";
         }
 
     }
 
-    @PostMapping("/eliminar/{id}") //********************** ruta para eliminar un usuario
-//(no tiene una vista, es para un boton de la //
-// vista listar_usuarios)
-    public String eliminarUser(@PathVariable("id") String id, ModelMap modelo,HttpSession session) {
+    @PostMapping("/eliminar/{id}") // ********************** ruta para eliminar un usuario
+    // (no tiene una vista, es para un boton de la //
+    // vista listar_usuarios)
+    public String eliminarUser(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
 
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            
+
             userServ.eliminarUsuario(id);
 
             modelo.put("exito", "Usuario eliminado con exito!");
-           return "redirect:/user/listar";
+            return "redirect:/user/listar";
         } catch (Exception ex) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);                
+            modelo.addAttribute("log", logueado);
             modelo.put("error", ex.getMessage());
             return "panelAdmin.html";
         }
