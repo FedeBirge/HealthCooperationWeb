@@ -59,7 +59,7 @@ public class PortalControlador {
                 if (logueado.getRol().toString().equals("MODERADOR")) {
                     return "redirect:/profesionales/dashboard";
                 } else {
-                    return "perfil.html";
+                    return "redirect:/paciente/dashboard";
                 }
             }
 
