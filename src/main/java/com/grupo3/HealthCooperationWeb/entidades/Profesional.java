@@ -32,11 +32,9 @@ public class Profesional extends Usuario implements Serializable {
     protected Oferta oferta;
     @OneToOne
     protected AgendaSemanal agenda;
-    
+
     @ElementCollection(targetClass = Dias.class)
     @Enumerated(EnumType.STRING)
     private List<Dias> diasDisponibles;
-    
-   
 
 }
