@@ -31,7 +31,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Barra lateral - Marca -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/admin/dashboard}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/profesionales/dashboard}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-solid fa-lock"></i>
                 </div>
@@ -45,7 +45,7 @@
             <li class="nav-item active">
                 <a class="nav-link" th:href="@{/}">
                  
-                    <span>Index</span></a>
+                    <span>Home</span></a>
             </li>
 
             <!-- Divisor -->
@@ -69,7 +69,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                     
-                   <a class="collapse-item" th:href="@{/}">Ver Pacientes</a>
+                   <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Pacientes</a>
                      
                       
                     </div>
@@ -84,8 +84,8 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/}">Mi Agenda</a>
-                            <a class="collapse-item" th:href="@{/}">Mi Oferta y Disponibilidad</a>
+                            <a class="collapse-item" th:href="@{/profesionales/agenda/__${log.id}__}">Mi Agenda</a>
+                            <a class="collapse-item" th:href="@{/profesionales/oferta/__${log.id}__}">Mi Oferta y Disponibilidad</a>
 
                            
 
@@ -134,9 +134,9 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
                                     <img class="/img-profile rounded-circle"
-                                        th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 100px;">
+                                        th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 100px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -171,10 +171,7 @@
 
                 </div>
                     <!-- Encabezado de página -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Admin</h1>
-                        
-                    </div>
+               
                     <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                     <div class="card-body">
                                         <h5 class="card-title text-center">Error!</h5>

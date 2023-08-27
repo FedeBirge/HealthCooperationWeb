@@ -132,7 +132,9 @@ public class PacienteServicio extends UsuarioServicio {
     public List<Paciente> listarPacientesXprof(String idProfesional) {
         // un paciente tiene una lista de turnos...
         List<Paciente> pacientes = new ArrayList<>();
+        // traigo todos los pacientes
         pacientes = pacienteRepositorio.findAll();
+        // preparo la lsita de pacietnes que voy a devolver
         List<Paciente> pacientesXProfesional = new ArrayList<>();
 
         // Repo de turnos
@@ -140,25 +142,26 @@ public class PacienteServicio extends UsuarioServicio {
         turnos = turnoRepositorio.findAll();
 
         // en esa lista de turnos, cada turno tiene un profesional:
-        Profesional profesional = (Profesional) usuarioServicio.getOne(idProfesional);
+        Profesional profesional = profesionalRepositorio.getOne(idProfesional);
 
         try {
-            for (Paciente pacienteAux : pacientes) {
-                if (pacienteAux.getTurnos() != null) {
-                    turnos = pacienteAux.getTurnos();
+            for (Paciente paciente : pacientes) {
+                if (paciente.getTurnos() != null) {
+                    turnos = paciente.getTurnos();
                     for (Turno turno : turnos) {
-                        if (turno.getProfesional().getId() == profesional.getId()) {
-                            pacientesXProfesional.add(pacienteAux);
-                            return pacientesXProfesional;
+                        if (turno.getProfesional().getId().equals(profesional.getId())) {
+                            pacientesXProfesional.add(paciente);
+                            
                         }
                     }
                 }
             }
+            return pacientesXProfesional;
         } catch (Exception e) {
             System.out.println("Servicio paciente: Hubo un error al listar pacientes por profesional");
             return null;
         }
-        return pacientesXProfesional;
+      
     }
 
     private void validar(String grupoSanguineo, String obraSocial) throws MyException {

@@ -58,15 +58,15 @@ public class PacienteControlador {
             String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException {
 
         try {
-            
+
             pacienteServicio.registrarPaciente(archivo, nombre, apellido, dni,
                     email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
             modelo.put("exito", "¡Usuario registrado con exito!");
-            return "redirect:/";
+           return "index.html";
 
         } catch (MyException ex) {
             modelo.put("error", ex.getMessage());
-            return "index.html";
+           return "registro.html";
         }
 
     }
@@ -80,11 +80,11 @@ public class PacienteControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("user", pacienteServicio.getOne(id));
-            
+
             return "modificar_paciente.html";
 
         } catch (Exception ex) {
-           Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("user", pacienteServicio.getOne(id));
             modelo.put("error", ex.getMessage());
@@ -151,15 +151,20 @@ public class PacienteControlador {
 
     // Listar pacientes asociados al id del profesional logueado(LT)
     @GetMapping("/listar/{id}")
-    public String listarProfesionales(@PathVariable("id") String id, ModelMap modelo) {
+    public String listarPacientes(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         try {
-            List<Paciente> users = pacienteServicio.mostrarPacientes();
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+//            List<Paciente> users = pacienteServicio.mostrarPacientes();
+            List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
             System.out.println(users);
             modelo.addAttribute("users", users);
             return "verPacientes.html";
         } catch (Exception e) {
-
-            List<Paciente> users = pacienteServicio.mostrarPacientes();
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+//            List<Paciente> users = pacienteServicio.mostrarPacientes();
+            List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
             modelo.addAttribute("users", users);
             modelo.put("error", e.getMessage());
             return "verPacientes.html";

@@ -44,7 +44,7 @@ public class UsuarioControlador {
     @GetMapping("/verUsuario/{id}") // ruta para ver el perfil de un usuario
     public String verPerfilUsusario(@PathVariable("id") String id, ModelMap modelo) {
 
-        modelo.put("user", userServ.getOne(id));
+        modelo.put("log", userServ.getOne(id));
         return "perfil.html";
 
     }
@@ -117,12 +117,12 @@ public class UsuarioControlador {
                 modelo.addAttribute("id", profServ.getOne(id).getId());
 
                 modelo.addAttribute("especialidades", especialidades);
-                return "modificar_user.html";
+                  return "modificar_prof.html";
             }
             if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
                 modelo.addAttribute("user", pacienteServ.getOne(id));
                 modelo.addAttribute("id", pacienteServ.getOne(id).getId());
-                return "modificar_user.html";
+                 return "modificar_paciente.html";
             }
 
         } catch (Exception ex) {

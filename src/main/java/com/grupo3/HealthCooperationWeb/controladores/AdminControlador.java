@@ -1,7 +1,7 @@
-
 package com.grupo3.HealthCooperationWeb.controladores;
 
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
+import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +40,16 @@ public class AdminControlador {
     @GetMapping("/registrar") // **regsitro de usuario para el admin(LT)**//
     public String registrar(ModelMap modelo, HttpSession session) {
         try {
-
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.put("log", logueado);
             modelo.addAttribute("id", logueado.getId());
 
             return "altaUsuario.html";
         } catch (Exception ex) {
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.put("error", ex.getMessage());

@@ -17,6 +17,7 @@ import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
+import com.grupo3.HealthCooperationWeb.enumeradores.TipoOferta;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
@@ -39,7 +40,9 @@ public class ProfesionalControlador {
     // En el panel, el doc ve la lista de pacientes
     // Falta refinar esto para que sean solo SUS pacientes, no todos
     @GetMapping("/dashboard")
-    public String panelAdministrativo(ModelMap modelo) {
+    public String panelAdministrativo(ModelMap modelo, HttpSession session) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
         List<Paciente> pacientes = pacienteServicio.mostrarPacientes();
         modelo.addAttribute("pacientes", pacientes);
         return "panelProfesional.html";
@@ -71,7 +74,7 @@ public class ProfesionalControlador {
             modelo.put("error", ex.getMessage());
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
-           Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
 
             return "altaProfesional.html";
@@ -139,13 +142,12 @@ public class ProfesionalControlador {
             modelo.addAttribute("log", logueado);
 
             modelo.addAttribute("user", profesionalServicio.getOne(id));
-            modelo.addAttribute("id", profesionalServicio.getOne(id).getId());
 
             return "modificar_prof.html";
 
         } catch (Exception ex) {
-             modelo.addAttribute("user", profesionalServicio.getOne(id));
-            modelo.addAttribute("id", profesionalServicio.getOne(id).getId());
+            modelo.addAttribute("user", profesionalServicio.getOne(id));
+
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.put("error", ex.getMessage());
@@ -166,11 +168,11 @@ public class ProfesionalControlador {
             modelo.addAttribute("especialidades", especialidades);
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-             modelo.addAttribute("user", profesionalServicio.getOne(id));
+            modelo.addAttribute("user", profesionalServicio.getOne(id));
             modelo.addAttribute("id", profesionalServicio.getOne(id).getId());
             profesionalServicio.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
             modelo.put("exito", "¡Profesional modificado con exito!");
-             return "modificar_prof.html";
+            return "modificar_prof.html";
         } catch (MyException ex) {
 
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -260,6 +262,80 @@ public class ProfesionalControlador {
         } catch (Exception e) {
             modelo.put("error", e.getMessage());
             return "redirect: /dashboard";
+        }
+    }
+
+    @GetMapping("/oferta/{id}")
+    public String oferta(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+
+        try {
+            TipoOferta[] tipos = TipoOferta.values();
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.addAttribute("tipos", tipos);
+
+            return "miOfertayDisponibilidad.html";
+
+        } catch (Exception ex) {
+           TipoOferta[] tipos = TipoOferta.values();
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.addAttribute("tipos", tipos);
+                return "miOfertayDisponibilidad.html";
+        }
+    }
+      @PostMapping("/oferta/{id}")
+    public String ofertaa(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+
+        try {
+
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            return "miOfertayDisponibilidad.html";
+
+        } catch (Exception ex) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            return "miOfertayDisponibilidad.html";
+
+        }
+    }
+       @PostMapping("/agenda/{id}")
+    public String agenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+
+        try {
+
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            return "";
+
+        } catch (Exception ex) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            return "";
+
+        }
+    }
+       @GetMapping("/agenda/{id}")
+    public String agendaa(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+
+        try {
+
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            return "";
+
+        } catch (Exception ex) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            return "";
+
         }
     }
 }
