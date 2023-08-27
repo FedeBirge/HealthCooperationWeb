@@ -182,7 +182,7 @@
                             <h1 class="h3 mb-0 text-gray-800">Modificar Paciente</h1>
                         </div>
 
-                        <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/paciente/modificar/__${id}__}" method="POST" enctype="multipart/form-data">
+                        <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/user/modificarUsuario/__${id}__}" method="POST" enctype="multipart/form-data">
                             <input hidden th:value="${id}" name="id">
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                 <div class="card-body">
