@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
         <title>Mi Perfil</title>
 
         <!-- Fuentes personalizadas-->
@@ -22,14 +22,13 @@
         <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
     </head>
-
-    <body id="page-top">
+<body id="page-top">
 
         <!-- Contenedor de páginas-->
-        
+        <div id="wrapper">
 
             <!-- barra lateral -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion fixed-top" id="accordionSidebar">
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Barra lateral - Marca -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/}">
@@ -39,42 +38,52 @@
                     <div class="sidebar-brand-text mx-3">Panel Paciente</div>
                 </a>
 
-                
                 <!-- Divisor -->
                 <hr class="sidebar-divider my-0">
-                
+
                 <!-- Panel -->
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/}">
-                 
-                    <span>Index</span></a>
+
+                        <span>Home</span></a>
                 </li>
 
-            <!-- Divisor -->
-            <hr class="sidebar-divider">
+                <!-- Divisor -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Gestion
-            </div>
-            
-             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-user"></i>
-                    <span>Pacientes</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                    
-                   <a class="collapse-item" th:href="@{/inicio}">Ver mi Perfil</a>
-                   <a class="collapse-item" th:href="@{/user/perfil/__${log.id}__}">Modificar mi Perfil</a>
-                   <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}">Ver mis Turnos</a>
-                      
-                    </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Gestion
                 </div>
-             </li>
+
+                <!-- Elemento de navegación - Menú Contraer utilidades -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+
+                            <a class="collapse-item" th:href="@{/inicio}">Ver mi Perfil</a>
+                            <a class="collapse-item" th:href="@{/user/perfil/__${log.id}__}">Modificar mi Perfil</a>
+                            <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}">Ver mis Turnos</a>
+
+                        </div>
+                    </div>
+                </li>
+                
+
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
 
             </ul>
             <!-- Fin de la barra lateral -->
@@ -99,16 +108,16 @@
                         <ul class="navbar-nav ml-auto">
 
 
-                            <div class="topbar-divider d-none d-sm-block"></div>
 
 
+                            <!--Información del usuario -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 medium" th:text="${log.nombre}"></span>
-                                    <img class="/img-profile rounded-circle shake-vertical"
-                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 30px;">
-                                </a> 
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "${log.nombre}"></span>
+                                    <img class="/img-profile rounded-circle"
+                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 35px;">
+                                </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
@@ -125,8 +134,14 @@
                     <!-- Fin de la barra superior -->
 
                     <!-- Comenzar contenido de la página -->
-                    <main>
-                       <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/user/modificarUsuario/__${id}__}" method="POST" enctype="multipart/form-data">
+                    <div class="container-fluid">
+
+                        <!-- Encabezado de página -->
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Modificar Paciente</h1>
+                        </div>
+
+                        <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/paciente/modificar/__${id}__}" method="POST" enctype="multipart/form-data">
                             <input hidden th:value="${id}" name="id">
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                 <div class="card-body">
@@ -143,11 +158,11 @@
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">Nombre</label>
-                                    <input type="text" class="form-control form-controluser"  id="name" placeholder="Nombre" name="nombre" th:value="${user.nombre}">
+                                    <input type="text" class="form-control form-control-user"  id="last-name" placeholder="Nombre" name="nombre" th:value="${user.nombre}">
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">Apellido</label>
-                                    <input type="text" class="form-control form-control-user"   id="last-name" placeholder="Apellido" name="apellido" th:value="${user.apellido}">
+                                    <input type="text" class="form-control form-control-user"  id="last-name" placeholder="Apellido" name="apellido" th:value="${user.apellido}">
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">DNI</label>
@@ -188,29 +203,19 @@
                                     <label  class="form-label">Grupo Sanguineo</label>
                                     <input class="form-control form-control-user" type="text" id="grupo" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
                                 </div>    
-                                <div   th:if="${user.rol}=='MODERADOR'" class="col-sm-6 mb-3">
-
-                                    <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" for="especialidad">Especialidad</label>
-                                    <select  class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
-                                        <option th:text="${user.especialidad}+ '(Actual)'" disabled selected>+</option>
-                                        <option class="input-group-text" th:each="especialidad : ${especialidades}"
-                                                th:value="${especialidad}" th:text="${especialidad}"></option>
-                                    </select><br>
-                                </div>
-                                <div    th:if="${user.rol}=='MODERADOR'" class="col-sm-6 mb-3">
-                                    <label  class="form-label">Valor Consulta</label>
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="" id="valorConsulta"  name="valorConsulta" th:value="${user.valorConsulta}">
-                                </div>
                                 <div class="col-sm-6 mb-3">
                                     <p class="form-label">¡Actualice su foto aquí!</p>
-                                    <input type="file" class="form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" name="archivo" id="archivoInput" />
-
                                     <a class="d-flex align-items-center">
                                         <img id="imagenPerfil" class="form-label" th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 100px;" />
                                     </a>
-                                </div> 
+                                    <input type="file" class="form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" name="archivo" id="archivoInput" />
 
+                                    
+                                </div>
 
+                            </div>
+                            <div class="text-center">
+                                    <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Modificacion</button>
                             </div>
 
                             <script>
@@ -229,81 +234,72 @@
                                     }
                                 });
                             </script>
-
+                        </form>
                     </div>
                 </div>
-
-                <div class="d-grid gap-2 col-12 mx-auto text-center">
-                    <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Modificacion</button>
-                </div>
-                </form>
-
-
-
-
-                    </main>
-                    <!-- Fin del contenedor de contenido -->
-
 
                 
-                <!-- Envoltura de fin de página -->
+                
+                <!-- Fin del contenido principal -->
 
-                <!-- Desplácese hasta el botón superior-->
-                <a class="scroll-to-top rounded" href="#page-top">
-                    <i class="fas fa-angle-up"></i>
-                </a>
-
-                <!-- Cierre de sesión modal-->
-                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
-                            </div>
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>HealtCooperationWeb ©2023</span>
                         </div>
                     </div>
+                </footer>
+                <!-- Fin del Footer -->
+
+            </div>
+            <!-- Fin del contenedor de contenido -->
+
+        </div>
+        <!-- Envoltura de fin de página -->
+
+        <!-- Desplácese hasta el botón superior-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Cierre de sesión modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-primary" href="login.html">Cerrar sesión</a>
+                    </div>
                 </div>
+            </div>
+        </div>
 
+        <!-- Bootstrap core JavaScript-->
+        <script src="/vendor/jquery/jquery.min.js"></script>
+        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+        <!-- Core plugin JavaScript-->
+        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-                <!-- Bootstrap core JavaScript-->
-                <script src="/vendor/jquery/jquery.min.js"></script>
-                <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="/js/sb-admin-2.min.js"></script>
 
-                <!-- Core plugin JavaScript-->
-                <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Page level plugins -->
+        <script src="/vendor/chart.js/Chart.min.js"></script>
 
-                <!-- Custom scripts for all pages-->
-                <script src="/js/sb-admin-2.min.js"></script>
+        <!-- Page level custom scripts -->
+        <script src="/js/demo/chart-area-demo.js"></script>
+        <script src="/js/demo/chart-pie-demo.js"></script>
 
-                <!-- Page level plugins -->
-                <script src="/vendor/chart.js/Chart.min.js"></script>
+    </body>
 
-                <!-- Page level custom scripts -->
-                <script src="/js/demo/chart-area-demo.js"></script>
-                <script src="/js/demo/chart-pie-demo.js"></script>
-
-                <script>
-                    const toggleButton = document.getElementById('toggleButton');
-                    const elementToShowHide = document.getElementById('elementToShowHide');
-
-                    toggleButton.addEventListener('click', function () {
-                        if (elementToShowHide.style.display === 'none') {
-                            elementToShowHide.style.display = 'block'; // o 'inline', dependiendo del tipo de elemento
-                        } else {
-                            elementToShowHide.style.display = 'none';
-                        }
-                    });
-                </script>
-                </body>
-
-                </html>
+</html>
