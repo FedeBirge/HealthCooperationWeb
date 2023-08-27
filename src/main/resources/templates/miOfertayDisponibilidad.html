@@ -187,14 +187,110 @@
                                         <p class="card-text text-center" th:text="${exito}"></p>
                                     </div>
                                 </div> 
+                    
+                    <h4 class="fw-bold p-4">Mi disponibilidad</h4>
+
+    <div class="col-sm-6 mb-3 row">
+      <label for="html5-datetime-local-input" class="col-md-5 col-form-label">Hora de inicio</label>
+      <div class="col-md-10">
+        <input
+          class="form-control"
+          type="datetime-local"
+          value="2021-06-18T12:30:00"
+          id="html5-datetime-local-input"
+        />
+      </div>
+    </div>
+    <div class="col-sm-6 mb-3 row">
+      <label for="html5-datetime-local-input" class="col-md-5 col-form-label">Hora de fin</label>
+      <div class="col-md-10">
+        <input
+          class="form-control"
+          type="datetime-local"
+          value="2021-06-18T12:30:00"
+          id="html5-datetime-local-input"
+        />
+      </div>
+    </div>
+                    <br>
+                    
+    
+
+    <h6>Ingrese la duración del turno en minutos</h6>
+    <label for="duracion-input">Duración del turno (minutos):</label>
+    <input type="number" id="duracion-input" />
+    <button onclick="guardarDuracion()">Guardar</button>
+    <div id="resultado"></div>
+
+    <script>
+        var duracionEnMinutos = 0; // Variable para almacenar el valor
+
+        function guardarDuracion() {
+            var duracionInput = document.getElementById("duracion-input");
+            duracionEnMinutos = parseInt(duracionInput.value);
+
+            var resultado = document.getElementById("resultado");
+            resultado.innerText = "Se ha guardado la duración del turno en minutos: " + duracionEnMinutos;
+        }
+    </script>
+<br>
+
+
+    <div class="input-group">
+      <label class="input-group-text" for="inputGroupSelect01">Modalidad</label>
+      <select class="form-select" id="inputGroupSelect01">
+        <option selected>Opciones...</option>
+        <option value="1">Virtual</option>
+        <option value="2">Presencial</option>
+        <option value="3">Domicilio</option>
+      </select>
+    </div>
+    <div>
+      <br>
+   
+
+      <!-- Default Checkboxes and radios & Default checkboxes and radios -->
+      
+      <div class="col-xl-6">
+          <div class="card mb-4">
+              <h5 class="card-header">Dias Disponibles</h5>
+              <!-- Checkboxes and Radios -->
+              <div class="card-body">
+                  <div class="row gy-3">
+                      <div class="col-md">
+                          <small class="text-light fw-semibold">Seleccione..</small>
+                          <div class="form-check mt-3">
+                              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label class="form-check-label" for="defaultCheck1"> Lunes </label>
+                          </div>
+                          <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"  />
+                              <label class="form-check-label" for="defaultCheck2"> Martes </label>
+                          </div>
+                          <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
+                              <label class="form-check-label" for="defaultCheck3"> Miercoles </label>
+                          </div>
+                          <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" id="defaultCheck4" />
+                              <label class="form-check-label" for="defaultCheck4"> Jueves </label>
+                          </div>
+                          <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" id="defaultCheck5" />
+                              <label class="form-check-label" for="defaultCheck5"> Viernes </label>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+                
+
+
+           
             <!-- Fin del contenido principal -->
-<!-- 404 Error Text -->
-                    <div class="text-center">
-                        <div class="error mx-auto" data-text="404">404</div>
-                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
-                        <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
-                        <a href="index.html">&larr; Back to Dashboard</a>
-                    </div>
+
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
