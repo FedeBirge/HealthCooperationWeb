@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Admin</title>
+
+    <!-- Fuentes personalizadas-->
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Css -->
+    <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="/favicon.ico" alt="Favicon">
+        </div>
+        <div class="nav-right">
+            <a href="#">Volver a Menú</a>
+            <a href="#">Datos de Perfil</a>
+            <a href="#">Cerrar Sesión</a>
+        </div>
+    </nav>
+
+    <div class="content">
+        <div class="search">
+            <label for="date">Fecha:</label>
+            <input type="date" id="date" name="date">
+            <label for="from">Desde:</label>
+            <input type="date" id="from" name="from">
+            <label for="to">Hasta:</label>
+            <input type="date" id="to" name="to">
+            <label for="filter">Filtrar por:</label>
+            <select id="filter" name="filter">
+                <option value="name">Nombre y Apellido</option>
+                <option value="insurance">Obra Social</option>
+            </select>
+            <input type="text" id="search" name="search" placeholder="Buscar...">
+            <button id="search-btn">Buscar</button>
+        </div>
+        <!-- ... (código anterior) ... -->
+
+        <div class="results">
+            <div class="patient-card">
+                <div class="patient-info">
+                    <img class="patient-avatar" src="/undraw_profile_{{gender == 'female' ? '3' : '2'}}.svg"
+                        alt="Foto Paciente">
+                    <h2>Nombre Apellido</h2>
+                    <p>DNI: 12345678</p>
+                    <p>Obra Social: Seguro Médico</p>
+                    <p>Diagnóstico: Atendido</p>
+                    <p>Fecha de Atención: 2023-08-25</p>
+                    <p>Número de Contacto: 123-456-7890</p>
+                    <p>Correo Electrónico: ejemplo@email.com</p>
+                </div>
+                <div class="patient-files">
+                    <a href="ruta-del-archivo.pdf" target="_blank">Ver Estudios Realizados (PDF)</a>
+                </div>
+            </div>
+            <!-- Repite estas tarjetas para cada paciente -->
+        </div>
+
+        <!-- ... (código posterior) ... -->
+
+    </div>
+    <footer class="footer">
+        <div class="social-icons">
+            <a href="#"><img src="/1.png" alt="Facebook"></a>
+            <a href="#"><img src="/2.png" alt="Twitter"></a>
+            <a href="#"><img src="/3.png" alt="Instagram"></a>
+            <h5>HealtCooperationWeb ©2023
+            </h5>
+        </div>
+    </footer>
+</body>
+
+</html>
