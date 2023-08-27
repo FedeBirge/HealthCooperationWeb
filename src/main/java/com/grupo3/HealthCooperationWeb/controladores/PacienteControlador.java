@@ -30,6 +30,14 @@ public class PacienteControlador {
     @Autowired
     private PacienteServicio pacienteServicio;
 
+    @GetMapping("/dashboard") // ruta para el panel administrativo
+    public String panelAdministrativo(ModelMap modelo, HttpSession session) {
+        Paciente logueado = (Paciente) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+
+        return "perfil.html";
+    }
+
     @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
     public String registrar(ModelMap modelo) {
         try {
@@ -42,7 +50,7 @@ public class PacienteControlador {
         }
     }
 
-    @PostMapping("/crear") //************* POST del form del registro.html LT)
+    @PostMapping("/crear") // ************* POST del form del registro.html LT)
     public String crearUsuario(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
@@ -50,7 +58,7 @@ public class PacienteControlador {
             String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException {
 
         try {
-            System.out.println(obrasocial+gruposanguineo);
+            
             pacienteServicio.registrarPaciente(archivo, nombre, apellido, dni,
                     email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
             modelo.put("exito", "¡Usuario registrado con exito!");
@@ -68,40 +76,43 @@ public class PacienteControlador {
     public String perfil(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
 
         try {
-          
+
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("user", pacienteServicio.getOne(id));
-            modelo.addAttribute("id", pacienteServicio.getOne(id).getId());
-                return "modificar_user.html";
-           
+            
+            return "modificar_paciente.html";
 
         } catch (Exception ex) {
-            Rol[] roles = Rol.values();
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+           Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
+            modelo.addAttribute("user", pacienteServicio.getOne(id));
             modelo.put("error", ex.getMessage());
-            return "modificar_user.html";
+            return "modificar_paciente.html";
         }
-       
 
     }
-
 
     @PostMapping("/modificar/{id}") // ******ruta para modificar un usuario POST(LT)
     public String modificarUsusarios(MultipartFile archivo, @PathVariable("id") String id,
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-            String fecha_nac, String obrasocial, String gruposanguineo,
+            String fecha_nac, String gruposanguineo,
+            String idObraSocial,
+            String nombreObraSocial, String emailObraSocial, String telefonoObraSocial,
             ModelMap modelo, HttpSession session) throws IOException, MyException {
 
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            pacienteServicio.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
+            modelo.addAttribute("user", pacienteServicio.getOne(id));
+            pacienteServicio.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono,
+                    direccion, fecha_nac, gruposanguineo, idObraSocial,
+                    nombreObraSocial, emailObraSocial, telefonoObraSocial);
+
             modelo.put("exito", "¡Paciente modificado con exito!");
-            return "modificar_user.html";
+            return "modificar_paciente.html";
 
         } catch (MyException ex) {
 
@@ -111,11 +122,11 @@ public class PacienteControlador {
             modelo.addAttribute("id", pacienteServicio.getOne(id).getId());
 
             modelo.put("error", ex.getMessage());
-            return "modificar_user.html";
+            return "modificar_paciente.html";
         }
 
     }
-//    }
+    // }
     // listar todos los pacientes activos(LT) panel del administrador
 
     @GetMapping("/listar")
@@ -138,7 +149,7 @@ public class PacienteControlador {
         }
     }
 
-    //Listar pacientes asociados al id del profesional logueado(LT)
+    // Listar pacientes asociados al id del profesional logueado(LT)
     @GetMapping("/listar/{id}")
     public String listarProfesionales(@PathVariable("id") String id, ModelMap modelo) {
         try {

@@ -1,10 +1,14 @@
 package com.grupo3.HealthCooperationWeb.servicios;
 
+import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
+import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
+import com.grupo3.HealthCooperationWeb.repositorios.PacienteRepositorio;
 import com.grupo3.HealthCooperationWeb.repositorios.TurnoRepositorio;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,8 @@ public class TurnoServicio {
     private ProfesionalServicio profServ;
     @Autowired
     private TurnoRepositorio turnoRepo;
+     @Autowired
+    private PacienteRepositorio pacienteRepo;
 
     @Transactional
     public Turno crearTurno(String fecha, String hora, EstadoTurno estado,
@@ -135,6 +141,21 @@ public class TurnoServicio {
         }
 
     }
+    public List<Turno> misTurnos(String id) {
+
+        try {
+             Optional<Paciente> respuesta = pacienteRepo.findById(id);
+        if (respuesta.isPresent()) {
+            Paciente pace = respuesta.get();
+            return pace.getTurnos();
+        }
+
+        } catch (Exception e) {
+            System.out.println("Turno: No pudieron ser listados");
+            return null;
+        }
+         return null;
+    }
 
     protected void validar(String fecha, String hora, EstadoTurno estado, String motivo, String idProf)
             throws MyException {
@@ -153,6 +174,28 @@ public class TurnoServicio {
         }
         if (estado == null) {
             throw new MyException("El turno debe tener un estado");
+        }
+
+    }
+
+    public List<Turno> listarTurnosXProfesional(String idProfesional) {
+        Profesional profesional = new Profesional();
+
+        List<Turno> turnos = turnoRepo.findAll();
+        List<Turno> turnosXProfesional = new ArrayList<>();
+
+        try {
+            profesional = (Profesional) profServ.getOne(idProfesional);
+
+            for (Turno turno : turnos) {
+                if (turno.getProfesional().getId() == profesional.getId()) {
+                    turnosXProfesional.add(turno);
+                }
+            }
+            return turnosXProfesional;
+        } catch (Exception e) {
+            System.out.println("Turno: No pudieron ser listados los turnos de este idProfesional");
+            return null;
         }
 
     }

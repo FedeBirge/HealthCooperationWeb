@@ -87,7 +87,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-
+                             <a class="collapse-item" th:href="@{/}">Alta Paciente</a>
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -228,6 +228,8 @@
                                                     <th>Especialidad</th>
                                                     <th>Rol</th>
                                                     <th>Historia Clínica</th>
+                                                    <th></th>
+                                                    <th></th>
                                                    
 
 
@@ -309,7 +311,36 @@
                     </div>
                 </div>
             </div>
+                 <div id="confirmationPopup" class="confirmation-popup">
+                     
+    <p>¿Estás seguro de que quieres eliminar este paciente?</p>
+    <button id="confirmButton" class="btn btn-danger" onclick="confirmDeletion()">Confirmar</button>
+    <button id="cancelButton" class="btn btn-secondary" onclick="cancelDeletion()">Cancelar</button>
+</div>
 
+<script th:inline="javascript">
+    function showConfirmationPopup(userId) {
+        document.getElementById('confirmationPopup').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+        userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+    }
+
+    function confirmDeletion() {
+        if (confirm('Confirmar')) {
+            document.getElementById('deleteForm_' + userIdToDelete).submit();
+        }
+        closeConfirmationPopup();
+    }
+
+    function cancelDeletion() {
+        closeConfirmationPopup();
+    }
+
+    function closeConfirmationPopup() {
+        document.getElementById('confirmationPopup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+</script>
             <!-- Bootstrap core JavaScript-->
             <script src="../vendor/jquery/jquery.min.js"></script>
             <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
