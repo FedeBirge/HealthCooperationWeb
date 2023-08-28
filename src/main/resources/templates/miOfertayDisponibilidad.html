@@ -31,7 +31,7 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Barra lateral - Marca -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/admin/dashboard}">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/profesionales/dashboard}">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
@@ -59,41 +59,53 @@
 
 
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-hospital-user"></i>
+                        <span>Agenda</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" th:href="@{/profesionales/agenda/__${log.id}__}">Ver Mi Agenda</a>
+                            <a class="collapse-item" th:href="@{/profesionales/oferta/__${log.id}__}">Editar</a>
+
+                        </div>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
-                        <span>Pacientes</span>
+                        <span>Oferta y Disponibilidad</span>
                     </a>
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-
-                            <a class="collapse-item" th:href="@{/}">Ver Pacientes</a>
-
+                            <a class="collapse-item" th:href="@{/profesionales/agenda/__${log.id}__}">Mi Oferta</a>
+                            <a class="collapse-item" th:href="@{/profesionales/oferta/__${log.id}__}">Editar</a>
 
                         </div>
                     </div>
+
                 </li>
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
-                        <span>Agenda</span>
+                        <span>Pacientes</span>
                     </a>
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/}">Mi Agenda</a>
-                            <a class="collapse-item" th:href="@{/}">Mi Oferta y Disponibilidad</a>
 
-
-
+                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Pacientes</a>
 
                         </div>
                     </div>
-                </li>
 
+                </li>
 
 
                 <!-- Divider -->
@@ -134,20 +146,21 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
                                     <img class="/img-profile rounded-circle"
-                                         th:src="@{/imagen/perfil/__${id}__}" style="max-width: 100%; max-height: 100px;">
+                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" th:href="@{/inicio}">
+
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Configuraciones
+                                        Mi Área
                                     </a>
 
                                     <div class="dropdown-divider"></div>
@@ -197,241 +210,253 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-
-                    <div class="col-lg-6">
-
-                        <!-- Default Card Example -->
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Horarios
-                            </div>
-                            <div class="card-body">
-                                <div class="col-sm-5 mb-3 row">
-                                    <label for="html5-datetime-local-input" class="col-md-10 col-form-label">Hora de inicio</label>
-                                    <div class="col-md-10">
-                                        <input
-                                            class="form-control" type="time" value="12:30:00" id="html5-time-input"
-                                            />
-                                    </div>
-                                </div>
-                                <div class="col-sm-5 mb-3 row">
-                                    <label for="html5-datetime-local-input" class="col-md-10 col-form-label">Hora de inicio</label>
-                                    <div class="col-md-10">
-                                        <input
-                                            class="form-control" type="time" value="12:30:00" id="html5-time-input"
-                                            />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Modalidad
-                            </div>
-                            <div class="card-body">
-                                <div class="input-group">
-                                    <label class="input-group-text" for="inputGroupSelect01">Modalidad</label>
-                                    <select class="form-select" id="inputGroupSelect01">
-                                        <option selected class="button-style">Opciones...</option>
-                                        <option value="1">Virtual</option>
-                                        <option value="2">Presencial</option>
-                                        <option value="3">Domicilio</option>
-                                    </select>
-                                </div>
-                                <div>
-                                </div>
-                                <br>
-                                <div class="card mb-4">
-                                    <input  class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Basic Card Example -->
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Duracion del turno
-                            </div>
-                            <div class="card-body">
-                                <h6>Ingrese la duración del turno en minutos</h6>
-                                <label for="duracion-input">Duración del turno (minutos):</label>
-                                <input type="number" id="duracion-input" />
-                                <button class="button-style" onclick="guardarDuracion()">Guardar</button>
-                                <div id="resultado"></div>
-
-                                <script>
-                                    var duracionEnMinutos = 0; // Variable para almacenar el valor
-
-                                    function guardarDuracion() {
-                                    var duracionInput = document.getElementById("duracion-input");
-                                    duracionEnMinutos = parseInt(duracionInput.value);
-
-                                    var resultado = document.getElementById("resultado");
-                                    resultado.innerText = "Se ha guardado la duración del turno en minutos: " + duracionEnMinutos;
-                                    }
-                                </script>
-                            </div>
-                        </div>
-
-
+                <!-- Collapsable Card Example -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Dias Disponibles
                     </div>
-
-                    <div class="col-lg-6">
-
-                        <!-- Dropdown Card Example -->
-
-
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Obra Social
-                            </div>
-                            <div class="card-body">
-                                <div class="row gy-3">
-                                    <div class="col-md">
-                                        <div class="form-check mt-2">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                            <label class="form-check-label" for="defaultCheck1">
-                                                <input type="text" class="form-control form-control-sm" placeholder="Texto" />
-                                                Agrege nueva obra social..
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"  />
-                                            <label class="form-check-label" for="defaultCheck2">
-                                                <input type="text" class="form-control form-control-sm" placeholder="Texto" />
-                                                Agrege nueva obra social..
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"  />
-                                            <label class="form-check-label" for="defaultCheck2">
-                                                <input type="text" class="form-control form-control-sm" placeholder="Texto" />
-                                                Agrege nueva obra social..
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
-                                            <label class="form-check-label" for="defaultCheck3"> Subsidio</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
-                                            <label class="form-check-label" for="defaultCheck3"> Pami </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
-                                            <label class="form-check-label" for="defaultCheck3"> Arevalo </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
-                                            <label class="form-check-label" for="defaultCheck3"> Ospia </label>
-                                        </div>
-                                    </div>
+                    <div class="card-body">
+                        <div class="row gy-3">
+                            <div class="col-md">
+                                <span style="font-size: 110%;">Seleccione sus días disponibles</span> 
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                                    <label class="form-check-label" for="defaultCheck1"> Lunes </label>
                                 </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"  />
+                                    <label class="form-check-label" for="defaultCheck2"> Martes </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
+                                    <label class="form-check-label" for="defaultCheck3"> Miercoles </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck4" />
+                                    <label class="form-check-label" for="defaultCheck4"> Jueves </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck5" />
+                                    <label class="form-check-label" for="defaultCheck5"> Viernes </label>
+                                </div>
+
                             </div>
-
-
-                            <!-- Collapsable Card Example -->
-                            <div class="card mb-4">
+                            <div class="col-md">
                                 <div class="card-header">
-                                    Dias Disponibles
+                                    Horarios de la jornada
                                 </div>
                                 <div class="card-body">
-                                    <div class="row gy-3">
-                                        <div class="col-md">
-                                            <span style="font-size: 110%;">Seleccione..</span> 
-                                            <div class="form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                                <label class="form-check-label" for="defaultCheck1"> Lunes </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"  />
-                                                <label class="form-check-label" for="defaultCheck2"> Martes </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
-                                                <label class="form-check-label" for="defaultCheck3"> Miercoles </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck4" />
-                                                <label class="form-check-label" for="defaultCheck4"> Jueves </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck5" />
-                                                <label class="form-check-label" for="defaultCheck5"> Viernes </label>
-                                            </div>
+                                    <div class="form-group row">
+                                        <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Hora inicial</label>
+                                        <div class="col-sm-4">
+                                            <input
+                                                class="form-control" type="time" value="12:30:00" id="html5-time-input"
+                                                />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Hora final</label>
+                                        <div class="col-sm-4">
+                                            <input
+                                                class="form-control" type="time" value="12:30:00" id="html5-time-input"
+                                                />
 
                                         </div>
                                     </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+
+
+                        <!-- Basic Card Example -->
+                        <div class="card mb">
+                            <div class="col-md">
+                                <div class="card-header">
+                                    Duracion del turno
+                                </div>
+                                <div class="card-body">
+                                    <h6>Ingrese la duración del turno en minutos</h6>
+                                    <label for="duracion-input">Duración del turno (minutos):</label>
+                                    <input type="number" id="duracion-input" />
+                                    <button class="button-style" onclick="guardarDuracion()">Guardar</button>
+                                    <div id="resultado"></div>
+
+                                    <script>
+                                        var duracionEnMinutos = 0; // Variable para almacenar el valor
+
+                                        function guardarDuracion() {
+                                            var duracionInput = document.getElementById("duracion-input");
+                                            duracionEnMinutos = parseInt(duracionInput.value);
+
+                                            var resultado = document.getElementById("resultado");
+                                            resultado.innerText = "Se ha guardado la duración del turno en minutos: " + duracionEnMinutos;
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Default Card Example -->
+
+                        <div class="card mb">
+                            <div class="col-md">
+                                <div class="card-header">
+                                    Modalidad
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <h6>Modo de atención: </h6>
+
+                                        <select class="form-select" id="inputGroupSelect01">
+                                            <option selected class="button-style">Seleccione...</option><br>
+                                            <option value="1">Virtual</option>
+                                            <option value="2">Presencial</option>
+                                            <option value="3">Domicilio</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                    </div>
+                                    <br>
+
                                 </div>
                             </div>
 
 
                         </div>
-
                     </div>
-
-                </div>
-
-                <!-- Fin del contenido principal -->
-
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>HealtCooperationWeb ©2023</span>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="defaultCheck1">Lugar de atención</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </footer>
-                <!-- Fin del Footer -->
+
+
+                    <div class="card mb">
+                        <div class="card-header">
+                            Obra Social
+                        </div>
+                        <div class="card-body">
+                            <div class="row gy-5">
+                                <div class="col-md">
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            <input type="text" class="form-control form-control-sm" placeholder="Texto" />
+                                            Agrege nueva obra social..
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"  />
+                                        <label class="form-check-label" for="defaultCheck2">
+                                            <input type="text" class="form-control form-control-sm" placeholder="Texto" />
+                                            Agrege nueva obra social..
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"  />
+                                        <label class="form-check-label" for="defaultCheck2">
+                                            <input type="text" class="form-control form-control-sm" placeholder="Texto" />
+                                            Agrege nueva obra social..
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
+                                        <label class="form-check-label" for="defaultCheck3"> Subsidio</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
+                                        <label class="form-check-label" for="defaultCheck3"> Pami </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
+                                        <label class="form-check-label" for="defaultCheck3"> Arevalo </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" />
+                                        <label class="form-check-label" for="defaultCheck3"> Ospia </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+                    <!-- Fin del contenido principal -->
+
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>HealtCooperationWeb ©2023</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- Fin del Footer -->
+
+                </div>
+                <!-- Fin del contenedor de contenido -->
 
             </div>
-            <!-- Fin del contenedor de contenido -->
+            <!-- Envoltura de fin de página -->
 
-        </div>
-        <!-- Envoltura de fin de página -->
+            <!-- Desplácese hasta el botón superior-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
 
-        <!-- Desplácese hasta el botón superior-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-
-        <!-- Cierre de sesión modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                        <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+            <!-- Cierre de sesión modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="/vendor/jquery/jquery.min.js"></script>
-        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <!-- Bootstrap core JavaScript-->
+            <script src="/vendor/jquery/jquery.min.js"></script>
+            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+            <!-- Core plugin JavaScript-->
+            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="/js/sb-admin-2.min.js"></script>
+            <!-- Custom scripts for all pages-->
+            <script src="/js/sb-admin-2.min.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="/vendor/chart.js/Chart.min.js"></script>
+            <!-- Page level plugins -->
+            <script src="/vendor/chart.js/Chart.min.js"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="/js/demo/chart-area-demo.js"></script>
-        <script src="/js/demo/chart-pie-demo.js"></script>
+            <!-- Page level custom scripts -->
+            <script src="/js/demo/chart-area-demo.js"></script>
+            <script src="/js/demo/chart-pie-demo.js"></script>
 
     </body>
 
