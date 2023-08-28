@@ -97,7 +97,8 @@ public class PacienteServicio extends UsuarioServicio {
             // }
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
-            obraSocialServicio.modificarObraSocial(idObraSocial, nombreObraSocial, emailObraSocial, telefonoObraSocial);
+            obraSocialServicio.modificarObraSocial(idObraSocial, nombreObraSocial, "Completar email",
+                    "Completar telefono");
             pas.setGrupoSanguineo(grupoSanguineo);
 
             Imagen imagen = imagenServicio.actualizar(archivo, id);
@@ -151,7 +152,7 @@ public class PacienteServicio extends UsuarioServicio {
                     for (Turno turno : turnos) {
                         if (turno.getProfesional().getId().equals(profesional.getId())) {
                             pacientesXProfesional.add(paciente);
-                            
+
                         }
                     }
                 }
@@ -161,7 +162,7 @@ public class PacienteServicio extends UsuarioServicio {
             System.out.println("Servicio paciente: Hubo un error al listar pacientes por profesional");
             return null;
         }
-      
+
     }
 
     private void validar(String grupoSanguineo, String obraSocial) throws MyException {

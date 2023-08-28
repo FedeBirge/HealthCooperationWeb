@@ -65,7 +65,7 @@ public class ProfesionalControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            modelo.addAttribute("id", logueado.getId());
+     
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
 
@@ -103,7 +103,7 @@ public class ProfesionalControlador {
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
             modelo.put("error", ex.getMessage());
-            return "altaProfesional.html";
+            return registrar(modelo, session);
         }
 
     }

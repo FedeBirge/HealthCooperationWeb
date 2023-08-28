@@ -81,7 +81,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-
+                            <a class="collapse-item" th:href="@{/}">Alta Paciente</a>
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -96,7 +96,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+                           
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -152,7 +152,7 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
@@ -179,7 +179,9 @@
 
                         <!-- Encabezado de página -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Modificar Paciente</h1>
+                            <h1 th:if="${#strings.trim(user.rol) =='USUARIO'}" class="h3 mb-0 text-gray-800">Modificar perfil Paciente</h1>
+                            <h1 th:if="${#strings.trim(user.rol) =='MODERADOR'}" class="h3 mb-0 text-gray-800">Modificar perfil Profesional </h1>
+                            <h1 th:if="${#strings.trim(user.rol) =='ADMINISTRADOR'}" class="h3 mb-0 text-gray-800">Modificar perfil</h1>
                         </div>
 
                         <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/user/modificarUsuario/__${id}__}" method="POST" enctype="multipart/form-data">
@@ -215,7 +217,7 @@
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">Email</label>
-                                    <input class="form-control form-control-user" type="email" id="email" placeholder="Correo electrónico" name="email" th:value="${user.email}">
+                                    <input class="form-control form-control-user" type="email" id="email"  placeholder="Correo electrónico" name="email" th:value="${user.email}">
                                 </div>
 
                                 <div class="col-sm-6 mb-3">
@@ -236,15 +238,17 @@
                                     <label  class="form-label">Direccion</label>
                                     <input  class="form-control form-control-user" type="text" id="direccion" placeholder="Direccion" name="direccion" th:value="${user.direccion}">
                                 </div>
-                                <div  class="col-sm-6 mb-3">
+                               
+                                <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
                                     <label  class="form-label">Obra Social</label>
-                                    <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
+                                    <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="nombreObraSocial" >
                                 </div>
-                                <div  class="col-sm-6 mb-3">
+                                
+                                    <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
                                     <label  class="form-label">Grupo Sanguineo</label>
-                                    <input class="form-control form-control-user" type="text" id="grupo" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
+                                    <input class="form-control form-control-user" type="text" id="grupo" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${user.grupoSanguineo}">
                                 </div>    
-                                <div   th:if="${user.rol}=='MODERADOR'" class="col-sm-6 mb-3">
+                                <div   th:if="${#strings.trim(user.rol) =='MODERADOR'}" class="col-sm-6 mb-3">
 
                                     <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" for="especialidad">Especialidad</label>
                                     <select  class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
@@ -253,7 +257,7 @@
                                                 th:value="${especialidad}" th:text="${especialidad}"></option>
                                     </select><br>
                                 </div>
-                                <div    th:if="${user.rol}=='MODERADOR'" class="col-sm-6 mb-3">
+                                <div   th:if="${#strings.trim(user.rol) =='MODERADOR'}" class="col-sm-6 mb-3">
                                     <label  class="form-label">Valor Consulta</label>
                                     <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="" id="valorConsulta"  name="valorConsulta" th:value="${user.valorConsulta}">
                                 </div>
@@ -265,7 +269,7 @@
                                         <img id="imagenPerfil" class="form-label" th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 100px;" />
                                     </a>
                                 </div> 
-
+                                
 
                             </div>
 

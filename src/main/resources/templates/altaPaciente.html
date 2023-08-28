@@ -82,7 +82,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                             <a class="collapse-item" th:href="@{/}">Alta Paciente</a>
+                             <a class="collapse-item" th:href="@{/paciente/crear}">Alta Paciente</a>
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -97,7 +97,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+                      
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -153,7 +153,7 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                     <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
@@ -181,7 +181,19 @@
                          <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Alta Paciente</h1>
                         </div>
-                        <form class= "user" th:action="@{/user/crearUsuario}" method="POST" enctype="multipart/form-data">
+                        <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Error!</h5>
+                                <p class="card-text text-center" th:text="${error}"></p>
+                            </div>
+                        </div>
+                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Exito!</h5>
+                                <p class="card-text text-center" th:text="${exito}"></p>
+                            </div>
+                        </div> 
+                        <form class= "user" th:action="@{/paciente/crear}" method="POST" enctype="multipart/form-data">
 
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3">

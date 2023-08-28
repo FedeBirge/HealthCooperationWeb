@@ -129,7 +129,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/}">Alta Paciente</a>
+                          <a class="collapse-item" th:href="@{/paciente/crear}">Alta Paciente</a>
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -144,7 +144,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -209,7 +209,7 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                         <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
@@ -265,10 +265,9 @@
                                                     <th>Nombre</th>
                                                     <th>Apellido</th>
 
-                                                    <th sec:authorize="hasRole('ADMINISTRADOR')">Rol</th>
+                                                    <th >Turnos</th>
                                                     <th>Historia Clínica</th>
-                                                    <th sec:authorize="hasRole('ADMINISTRADOR')"></th>
-                                                    <th sec:authorize="hasRole('ADMINISTRADOR')"></th>
+                                                  
 
 
 
@@ -281,7 +280,9 @@
                                                     <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
                                                     <td th:value="${user.apellido}" th:text="${user.apellido}"></td>
 
-                                                    <td sec:authorize="hasRole('ADMINISTRADOR')" th:value="${user.rol}" th:text="${user.rol}"></td>
+                                                    <td >
+                                                          <a type="button" class="btn btn-success me-md-2" th:href="@{/}">Turnos</a>
+                                                    </td>
                                                     <td >
 
                                                         <a type="button" class="btn btn-success me-md-2" th:href="@{/}">H.C.</a>
@@ -289,14 +290,14 @@
 
                                                     <td sec:authorize="hasRole('ADMINISTRADOR')">
 
-                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/paciente/perfil/__${user.id}__}"> Modificar </a>
+                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
                                                     </td>
 
-                                                    <td sec:authorize="hasRole('ADMINISTRADOR')">
-                                                        <form th:action="@{/user/eliminar/__${user.id}__}" method="POST"> 
-                                                            <button   class="btn btn-success me-md-2"  type="summit">Eliminar</button>
-                                                                     </form>
-                                                    </td>
+                                                    <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR'}" >
+                                                        <form  th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
+                                                            <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
+                                                        </form>
+                                                    </td>         
 
                                             </tbody>
                                         </table>
@@ -325,7 +326,37 @@
 
             </div>
             <!-- End of Page Wrapper -->
+            <div id="confirmationPopup" class="confirmation-popup">
 
+                <p>¿Estás seguro de que quieres eliminar este paciente?</p>
+                <button id="confirmButton" class="btn btn-danger" onclick="confirmDeletion()">Confirmar</button>
+                <button id="cancelButton" class="btn btn-secondary" onclick="cancelDeletion()">Cancelar</button>
+            </div>
+
+            <script th:inline="javascript">
+                function showConfirmationPopup(userId) {
+                    document.getElementById('confirmationPopup').style.display = 'block';
+                    document.getElementById('overlay').style.display = 'block';
+                    userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                }
+
+                function confirmDeletion() {                                  
+                   
+                        document.getElementById('deleteForm_' + userIdToDelete).submit();
+
+                    closeConfirmationPopup();
+                }
+
+                function cancelDeletion() {
+                    closeConfirmationPopup();
+                }
+
+                function closeConfirmationPopup() {
+                    document.getElementById('confirmationPopup').style.display = 'none';
+                    document.getElementById('overlay').style.display = 'none';
+                }
+            </script>
+             <div id="overlay" class="overlay"></div>
             <!-- Scroll to Top Button-->
             <a class="scroll-to-top rounded" href="#page-top">
                 <i class="fas fa-angle-up"></i>
@@ -350,36 +381,7 @@
                     </div>
                 </div>
             </div>
-            <div id="confirmationPopup" class="confirmation-popup">
 
-                <p>¿Estás seguro de que quieres eliminar este paciente?</p>
-                <button id="confirmButton" class="btn btn-danger" onclick="confirmDeletion()">Confirmar</button>
-                <button id="cancelButton" class="btn btn-secondary" onclick="cancelDeletion()">Cancelar</button>
-            </div>
-
-            <script th:inline="javascript">
-                function showConfirmationPopup(userId) {
-                    document.getElementById('confirmationPopup').style.display = 'block';
-                    document.getElementById('overlay').style.display = 'block';
-                    userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
-                }
-
-                function confirmDeletion() {
-            {
-                        document.getElementById('deleteForm_' + userIdToDelete).submit();
-                    
-                    closeConfirmationPopup();
-                }
-
-                function cancelDeletion() {
-                    closeConfirmationPopup();
-                }
-
-                function closeConfirmationPopup() {
-                    document.getElementById('confirmationPopup').style.display = 'none';
-                    document.getElementById('overlay').style.display = 'none';
-                }
-            </script>
             <!-- Bootstrap core JavaScript-->
             <script src="/vendor/jquery/jquery.min.js"></script>
             <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

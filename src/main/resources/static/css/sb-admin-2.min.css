@@ -134,6 +134,7 @@
     rotate: 0;
   }
 }
+
  /* Estilo para los botones */
   .button-style,
   .form-select{
@@ -157,3 +158,4 @@
     padding: 5px 10px;
     font-size: 14px;
   }
+
