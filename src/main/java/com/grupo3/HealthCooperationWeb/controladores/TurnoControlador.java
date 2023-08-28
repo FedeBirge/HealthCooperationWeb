@@ -27,5 +27,10 @@ public class TurnoControlador {
 
         return "verTurnos.html";
     }
+      @GetMapping("/panel") // ruta para el panel administrativo
+    public String misTurnos() {
+  
 
+        return "turnero.html";
+    }
 }

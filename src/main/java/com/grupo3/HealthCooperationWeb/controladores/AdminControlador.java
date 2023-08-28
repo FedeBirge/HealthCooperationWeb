@@ -22,7 +22,7 @@ public class AdminControlador {
     @GetMapping("/dashboard") 
     public String panelAdministrador(ModelMap modelo, HttpSession session) {
  
-            return "redirect: /dashboard";
+            return "panelAdmin.html";
        
     }
 
