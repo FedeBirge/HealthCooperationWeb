@@ -12,13 +12,13 @@
         <title>Admin</title>
 
         <!-- Fuentes personalizadas-->
-        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Css -->
-        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
     </head>
 
@@ -83,7 +83,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-
+                            <a class="collapse-item" th:href="@{/paciente/crear}">Alta Paciente</a>
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -98,7 +98,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -165,7 +165,7 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                     <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
@@ -191,10 +191,7 @@
                     <div class="container-fluid">
 
                         <!-- Encabezado de página -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Admin</h1>
 
-                        </div>
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
 
@@ -224,9 +221,8 @@
                                                     <th>Nombre</th>
                                                     <th>Apellido</th>
                                                     <th>Email</th>
-                                                    <th>Rol</th>                                            
-                                                    <th></th>    
-                                                    <th></th> 
+                                                    <th>Especialidad</th>                                            
+                                                   
                                                 </tr>
                                             </thead>
 
@@ -235,15 +231,15 @@
                                                     <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
                                                     <td th:value="${user.apellido}" th:text="${user.apellido}"></td>
                                                     <td th:value="${user.email}" th:text="${user.email}"></td>
-                                                    <td th:value="${user.rol}" th:text="${user.rol}"></td>
+                                                    <td th:value="${user.especialidad}" th:text="${user.especialidad}"></td>
                                                     <td >
-                                                           <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
+                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
                                                     </td>
-                                                    <td>
-                                                        <form th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
-                                                            <a class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
+                                                    <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR'}" >
+                                                        <form  th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
+                                                            <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
                                                         </form>
-                                                    </td>                   
+                                                    </td>              
                                             </tbody>
                                         </table>
                                     </div>
@@ -271,37 +267,37 @@
 
             </div>
             <!-- End of Page Wrapper -->
-     <div id="confirmationPopup" class="confirmation-popup">
-    <p>¿Estás seguro de que quieres eliminar este Profesional?</p>
-    <button id="confirmButton" class="btn btn-danger" onclick="confirmDeletion()">Confirmar</button>
-    <button id="cancelButton" class="btn btn-secondary" onclick="cancelDeletion()">Cancelar</button>
-</div>
+            <div id="confirmationPopup" class="confirmation-popup">
+                <p>¿Estás seguro de que quieres eliminar este Profesional?</p>
+                <button id="confirmButton" class="btn btn-danger" onclick="confirmDeletion()">Confirmar</button>
+                <button id="cancelButton" class="btn btn-secondary" onclick="cancelDeletion()">Cancelar</button>
+            </div>
 
-<script th:inline="javascript">
-    function showConfirmationPopup(userId) {
-        document.getElementById('confirmationPopup').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-        userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
-    }
+            <script th:inline="javascript">
+                function showConfirmationPopup(userId) {
+                    document.getElementById('confirmationPopup').style.display = 'block';
+                    document.getElementById('overlay').style.display = 'block';
+                    userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                }
 
-    function confirmDeletion() {
-        if (confirm('Confirmar')) {
-            document.getElementById('deleteForm_' + userIdToDelete).submit();
-        }
-        closeConfirmationPopup();
-    }
+                function confirmDeletion() {
 
-    function cancelDeletion() {
-        closeConfirmationPopup();
-    }
+                    document.getElementById('deleteForm_' + userIdToDelete).submit();
 
-    function closeConfirmationPopup() {
-        document.getElementById('confirmationPopup').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
-</script>
+                    closeConfirmationPopup();
+                }
 
-<div id="overlay" class="overlay"></div>
+                function cancelDeletion() {
+                    closeConfirmationPopup();
+                }
+
+                function closeConfirmationPopup() {
+                    document.getElementById('confirmationPopup').style.display = 'none';
+                    document.getElementById('overlay').style.display = 'none';
+                }
+            </script>
+
+            <div id="overlay" class="overlay"></div>
 
             <!-- Scroll to Top Button-->
             <a class="scroll-to-top rounded" href="#page-top">
@@ -329,21 +325,21 @@
 
 
             <!-- Bootstrap core JavaScript-->
-            <script src="../vendor/jquery/jquery.min.js"></script>
-            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="/vendor/jquery/jquery.min.js"></script>
+            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
             <!-- Core plugin JavaScript-->
-            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
             <!-- Custom scripts for all pages-->
-            <script src="../js/sb-admin-2.min.js"></script>
+            <script src="/js/sb-admin-2.min.js"></script>
 
             <!-- Page level plugins -->
 
-            <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+            <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
             <!-- Page level custom scripts -->
-            <script src="../js/demo/datatables-demo.js"></script>
+            <script src="/js/demo/datatables-demo.js"></script>
 
     </body>
 

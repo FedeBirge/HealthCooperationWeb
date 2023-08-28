@@ -116,7 +116,20 @@ public class UsuarioServicio implements UserDetailsService {
             System.out.println("No es posible eliminar el ususario");
         }
     }
+    // Metodo para listar todos los usuarios, sin tener en cuenta si estan dados de baja
+    public List<Usuario> listarTodosUsuarios() {
+     
 
+        try {
+           
+            return usuarioRepo.findAll();
+
+        } catch (Exception e) {
+            System.out.println("No pudieron ser listados los usuarios");
+            return null;
+        }
+
+    }
     // Metodo para listar todos los usuarios
     public List<Usuario> listarUsuarios() {
         List<Usuario> aux = new ArrayList();
