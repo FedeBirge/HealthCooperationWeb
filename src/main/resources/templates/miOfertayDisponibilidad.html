@@ -180,38 +180,38 @@
                                 <div class="row gy-3">
                                     <div class="col-md">
                                         <span style="font-size: 110%;">Seleccione sus días disponibles</span> 
-                                        
+
                                         <div>
-                                        <label class="cl-checkbox">
-                                            <input input class="form-check-input" type="checkbox" id="defaultCheck5" name="diasSeleccionados" th:value="Viernes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Viernes') : false}" />
-                                            <span>Lunes</span>
-                                        </label>
+                                            <label class="cl-checkbox">
+                                                <input class="form-check-input" type="checkbox" id="defaultCheck1" name="diasSeleccionados" th:value="Lunes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Lunes') : false}"/>
+                                                <span>Lunes</span>
+                                            </label>
                                         </div>
                                         <div>
-                                        <label class="cl-checkbox">
-                                            <input input class="form-check-input" type="checkbox" id="defaultCheck5" name="diasSeleccionados" th:value="Viernes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Viernes') : false}" />
-                                            <span>Martes</span>
-                                        </label>
+                                            <label class="cl-checkbox">
+                                                <input class="form-check-input" type="checkbox" id="defaultCheck2" name="diasSeleccionados" th:value="Martes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Martes') : false}" />
+                                                <span>Martes</span>
+                                            </label>
                                         </div>
                                         <div>
-                                        <label class="cl-checkbox">
-                                            <input input class="form-check-input" type="checkbox" id="defaultCheck5" name="diasSeleccionados" th:value="Viernes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Viernes') : false}" />
-                                            <span>Miercoles</span>
-                                        </label>
+                                            <label class="cl-checkbox">
+                                                <input class="form-check-input" type="checkbox" id="defaultCheck3" name="diasSeleccionados" th:value="Miércoles" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Miercoles') : false}" />
+                                                <span>Miercoles</span>
+                                            </label>
                                         </div>
                                         <div>
-                                        <label class="cl-checkbox">
-                                            <input input class="form-check-input" type="checkbox" id="defaultCheck5" name="diasSeleccionados" th:value="Viernes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Viernes') : false}" />
-                                            <span>Jueves</span>
-                                        </label>
+                                            <label class="cl-checkbox">
+                                                <input class="form-check-input" type="checkbox" id="defaultCheck4" name="diasSeleccionados" th:value="Jueves" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Jueves') : false}" />
+                                                <span>Jueves</span>
+                                            </label>
                                         </div>
                                         <div>
-                                        <label class="cl-checkbox">
-                                            <input input class="form-check-input" type="checkbox" id="defaultCheck5" name="diasSeleccionados" th:value="Viernes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Viernes') : false}" />
-                                            <span>Viernes</span>
-                                        </label>
+                                            <label class="cl-checkbox">
+                                                <input class="form-check-input" type="checkbox" id="defaultCheck5" name="diasSeleccionados" th:value="Viernes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Viernes') : false}" />
+                                                <span>Viernes</span>
+                                            </label>
                                         </div>
-                                        
+
                                         <br>
                                         <h5>Horarios de la jornada</h5>
                                         <div class="form-group row">
@@ -233,141 +233,150 @@
                                         <h5>Duracion del turno</h5>
                                         <br>
                                         <h6>Ingrese la duración del turno en minutos</h6>
-                                            <label for="duracion-input">Duración del turno (minutos):</label>
-                                            <input type="number" id="duracion-input" name="duracion" />
-                                            <!-- comment <button class="button-style" onclick="guardarDuracion()">Guardar</button>
-                                            <div id="resultado"></div>
-    
-                                            <script>
-                                                var duracionEnMinutos = 0; // Variable para almacenar el valor
-    
-                                                function guardarDuracion() {
-                                                    var duracionInput = document.getElementById("duracion-input");
-                                                    duracionEnMinutos = parseInt(duracionInput.value);
-    
-                                                    var resultado = document.getElementById("resultado");
-                                                    resultado.innerText = "Se ha guardado la duración del turno en minutos: " + duracionEnMinutos;
-                                                }
-                                            </script>
-                                            -->
-                                            <br>
-                                            <br>
-                                            <h5>Modalidad</h5>
-                                            <h6>Modo de atención: </h6>
+                                        <label for="duracion-input">Duración del turno (minutos):</label>
+                                        <input type="number" id="duracion-input" name="duracion" />
+                                        <!-- comment <button class="button-style" onclick="guardarDuracion()">Guardar</button>
+                          <div id="resultado"></div>
 
-                                                <select class="form-select" id="inputGroupSelect01" name="tipoOferta">
-                                                    <option value="" disabled selected>Seleccione...</option>
-                                                    <option th:each=" tipo:${tipos}"
-                                                            th:value="${tipo}" th:text="${tipo}"></option>
-                                                </select>
-                                            <br>
-                                            <br>
-                                            <br>
-                                             <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="defaultCheck1">Lugar de atención</label>
-                                        <div class="col-sm-8">
-                                            <input class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
-                                        </div>
-                                    </div>
+                          <script>
+                              var duracionEnMinutos = 0; // Variable para almacenar el valor
+
+                              function guardarDuracion() {
+                                  var duracionInput = document.getElementById("duracion-input");
+                                  duracionEnMinutos = parseInt(duracionInput.value);
+
+                                  var resultado = document.getElementById("resultado");
+                                  resultado.innerText = "Se ha guardado la duración del turno en minutos: " + duracionEnMinutos;
+                              }
+                          </script>
+                                        -->
+                                        <br>
+                                        <br>
+                                        <h5>Modalidad</h5>
+
+
+                                        <label class="col-sm-4 col-form-label" for="defaultCheck1">Modo de atención:</label>
+                                        <select class="form-select" id="inputGroupSelect01" name="tipoOferta">
+                                            <option value="" disabled selected>Seleccione...</option>
+                                            <option th:each=" tipo:${tipos}"
+                                                    th:value="${tipo}" th:text="${tipo}"></option>
+
+                                        </select>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="defaultCheck1">Lugar de atención</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
                                             </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                               
-                              
-                            </div>
-                           
-                            <div class="card mb">
-                                <div class="card-header">
-                                    Obra Social
-                                </div>
-                                <div class="card-body">
-                                    <div class="row gy-5">
-                                        <div class="col-md">
-                                            <!-- Lista para mostrar las selecciones -->
-                                            <div class="form-group">
-                                                <label>Seleccionadas:</label>
-                                                <ul id="seleccionadas"></ul>
-                                            </div>
-                                            <!-- Select para obras sociales preexistentes -->
-                                            <div class="form-group">
-                                                <label for="obrasPreexistentes">Seleccionar obras sociales preexistentes:</label>
-                                                <select class="form-control" id="obrasPreexistentes" onchange="agregarSeleccion()">
-                                                    <option value="">Seleccionar</option>
-                                                    <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
-                                                </select>
-                                            </div>
-                                            <!-- Formulario para crear una nueva obra social -->
-                                            <div class="form-group">
-                                                <label for="nombreNuevaObraSocial">Agregar nueva obra social:</label>
-                                                <input type="text" class="form-control" id="nombreNuevaObraSocial" placeholder="Nombre" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="emailNuevaObraSocial">Email:</label>
-                                                <input type="email" class="form-control" id="emailNuevaObraSocial" placeholder="Email" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="telefonoNuevaObraSocial">Teléfono:</label>
-                                                <input type="tel" class="form-control" id="telefonoNuevaObraSocial" placeholder="Teléfono" />
-                                            </div>
-                                            <button type="button" class="btn btn-primary" onclick="agregarNuevaObraSocial()">Agregar Nueva</button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <script>
-                                function agregarSeleccion() {
-                                var select = document.getElementById("obrasPreexistentes");
-                                var selectedOption = select.options[select.selectedIndex];
-
-                                if (selectedOption.value !== "") {
-                                var seleccionadasList = document.getElementById("seleccionadas");
-                                var selectedItem = document.createElement("li");
-                                selectedItem.textContent = selectedOption.textContent;
-                                seleccionadasList.appendChild(selectedItem);
-
-                                // Limpiar el select
-                                select.selectedIndex = 0;
-                                }
-                                }
-
-                                function agregarNuevaObraSocial() {
-                                var nombre = document.getElementById("nombreNuevaObraSocial").value.trim();
-                                var email = document.getElementById("emailNuevaObraSocial").value.trim();
-                                var telefono = document.getElementById("telefonoNuevaObraSocial").value.trim();
-
-                                if (nombre !== "") {
-                                var seleccionadasList = document.getElementById("seleccionadas");
-                                var nuevaObraSocial = document.createElement("li");
-                                nuevaObraSocial.textContent = nombre;
-                                seleccionadasList.appendChild(nuevaObraSocial);
-
-                                // Limpiar los campos
-                                document.getElementById("nombreNuevaObraSocial").value = "";
-                                document.getElementById("emailNuevaObraSocial").value = "";
-                                document.getElementById("telefonoNuevaObraSocial").value = "";
-                                }
-                                }
-                            </script>
-                            <div class="d-grid gap-2 col-12 mx-auto text-center">
-                                <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>
-                            </div>
-                    </form>
-                    <!-- Fin del contenido principal -->
-                    <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>HealtCooperationWeb ©2023</span>
                             </div>
                         </div>
-                    </footer>
-                    <!-- Fin del Footer -->
+
+
+
                 </div>
-            </div>                
-            <!-- Fin del contenedor de contenido -->
-        </div>
+
+                <div class="card mb">
+                    <div class="card-header">
+                        Obra Social
+                    </div>
+                    <div class="card-body">
+                        <div class="row gy-5">
+                            <div class="col-md">
+                                <!-- Lista para mostrar las selecciones -->
+                                <div class="form-group">
+                                    <label>Seleccionadas:</label>
+                                    <ul id="seleccionadas"></ul>
+                                </div>
+
+                                <!-- Select para obras sociales preexistentes -->
+                                <div class="form-group">
+                                    <label for="obrasPreexistentes">Seleccionar obras sociales:</label>
+                                    <select class="form-control" id="obrasPreexistentes" onchange="manejarSeleccion()">
+                                        <option value="">Seleccionar</option>
+                                        <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
+                                        <option value="otra">Otra</option>
+                                    </select>
+                                </div>
+
+                                <!-- Campo para agregar una nueva obra social -->
+                                <div id="nuevaObraSocialFields" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="nombreNuevaObraSocial">Nombre de nueva obra social:</label>
+                                        <input type="text" class="form-control" id="nombreNuevaObraSocial" placeholder="Nombre" />
+                                    </div>
+                                    <button type="button" class="btn btn-primary" onclick="agregarNuevaObraSocial()">Agregar Nueva</button>
+                                </div>
+
+                                <!-- Input oculto para almacenar las selecciones -->
+                                <input type="hidden" id="seleccionesInput" name="selecciones" />
+
+                                <script>
+                                    var selecciones = [];
+
+                                    function manejarSeleccion() {
+                                    var select = document.getElementById("obrasPreexistentes");
+                                    var selectedOption = select.options[select.selectedIndex];
+                                    var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
+
+                                    if (selectedOption.value === "otra") {
+                                    nuevaObraSocialFields.style.display = "block";
+                                    } else {
+                                    nuevaObraSocialFields.style.display = "none";
+                                    agregarSeleccion(selectedOption.textContent);
+                                    }
+                                    }
+
+                                    function agregarNuevaObraSocial() {
+                                    var nombre = document.getElementById("nombreNuevaObraSocial").value.trim();
+
+                                    if (nombre !== "") {
+                                    agregarSeleccion(nombre);
+                                    document.getElementById("nombreNuevaObraSocial").value = "";
+                                    var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
+                                    nuevaObraSocialFields.style.display = "none";
+                                    }
+                                    }
+
+                                    function agregarSeleccion(nombre) {
+                                    var seleccionadasList = document.getElementById("seleccionadas");
+                                    var nuevaObraSocial = document.createElement("li");
+                                    nuevaObraSocial.textContent = nombre;
+                                    seleccionadasList.appendChild(nuevaObraSocial);
+
+                                    // Agregar a la lista de selecciones
+                                    selecciones.push(nombre);
+
+                                    // Actualizar el input oculto con las selecciones
+                                    document.getElementById("seleccionesInput").value = JSON.stringify(selecciones);
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 col-12 mx-auto text-center">
+                    <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>
+                </div>
+                
+                <!-- Fin del contenido principal -->
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>HealtCooperationWeb ©2023</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- Fin del Footer -->
+            </div>
+        </div>                
+        <!-- Fin del contenedor de contenido -->
+    </div>
         <!-- Envoltura de fin de página -->
         <!-- Desplácese hasta el botón superior-->
         <a class="scroll-to-top rounded" href="#page-top">
