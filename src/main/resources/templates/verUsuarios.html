@@ -173,9 +173,10 @@
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                  <a class="dropdown-item" th:href="@{/inicio}">
+                                       
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Configuraciones
+                                        Mi Área
                                     </a>
 
                                     <div class="dropdown-divider"></div>
@@ -236,7 +237,7 @@
                                                     <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
                                                     <td th:value="${user.apellido}" th:text="${user.apellido}"></td>                                                  
                                                     <td th:value="${user.rol}" th:text="${user.rol}"></td>
-                                                    <td th:value="${user.activo}" th:text="${user.activo ? 'activo' : 'inactivo'}"></td>
+                                                 
                                                     <td>
                                                         <a type="button" class="btn btn-success me-md-2"th:href="@{/user/verUsuario/__${log.id}__}">Perfil                                                       </a>
                                                     </td>
