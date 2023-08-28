@@ -134,3 +134,26 @@
     rotate: 0;
   }
 }
+ /* Estilo para los botones */
+  .button-style,
+  .form-select{
+    background-color: #32be8f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .button-style:hover {
+    background-color: #2a9e74;
+  }
+
+  /* Estilo para el input */
+  #duracion-input {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
