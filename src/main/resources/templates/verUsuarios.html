@@ -84,8 +84,8 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
 
-                             <a class="collapse-item" th:href="@{/}">Alta Paciente</a>
-                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
+                            <a class="collapse-item" th:href="@{/paciente/crear}">Alta Paciente</a>
+                            <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
 
                         </div>
@@ -100,7 +100,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -169,7 +169,7 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
@@ -195,10 +195,7 @@
                     <div class="container-fluid">
 
                         <!-- Encabezado de página -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Admin</h1>
 
-                        </div>
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
 
@@ -227,8 +224,9 @@
                                                 <tr>
                                                     <th>Nombre</th>
                                                     <th>Apellido</th>
-                                                    <th>Email</th>
-                                                    <th>Rol</th>                                            
+                                                    <th>Rol</th>   
+
+
                                                     <th></th>                                           
                                                 </tr>
                                             </thead>
@@ -236,17 +234,20 @@
                                             <tbody>
                                                 <tr th:each="user : ${users}">
                                                     <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
-                                                    <td th:value="${user.apellido}" th:text="${user.apellido}"></td>
-                                                    <td th:value="${user.email}" th:text="${user.email}"></td>
+                                                    <td th:value="${user.apellido}" th:text="${user.apellido}"></td>                                                  
                                                     <td th:value="${user.rol}" th:text="${user.rol}"></td>
+                                                    <td th:value="${user.activo}" th:text="${user.activo ? 'activo' : 'inactivo'}"></td>
+                                                    <td>
+                                                        <a type="button" class="btn btn-success me-md-2"th:href="@{/user/verUsuario/__${log.id}__}">Perfil                                                       </a>
+                                                    </td>
                                                     <td>
                                                         <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
                                                     </td>
-                                                    <td>
-                                                        <form th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
-                                                            <a class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
+                                                    <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR'}" >
+                                                        <form  th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
+                                                            <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
                                                         </form>
-                                                    </td>
+                                                    </td>                   
                                                 </tr>
                                             </tbody>
 
@@ -302,37 +303,37 @@
                     </div>
                 </div>
             </div>
-             <!--  Script de comfiramcion de eliminacion-->
-     <div id="confirmationPopup" class="confirmation-popup">
-    <p>¿Estás seguro de que quieres eliminar este usuario?</p>
-    <button id="confirmButton" class="btn btn-danger" onclick="confirmDeletion()">Confirmar</button>
-    <button id="cancelButton" class="btn btn-secondary" onclick="cancelDeletion()">Cancelar</button>
-</div>
+            <!--  Script de comfiramcion de eliminacion-->
+            <div id="confirmationPopup" class="confirmation-popup">
+                <p>¿Estás seguro de que quieres eliminar este Profesional?</p>
+                <button id="confirmButton" class="btn btn-danger" onclick="confirmDeletion()">Confirmar</button>
+                <button id="cancelButton" class="btn btn-secondary" onclick="cancelDeletion()">Cancelar</button>
+            </div>
 
-<script th:inline="javascript">
-    function showConfirmationPopup(userId) {
-        document.getElementById('confirmationPopup').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-        userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
-    }
+            <script th:inline="javascript">
+                function showConfirmationPopup(userId) {
+                    document.getElementById('confirmationPopup').style.display = 'block';
+                    document.getElementById('overlay').style.display = 'block';
+                    userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                }
 
-    function confirmDeletion() {
-        if (confirm('Confirmar')) {
-            document.getElementById('deleteForm_' + userIdToDelete).submit();
-        }
-        closeConfirmationPopup();
-    }
+                function confirmDeletion() {
 
-    function cancelDeletion() {
-        closeConfirmationPopup();
-    }
+                    document.getElementById('deleteForm_' + userIdToDelete).submit();
 
-    function closeConfirmationPopup() {
-        document.getElementById('confirmationPopup').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
-</script>
+                    closeConfirmationPopup();
+                }
 
+                function cancelDeletion() {
+                    closeConfirmationPopup();
+                }
+
+                function closeConfirmationPopup() {
+                    document.getElementById('confirmationPopup').style.display = 'none';
+                    document.getElementById('overlay').style.display = 'none';
+                }
+            </script>
+            <div id="overlay" class="overlay"></div>
 
             <!-- Bootstrap core JavaScript-->
             <script src="../vendor/jquery/jquery.min.js"></script>

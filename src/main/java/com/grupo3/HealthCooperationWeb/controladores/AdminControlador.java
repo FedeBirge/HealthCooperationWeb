@@ -25,13 +25,12 @@ public class AdminControlador {
 
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            modelo.addAttribute("id", logueado.getId());
-
+  
             return "panelAdmin.html";
         } catch (Exception e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            modelo.addAttribute("id", logueado.getId());
+  
             modelo.put("error", e.getMessage());
             return "redirect: /dashboard";
         }

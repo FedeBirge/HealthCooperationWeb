@@ -107,15 +107,15 @@ public class ObraSocialServicio {
     // Metodo para validar los datos ingresados antes de persistirlos
     private void validar(String nombre, String email, String telefono) throws MyException {
         if (nombre == null || nombre.isEmpty()) {
-            throw new MyException("Debe ingresar su nombre");
+            throw new MyException("Debe ingresar nombre de la obra social");
         }
 
         if (email == null || email.isEmpty()) {
-            throw new MyException("Debe ingresar un email");
+            throw new MyException("Debe ingresar email del a obra social");
         }
 
         if (telefono == null || nombre.isEmpty()) {
-            throw new MyException("Debe ingresar un nombre");
+            throw new MyException("Debe ingresar telefono de la obra social");
         }
 
     }
