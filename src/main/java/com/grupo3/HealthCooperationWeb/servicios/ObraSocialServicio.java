@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.grupo3.HealthCooperationWeb.servicios;
 
 import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
@@ -15,10 +12,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Ezequiel
- */
 @Service
 public class ObraSocialServicio {
 
@@ -54,14 +47,26 @@ public class ObraSocialServicio {
     public ObraSocial getObraSocialById(String id) throws MyException {
         return obraRepo.getById(id);
     }
+     public List<String> listarNombreObrasSociales() {
+         List<ObraSocial> obras = new ArrayList();
+        List<String> nombres = new ArrayList();
 
+            obras = obraRepo.findAll();
+            for (ObraSocial obra : obras) {
+                nombres.add(obra.getNombre());
+                System.out.println(obra.getEmail());
+             
+         }
+            return nombres;
+
+    }
     public List<ObraSocial> listarObrasSociales() {
 
         List<ObraSocial> obras = new ArrayList();
 
         try {
             obras = obraRepo.findAll();
-
+     
             return obras;
 
         } catch (Exception e) {

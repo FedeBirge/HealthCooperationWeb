@@ -265,43 +265,7 @@ public class ProfesionalControlador {
         }
     }
 
-    @GetMapping("/oferta/{id}")
-    public String oferta(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
-
-        try {
-            TipoOferta[] tipos = TipoOferta.values();
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-            modelo.addAttribute("tipos", tipos);
-
-            return "miOfertayDisponibilidad.html";
-
-        } catch (Exception ex) {
-           TipoOferta[] tipos = TipoOferta.values();
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-            modelo.addAttribute("tipos", tipos);
-                return "miOfertayDisponibilidad.html";
-        }
-    }
-      @PostMapping("/oferta/{id}")
-    public String ofertaa(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
-
-        try {
-
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-
-            return "miOfertayDisponibilidad.html";
-
-        } catch (Exception ex) {
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-
-            return "miOfertayDisponibilidad.html";
-
-        }
-    }
+    
        @PostMapping("/agenda/{id}")
     public String agenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
 

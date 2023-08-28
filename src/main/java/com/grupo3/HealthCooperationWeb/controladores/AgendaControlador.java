@@ -17,19 +17,11 @@ public class AgendaControlador {
     
     @GetMapping("/editar/{id}") // Vista principal para el Admin al Logearse (LT)
     public String editarAgenda(ModelMap modelo, HttpSession session) {
-        try {
-
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-  
-            return "panelAdmin.html";
-        } catch (Exception e) {
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-  
-            modelo.put("error", e.getMessage());
-            return "redirect: /dashboard";
-        }
+    
+     
+        return null;
+    
+     
     }
     @PostMapping("/editar/{id}") // Vista principal para el Admin al Logearse (LT)
     public String ediar(ModelMap modelo, HttpSession session) {
