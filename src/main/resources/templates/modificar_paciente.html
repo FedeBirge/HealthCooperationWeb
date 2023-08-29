@@ -9,7 +9,8 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Perfil</title>
+        <title>Mi Perfil</title>
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
 
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -30,11 +31,11 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Barra lateral - Marca -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/admin/dashboard}">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Panel Paciente </div>
+                    <div class="sidebar-brand-text mx-3">Panel Paciente</div>
                 </a>
 
                 <!-- Divisor -->
@@ -125,16 +126,9 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                        <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
-                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Perfil
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Configuraciones
-                                    </a>
+                                        
+                                    
 
-                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Cerrar sesión
@@ -170,9 +164,10 @@
                                 </div>
                             </div> 
                             <div class="form-group row">
+                                
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">Nombre</label>
-                                    <input type="text" class="form-control form-controluser"  id="name" placeholder="Nombre" name="nombre" th:value="${user.nombre}">
+                                    <input type="text" class="form-control form-control-user"   id="name" placeholder="Nombre" name="nombre" th:value="${user.nombre}">
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">Apellido</label>
@@ -228,7 +223,11 @@
                                     </a>
                                 </div> 
                                 
+                                
 
+                            </div>
+                            <div class="text-center">
+                                    <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Modificacion</button>
                             </div>
 
                             <script>
@@ -251,9 +250,7 @@
                     </div>
                 </div>
 
-                <div class="d-grid gap-2 col-12 mx-auto text-center">
-                    <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Modificacion</button>
-                </div>
+                
                 </form>
                 <!-- Fin del contenido principal -->
 
