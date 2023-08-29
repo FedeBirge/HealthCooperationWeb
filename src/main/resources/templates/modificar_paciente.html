@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en"html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <head>
@@ -9,8 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+
         <title>Mi Perfil</title>
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
 
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -20,86 +20,28 @@
 
         <!-- Css -->
         <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
     </head>
-<body id="page-top">
+
+    <body id="page-top">
 
         <!-- Contenedor de páginas-->
         <div id="wrapper">
 
+            <!-- barra lateral -->
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Barra lateral - Marca -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/}">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
                     <div class="sidebar-brand-text mx-3">Panel Paciente</div>
                 </a>
 
-
-                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                       aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-hospital-user"></i>
-                        <span>Profesionales</span>
-                    </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Acciones</h6>
-                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
-                            <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Elemento de navegación - Menú Contraer utilidades -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                       aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-user"></i>
-                        <span>Pacientes</span>
-                    </a>
-                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                         data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-
-                            <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
-
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
-                       aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-user"></i>
-                        <span>Usuarios</span>
-                    </a>
-                    <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
-                         data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                           
-                            <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
-
-
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Panel -->
-                <li class="nav-item">
-                
-                         
-                </li>
-                <li class="nav-item active ms-2">
-                    <a class="nav-link" th:href="@{/inicio}">
-                        <h3>Ver mi Perfil</h3></a>    
-                </li>
-
                 <!-- Divisor -->
                 <hr class="sidebar-divider my-0">
 
                 <!-- Panel -->
-
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/}">
 
@@ -114,6 +56,9 @@
                     Gestion
                 </div>
 
+                <!-- Elemento de navegación: menú Contraer páginas -->
+                
+
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -124,9 +69,8 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-
-                            <a class="collapse-item" th:href="@{/inicio}">Ver mi Perfil</a>
-                            <a class="collapse-item" th:href="@{/user/perfil/__${log.id}__}">Modificar mi Perfil</a>
+                             <a class="collapse-item" th:href="@{/inicio}">Ver mi Perfil</a>
+                            <a class="collapse-item" th:href="@{/paciente/perfil/__${log.id}__}">Modificar mi Perfil</a>
                             <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}">Ver mis Turnos</a>
 
                         </div>
@@ -134,6 +78,9 @@
                 </li>
                 
 
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
@@ -174,11 +121,14 @@
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "${log.nombre}"></span>
                                     <img class="/img-profile rounded-circle"
-                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 35px;">
+                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
+                                        
+                                    
+
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Cerrar sesión
@@ -196,7 +146,7 @@
 
                         <!-- Encabezado de página -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Modificar Paciente</h1>
+                            <h1 th:if="${#strings.trim(user.rol) =='USUARIO'}" class="h3 mb-0 text-gray-800">Modificar perfil</h1>
                         </div>
 
                         <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/paciente/modificar/__${id}__}" method="POST" enctype="multipart/form-data">
@@ -214,13 +164,14 @@
                                 </div>
                             </div> 
                             <div class="form-group row">
+                                
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">Nombre</label>
-                                    <input type="text" class="form-control form-control-user"  id="last-name" placeholder="Nombre" name="nombre" th:value="${user.nombre}">
+                                    <input type="text" class="form-control form-control-user"   id="name" placeholder="Nombre" name="nombre" th:value="${user.nombre}">
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">Apellido</label>
-                                    <input type="text" class="form-control form-control-user"  id="last-name" placeholder="Apellido" name="apellido" th:value="${user.apellido}">
+                                    <input type="text" class="form-control form-control-user"   id="last-name" placeholder="Apellido" name="apellido" th:value="${user.apellido}">
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">DNI</label>
@@ -232,7 +183,7 @@
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <label  class="form-label">Email</label>
-                                    <input class="form-control form-control-user" type="email" id="email" placeholder="Correo electrónico" name="email" th:value="${user.email}">
+                                    <input class="form-control form-control-user" type="email" id="email"  placeholder="Correo electrónico" name="email" th:value="${user.email}">
                                 </div>
 
                                 <div class="col-sm-6 mb-3">
@@ -253,23 +204,26 @@
                                     <label  class="form-label">Direccion</label>
                                     <input  class="form-control form-control-user" type="text" id="direccion" placeholder="Direccion" name="direccion" th:value="${user.direccion}">
                                 </div>
-                                <div  class="col-sm-6 mb-3">
+                               
+                                <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
                                     <label  class="form-label">Obra Social</label>
-                                    <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
+                                    <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="nombreObraSocial" >
                                 </div>
-                                <div  class="col-sm-6 mb-3">
+                                
+                                    <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
                                     <label  class="form-label">Grupo Sanguineo</label>
-                                    <input class="form-control form-control-user" type="text" id="grupo" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
+                                    <input class="form-control form-control-user" type="text" id="grupo" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${user.grupoSanguineo}">
                                 </div>    
                                 <div class="col-sm-6 mb-3">
                                     <p class="form-label">¡Actualice su foto aquí!</p>
+                                    <input type="file" class="form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" name="archivo" id="archivoInput" />
+
                                     <a class="d-flex align-items-center">
                                         <img id="imagenPerfil" class="form-label" th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 100px;" />
                                     </a>
-                                    <input type="file" class="form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" name="archivo" id="archivoInput" />
-
-                                    
-                                </div>
+                                </div> 
+                                
+                                
 
                             </div>
                             <div class="text-center">
@@ -292,12 +246,12 @@
                                     }
                                 });
                             </script>
-                        </form>
+
                     </div>
                 </div>
 
                 
-                
+                </form>
                 <!-- Fin del contenido principal -->
 
                 <!-- Footer -->
