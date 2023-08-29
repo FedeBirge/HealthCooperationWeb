@@ -278,23 +278,7 @@
                         </div>
 
 
-                            <div class="card mb">
-                                <div class="col-md">
-                                    <div class="card-header">
-                                        Modalidad
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="input-group">
-                                         
-                                               <label class="col-sm-4 col-form-label" for="defaultCheck1">Modo de atención:</label>
-                                            <select class="form-select" id="inputGroupSelect01" name="tipoOferta">
-                                                <option value="" disabled selected>Seleccione...</option>
-                                                <option th:each=" tipo:${tipos}"
-                                                        th:value="${tipo}" th:text="${tipo}"></option>
-
-
-
-                </div>
+                        
 
                 <div class="card mb">
                     <div class="card-header">
@@ -309,72 +293,6 @@
                                     <ul id="seleccionadas"></ul>
                                 </div>
 
-                                <!-- Select para obras sociales preexistentes -->
-                                <div class="form-group">
-                                    <label for="obrasPreexistentes">Seleccionar obras sociales:</label>
-                                    <select class="form-control" id="obrasPreexistentes" onchange="manejarSeleccion()">
-                                        <option value="">Seleccionar</option>
-                                        <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
-                                        <option value="otra">Otra</option>
-                                    </select>
-                                </div>
-
-                                <!-- Campo para agregar una nueva obra social -->
-                                <div id="nuevaObraSocialFields" style="display: none;">
-                                    <div class="form-group">
-                                        <label for="nombreNuevaObraSocial">Nombre de nueva obra social:</label>
-                                        <input type="text" class="form-control" id="nombreNuevaObraSocial" placeholder="Nombre" />
-                                    </div>
-                                    <button type="button" class="btn btn-primary" onclick="agregarNuevaObraSocial()">Agregar Nueva</button>
-                                </div>
-
-                                <!-- Input oculto para almacenar las selecciones -->
-                                <input type="hidden" id="seleccionesInput" name="selecciones" />
-
-                                <script>
-                                    var selecciones = [];
-
-                                    function manejarSeleccion() {
-                                    var select = document.getElementById("obrasPreexistentes");
-                                    var selectedOption = select.options[select.selectedIndex];
-                                    var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
-
-                                    if (selectedOption.value === "otra") {
-                                    nuevaObraSocialFields.style.display = "block";
-                                    } else {
-                                    nuevaObraSocialFields.style.display = "none";
-                                    agregarSeleccion(selectedOption.textContent);
-                                    }
-                                    }
-
-                                    function agregarNuevaObraSocial() {
-                                    var nombre = document.getElementById("nombreNuevaObraSocial").value.trim();
-
-                                    if (nombre !== "") {
-                                    agregarSeleccion(nombre);
-                                    document.getElementById("nombreNuevaObraSocial").value = "";
-                                    var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
-                                    nuevaObraSocialFields.style.display = "none";
-                                    }
-                                    }
-
-                                    function agregarSeleccion(nombre) {
-                                    var seleccionadasList = document.getElementById("seleccionadas");
-                                    var nuevaObraSocial = document.createElement("li");
-                                    nuevaObraSocial.textContent = nombre;
-                                    seleccionadasList.appendChild(nuevaObraSocial);
-
-                                    // Agregar a la lista de selecciones
-                                    selecciones.push(nombre);
-
-                                    // Actualizar el input oculto con las selecciones
-                                    document.getElementById("seleccionesInput").value = JSON.stringify(selecciones);
-                                    }
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 
                 <!-- Select para obras sociales preexistentes -->
