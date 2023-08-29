@@ -14,11 +14,8 @@
             <!-- Google fonts-->
             <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
             <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-            <link href="/css/styles.css" rel="stylesheet" />
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
-            <script src="../js/turnero.js" defer></script>
-            <link rel="stylesheet" href="../css/turnero.css">
-
+            <link href="../css/styles.css" rel="stylesheet" />
         </head>
         <body id="page-top">
             <!-- Navigation-->
@@ -46,89 +43,11 @@
                     </div>
                 </div>
             </nav>
+            
 
-
-            <div class="carta-medico">
-            <section>
-                <div class="card">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
-                    <div class="card__content">
-                        <p class="card__title">Card Title</p>
-                        <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                    </div>
-                </div>
-                <div class="wrapper">
-                    <header>
-                        <p class="current-date"></p>
-                        <div class="icons">
-                            <span id="prev" class="material-symbols-rounded">chevron_left</span>
-                            <span id="next" class="material-symbols-rounded">chevron_right</span>
-                        </div>
-                    </header>
-                    <div class="calendar">
-                        <ul class="weeks">
-                            <li>Dom</li>
-                            <li>Lun</li>
-                            <li>Mar</li>
-                            <li>Mie</li>
-                            <li>Jue</li>
-                            <li>Vie</li>
-                            <li>Sab</li>
-                        </ul>
-                        <ul class="days" id="calendarDays"></ul>
-
-                    </div>
-                </div>
-                <div class="rating">
-                    <input value="5" name="rate" id="star5" type="radio">
-                    <label title="text" for="star5"></label>
-                    <input value="4" name="rate" id="star4" type="radio">
-                    <label title="text" for="star4"></label>
-                    <input value="3" name="rate" id="star3" type="radio" checked="">
-                    <label title="text" for="star3"></label>
-                    <input value="2" name="rate" id="star2" type="radio">
-                    <label title="text" for="star2"></label>
-                    <input value="1" name="rate" id="star1" type="radio">
-                    <label title="text" for="star1"></label>
-                </div>
-                <div class="appointment" id="horarios">
-                    <h3>Horarios disponibles:</h3>
-                    <div class="container">
-                        <form>
-                            <label>
-                                <input type="radio" name="hora" checked="">
-                                <span>9:00</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="hora" checked="">
-                                <span>9:30</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="hora">
-                                <span>10:00</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="hora">
-                                <span>11:00</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="hora" checked="">
-                                <span>11:30</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="hora" checked="">
-                                <span>12:00</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="hora" checked="">
-                                <span>12:30</span>
-                            </label>
-
-                        </form>
-                    </div>
-                    <button class="btn-reserve" id="reservarBtn">Reservar cita</button>
-                </div>
-            </section>
+            <div th:replace="../fragments/carta-medicos.html">
+            </div>
+            <div th:replace="../fragments/carta-medicos.html">
             </div>
 
 
