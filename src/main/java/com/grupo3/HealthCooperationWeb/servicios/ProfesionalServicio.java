@@ -30,7 +30,7 @@ public class ProfesionalServicio extends UsuarioServicio {
     private ImagenServicio imagenServ; //
     @Autowired
     private OfertaServicio servOferta;
-        @Autowired
+    @Autowired
     private ObraSocialServicio servObra;
 
     // listar todos los médicos ACTIVOS
@@ -262,23 +262,20 @@ public class ProfesionalServicio extends UsuarioServicio {
     @Transactional
     public void asignarDisponibilidad(String id, ArrayList<String> diasSeleccionados) throws MyException {
 
-        try {
-            System.out.println(diasSeleccionados);
-             if (diasSeleccionados == null || diasSeleccionados.isEmpty()) {
-                    throw new MyException("Debe seleccionar al menos un día disponible");
-                }
-            Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
-
-            if (respuesta.isPresent()) {
-                Profesional profesional = (Profesional) (respuesta.get());
-               
-                List<Dias> diasDisponibles = pasarDiasEnum(diasSeleccionados);
-                profesional.setDiasDisponibles(diasDisponibles);
-            }
-        } catch (MyException e) {
-            throw new MyException("Debe seleccionar un día disponible");
-
+        System.out.println(diasSeleccionados);
+        if (diasSeleccionados == null || diasSeleccionados.isEmpty()) {
+            throw new MyException("Debe seleccionar al menos un día disponible");
         }
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+            Profesional profesional = (Profesional) (respuesta.get());
+
+            List<Dias> diasDisponibles = pasarDiasEnum(diasSeleccionados);
+            profesional.setDiasDisponibles(diasDisponibles);
+             System.out.println(profesional.getDiasDisponibles());
+        }
+
     }
 
     @Transactional
@@ -286,7 +283,7 @@ public class ProfesionalServicio extends UsuarioServicio {
             String duracion, String tipoOferta, String direccion,
             List<String> selecciones) throws MyException {
 
-        Oferta oferta = servOferta.crearOferta(tipoOferta,horaInicial, 
+        Oferta oferta = servOferta.crearOferta(tipoOferta, horaInicial,
                 horaFinal, duracion, direccion, servObra.pasarObras(selecciones));
         Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
         if (respuesta.isPresent()) {

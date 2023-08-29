@@ -1,12 +1,8 @@
 package com.grupo3.HealthCooperationWeb.controladores;
 
-import com.grupo3.HealthCooperationWeb.entidades.HistoriaClinica;
-import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
+
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
-import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
-import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
-import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import java.io.IOException;

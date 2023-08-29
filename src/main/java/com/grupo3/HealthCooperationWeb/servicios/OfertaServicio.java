@@ -2,9 +2,11 @@ package com.grupo3.HealthCooperationWeb.servicios;
 
 import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Oferta;
+import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.enumeradores.TipoOferta;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.OfertaRepositorio;
+import com.grupo3.HealthCooperationWeb.repositorios.ProfesionalRepositorio;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +19,9 @@ public class OfertaServicio {
 
     @Autowired
     private OfertaRepositorio ofertaRepo;
+    @Autowired
+    private ProfesionalRepositorio profesionalRepositorio;
 
-    
     // paso el string que viene del controlador al Emun correspondiente
     public TipoOferta pasarStringTipo(String tipo) throws MyException {
         switch (tipo) {
@@ -32,6 +35,7 @@ public class OfertaServicio {
                 throw new MyException("Tipo de oferta no válido: " + tipo);
         }
     }
+
     @Transactional
     // Metodo para crear oferta
     public Oferta crearOferta(String tipo, String horaIni, String horaFin, String duracion,
@@ -45,7 +49,7 @@ public class OfertaServicio {
         oferta.setHoraFin(horaFin);
         oferta.setDuracionTurno(duracion);
         oferta.setUbicacion(ubicacion);
-       
+
         oferta.setObrasSociales(obras);
 
         ofertaRepo.save(oferta);
@@ -55,8 +59,8 @@ public class OfertaServicio {
 
     @Transactional
     // Metodo para modificar una oferta
-    public void modificarOferta(String id, String tipo, String horaIni, String horaFin,
-            String duracion, String ubicacion, String telefono, List<ObraSocial> obras)
+    public Oferta modificarOferta(String id, String tipo, String horaIni, String horaFin,
+            String duracion, String ubicacion, List<ObraSocial> obras)
             throws MyException {
 
         validar(tipo, horaIni, horaFin, duracion, ubicacion, obras);
@@ -64,20 +68,20 @@ public class OfertaServicio {
         Optional<Oferta> respuesta = ofertaRepo.findById(id);
 
         if (respuesta.isPresent()) {
-            Oferta oerta = respuesta.get();
-
-            Oferta oferta = new Oferta();
+            Oferta oferta = respuesta.get();           
             oferta.setTipo(pasarStringTipo(tipo));
             oferta.setHoraInicio(horaIni);
             oferta.setHoraFin(horaFin);
             oferta.setDuracionTurno(duracion);
             oferta.setUbicacion(ubicacion);
-           
+
             oferta.setObrasSociales(obras);
 
             ofertaRepo.save(oferta);
+            return oferta;
 
         }
+        return null;
 
     }
 
@@ -98,8 +102,8 @@ public class OfertaServicio {
     // Metodo para listar todas las ofertas
     public List<Oferta> listarOfertas() {
         List<Oferta> ofertas = new ArrayList();
-     try {
-            ofertas = ofertaRepo.findAll();           
+        try {
+            ofertas = ofertaRepo.findAll();
 
             return ofertas;
 
@@ -108,12 +112,11 @@ public class OfertaServicio {
             return null;
         }
 
-
     }
 
     // Metodo para validar los datos ingresados antes de persistirlos
     protected void validar(String tipo, String horaIni, String horaFin,
-            String duracion, String ubicacion,  List<ObraSocial> obras) throws MyException {
+            String duracion, String ubicacion, List<ObraSocial> obras) throws MyException {
 
         if (tipo == null || tipo.isEmpty()) {
             throw new MyException("Debe indicar un tipo de oferta");
@@ -128,7 +131,7 @@ public class OfertaServicio {
         if (duracion == null || duracion.isEmpty()) {
             throw new MyException("Debe ingresar cuanto dura un turno");
         }
-       
+
         if (ubicacion == null || ubicacion.isEmpty()) {
             throw new MyException("Debe ingresar una ubicacion(direccion)");
         }
@@ -142,5 +145,14 @@ public class OfertaServicio {
     public Oferta getOne(String id) {
         return ofertaRepo.getOne(id);
     }
-  
+
+    public Oferta obtenerOfertaxProf(String id) {
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+        if (respuesta.isPresent()) {
+            Profesional prof = respuesta.get();
+            return prof.getOferta();
+        }
+        return null;
+    }
+
 }
