@@ -55,11 +55,7 @@
                 <div class="sidebar-heading">
                     Gestion
                 </div>
-
-
-
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
-
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
@@ -70,7 +66,6 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/oferta/verAgenda/__${log.id}__}">Ver Mi Agenda</a>
                             <a class="collapse-item" th:href="@{/oferta/editar/__${log.id}__}">Editar</a>
-
                         </div>
                     </div>
                 </li>
@@ -88,7 +83,6 @@
 
                         </div>
                     </div>
-
                 </li>
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
@@ -99,49 +93,31 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-
                             <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Pacientes</a>
-
                         </div>
                     </div>
-
                 </li>
-
-
                 <!-- Divider -->
                 <hr class="sidebar-divider">
-
-
-
                 <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
                 </div>
             </ul>
             <!-- Fin de la barra lateral -->
-
             <!-- Contenedor de contenido -->
             <div id="content-wrapper" class="d-flex flex-column">
-
                 <!-- Contenido principal -->
                 <div id="content">
-
                     <!-- Barra superior -->
                     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                         <!-- Alternar barra lateral (barra superior) -->
                         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                             <i class="fa fa-bars"></i>
                         </button>
-
-
-
                         <!-- Barra superior Barra de navegación -->
                         <ul class="navbar-nav ml-auto">
-
-
                             <div class="topbar-divider d-none d-sm-block"></div>
-
                             <!--Información del usuario -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -158,11 +134,9 @@
                                         Perfil
                                     </a>
                                     <a class="dropdown-item" th:href="@{/inicio}">
-
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Mi Área
                                     </a>
-
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -170,23 +144,16 @@
                                     </a>
                                 </div>
                             </li>
-
                         </ul>
-
                     </nav>
                     <!-- Fin de la barra superior -->
-
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
                         <div class="container-fluid">
-
-
-
                         </div>
                         <!-- Encabezado de página -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Mi disponibilidad</h1>
-
                         </div>
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                             <div class="card-body">
@@ -200,53 +167,54 @@
                                 <p class="card-text text-center" th:text="${exito}"></p>
                             </div>
                         </div> 
-
-
-
-
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-4 col-md-7 mb-5">
-
-                        </div>
                     </div>
-                </div>
-                <form th:action="@{/oferta/editar/__${log.id}__}" method="POST" enctype="multipart/form-data">
-                    <!-- Collapsable Card Example -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            Dias Disponibles
-                        </div>
-                        <div class="card-body">
-                            <div class="row gy-3">
-                                <div class="col-md">
-                                    <span style="font-size: 110%;">Seleccione sus días disponibles</span> 
-                                    <div class="form-check mt-2">
-                                        <input class="form-check-input" type="checkbox" id="defaultCheck1" name="diasSeleccionados" th:value="Lunes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Lunes') : false}"/>
-                                        <label class="form-check-label" for="defaultCheck1"> Lunes </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="defaultCheck2" name="diasSeleccionados" th:value="Martes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Martes') : false}" />
-                                        <label class="form-check-label" for="defaultCheck2"> Martes </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="defaultCheck3" name="diasSeleccionados" th:value="Miércoles" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Miercoles') : false}" />
-                                        <label class="form-check-label" for="defaultCheck3"> Miercoles </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="defaultCheck4" name="diasSeleccionados" th:value="Jueves" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Jueves') : false}" />
-                                        <label class="form-check-label" for="defaultCheck4"> Jueves </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="defaultCheck5" name="diasSeleccionados" th:value="Viernes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Viernes') : false}" />
-                                        <label class="form-check-label" for="defaultCheck5"> Viernes </label>
-                                    </div>
+                    <!-- Pending Requests Card Example -->
+                    <div class="col-xl-4 col-md-7 mb-5">
+                    </div>                    
+                    <form th:action="@{/oferta/editar/__${log.id}__}" method="POST" enctype="multipart/form-data">
+                        <!-- Collapsable Card Example -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Mi Disponibilidad 
+                            </div>
+                            <div class="card-body">
+                                <div class="row gy-3">
+                                    <div class="col-md">
+                                        <span style="font-size: 110%;">Seleccione sus días disponibles</span> 
 
-                                </div>
-                                <div class="col-md">
-                                    <div class="card-header">
-                                        Horarios de la jornada
-                                    </div>
-                                    <div class="card-body">
+                                        <div>
+                                            <label class="cl-checkbox">
+                                                <input class="form-check-input" type="checkbox" id="defaultCheck1" name="diasSeleccionados" th:value="Lunes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Lunes') : false}"/>
+                                                <span>Lunes</span>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label class="cl-checkbox">
+                                                <input class="form-check-input" type="checkbox" id="defaultCheck2" name="diasSeleccionados" th:value="Martes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Martes') : false}" />
+                                                <span>Martes</span>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label class="cl-checkbox">
+                                                <input class="form-check-input" type="checkbox" id="defaultCheck3" name="diasSeleccionados" th:value="Miércoles" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Miercoles') : false}" />
+                                                <span>Miercoles</span>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label class="cl-checkbox">
+                                                <input class="form-check-input" type="checkbox" id="defaultCheck4" name="diasSeleccionados" th:value="Jueves" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Jueves') : false}" />
+                                                <span>Jueves</span>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label class="cl-checkbox">
+                                                <input class="form-check-input" type="checkbox" id="defaultCheck5" name="diasSeleccionados" th:value="Viernes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Viernes') : false}" />
+                                                <span>Viernes</span>
+                                            </label>
+                                        </div>
+
+                                        <br>
+                                        <h5>Horarios de la jornada</h5>
                                         <div class="form-group row">
                                             <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Hora inicial</label>
                                             <div class="col-sm-4">
@@ -261,49 +229,54 @@
                                                 <input
                                                     class="form-control" type="time" value="12:30:00" id="html5-time-input" name="horaFinal"
                                                     />
-
                                             </div>
                                         </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                        </div>
-                        <div class="row">
-
-
-                            <!-- Basic Card Example -->
-                            <div class="card mb">
-                                <div class="col-md">
-                                    <div class="card-header">
-                                        Duracion del turno
-                                    </div>
-                                    <div class="card-body">
+                                        <h5>Duracion del turno</h5>
+                                        <br>
                                         <h6>Ingrese la duración del turno en minutos</h6>
                                         <label for="duracion-input">Duración del turno (minutos):</label>
                                         <input type="number" id="duracion-input" name="duracion" />
                                         <!-- comment <button class="button-style" onclick="guardarDuracion()">Guardar</button>
-                                        <div id="resultado"></div>
+                          <div id="resultado"></div>
 
-                                        <script>
-                                            var duracionEnMinutos = 0; // Variable para almacenar el valor
+                          <script>
+                              var duracionEnMinutos = 0; // Variable para almacenar el valor
 
-                                            function guardarDuracion() {
-                                                var duracionInput = document.getElementById("duracion-input");
-                                                duracionEnMinutos = parseInt(duracionInput.value);
+                              function guardarDuracion() {
+                                  var duracionInput = document.getElementById("duracion-input");
+                                  duracionEnMinutos = parseInt(duracionInput.value);
 
-                                                var resultado = document.getElementById("resultado");
-                                                resultado.innerText = "Se ha guardado la duración del turno en minutos: " + duracionEnMinutos;
-                                            }
-                                        </script>
+                                  var resultado = document.getElementById("resultado");
+                                  resultado.innerText = "Se ha guardado la duración del turno en minutos: " + duracionEnMinutos;
+                              }
+                          </script>
                                         -->
+                                        <br>
+                                        <br>
+                                        <h5>Modalidad</h5>
+
+
+                                        <label class="col-sm-4 col-form-label" for="defaultCheck1">Modo de atención:</label>
+                                        <select class="form-select" id="inputGroupSelect01" name="tipoOferta">
+                                            <option value="" disabled selected>Seleccione...</option>
+                                            <option th:each=" tipo:${tipos}"
+                                                    th:value="${tipo}" th:text="${tipo}"></option>
+
+                                        </select>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="defaultCheck1">Lugar de atención</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Default Card Example -->
+                        </div>
+
 
                             <div class="card mb">
                                 <div class="col-md">
@@ -319,40 +292,90 @@
                                                 <option th:each=" tipo:${tipos}"
                                                         th:value="${tipo}" th:text="${tipo}"></option>
 
-                                            </select>
-                                        </div>
-                                        <div>
-                                        </div>
-                                        <br>
-
-                                    </div>
-                                </div>
 
 
-                            </div>
-                        </div>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label" for="defaultCheck1">Lugar de atención</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-<div class="card mb">
-    <div class="card-header">
-        Obra Social
-    </div>
-    <div class="card-body">
-        <div class="row gy-5">
-            <div class="col-md">
-                <!-- Lista para mostrar las selecciones -->
-                <div class="form-group">
-                    <label>Seleccionadas:</label>
-                    <ul id="seleccionadas"></ul>
                 </div>
+
+                <div class="card mb">
+                    <div class="card-header">
+                        Obra Social
+                    </div>
+                    <div class="card-body">
+                        <div class="row gy-5">
+                            <div class="col-md">
+                                <!-- Lista para mostrar las selecciones -->
+                                <div class="form-group">
+                                    <label>Seleccionadas:</label>
+                                    <ul id="seleccionadas"></ul>
+                                </div>
+
+                                <!-- Select para obras sociales preexistentes -->
+                                <div class="form-group">
+                                    <label for="obrasPreexistentes">Seleccionar obras sociales:</label>
+                                    <select class="form-control" id="obrasPreexistentes" onchange="manejarSeleccion()">
+                                        <option value="">Seleccionar</option>
+                                        <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
+                                        <option value="otra">Otra</option>
+                                    </select>
+                                </div>
+
+                                <!-- Campo para agregar una nueva obra social -->
+                                <div id="nuevaObraSocialFields" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="nombreNuevaObraSocial">Nombre de nueva obra social:</label>
+                                        <input type="text" class="form-control" id="nombreNuevaObraSocial" placeholder="Nombre" />
+                                    </div>
+                                    <button type="button" class="btn btn-primary" onclick="agregarNuevaObraSocial()">Agregar Nueva</button>
+                                </div>
+
+                                <!-- Input oculto para almacenar las selecciones -->
+                                <input type="hidden" id="seleccionesInput" name="selecciones" />
+
+                                <script>
+                                    var selecciones = [];
+
+                                    function manejarSeleccion() {
+                                    var select = document.getElementById("obrasPreexistentes");
+                                    var selectedOption = select.options[select.selectedIndex];
+                                    var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
+
+                                    if (selectedOption.value === "otra") {
+                                    nuevaObraSocialFields.style.display = "block";
+                                    } else {
+                                    nuevaObraSocialFields.style.display = "none";
+                                    agregarSeleccion(selectedOption.textContent);
+                                    }
+                                    }
+
+                                    function agregarNuevaObraSocial() {
+                                    var nombre = document.getElementById("nombreNuevaObraSocial").value.trim();
+
+                                    if (nombre !== "") {
+                                    agregarSeleccion(nombre);
+                                    document.getElementById("nombreNuevaObraSocial").value = "";
+                                    var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
+                                    nuevaObraSocialFields.style.display = "none";
+                                    }
+                                    }
+
+                                    function agregarSeleccion(nombre) {
+                                    var seleccionadasList = document.getElementById("seleccionadas");
+                                    var nuevaObraSocial = document.createElement("li");
+                                    nuevaObraSocial.textContent = nombre;
+                                    seleccionadasList.appendChild(nuevaObraSocial);
+
+                                    // Agregar a la lista de selecciones
+                                    selecciones.push(nombre);
+
+                                    // Actualizar el input oculto con las selecciones
+                                    document.getElementById("seleccionesInput").value = JSON.stringify(selecciones);
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 
                 <!-- Select para obras sociales preexistentes -->
                 <div class="form-group">
@@ -439,8 +462,8 @@
                 </form>
 
 
-                <!-- Fin del contenido principal -->
 
+                <!-- Fin del contenido principal -->
                 <!-- Footer -->
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
@@ -450,18 +473,15 @@
                     </div>
                 </footer>
                 <!-- Fin del Footer -->
-
             </div>
-            <!-- Fin del contenedor de contenido -->
-
-        </div>
+        </div>                
+        <!-- Fin del contenedor de contenido -->
+    </div>
         <!-- Envoltura de fin de página -->
-
         <!-- Desplácese hasta el botón superior-->
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
         </a>
-
         <!-- Cierre de sesión modal-->
         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -481,7 +501,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Bootstrap core JavaScript-->
         <script src="/vendor/jquery/jquery.min.js"></script>
         <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
