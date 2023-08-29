@@ -29,28 +29,29 @@ public class OfertaControlador {
     private ObraSocialServicio servObra;
 
     @GetMapping("/editar/{id}")
-    public String editarAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+    public String editarAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
         try {
             TipoOferta[] tipos = TipoOferta.values();
             List<ObraSocial> obras = servObra.listarObrasSociales();
-                   modelo.addAttribute("obras", obras);
+            modelo.addAttribute("obras", obras);
             
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("tipos", tipos);
-           
-
-     
-
+                ArrayList<String> diasSeleccionados = new ArrayList<>();
+                 modelo.addAttribute("diasSeleccionados", diasSeleccionados);
             return "miOfertayDisponibilidad.html";
-        } catch (Exception e) {
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-         
+        } catch (MyException e) {
+            TipoOferta[] tipos = TipoOferta.values();
             List<ObraSocial> obras = servObra.listarObrasSociales();
             modelo.addAttribute("obras", obras);
 
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.addAttribute("tipos", tipos);
+      ArrayList<String> diasSeleccionados = new ArrayList<>();
+                 modelo.addAttribute("diasSeleccionados", diasSeleccionados);
             modelo.put("error", e.getMessage());
             return "miOfertayDisponibilidad.html";
         }
@@ -59,27 +60,36 @@ public class OfertaControlador {
 
     @PostMapping("/editar/{id}")
     public String ediar(@PathVariable("id") String id, ModelMap modelo, HttpSession session,
-            @RequestParam ArrayList<String> diasSeleccionados, @RequestParam("horaInicial") String horaInicial,
+            @RequestParam(required = false) ArrayList<String> diasSeleccionados, @RequestParam("horaInicial") String horaInicial,
             @RequestParam("horaFinal") String horaFinal, @RequestParam String duracion,
-            @RequestParam String tipoOferta, @RequestParam String direccion,
+            String tipoOferta, @RequestParam String direccion,
             @RequestParam("selecciones") String selecciones) throws MyException {
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        modelo.addAttribute("log", logueado);
-        List<String> listaDeSelecciones = Arrays.asList(selecciones.split(","));
-   
-        
-        List<ObraSocial> obras = servObra.listarObrasSociales();
-        modelo.addAttribute("obras", obras);       
-/// Asignar a diasDisponibles(Enum lista) los diasSeleccionados que traigo al prof
-            profesionalServicio.asignarDisponibilidad(id,diasSeleccionados);
 
-        /// Asignar Oferta  al prof con
-            profesionalServicio.asignarOferta(id,horaInicial,horaFinal,duracion, tipoOferta, direccion, listaDeSelecciones);
-        ///
-       
-        modelo.put("exito", "¡Oferta y disponibilidad cargada con exito!");
-        return "miOfertayDisponibilidad.html";
+        try {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            List<String> listaDeSelecciones = Arrays.asList(selecciones.split(","));
 
+            List<ObraSocial> obras = servObra.listarObrasSociales();
+            modelo.addAttribute("obras", obras);
+            // Asignar a diasDisponibles(Enum lista) los diasSeleccionados que traigo al prof
+            profesionalServicio.asignarDisponibilidad(id, diasSeleccionados);
+
+            /// Asignar Oferta  al prof con
+            profesionalServicio.asignarOferta(id, horaInicial, horaFinal, duracion, tipoOferta, direccion, listaDeSelecciones);
+            ///
+
+            modelo.put("exito", "¡Oferta y disponibilidad cargada con exito!");
+            return editarAgenda(id, modelo, session);
+        } catch (MyException e) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            List<ObraSocial> obras = servObra.listarObrasSociales();
+            modelo.addAttribute("obras", obras);
+
+            modelo.put("error", e.getMessage());
+            return editarAgenda(id, modelo, session);
+        }
     }
-
 }

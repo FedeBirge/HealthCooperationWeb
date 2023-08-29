@@ -60,7 +60,7 @@ public class ObraSocialServicio {
             return nombres;
 
     }
-    public List<ObraSocial> listarObrasSociales() {
+    public List<ObraSocial> listarObrasSociales() throws MyException{
 
         List<ObraSocial> obras = new ArrayList();
 
@@ -70,8 +70,8 @@ public class ObraSocialServicio {
             return obras;
 
         } catch (Exception e) {
-            System.out.println("No pudieron ser listadas");
-            return null;
+            throw new MyException("No pudieron ser listadas");
+            
         }
 
     }
