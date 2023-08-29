@@ -20,7 +20,7 @@ public class OfertaServicio {
 
     
     // paso el string que viene del controlador al Emun correspondiente
-    private TipoOferta pasarStringTipo(String tipo) throws MyException {
+    public TipoOferta pasarStringTipo(String tipo) throws MyException {
         switch (tipo) {
             case "PRESENCIAL":
                 return TipoOferta.PRESENCIAL;
@@ -34,7 +34,7 @@ public class OfertaServicio {
     }
     @Transactional
     // Metodo para crear oferta
-    public void crearOferta(String tipo, String horaIni, String horaFin, String duracion,
+    public Oferta crearOferta(String tipo, String horaIni, String horaFin, String duracion,
             String ubicacion, List<ObraSocial> obras) throws MyException {
         // Se validan los datos ingresados
         validar(tipo, horaIni, horaFin, duracion, ubicacion, obras);
@@ -49,6 +49,7 @@ public class OfertaServicio {
         oferta.setObrasSociales(obras);
 
         ofertaRepo.save(oferta);
+        return oferta;
 
     }
 

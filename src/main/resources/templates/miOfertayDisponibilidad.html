@@ -84,7 +84,7 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
-                              <a class="collapse-item" th:href="@{/oferta/editar/__${log.id}__}">Editar</a>
+                            <a class="collapse-item" th:href="@{/oferta/editar/__${log.id}__}">Editar</a>
 
                         </div>
                     </div>
@@ -312,8 +312,8 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="input-group">
-                                            <h6>Modo de atención: </h6>
-
+                                         
+                                               <label class="col-sm-4 col-form-label" for="defaultCheck1">Modo de atención:</label>
                                             <select class="form-select" id="inputGroupSelect01" name="tipoOferta">
                                                 <option value="" disabled selected>Seleccione...</option>
                                                 <option th:each=" tipo:${tipos}"
@@ -356,66 +356,77 @@
                 
                 <!-- Select para obras sociales preexistentes -->
                 <div class="form-group">
-                    <label for="obrasPreexistentes">Seleccionar obras sociales preexistentes:</label>
-                    <select class="form-control" id="obrasPreexistentes" onchange="agregarSeleccion()">
+                    <label for="obrasPreexistentes">Seleccionar obras sociales:</label>
+                    <select class="form-control" id="obrasPreexistentes" onchange="manejarSeleccion()">
                         <option value="">Seleccionar</option>
                         <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
+                        <option value="otra">Otra</option>
                     </select>
                 </div>
                 
-                <!-- Formulario para crear una nueva obra social -->
-                <div class="form-group">
-                    <label for="nombreNuevaObraSocial">Agregar nueva obra social:</label>
-                    <input type="text" class="form-control" id="nombreNuevaObraSocial" placeholder="Nombre" />
+                <!-- Campo para agregar una nueva obra social -->
+                <div id="nuevaObraSocialFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="nombreNuevaObraSocial">Nombre de nueva obra social:</label>
+                        <input type="text" class="form-control" id="nombreNuevaObraSocial" placeholder="Nombre" />
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="agregarNuevaObraSocial()">Agregar Nueva</button>
                 </div>
-                <div class="form-group">
-                    <label for="emailNuevaObraSocial">Email:</label>
-                    <input type="email" class="form-control" id="emailNuevaObraSocial" placeholder="Email" />
-                </div>
-                <div class="form-group">
-                    <label for="telefonoNuevaObraSocial">Teléfono:</label>
-                    <input type="tel" class="form-control" id="telefonoNuevaObraSocial" placeholder="Teléfono" />
-                </div>
-                <button type="button" class="btn btn-primary" onclick="agregarNuevaObraSocial()">Agregar Nueva</button>
+                
+                <!-- Input oculto para almacenar las selecciones -->
+                <input type="hidden" id="seleccionesInput" name="selecciones" />
+
+                <script>
+                    var selecciones = [];
+
+                    function manejarSeleccion() {
+                        var select = document.getElementById("obrasPreexistentes");
+                        var selectedOption = select.options[select.selectedIndex];
+                        var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
+
+                        if (selectedOption.value === "otra") {
+                            nuevaObraSocialFields.style.display = "block";
+                        } else {
+                            nuevaObraSocialFields.style.display = "none";
+                            agregarSeleccion(selectedOption.textContent);
+                        }
+                    }
+
+                    function agregarNuevaObraSocial() {
+                        var nombre = document.getElementById("nombreNuevaObraSocial").value.trim();
+
+                        if (nombre !== "") {
+                            agregarSeleccion(nombre);
+                            document.getElementById("nombreNuevaObraSocial").value = "";
+                            var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
+                            nuevaObraSocialFields.style.display = "none";
+                        }
+                    }
+
+                    function agregarSeleccion(nombre) {
+                        var seleccionadasList = document.getElementById("seleccionadas");
+                        var nuevaObraSocial = document.createElement("li");
+                        nuevaObraSocial.textContent = nombre;
+                        seleccionadasList.appendChild(nuevaObraSocial);
+
+                        // Agregar a la lista de selecciones
+                        selecciones.push(nombre);
+
+                        // Actualizar el input oculto con las selecciones
+                           document.getElementById("seleccionesInput").value = selecciones.join(",");
+                    }
+                </script>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    function agregarSeleccion() {
-        var select = document.getElementById("obrasPreexistentes");
-        var selectedOption = select.options[select.selectedIndex];
-        
-        if (selectedOption.value !== "") {
-            var seleccionadasList = document.getElementById("seleccionadas");
-            var selectedItem = document.createElement("li");
-            selectedItem.textContent = selectedOption.textContent;
-            seleccionadasList.appendChild(selectedItem);
-            
-            // Limpiar el select
-            select.selectedIndex = 0;
-        }
-    }
 
-    function agregarNuevaObraSocial() {
-        var nombre = document.getElementById("nombreNuevaObraSocial").value.trim();
-        var email = document.getElementById("emailNuevaObraSocial").value.trim();
-        var telefono = document.getElementById("telefonoNuevaObraSocial").value.trim();
-        
-        if (nombre !== "") {
-            var seleccionadasList = document.getElementById("seleccionadas");
-            var nuevaObraSocial = document.createElement("li");
-            nuevaObraSocial.textContent = nombre;
-            seleccionadasList.appendChild(nuevaObraSocial);
-            
-            // Limpiar los campos
-            document.getElementById("nombreNuevaObraSocial").value = "";
-            document.getElementById("emailNuevaObraSocial").value = "";
-            document.getElementById("telefonoNuevaObraSocial").value = "";
-        }
-    }
-</script>
+
+
+
+
+
 
 
 
