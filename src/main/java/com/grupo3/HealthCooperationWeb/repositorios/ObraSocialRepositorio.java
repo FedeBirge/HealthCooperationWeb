@@ -12,8 +12,9 @@ import java.util.Optional;
 public interface ObraSocialRepositorio extends JpaRepository<ObraSocial, String> {
     @Query("SELECT o FROM ObraSocial o WHERE o.email =:email")
     public ObraSocial buscarPorEmail(@Param("email") String email);
-
-    public ObraSocial findByNombre(String nombre);
+    
+    @Query("SELECT o FROM ObraSocial o WHERE o.nombre =:nombre")
+    public ObraSocial findByNombre(@Param("nombre") String nombre);
 
     public Optional<ObraSocial> findById(String id);
 

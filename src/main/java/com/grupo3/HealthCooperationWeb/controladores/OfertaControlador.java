@@ -3,9 +3,11 @@ package com.grupo3.HealthCooperationWeb.controladores;
 import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.TipoOferta;
+import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.ObraSocialServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +35,11 @@ public class OfertaControlador {
             TipoOferta[] tipos = TipoOferta.values();
             List<ObraSocial> obras = servObra.listarObrasSociales();
                    modelo.addAttribute("obras", obras);
-            System.out.println("GET " + obras.toString());
+            
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("tipos", tipos);
-            modelo.addAttribute("diasSeleccionados", new ArrayList<String>());
+           
 
      
 
@@ -45,7 +47,7 @@ public class OfertaControlador {
         } catch (Exception e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            modelo.addAttribute("diasSeleccionados", new ArrayList<String>());
+         
             List<ObraSocial> obras = servObra.listarObrasSociales();
             modelo.addAttribute("obras", obras);
 
@@ -59,18 +61,20 @@ public class OfertaControlador {
     public String ediar(@PathVariable("id") String id, ModelMap modelo, HttpSession session,
             @RequestParam ArrayList<String> diasSeleccionados, @RequestParam("horaInicial") String horaInicial,
             @RequestParam("horaFinal") String horaFinal, @RequestParam String duracion,
-            @RequestParam String tipoOferta, @RequestParam String direccion) {
+            @RequestParam String tipoOferta, @RequestParam String direccion,
+            @RequestParam("selecciones") String selecciones) throws MyException {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
-
+        List<String> listaDeSelecciones = Arrays.asList(selecciones.split(","));
+   
+        
         List<ObraSocial> obras = servObra.listarObrasSociales();
-        modelo.addAttribute("obras", obras);
-        System.out.println("POST " + obras.toString());
+        modelo.addAttribute("obras", obras);       
 /// Asignar a diasDisponibles(Enum lista) los diasSeleccionados que traigo al prof
-        //    profesionalServicio.asignarDisponibilidad(id,diasSeleccionados);
+            profesionalServicio.asignarDisponibilidad(id,diasSeleccionados);
 
         /// Asignar Oferta  al prof con
-        //    profesionalServicio.asignarOferta(id,horaInicial,HoraFinal,duracion, tipoOferta);
+            profesionalServicio.asignarOferta(id,horaInicial,horaFinal,duracion, tipoOferta, direccion, listaDeSelecciones);
         ///
        
         modelo.put("exito", "¡Oferta y disponibilidad cargada con exito!");

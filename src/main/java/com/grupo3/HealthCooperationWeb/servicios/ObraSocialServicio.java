@@ -54,7 +54,7 @@ public class ObraSocialServicio {
             obras = obraRepo.findAll();
             for (ObraSocial obra : obras) {
                 nombres.add(obra.getNombre());
-                System.out.println(obra.getEmail());
+               
              
          }
             return nombres;
@@ -94,7 +94,28 @@ public class ObraSocialServicio {
 
         }
     }
-
+    
+    private ObraSocial buscarXNombre(String nombre){
+        return obraRepo.findByNombre(nombre);
+    }
+    public List<ObraSocial> pasarObras(List<String >selecciones) throws MyException{
+        List<ObraSocial> obras = new ArrayList<>();
+        List<String> nombres = listarNombreObrasSociales();
+        
+        for (String selc : selecciones) {
+        
+            if(nombres.contains(selc)){
+                obras.add(buscarXNombre(selc));
+            }
+            else{
+                obras.add(crearObraSocialReturn(selc, "mail", "tel"));
+            }
+            
+        }
+        return obras;
+        
+        
+    }
     @Transactional
     public void eliminarObraSocial(String id) throws MyException {
 
