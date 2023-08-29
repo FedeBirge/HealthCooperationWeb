@@ -19,42 +19,21 @@ public class AdminControlador {
     @Autowired
     private UsuarioServicio userServ;
 
-    @GetMapping("/dashboard") // Vista principal para el Admin al Logearse (LT)
+    @GetMapping("/dashboard") 
     public String panelAdministrador(ModelMap modelo, HttpSession session) {
-        try {
-
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-  
+         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
             return "panelAdmin.html";
-        } catch (Exception e) {
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-  
-            modelo.put("error", e.getMessage());
-            return "redirect: /dashboard";
-        }
+       
     }
 
-    @GetMapping("/registrar") // **regsitro de usuario para el admin(LT)**//
+    @GetMapping("/registrar") 
     public String registrar(ModelMap modelo, HttpSession session) {
-        try {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.put("log", logueado);
-            modelo.addAttribute("id", logueado.getId());
-
-            return "altaUsuario.html";
-        } catch (Exception ex) {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-            modelo.put("error", ex.getMessage());
+         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
             return "altaUsuario.html";
 
-        }
+        
     }
 
 }

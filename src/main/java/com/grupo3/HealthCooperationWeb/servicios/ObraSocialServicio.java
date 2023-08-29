@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.grupo3.HealthCooperationWeb.servicios;
 
 import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
@@ -15,10 +12,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Ezequiel
- */
 @Service
 public class ObraSocialServicio {
 
@@ -54,19 +47,31 @@ public class ObraSocialServicio {
     public ObraSocial getObraSocialById(String id) throws MyException {
         return obraRepo.getById(id);
     }
+     public List<String> listarNombreObrasSociales() {
+         List<ObraSocial> obras = new ArrayList();
+        List<String> nombres = new ArrayList();
 
-    public List<ObraSocial> listarObrasSociales() {
+            obras = obraRepo.findAll();
+            for (ObraSocial obra : obras) {
+                nombres.add(obra.getNombre());
+               
+             
+         }
+            return nombres;
+
+    }
+    public List<ObraSocial> listarObrasSociales() throws MyException{
 
         List<ObraSocial> obras = new ArrayList();
 
         try {
             obras = obraRepo.findAll();
-
+     
             return obras;
 
         } catch (Exception e) {
-            System.out.println("No pudieron ser listadas");
-            return null;
+            throw new MyException("No pudieron ser listadas");
+            
         }
 
     }
@@ -89,7 +94,28 @@ public class ObraSocialServicio {
 
         }
     }
-
+    
+    private ObraSocial buscarXNombre(String nombre){
+        return obraRepo.findByNombre(nombre);
+    }
+    public List<ObraSocial> pasarObras(List<String >selecciones) throws MyException{
+        List<ObraSocial> obras = new ArrayList<>();
+        List<String> nombres = listarNombreObrasSociales();
+        
+        for (String selc : selecciones) {
+        
+            if(nombres.contains(selc)){
+                obras.add(buscarXNombre(selc));
+            }
+            else{
+                obras.add(crearObraSocialReturn(selc, "mail", "tel"));
+            }
+            
+        }
+        return obras;
+        
+        
+    }
     @Transactional
     public void eliminarObraSocial(String id) throws MyException {
 

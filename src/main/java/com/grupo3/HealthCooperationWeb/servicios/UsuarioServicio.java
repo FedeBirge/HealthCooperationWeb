@@ -171,6 +171,10 @@ public class UsuarioServicio implements UserDetailsService {
         if (email == null || email.isEmpty()) {
             throw new MyException("Debe ingresar un email");
         }     
+         if (usuarioRepo.buscarPorEmail(email) != null) {
+            throw new MyException("Debe ingresar otro email. El ingresdo ya existe!");
+        } 
+        
 
         if (password == null || password.isEmpty() || password.length() < 6) {
             throw new MyException("Debe ingresar una contraseña válida");

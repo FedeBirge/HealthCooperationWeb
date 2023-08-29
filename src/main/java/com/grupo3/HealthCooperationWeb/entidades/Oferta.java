@@ -2,6 +2,7 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
 import com.grupo3.HealthCooperationWeb.enumeradores.TipoOferta;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,7 +22,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Oferta {
+public class Oferta implements Serializable {
     // elementos necesarios para detallar lo que ofrece un profesional
     // a un dia especifico de la semana
     @Id
