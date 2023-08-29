@@ -72,7 +72,7 @@ public class PacienteControlador {
             pacienteServicio.registrarPaciente(archivo, nombre, apellido, dni,
                     email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
             modelo.put("exito", "¡Usuario registrado con exito!");
-            if (logueado.getRol() != null) {
+            if (logueado != null) {
                 return "altaPaciente.html";
             } else {
             }

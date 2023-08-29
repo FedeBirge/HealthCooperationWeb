@@ -263,19 +263,20 @@ public class ProfesionalServicio extends UsuarioServicio {
     public void asignarDisponibilidad(String id, ArrayList<String> diasSeleccionados) throws MyException {
 
         try {
-
+            System.out.println(diasSeleccionados);
+             if (diasSeleccionados == null || diasSeleccionados.isEmpty()) {
+                    throw new MyException("Debe seleccionar al menos un día disponible");
+                }
             Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
 
             if (respuesta.isPresent()) {
                 Profesional profesional = (Profesional) (respuesta.get());
-                if (diasSeleccionados == null || diasSeleccionados.isEmpty()) {
-                    throw new MyException("Debe seleccionar al menos un día disponible");
-                }
+               
                 List<Dias> diasDisponibles = pasarDiasEnum(diasSeleccionados);
                 profesional.setDiasDisponibles(diasDisponibles);
             }
-        } catch (Exception e) {
-            System.out.println("Hubo un error al guardar dias disponibles.");
+        } catch (MyException e) {
+            throw new MyException("Debe seleccionar un día disponible");
 
         }
     }
