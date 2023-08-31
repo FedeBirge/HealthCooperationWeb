@@ -3,7 +3,7 @@ package com.grupo3.HealthCooperationWeb.servicios;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
-import com.grupo3.HealthCooperationWeb.entidades.Usuario;
+
 import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.PacienteRepositorio;
@@ -24,7 +24,7 @@ public class TurnoServicio {
     private ProfesionalServicio profServ;
     @Autowired
     private TurnoRepositorio turnoRepo;
-     @Autowired
+    @Autowired
     private PacienteRepositorio pacienteRepo;
 
     @Transactional
@@ -39,10 +39,12 @@ public class TurnoServicio {
         Turno turno = new Turno();
         turno.setFecha(fecha);
         turno.setHora(hora);
-        turno.setEstado(EstadoTurno.DISPONIBLE);
+        turno.setEstado(estado);
         turno.setMotivo(motivo);
         turno.setProfesional(prof);
-        return turnoRepo.save(turno);
+        turnoRepo.saveAndFlush(turno);
+         
+        return turno;
     }
 
     public Turno buscarTurno(String id) throws MyException {
@@ -141,20 +143,21 @@ public class TurnoServicio {
         }
 
     }
+
     public List<Turno> misTurnos(String id) {
 
         try {
-             Optional<Paciente> respuesta = pacienteRepo.findById(id);
-        if (respuesta.isPresent()) {
-            Paciente pace = respuesta.get();
-            return pace.getTurnos();
-        }
+            Optional<Paciente> respuesta = pacienteRepo.findById(id);
+            if (respuesta.isPresent()) {
+                Paciente pace = respuesta.get();
+                return pace.getTurnos();
+            }
 
         } catch (Exception e) {
             System.out.println("Turno: No pudieron ser listados");
             return null;
         }
-         return null;
+        return null;
     }
 
     protected void validar(String fecha, String hora, EstadoTurno estado, String motivo, String idProf)

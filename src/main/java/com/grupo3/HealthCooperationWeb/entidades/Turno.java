@@ -2,7 +2,9 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
 import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
+import java.io.Serializable;
 import javax.persistence.Entity;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -21,7 +23,7 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Turno {
+public class Turno implements Serializable {
     
     // representa un turno para el paciente, con su fecha y hora, 
     // y el motivo del mismo, asociado al profesional
