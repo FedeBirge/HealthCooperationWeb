@@ -1,9 +1,11 @@
 
 package com.grupo3.HealthCooperationWeb.entidades;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class ObraSocial {
+public class ObraSocial implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -25,5 +27,6 @@ public class ObraSocial {
     private String nombre;
     private String email;
     private String telefono;
+  
 
 }

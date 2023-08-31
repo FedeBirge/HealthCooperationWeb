@@ -1,5 +1,6 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class HistoriaClinica {
+public class HistoriaClinica implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid")

@@ -27,7 +27,7 @@ public class Paciente extends Usuario implements Serializable {
     @OneToOne
     private HistoriaClinica historia;
     @ManyToOne
-    @JoinColumn(name = "obra_social") // Nombre de la columna de clave externa en la tabla Paciente
+
     private ObraSocial obraSocial;
 
 }

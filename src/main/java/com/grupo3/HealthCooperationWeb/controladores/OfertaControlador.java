@@ -84,7 +84,7 @@ public class OfertaControlador {
             ///
 
             modelo.put("exito", "¡Oferta y disponibilidad cargada con exito!");
-            return crear(id, modelo, session);
+            return verOferta(id, modelo, session);
         } catch (MyException e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);

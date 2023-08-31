@@ -9,7 +9,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Profesional</title>
+        <title>Agenda Profesional</title>
 
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -45,7 +45,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/}">
 
-                        <span>Index</span></a>
+                        <span>Home</span></a>
                 </li>
 
                 <!-- Divisor -->
@@ -65,7 +65,7 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/agenda/verAgenda/__${log.id}__}">Ver Mi Agenda</a>
-                            
+                   
                         </div>
                     </div>
                 </li>
@@ -79,7 +79,7 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
-                           
+                    
 
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Mis Pacientes</a>
+                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Pacientes</a>
                         </div>
                     </div>
                 </li>
@@ -153,8 +153,10 @@
                         </div>
                         <!-- Encabezado de página -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Mi disponibilidad</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Mi Agenda</h1>
                         </div>
+                        <p>Se genera una Agenda de 3 semanas por defecto de acuerdo a su disponibilidad</p>
+                        <p>Podrá editarla, agregar semanas, cancelar turnos, etc.</p>
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Error!</h5>
@@ -167,7 +169,7 @@
                                 <p class="card-text text-center" th:text="${exito}"></p>
                             </div>
                         </div> 
-                        <div th:if="${vacia != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                          <div th:if="${vacia != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Atencion!</h5>
                                 <p class="card-text text-center" th:text="${vacia}"></p>
@@ -176,127 +178,32 @@
                     </div>
                     <!-- Pending Requests Card Example -->
                     <div class="col-xl-4 col-md-7 mb-5">
-                    </div>                    
-                    <form th:action="@{/oferta/editar/__${log.id}__}" method="POST" enctype="multipart/form-data">
-                        <!-- Collapsable Card Example -->
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Mi Disponibilidad 
-                                 <a type="button" class="btn btn-success me-md-2"  th:if="${oferta != null}" th:href="@{/oferta/editar/__${log.id}__}">Editar</a>
-                                 <a type="button" class="btn btn-success me-md-2"  th:if="${oferta == null}" th:href="@{/oferta/crear/__${log.id}__}">Nueva Oferta</a>
-                                 
-                                
-                            </div>
-                           
-                            <div th:if="${oferta != null}" class="card-body">
-                                <div class="row gy-3">
-                                    <div class="col-md">
-                                        <span style="font-size: 110%;">Días disponibles</span> 
+                    </div>                
+                    
+                    
+                    <form th:action="@{/agenda/crear/__${log.id}__}" method="POST" enctype="multipart/form-data">
 
-                                        <div>
-                                            <div th:each="dia : ${dias}">
-                                                <span th:text="${dia}"></span>
-                                            </div>
-                                        </div> 
-                                        <br>
-                                        <h5>Horarios de la jornada</h5>
-                                        <div class="form-group row">
-                                            <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Hora inicial</label>
-                                            <div class="col-sm-4">
-                                                <input
-                                                    class="form-control" type="time" th:value="${oferta.horaInicio}" readonly id="html5-time-input" name="horaInicial"
-                                                    />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Hora final</label>
-                                            <div class="col-sm-4">
-                                                <input
-                                                    class="form-control" type="time" th:value="${oferta.horaFin}" readonly id="html5-time-input" name="horaFinal"
-                                                    />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Duracion del turno(minutos)</label>
-
-                                            <input type="number" th:value="${oferta.duracionTurno}" readonly id="duracion-input" name="duracion" />
-
-                                        </div>
-                                        <!-- comment <button class="button-style" onclick="guardarDuracion()">Guardar</button>
-                          <div id="resultado"></div>
-
-                          <script>
-                              var duracionEnMinutos = 0; // Variable para almacenar el valor
-
-                              function guardarDuracion() {
-                                  var duracionInput = document.getElementById("duracion-input");
-                                  duracionEnMinutos = parseInt(duracionInput.value);
-
-                                  var resultado = document.getElementById("resultado");
-                                  resultado.innerText = "Se ha guardado la duración del turno en minutos: " + duracionEnMinutos;
-                              }
-                          </script>
-                                        -->
-
-
-                                        <h5>Modalidad</h5>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="defaultCheck1">Modo de atención:</label>
-                                            <div class="col-sm-4">
-                                                <input class="form-control form-control" type="text" id="address" placeholder="Direccion" name="tipoOferta" readonly th:value="${oferta.tipo}">
-                                            </div>
-                                        </div>
-                                        <h5>Atención</h5>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="defaultCheck1">Lugar de atención</label>
-                                            <div class="col-sm-4">
-                                                <input class="form-control form-control" type="text" id="address" placeholder="Direccion" name="direccion" readonly th:value="${oferta.ubicacion}">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                           
-
-
-
-
-                            <div class="card mb">
-                                <div class="card-header">
-                                   <h5>  Obras Sociales</h5>
-
-                                    <div th:each="obra : ${obras}" >
-                                      
-                                            <span th:text="${obra.nombre}"></span>
-                                        </div>
-
-                                    </div>
-                             
-
-                                </div>
-                            </div>
-                        
-                             </div>
-
-
-                    </form>
-
-
-
-                    <!-- Fin del contenido principal -->
-                    <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>HealtCooperationWeb ©2023</span>
-                            </div>
+                        <div class="d-grid gap-2 col-12 mx-auto text-center">
+                            <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Agenda</button>
                         </div>
-                    </footer>
-                    <!-- Fin del Footer -->
-                </div>
-            </div>                
-            <!-- Fin del contenedor de contenido -->
-        </div>
+                </form>
+
+
+
+                <!-- Fin del contenido principal -->
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>HealtCooperationWeb ©2023</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- Fin del Footer -->
+            </div>
+        </div>                
+        <!-- Fin del contenedor de contenido -->
+    </div>
         <!-- Envoltura de fin de página -->
         <!-- Desplácese hasta el botón superior-->
         <a class="scroll-to-top rounded" href="#page-top">
