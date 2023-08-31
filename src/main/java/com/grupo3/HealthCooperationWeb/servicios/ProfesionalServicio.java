@@ -262,7 +262,7 @@ public class ProfesionalServicio extends UsuarioServicio {
     @Transactional
     public void asignarDisponibilidad(String id, ArrayList<String> diasSeleccionados) throws MyException {
 
-        System.out.println(diasSeleccionados);
+        
         if (diasSeleccionados == null || diasSeleccionados.isEmpty()) {
             throw new MyException("Debe seleccionar al menos un día disponible");
         }
@@ -274,6 +274,22 @@ public class ProfesionalServicio extends UsuarioServicio {
             List<Dias> diasDisponibles = pasarDiasEnum(diasSeleccionados);
             profesional.setDiasDisponibles(diasDisponibles);
              System.out.println(profesional.getDiasDisponibles());
+        }
+
+    }
+    @Transactional
+    public void asignarAgenda(String id, ArrayList<AgendaSemanal> semanas) throws MyException {
+
+       
+        if (semanas == null || semanas.isEmpty()) {
+            throw new MyException("la agenda semanal no puede estar vacio");
+        }
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+            Profesional profesional = (Profesional) (respuesta.get());
+           
+            profesional.setAgendasSemanales(semanas);
         }
 
     }
