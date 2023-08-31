@@ -1,17 +1,13 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Map;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
 import javax.persistence.MapKeyColumn;
 import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +28,6 @@ public class AgendaSemanal implements Serializable {
 
     @OneToMany
     @MapKeyColumn(name = "fecha")
-    private Map<LocalDate, DiaAgenda> fechasYTurnos;
+    private Map<Date, DiaAgenda> fechasYTurnos;
 
 }
