@@ -116,7 +116,7 @@
 
                 <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">
-                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                    <button class="rounded-circles border-2" id="sidebarToggle"></button>
                 </div>
             </ul>
             <!-- Fin de la barra lateral -->
@@ -194,33 +194,43 @@
                         </div>
                     </div> 
                     <!-- Comenzar contenido de la página -->
+                    
                     <div class="container-fluid">
                         <div class="container-fluid">
                             <div class="container card-container">
-                                <div class="card">
+                                   <div class="custom-card">
                                     <div class="left-column">
-                                        <h2>¿Queres ver Turnos de hoy?</h2>
-                                        <h6>Solicitalo por aquí</h6>
-                                        <a class="button" th:href="@{/ruta/turnosHoy}">Empezar</a>
+                                        <h2>¿Queres ver Turnos de la semana?</h2>
+                                        
+                                        
+                                        <button class="full-rounded"th:href="@{/ruta/turnosSemana}">
+                                            <span>Ver Aqui</span>
+                                            <div class="border full-rounded"></div></button>
                                     </div>
                                 </div>
 
-                                <div class="card">
+                                <div class="custom-card">
                                     <div class="left-column">
                                         <h2>¿Queres ver Turnos de la semana?</h2>
                                         <h6>Solicitalo por aquí</h6>
-                                        <a class="button" th:href="@{/ruta/turnosSemana}">Empezar</a>
+                                        
+                                        <button class="full-rounded"th:href="@{/ruta/turnosSemana}">
+                                            <span>Empezar</span>
+                                            <div class="border full-rounded"></div></button>
                                     </div>
                                 </div>
+                                
 
-                                <div class="card">
+                                   <div class="custom-card">
                                     <div class="left-column">
-                                        <h2>¿Queres ver todos los turnos?</h2>
+                                        <h2>¿Queres ver Turnos de la semana?</h2>
                                         <h6>Solicitalo por aquí</h6>
-                                        <a class="button" th:href="@{/ruta/todosLosTurnos}">Empezar</a>
+                                        
+                                        <button class="full-rounded"th:href="@{/ruta/turnosSemana}">
+                                            <span>Empezar</span>
+                                            <div class="border full-rounded"></div></button>
                                     </div>
                                 </div>
-                            </div>
 
 
 
