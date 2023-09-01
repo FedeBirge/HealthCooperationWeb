@@ -39,11 +39,18 @@
                     <div class="sidebar-brand-text mx-3">Panel Admin</div>
                 </a>
                 
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('Usuario')">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('USUARIO')">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
                     <div class="sidebar-brand-text mx-3">Panel Paciente</div>
+                </a>
+                
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('MODERADOR')">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Profesional</div>
                 </a>
 
                 <!-- Divisor -->
@@ -76,9 +83,8 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/}" sec:authorize="hasRole('ADMINISTRADOR')">Alta Paciente</a>
                             <a class="collapse-item" th:href="@{/paciente/listar}" sec:authorize="hasRole('ADMINISTRADOR')">Ver Pacientes</a>
-                            <a class="collapse-item" th:href="@{/inicio}">Ver mi Perfil</a>
                             <a class="collapse-item" th:href="@{/user/perfil/__${log.id}__}">Modificar mi Perfil</a>
-                            <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}" sec:authorize="hasRole('Usuario')">Ver mis Turnos</a>
+                            <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}" sec:authorize="hasRole('USUARIO')">Ver mis Turnos</a>
                         </div>
                     </div>
                 </li>
@@ -100,7 +106,7 @@
                     </div>
                 </li>
                 
-                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                <li class="nav-item" sec:authorize="hasAnyRole('ADMINISTRADOR')" >
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-hospital-user"></i>
@@ -204,6 +210,7 @@
                             <div class="col-sm-6 mb-3">
                                 <h2 th:text=" 'DNI: '+ ${log.dni}"></h2>
                             </div>
+                            
                             
                             
                             <div class="col-sm-6 mb-3">
