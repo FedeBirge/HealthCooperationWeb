@@ -65,7 +65,7 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/agenda/verAgenda/__${log.id}__}">Ver Mi Agenda</a>
-                            
+
                         </div>
                     </div>
                 </li>
@@ -79,7 +79,7 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
-                           
+
 
                         </div>
                     </div>
@@ -181,163 +181,134 @@
                         <!-- Collapsable Card Example -->
                         <div class="card mb-4">
                             <div class="card-header">
-                               Agenda
-                                 <a type="button" class="btn btn-success me-md-2"  th:if="${agenda != null}" th:href="@{/agenda/editar/__${log.id}__}">Editar Agenda</a>
-                                 <a type="button" class="btn btn-success me-md-2"  th:if="${agenda == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
-                                 
-                                
+                                Agenda
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editar/__${log.id}__}">Administrar Agenda</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
+
+
                             </div>
-                           
-                            <div th:if="${oferta != null}" class="card-body">
+
+                            <div th:if="${semanas!= null}" class="card-body">
                                 <div class="row gy-3">
                                     <div class="col-md">
-                                        <span style="font-size: 110%;">Días disponibles</span> 
 
-                                        <div>
-                                            <div th:each="dia : ${dias}">
-                                                <span th:text="${dia}"></span>
+
+                                        <h1>Agenda Semanale</h1>
+
+                                        <ul th:each="semana : ${semanas}">
+                                            <li>
+                                                <h2>ID: <span th:text="${semana.id}"></span></h2>
+
+
+                                                <ul th:each="entry : ${semana.fechasYTurnos}">
+
+                                                    <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
+                                                    <p>Día: <span th:text="${#dates.format(entry.key, 'dd/MM/yyyy')}" ></span> </p>
+                                                    <ul>
+                                                        <li th:each="turno : ${entry.value.turnos}">
+                                                            <p>
+
+
+
+                                                                <button th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 'btn btn-success')}"
+                                                                        th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
+                                                                   <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.estado : turno.hora}"></span>
+
+                                                                </button>
+                                                            </p>
+                                                        </li>
+                                                    </ul>
+                                                </ul>
+
+                                            </li>                                           
+
+                                        </ul>
+                                        <ul th:each="semana : ${semanas}">
+                                            <li>
+                                                <h2>ID: <span th:text="${semana.id}"></span></h2>
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Día</th>
+                                                            <th th:each="entry : ${semana.fechasYTurnos}">
+                                                                <span th:text="${#dates.format(entry.key, 'dd/MM/yyyy')}"></span>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td></td> <!-- Celda vacía para el espacio del primer encabezado -->
+                                                            <td th:each="entry : ${semana.fechasYTurnos}">
+                                                                <ul class="horario-cell">
+                                                                    <li th:each="turno : ${entry.value.turnos}">
+                                                                        <span th:text="${turno.hora}"></span>
+                                                                    </li>
+                                                                </ul>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </li>
+                                        </ul>
+                                        </form>
+
+
+
+                                        <!-- Fin del contenido principal -->
+                                        <!-- Footer -->
+                                        <footer class="sticky-footer bg-white">
+                                            <div class="container my-auto">
+                                                <div class="copyright text-center my-auto">
+                                                    <span>HealtCooperationWeb ©2023</span>
+                                                </div>
                                             </div>
-                                        </div> 
-                                        <br>
-                                        <h5>Horarios de la jornada</h5>
-                                        <div class="form-group row">
-                                            <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Hora inicial</label>
-                                            <div class="col-sm-4">
-                                                <input
-                                                    class="form-control" type="time" th:value="${oferta.horaInicio}" readonly id="html5-time-input" name="horaInicial"
-                                                    />
-                                            </div>
+                                        </footer>
+                                        <!-- Fin del Footer -->
+                                    </div>
+                                </div>                
+                                <!-- Fin del contenedor de contenido -->
+                            </div>
+                            <!-- Envoltura de fin de página -->
+                            <!-- Desplácese hasta el botón superior-->
+                            <a class="scroll-to-top rounded" href="#page-top">
+                                <i class="fas fa-angle-up"></i>
+                            </a>
+                            <!-- Cierre de sesión modal-->
+                            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
                                         </div>
-                                        <div class="form-group row">
-                                            <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Hora final</label>
-                                            <div class="col-sm-4">
-                                                <input
-                                                    class="form-control" type="time" th:value="${oferta.horaFin}" readonly id="html5-time-input" name="horaFinal"
-                                                    />
-                                            </div>
+                                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                                         </div>
-                                        <div class="form-group row">
-                                            <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Duracion del turno(minutos)</label>
-
-                                            <input type="number" th:value="${oferta.duracionTurno}" readonly id="duracion-input" name="duracion" />
-
-                                        </div>
-                                        <!-- comment <button class="button-style" onclick="guardarDuracion()">Guardar</button>
-                          <div id="resultado"></div>
-
-                          <script>
-                              var duracionEnMinutos = 0; // Variable para almacenar el valor
-
-                              function guardarDuracion() {
-                                  var duracionInput = document.getElementById("duracion-input");
-                                  duracionEnMinutos = parseInt(duracionInput.value);
-
-                                  var resultado = document.getElementById("resultado");
-                                  resultado.innerText = "Se ha guardado la duración del turno en minutos: " + duracionEnMinutos;
-                              }
-                          </script>
-                                        -->
-
-
-                                        <h5>Modalidad</h5>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="defaultCheck1">Modo de atención:</label>
-                                            <div class="col-sm-4">
-                                                <input class="form-control form-control" type="text" id="address" placeholder="Direccion" name="tipoOferta" readonly th:value="${oferta.tipo}">
-                                            </div>
-                                        </div>
-                                        <h5>Atención</h5>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="defaultCheck1">Lugar de atención</label>
-                                            <div class="col-sm-4">
-                                                <input class="form-control form-control" type="text" id="address" placeholder="Direccion" name="direccion" readonly th:value="${oferta.ubicacion}">
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
-                           
-
-
-
-
-                            <div class="card mb">
-                                <div class="card-header">
-                                   <h5>  Obras Sociales</h5>
-
-                                    <div th:each="obra : ${obras}" >
-                                      
-                                            <span th:text="${obra.nombre}"></span>
-                                        </div>
-
-                                    </div>
-                             
-
-                                </div>
                             </div>
-                        
-                             </div>
+                            <!-- Bootstrap core JavaScript-->
+                            <script src="/vendor/jquery/jquery.min.js"></script>
+                            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+                            <!-- Core plugin JavaScript-->
+                            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-                    </form>
+                            <!-- Custom scripts for all pages-->
+                            <script src="/js/sb-admin-2.min.js"></script>
 
+                            <!-- Page level plugins -->
+                            <script src="/vendor/chart.js/Chart.min.js"></script>
 
+                            <!-- Page level custom scripts -->
+                            <script src="/js/demo/chart-area-demo.js"></script>
+                            <script src="/js/demo/chart-pie-demo.js"></script>
 
-                    <!-- Fin del contenido principal -->
-                    <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>HealtCooperationWeb ©2023</span>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- Fin del Footer -->
-                </div>
-            </div>                
-            <!-- Fin del contenedor de contenido -->
-        </div>
-        <!-- Envoltura de fin de página -->
-        <!-- Desplácese hasta el botón superior-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-        <!-- Cierre de sesión modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                        <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Bootstrap core JavaScript-->
-        <script src="/vendor/jquery/jquery.min.js"></script>
-        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                            </body>
 
-        <!-- Core plugin JavaScript-->
-        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="/js/sb-admin-2.min.js"></script>
-
-        <!-- Page level plugins -->
-        <script src="/vendor/chart.js/Chart.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="/js/demo/chart-area-demo.js"></script>
-        <script src="/js/demo/chart-pie-demo.js"></script>
-
-    </body>
-
-</html>
+                            </html>

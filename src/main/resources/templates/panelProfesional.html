@@ -12,13 +12,13 @@
         <title>Profesional</title>
 
         <!-- Fuentes personalizadas-->
-        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Css -->
-        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
     </head>
 
@@ -69,7 +69,7 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/agenda/verAgenda/__${log.id}__}">Ver Mi Agenda</a>
-                           
+
 
                         </div>
                     </div>
@@ -83,8 +83,8 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                      <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
-                        
+                            <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
+
 
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                             <div class="topbar-divider d-none d-sm-block"></div>
 
                             <!--Información del usuario -->
-                           <li class="nav-item dropdown no-arrow">
+                            <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
@@ -159,7 +159,7 @@
                                         Perfil
                                     </a>
                                     <a class="dropdown-item" th:href="@{/inicio}">
-                                       
+
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Mi Área
                                     </a>
@@ -176,58 +176,58 @@
 
                     </nav>
                     <!-- Fin de la barra superior -->
+                    <!-- Encabezado de página -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Hola Doc!</h1>
 
+                    </div>
+                    <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Error!</h5>
+                            <p class="card-text text-center" th:text="${error}"></p>
+                        </div>
+                    </div>
+                    <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Exito!</h5>
+                            <p class="card-text text-center" th:text="${exito}"></p>
+                        </div>
+                    </div> 
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
                         <div class="container-fluid">
-                             <div class="container card-container">
-                        <div class="card">
-                            <div class="left-column">
-                                <h2>¿Queres ver Turnos de hoy?</h2>
-                                <h6>Solicitalo por aquí</h6>
-                                <a class="button" th:href="@{/ruta/turnosHoy}">Empezar</a>
+                            <div class="container card-container">
+                                <div class="card">
+                                    <div class="left-column">
+                                        <h2>¿Queres ver Turnos de hoy?</h2>
+                                        <h6>Solicitalo por aquí</h6>
+                                        <a class="button" th:href="@{/ruta/turnosHoy}">Empezar</a>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="left-column">
+                                        <h2>¿Queres ver Turnos de la semana?</h2>
+                                        <h6>Solicitalo por aquí</h6>
+                                        <a class="button" th:href="@{/ruta/turnosSemana}">Empezar</a>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="left-column">
+                                        <h2>¿Queres ver todos los turnos?</h2>
+                                        <h6>Solicitalo por aquí</h6>
+                                        <a class="button" th:href="@{/ruta/todosLosTurnos}">Empezar</a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="left-column">
-                                <h2>¿Queres ver Turnos de la semana?</h2>
-                                <h6>Solicitalo por aquí</h6>
-                                <a class="button" th:href="@{/ruta/turnosSemana}">Empezar</a>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="left-column">
-                                <h2>¿Queres ver todos los turnos?</h2>
-                                <h6>Solicitalo por aquí</h6>
-                                <a class="button" th:href="@{/ruta/todosLosTurnos}">Empezar</a>
-                            </div>
-                        </div>
-                    </div>
 
 
 
                         </div>
-                        <!-- Encabezado de página -->
-                              <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Hola Doc!</h1>
 
-                        </div>
-                        <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Error!</h5>
-                                <p class="card-text text-center" th:text="${error}"></p>
-                            </div>
-                        </div>
-                        <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Exito!</h5>
-                                <p class="card-text text-center" th:text="${exito}"></p>
-                            </div>
-                        </div> 
                         <!-- Fin del contenido principal -->
-                  
+
                         <!-- Footer -->
                         <footer class="sticky-footer bg-white">
                             <div class="container my-auto">
@@ -270,21 +270,21 @@
                 </div>
 
                 <!-- Bootstrap core JavaScript-->
-                <script src="../vendor/jquery/jquery.min.js"></script>
-                <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <script src="/vendor/jquery/jquery.min.js"></script>
+                <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
                 <!-- Core plugin JavaScript-->
-                <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+                <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
                 <!-- Custom scripts for all pages-->
-                <script src="../js/sb-admin-2.min.js"></script>
+                <script src="/js/sb-admin-2.min.js"></script>
 
                 <!-- Page level plugins -->
-                <script src="../vendor/chart.js/Chart.min.js"></script>
+                <script src="/vendor/chart.js/Chart.min.js"></script>
 
                 <!-- Page level custom scripts -->
-                <script src="../js/demo/chart-area-demo.js"></script>
-                <script src="../js/demo/chart-pie-demo.js"></script>
+                <script src="/js/demo/chart-area-demo.js"></script>
+                <script src="/js/demo/chart-pie-demo.js"></script>
 
                 </body>
 

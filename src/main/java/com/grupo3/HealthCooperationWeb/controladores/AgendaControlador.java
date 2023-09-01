@@ -1,6 +1,7 @@
 package com.grupo3.HealthCooperationWeb.controladores;
 
 import com.grupo3.HealthCooperationWeb.entidades.AgendaSemanal;
+import com.grupo3.HealthCooperationWeb.entidades.DiaAgenda;
 import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Oferta;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
@@ -31,29 +32,47 @@ public class AgendaControlador {
 
     @Autowired
     private AgendaServicio servAgenda;
-       @Autowired
+    @Autowired
     private OfertaServicio servOferta;
-   @Autowired
+    @Autowired
     private ObraSocialServicio servObra;
-     @Autowired
+    @Autowired
     private ProfesionalServicio profesionalServicio;
 
     @GetMapping("/verAgenda/{id}") // Vista principal para el Admin al Logearse (LT)
     public String verrAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
-    List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
-    
-        if (semanas.size()!=0 ) {
+        List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+
+        for (AgendaSemanal semana : semanas) {
+            System.out.println("ID:" + semana.getId());
+            Map<Date, DiaAgenda> fechasYTurnos = semana.getFechasYTurnos();
+           
+            for (Map.Entry<Date, DiaAgenda> entry : fechasYTurnos.entrySet()) {
+                Date key = entry.getKey();
+                System.out.println("Dia "+key);
+                DiaAgenda value = entry.getValue();
+                System.out.println("value"+value.getFecha());
+                for (Turno turno :value.getTurnos() ) {
+                    System.out.println(turno.getId()+" "+turno.getHora()+" "+turno.getEstado());
+                }
+                System.out.println("");
+                
+            }
+
+        }
+
+        if (semanas.size() != 0) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            modelo.addAttribute("agenda", semanas);
+            modelo.addAttribute("semanas", semanas);
             modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
             modelo.addAttribute("obras", servObra.listarObrasSociales());
-     
+
             return "verAgenda.html";
 
         } else {
-           
+
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
@@ -62,18 +81,16 @@ public class AgendaControlador {
         }
 
     }
-    
 
     @GetMapping("/crear/{id}")
     public String crear(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
-        
-         Oferta oferta = servOferta.obtenerOfertaxProf(id);
+
+        Oferta oferta = servOferta.obtenerOfertaxProf(id);
         if (oferta != null) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("oferta", oferta);
-           
-            
+
             return "crearAgenda.html";
         } else {
 
@@ -86,36 +103,33 @@ public class AgendaControlador {
             modelo.addAttribute("tipos", tipos);
             return "miOfertayDisponibilidad.html";
         }
-        
-     
-     
+
     }
 
-//    @PostMapping("/crear/{id}")
-//    public String crearAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
-//
-//        try {
-//            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-//            modelo.addAttribute("log", logueado);
-//            
-//           List<AgendaSemanal> semanas = servAgenda.crearAgenda(id):
-//           Profesional prof = profesionalServicio.getOne(id);
-//           prof.setAgenda(agenda);
-//
-//            modelo.put("exito", "¡Agenda generada con exito!");
-//            return "verAgenda.html";
-//        } catch (MyException e) {
-//            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-//            modelo.addAttribute("log", logueado);
-//
-//            List<ObraSocial> obras = servObra.listarObrasSociales();
-//            modelo.addAttribute("obras", obras);
-//
-//            modelo.put("error", e.getMessage());
-//            return crear(id, modelo, session);
-//        }
-//    }
-    
+    @PostMapping("/crear/{id}")
+    public String crearAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
+
+        try {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            ArrayList<AgendaSemanal> semanas = servAgenda.crearAgenda(id);
+
+            profesionalServicio.asignarAgenda(id, semanas);
+             modelo.addAttribute("semanas", semanas);
+            modelo.put("exito", "¡Agenda generada con exito!");
+            return "verAgenda.html";
+        } catch (MyException e) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+
+            List<ObraSocial> obras = servObra.listarObrasSociales();
+            modelo.addAttribute("obras", obras);
+
+            modelo.put("error", e.getMessage());
+            return crear(id, modelo, session);
+        }
+    }
 
     @GetMapping("/editar/{id}") // Vista principal para el Admin al Logearse (LT)
     public String editarAgenda(ModelMap modelo, HttpSession session) {
