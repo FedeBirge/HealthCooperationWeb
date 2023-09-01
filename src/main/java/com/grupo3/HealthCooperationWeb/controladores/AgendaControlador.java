@@ -13,10 +13,14 @@ import com.grupo3.HealthCooperationWeb.servicios.AgendaServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ObraSocialServicio;
 import com.grupo3.HealthCooperationWeb.servicios.OfertaServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,26 +47,20 @@ public class AgendaControlador {
     public String verrAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
-
-        for (AgendaSemanal semana : semanas) {
-            System.out.println("ID:" + semana.getId());
-            Map<Date, DiaAgenda> fechasYTurnos = semana.getFechasYTurnos();
-           
-            for (Map.Entry<Date, DiaAgenda> entry : fechasYTurnos.entrySet()) {
-                Date key = entry.getKey();
-                System.out.println("Dia "+key);
-                DiaAgenda value = entry.getValue();
-                System.out.println("value"+value.getFecha());
-                for (Turno turno :value.getTurnos() ) {
-                    System.out.println(turno.getId()+" "+turno.getHora()+" "+turno.getEstado());
-                }
-                System.out.println("");
-                
-            }
-
-        }
+        Collections.sort(semanas, (semana1, semana2) -> {
+            Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
+            Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
+            return fecha1.compareTo(fecha2);
+        });
 
         if (semanas.size() != 0) {
+
+//            for (int i = 0; i < 3; i++) {
+//                LocalDate fechaActual = LocalDate.now().plusDays(7*i); 
+//            int daysToAdd = DayOfWeek.TUESDAY.getValue() - fechaActual.getDayOfWeek().getValue()-1;
+//
+//            System.out.println("Lunes: " +fechaActual.plusDays(daysToAdd));
+//            }
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("semanas", semanas);
@@ -116,7 +114,7 @@ public class AgendaControlador {
             ArrayList<AgendaSemanal> semanas = servAgenda.crearAgenda(id);
 
             profesionalServicio.asignarAgenda(id, semanas);
-             modelo.addAttribute("semanas", semanas);
+            modelo.addAttribute("semanas", semanas);
             modelo.put("exito", "¡Agenda generada con exito!");
             return "verAgenda.html";
         } catch (MyException e) {
@@ -132,9 +130,39 @@ public class AgendaControlador {
     }
 
     @GetMapping("/editar/{id}") // Vista principal para el Admin al Logearse (LT)
-    public String editarAgenda(ModelMap modelo, HttpSession session) {
+    public String editarAgenda(@PathVariable("id") String id,ModelMap modelo, HttpSession session) throws MyException {
 
-        return null;
+         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+        Collections.sort(semanas, (semana1, semana2) -> {
+            Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
+            Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
+            return fecha1.compareTo(fecha2);
+        });
+
+        if (semanas.size() != 0) {
+
+//            for (int i = 0; i < 3; i++) {
+//                LocalDate fechaActual = LocalDate.now().plusDays(7*i); 
+//            int daysToAdd = DayOfWeek.TUESDAY.getValue() - fechaActual.getDayOfWeek().getValue()-1;
+//
+//            System.out.println("Lunes: " +fechaActual.plusDays(daysToAdd));
+//            }
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.addAttribute("semanas", semanas);
+            modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
+            modelo.addAttribute("obras", servObra.listarObrasSociales());
+
+            return "editarAgenda.html";
+
+        } else {
+
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
+            return "editarAgenda.html";
+
+        }
 
     }
 

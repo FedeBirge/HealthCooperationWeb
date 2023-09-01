@@ -26,9 +26,11 @@ public class DiaAgendaServicio {
         DiaAgenda dia = new DiaAgenda();
         
         dia.setFecha(fecha);
-    Collections.sort(turnos, Comparator.comparing(turno -> LocalTime.parse(turno.getHora())));
+        Collections.sort(turnos, Comparator.comparing(turno -> LocalTime.parse(turno.getHora())));
         dia.setTurnos(turnos);
-        
+        for (Turno turno : turnos) {
+            System.out.println("Horas Ordenadas"+turno.getFecha());
+        }
         diaAgendaRepo.save(dia);
         
         return dia;
