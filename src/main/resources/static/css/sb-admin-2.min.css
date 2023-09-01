@@ -23,6 +23,9 @@
 .ocultar{
     display: none;
 }
+   .fecha{
+                display:inline-block;
+            }
 .confirmation-popup {
     display: none;
     position: fixed;

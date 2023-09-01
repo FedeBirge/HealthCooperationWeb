@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
@@ -41,5 +42,6 @@ public class DiaAgenda implements Serializable {
     private Date fecha;
 
     @OneToMany
+     @OrderBy("hora")
     private List<Turno> turnos;
 }

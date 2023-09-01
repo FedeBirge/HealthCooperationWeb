@@ -10,7 +10,10 @@
         <meta name="author" content="">
 
         <title>Profesional</title>
-
+        
+        <style>
+         
+        </style>
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
@@ -193,36 +196,37 @@
                                     <div class="col-md">
 
 
-                                        <h1>Agenda Semanale</h1>
-
-                                        <ul th:each="semana : ${semanas}">
-                                            <li>
-                                                <h2>ID: <span th:text="${semana.id}"></span></h2>
-
-
-                                                <ul th:each="entry : ${semana.fechasYTurnos}">
-
-                                                    <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
-                                                    <p>Día: <span th:text="${#dates.format(entry.key, 'dd/MM/yyyy')}" ></span> </p>
-                                                    <ul>
-                                                        <li th:each="turno : ${entry.value.turnos}">
-                                                            <p>
+                                        <h1>Agendas Semanales</h1>
+                                        <div class="weeks-container">
+                                            <ul th:each="semana : ${semanas}">
+                                                <li  style="display: inline-block; margin-right: 10px;">
+                                                    
 
 
+                                                    <ul class="fecha" th:each="entry : ${semana.fechasYTurnos}">
+                                                        
+                                                        <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
+                                                        <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
+                                                        <ul>
+                                                            <li th:each="turno : ${entry.value.turnos}">
+                                                                <p>
 
-                                                                <button th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 'btn btn-success')}"
-                                                                        th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
-                                                                   <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.estado : turno.hora}"></span>
 
-                                                                </button>
-                                                            </p>
-                                                        </li>
+
+                                                                    <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 'btn btn-success')}"
+                                                                            th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
+                                                                        <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+turno.estado : turno.hora}"></span>
+
+                                                                    </button>
+                                                                </p>
+                                                            </li>
+                                                        </ul>
                                                     </ul>
-                                                </ul>
 
-                                            </li>                                           
+                                                </li>                                           
 
-                                        </ul>
+                                            </ul>
+                                        </div>
                                         <ul th:each="semana : ${semanas}">
                                             <li>
                                                 <h2>ID: <span th:text="${semana.id}"></span></h2>

@@ -20,11 +20,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,7 @@ public class AgendaServicio {
 
     private LocalDate obtenerFecha(DayOfWeek dia, int sem) {
 
-        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaActual = LocalDate.now().plusDays(7 * sem);
         int daysToAdd = dia.getValue() - fechaActual.getDayOfWeek().getValue();
 
         return fechaActual.plusDays(daysToAdd);
@@ -89,13 +91,12 @@ public class AgendaServicio {
             turnos.add(turno);
             inicio = inicio.plusMinutes(duracion); // Incrementar minutos
         }
-       
+        Collections.sort(turnos, Comparator.comparing(Turno::getHora));
 
         return turnos;
 
     }
 
- 
     @Transactional
     // Metodo para crear una Agenda, la misma se genera a partir del profesional
     // Con los atributos diasDisponibles y oferta
@@ -115,41 +116,39 @@ public class AgendaServicio {
             if (prof.getOferta() == null) {
                 throw new MyException("No hay Oferta disponible del profesional!");
             }
-            Map<Date, DiaAgenda> fechaYTurnos = new HashMap();
 
             List<Dias> dias = prof.getDiasDisponibles();
 
-//            for (int i = 0; i < 2; i++) { // Recorro 3 veces para armar 3 semanas
-            AgendaSemanal agenda = new AgendaSemanal();
+            for (int i = 0; i < 3; i++) { // Recorro 3 veces para armar 3 semanas
+                AgendaSemanal agenda = new AgendaSemanal();
+                TreeMap<Date, DiaAgenda> fechaYTurnos = new TreeMap<>(Comparator.comparingLong(Date::getDay));
 
-            for (Dias dia : dias) {             // recorro los dias disponibles
-                // si el dia pertenece a los disponibles del prof armo la lista de turnos
+                for (Dias dia : dias) {             // recorro los dias disponibles
+                    // si el dia pertenece a los disponibles del prof armo la lista de turnos
 
-                // primero paso el dia Enum a fecha calendario, y d LocalDate a Date(por ahora)
-                Date fechaturno = Date.from(obtenerFecha(convertirADayOfWeek(dia), 0).atStartOfDay(ZoneId.systemDefault()).toInstant());
-                // armo lsita de turno segun oferta y fecha
-                ArrayList<Turno> turnos = armarTurnos(prof.getOferta(), fechaturno, idProf);
-                //armo el dia de agenda
-                DiaAgenda diaAgenda = diaServ.crearDia(fechaturno, turnos);
-                fechaYTurnos.put(fechaturno, diaAgenda);
-                
-                agenda.setFechasYTurnos(fechaYTurnos);
-
-                for (Map.Entry<Date, DiaAgenda> entry : fechaYTurnos.entrySet()) {
-                    Date key = entry.getKey();
-                    System.out.println("Dia: ");
-                    DiaAgenda value = entry.getValue();
-
-                    for (Turno turno : value.getTurnos()) {
-                        System.out.println("turno: " + turno.getHora());
-                    }
-
+                    // primero paso el dia Enum a fecha calendario, y d LocalDate a Date(por ahora)
+                    Date fechaturno = Date.from(obtenerFecha(convertirADayOfWeek(dia), i).atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    // armo lsita de turno segun oferta y fecha
+                    ArrayList<Turno> turnos = armarTurnos(prof.getOferta(), fechaturno, idProf);
+                    //armo el dia de agenda
+                    DiaAgenda diaAgenda = diaServ.crearDia(fechaturno, turnos);
+                    fechaYTurnos.put(fechaturno, diaAgenda);
+//                fechaYTurnos = ordenarMapPorFecha(fechaYTurnos);
                 }
-            }
 
-            agendaRepo.save(agenda);
-            semanas.add(agenda);
-//            } 3 semanas
+                agenda.setFechasYTurnos(fechaYTurnos);
+                agendaRepo.save(agenda);
+                semanas.add(agenda);
+//                for (Map.Entry<Date, DiaAgenda> entry : fechaYTurnos.entrySet()) {
+//                    Date key = entry.getKey();
+//                    System.out.println("Dia: ");
+//                    DiaAgenda value = entry.getValue();
+//
+//                    for (Turno turno : value.getTurnos()) {
+//                        System.out.println("turno: " + turno.getId());
+//                    }
+
+            }
 
             return semanas;
         }
@@ -162,10 +161,33 @@ public class AgendaServicio {
         return agendaRepo.getOne(id);
     }
 
+    public Map<Date, DiaAgenda> ordenarMapPorFecha(Map<Date, DiaAgenda> mapa) {
+        List<Map.Entry<Date, DiaAgenda>> listaOrdenada = new ArrayList<>(mapa.entrySet());
+
+        Collections.sort(listaOrdenada, Map.Entry.comparingByKey());
+
+        LinkedHashMap<Date, DiaAgenda> mapaOrdenado = new LinkedHashMap<>();
+        for (Map.Entry<Date, DiaAgenda> entry : listaOrdenada) {
+            mapaOrdenado.put(entry.getKey(), entry.getValue());
+        }
+
+        return mapaOrdenado;
+    }
+
     public List<AgendaSemanal> obtenerAgendaxProf(String id) {
         Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
         if (respuesta.isPresent()) {
             Profesional prof = respuesta.get();
+            for (AgendaSemanal semana : prof.getAgendasSemanales()) {
+                List<Map.Entry<Date, DiaAgenda>> fechasOrdenadas = new ArrayList<>(semana.getFechasYTurnos().entrySet());
+                Collections.sort(fechasOrdenadas, Map.Entry.comparingByKey()); // Ordenar por clave (fecha)
+                Map<Date, DiaAgenda> fechasOrdenadasMap = new LinkedHashMap<>();
+                for (Map.Entry<Date, DiaAgenda> entry : fechasOrdenadas) {
+                    fechasOrdenadasMap.put(entry.getKey(), entry.getValue());
+                }
+
+                semana.setFechasYTurnos(ordenarMapPorFecha(fechasOrdenadasMap));
+            }
             return prof.getAgendasSemanales();
 
         }
