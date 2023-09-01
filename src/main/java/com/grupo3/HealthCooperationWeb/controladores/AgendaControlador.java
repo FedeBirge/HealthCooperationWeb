@@ -7,6 +7,7 @@ import com.grupo3.HealthCooperationWeb.entidades.Oferta;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
+import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import com.grupo3.HealthCooperationWeb.enumeradores.TipoOferta;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.AgendaServicio;
@@ -141,13 +142,13 @@ public class AgendaControlador {
 
         if (semanas.size() != 0) {
 
-
+            EstadoTurno[] estados = EstadoTurno.values();
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("semanas", semanas);
             modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
             modelo.addAttribute("obras", servObra.listarObrasSociales());
-
+               modelo.addAttribute("estados", estados);
             return "editarAgenda.html";
 
         } else {

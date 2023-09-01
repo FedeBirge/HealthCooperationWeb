@@ -10,9 +10,9 @@
         <meta name="author" content="">
 
         <title>Profesional</title>
-        
+
         <style>
-         
+
         </style>
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -156,7 +156,7 @@
                         </div>
                         <!-- Encabezado de página -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Mi Agenda</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Mi Agenda en bloques semanales</h1>
                         </div>
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                             <div class="card-body">
@@ -186,8 +186,10 @@
                             <div class="card-header">
                                 Agenda
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
-                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/verActual/__${log.id}__}">Semana Actual</a>
-                               <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/crear/__${log.id}__}">Todas las semanas</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/verActual/__${log.id}__}">Semana Actual</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/crear/__${log.id}__}">Todas las semanas</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/}">Cancelar Semana actual</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/}">Cancelar Todos los Turnos</a>
 
 
                             </div>
@@ -197,29 +199,32 @@
                                     <div class="col-md">
 
 
-                                        <h1>Agendas Semanales</h1>
                                         <div class="weeks-container">
                                             <ul th:each="semana : ${semanas}">
                                                 <li  style="display: inline-block; margin-right: 10px;">
-                                                    
 
 
-                                                    <ul class="fecha" th:each="entry : ${semana.fechasYTurnos}">
-                                                        
+
+                                                    <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
+
                                                         <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
                                                         <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
-                                                        <ul>
+                                                        <ul >
                                                             <li th:each="turno : ${entry.value.turnos}">
-                                                                <p>
+
+                                                                
 
 
+                                                                <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 'btn btn-success')}"
+                                                                        th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
+                                                                    <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+turno.estado : turno.hora}"></span>
+                                                                    
+                                                                </button>
 
-                                                                    <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 'btn btn-success')}"
-                                                                            th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
-                                                                        <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+turno.estado : turno.hora}"></span>
 
-                                                                    </button>
-                                                                </p>
+                                                                <!-- Botón "Cambiar" para mostrar la lista desplegable -->
+                                                                <button type="button" class="btn btn-secondary" onclick="mostrarEstados()">Cambiar</button>
+
                                                             </li>
                                                         </ul>
                                                     </ul>
@@ -228,36 +233,28 @@
 
                                             </ul>
                                         </div>
-                                        <ul th:each="semana : ${semanas}">
-                                            <li>
-                                                <h2>ID: <span th:text="${semana.id}"></span></h2>
-                                                <table>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Día</th>
-                                                            <th th:each="entry : ${semana.fechasYTurnos}">
-                                                                <span th:text="${#dates.format(entry.key, 'dd/MM/yyyy')}"></span>
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td></td> <!-- Celda vacía para el espacio del primer encabezado -->
-                                                            <td th:each="entry : ${semana.fechasYTurnos}">
-                                                                <ul class="horario-cell">
-                                                                    <li th:each="turno : ${entry.value.turnos}">
-                                                                        <span th:text="${turno.hora}"></span>
-                                                                    </li>
-                                                                </ul>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </li>
-                                        </ul>
+
+                                        <div class="d-grid gap-2 col-12 mx-auto text-center">
+                                            <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>
+                                        </div>
+
                                         </form>
+                                        <script th:inline="javascript">
+                                            /* Función para mostrar la lista desplegable de estados para un turno específico */
+                                            function mostrarEstado(boton) {
+                                                var selectEstado = boton.previousElementSibling; // Encuentra el elemento <select> anterior al botón
+                                                var botonGuardarCambios = boton.nextElementSibling; // Encuentra el botón "Guardar cambios" siguiente al botón
 
+                                                /* Mostrar la lista desplegable y ocultar el botón "Cambiar" */
+                                                selectEstado.style.display = 'inline-block';
+                                                boton.style.display = 'none';
 
+                                                /* Cuando el usuario seleccione un estado, mostrar el botón "Guardar cambios" para este turno */
+                                                selectEstado.addEventListener('change', function () {
+                                                    botonGuardarCambios.style.display = 'inline-block';
+                                                });
+                                            }
+                                        </script>
 
                                         <!-- Fin del contenido principal -->
                                         <!-- Footer -->

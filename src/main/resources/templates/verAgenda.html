@@ -196,7 +196,7 @@
                                     <div class="col-md">
 
 
-                                        <h1>Agendas Semanales</h1>
+                                        <h1>Mi Agenda en bloques semanales</h1>
                                         <div class="weeks-container">
                                             <ul th:each="semana : ${semanas}">
                                                 <li  style="display: inline-block; margin-right: 10px;">
@@ -227,33 +227,7 @@
 
                                             </ul>
                                         </div>
-                                        <ul th:each="semana : ${semanas}">
-                                            <li>
-                                                <h2>ID: <span th:text="${semana.id}"></span></h2>
-                                                <table>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Día</th>
-                                                            <th th:each="entry : ${semana.fechasYTurnos}">
-                                                                <span th:text="${#dates.format(entry.key, 'dd/MM/yyyy')}"></span>
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td></td> <!-- Celda vacía para el espacio del primer encabezado -->
-                                                            <td th:each="entry : ${semana.fechasYTurnos}">
-                                                                <ul class="horario-cell">
-                                                                    <li th:each="turno : ${entry.value.turnos}">
-                                                                        <span th:text="${turno.hora}"></span>
-                                                                    </li>
-                                                                </ul>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </li>
-                                        </ul>
+                                       
                                         </form>
 
 
