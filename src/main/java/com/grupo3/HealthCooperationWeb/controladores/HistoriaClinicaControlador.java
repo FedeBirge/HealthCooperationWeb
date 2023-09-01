@@ -1,8 +1,10 @@
 
 package com.grupo3.HealthCooperationWeb.controladores;
 
+import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.HistoriaClinicaServicio;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/paciente/historia_clinica")
+@RequestMapping("/historia")
 public class HistoriaClinicaControlador {
 
     @Autowired
@@ -20,14 +22,16 @@ public class HistoriaClinicaControlador {
     // (edito: bren)
     // para que se vea la HC del paciente seleccionado x id
     // recordar que este {id} corresponde al id del paciente
-    @GetMapping("/verHistoriaClinica/{id}")
-    public String mostrarHistoria(@PathVariable("id") String id, ModelMap modelo) throws MyException {
+    @GetMapping("/verHistoria/{id}")
+    public String mostrarHistoria(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
         try {
-            modelo.addAttribute("HistoriaClinica", historiaClinicaServicio.mostrarHistoria(id));
-            return "verHistoriaClinica.html";
+             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+//            modelo.addAttribute("HistoriaClinica", historiaClinicaServicio.mostrarHistoria(id));
+            return "Consulta historial.html";
         } catch (Exception e) {
-            return "redirect: /panelProfesional.html";
+                return "Consulta historial.html";
         }
     }
 

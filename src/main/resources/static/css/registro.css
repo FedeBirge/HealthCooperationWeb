@@ -59,3 +59,51 @@ body{
     padding-bottom: 5px;
       
 }
+
+.contenedor{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.imgVolver{
+    height: 40px;
+    width: 30px;
+
+}
+
+.botonVolver{
+    border:none;
+    background-color: white;
+   
+}
+
+.btnVolver{
+    text-decoration: none;
+    color: black;
+    border: none;
+    margin-top: 10px;
+}
+
+.btnVolver:hover{
+    color: blue;
+    border:none;
+}
+
+.textoVolver{
+    font-weight: 700;
+}
+
+a {
+  display: block;
+  text-align: right;
+  text-decoration: none;
+  color: #999;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: #38d39f;
+}

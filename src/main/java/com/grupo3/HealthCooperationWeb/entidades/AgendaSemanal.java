@@ -1,28 +1,14 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
-
-import com.grupo3.HealthCooperationWeb.enumeradores.Dias;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Map;
-
-
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
-
-
 import org.hibernate.annotations.GenericGenerator;
-
-
-import java.util.ArrayList;
-import java.util.Date;
-import javax.persistence.EnumType;
-import javax.persistence.MapKeyEnumerated;
-
-
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,20 +19,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgendaSemanal {
+public class AgendaSemanal implements Serializable {
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-  
-   @ElementCollection
-    @CollectionTable(name = "fecha_y_turnos",
-                     joinColumns = @JoinColumn(name = "entidad_principal_id"))
+    @OneToMany
     @MapKeyColumn(name = "fecha")
-   
-    private Map<Date, ArrayList<Turno>> fechaYTurnos;
+    private Map<Date, DiaAgenda> fechasYTurnos;
 
- 
-    
 }

@@ -54,13 +54,13 @@ public class ObraSocialServicio {
             obras = obraRepo.findAll();
             for (ObraSocial obra : obras) {
                 nombres.add(obra.getNombre());
-                System.out.println(obra.getEmail());
+               
              
          }
             return nombres;
 
     }
-    public List<ObraSocial> listarObrasSociales() {
+    public List<ObraSocial> listarObrasSociales() throws MyException{
 
         List<ObraSocial> obras = new ArrayList();
 
@@ -70,8 +70,8 @@ public class ObraSocialServicio {
             return obras;
 
         } catch (Exception e) {
-            System.out.println("No pudieron ser listadas");
-            return null;
+            throw new MyException("No pudieron ser listadas");
+            
         }
 
     }
@@ -94,7 +94,28 @@ public class ObraSocialServicio {
 
         }
     }
-
+    
+    private ObraSocial buscarXNombre(String nombre){
+        return obraRepo.findByNombre(nombre);
+    }
+    public List<ObraSocial> pasarObras(List<String >selecciones) throws MyException{
+        List<ObraSocial> obras = new ArrayList<>();
+        List<String> nombres = listarNombreObrasSociales();
+        
+        for (String selc : selecciones) {
+        
+            if(nombres.contains(selc)){
+                obras.add(buscarXNombre(selc));
+            }
+            else{
+                obras.add(crearObraSocialReturn(selc, "mail", "tel"));
+            }
+            
+        }
+        return obras;
+        
+        
+    }
     @Transactional
     public void eliminarObraSocial(String id) throws MyException {
 

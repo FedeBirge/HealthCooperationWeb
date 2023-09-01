@@ -8,6 +8,7 @@ import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.ElementCollection;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,8 +31,8 @@ public class Profesional extends Usuario implements Serializable {
     protected String descripcion;
     @OneToOne
     protected Oferta oferta;
-    @OneToOne
-    protected AgendaSemanal agenda;
+    @OneToMany
+    private List<AgendaSemanal> agendasSemanales;
 
     @ElementCollection(targetClass = Dias.class)
     @Enumerated(EnumType.STRING)

@@ -65,7 +65,7 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/agenda/verAgenda/__${log.id}__}">Ver Mi Agenda</a>
-                   
+
                         </div>
                     </div>
                 </li>
@@ -79,7 +79,7 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
-                    
+
 
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Pacientes</a>
+                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Mis Pacientes</a>
                         </div>
                     </div>
                 </li>
@@ -167,67 +167,78 @@
                                 <p class="card-text text-center" th:text="${exito}"></p>
                             </div>
                         </div> 
-                             <div th:if="${vacia != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                        <div th:if="${vacia != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Atencion!</h5>
                                 <p class="card-text text-center" th:text="${vacia}"></p>
                             </div>
                         </div> 
                     </div>
-                    
                     <!-- Pending Requests Card Example -->
-                     <div class="row">
                     <div class="col-xl-4 col-md-7 mb-5">
                     </div>                    
-                    <form th:action="@{/oferta/crear/__${log.id}__}" method="POST" enctype="multipart/form-data">
+                    <form th:action="@{/oferta/editar/__${log.id}__}" method="POST" enctype="multipart/form-data">
                         <!-- Collapsable Card Example -->
                         <div class="card mb-4">
                             <div class="card-header">
                                 Mi Disponibilidad 
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${oferta != null}" th:href="@{/oferta/editar/__${log.id}__}">Editar</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${oferta == null}" th:href="@{/oferta/crear/__${log.id}__}">Nueva Oferta</a>
+
+
                             </div>
-                            <div class="card-body">
+
+                            <div th:if="${oferta != null}" class="card-body">
                                 <div class="row gy-3">
                                     <div class="col-md">
-                                        <span style="font-size: 110%;">Seleccione sus días disponibles</span> 
+                                        <span style="font-size: 110%;">Días disponibles actuales</span> 
 
                                         <div>
-                                            <label class="cl-checkbox">
-                                                <input class="form-check-input" type="checkbox" id="defaultCheck1" name="diasSeleccionados" th:value="Lunes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Lunes') : false}"/>
-                                                <span>Lunes</span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <label class="cl-checkbox">
-                                                <input class="form-check-input" type="checkbox" id="defaultCheck2" name="diasSeleccionados" th:value="Martes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Martes') : false}" />
-                                                <span>Martes</span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <label class="cl-checkbox">
-                                                <input class="form-check-input" type="checkbox" id="defaultCheck3" name="diasSeleccionados" th:value="Miercoles" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Miercoles') : false}" />
-                                                <span>Miercoles</span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <label class="cl-checkbox">
-                                                <input class="form-check-input" type="checkbox" id="defaultCheck4" name="diasSeleccionados" th:value="Jueves" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Jueves') : false}" />
-                                                <span>Jueves</span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <label class="cl-checkbox">
-                                                <input class="form-check-input" type="checkbox" id="defaultCheck5" name="diasSeleccionados" th:value="Viernes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Viernes') : false}" />
-                                                <span>Viernes</span>
-                                            </label>
-                                        </div>
+                                            <div th:each="dia : ${dias}">
+                                                <span th:text="${dia}"></span>
+                                            </div>
+                                        </div> 
+                                        <div class="col-md">
+                                            <span style="font-size: 110%;">Seleccione sus nuevos días disponibles</span> 
 
+                                            <div>
+                                                <label class="cl-checkbox">
+                                                    <input class="form-check-input" type="checkbox" id="defaultCheck1" name="diasSeleccionados" th:value="Lunes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Lunes') : false}"/>
+                                                    <span>Lunes</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label class="cl-checkbox">
+                                                    <input class="form-check-input" type="checkbox" id="defaultCheck2" name="diasSeleccionados" th:value="Martes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Martes') : false}" />
+                                                    <span>Martes</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label class="cl-checkbox">
+                                                    <input class="form-check-input" type="checkbox" id="defaultCheck3" name="diasSeleccionados" th:value="Miercoles" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Miercoles') : false}" />
+                                                    <span>Miercoles</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label class="cl-checkbox">
+                                                    <input class="form-check-input" type="checkbox" id="defaultCheck4" name="diasSeleccionados" th:value="Jueves" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Jueves') : false}" />
+                                                    <span>Jueves</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label class="cl-checkbox">
+                                                    <input class="form-check-input" type="checkbox" id="defaultCheck5" name="diasSeleccionados" th:value="Viernes" th:checked="${diasSeleccionados != null ? diasSeleccionados.contains('Viernes') : false}" />
+                                                    <span>Viernes</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                         <br>
-                                        <h5>Horarios de la jornada</h5>
+                                        <h5>Nuevos Horarios de la jornada</h5>
                                         <div class="form-group row">
                                             <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Hora inicial</label>
                                             <div class="col-sm-4">
                                                 <input
-                                                    class="form-control" type="time" value="12:30:00" id="html5-time-input" name="horaInicial"
+                                                    class="form-control" type="time" th:value="${oferta.horaInicio}"  id="html5-time-input" name="horaInicial"
                                                     />
                                             </div>
                                         </div>
@@ -235,15 +246,16 @@
                                             <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Hora final</label>
                                             <div class="col-sm-4">
                                                 <input
-                                                    class="form-control" type="time" value="12:30:00" id="html5-time-input" name="horaFinal"
+                                                    class="form-control" type="time" th:value="${oferta.horaFin}" id="html5-time-input" name="horaFinal"
                                                     />
                                             </div>
                                         </div>
-                                        <h5>Duracion del turno</h5>
-                                        <br>
-                                        <h6>Ingrese la duración del turno en minutos</h6>
-                                        <label for="duracion-input">Duración del turno (minutos):</label>
-                                        <input type="number" id="duracion-input" name="duracion" />
+                                        <div class="form-group row">
+                                            <label for="html5-datetime-local-input" class="col-md-6 col-form-label">Nueva Duracion del turno(minutos)</label>
+
+                                            <input type="number" th:value="${oferta.duracionTurno}"  id="duracion-input" name="duracion" />
+
+                                        </div>
                                         <!-- comment <button class="button-style" onclick="guardarDuracion()">Guardar</button>
                           <div id="resultado"></div>
 
@@ -259,151 +271,169 @@
                               }
                           </script>
                                         -->
-                                        <br>
-                                        <br>
+
+
                                         <h5>Modalidad</h5>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="defaultCheck1">Modo de atención Actual:</label>
+                                            <div class="col-sm-4">
+                                                <span class="form-control form-control" type="text" id="address" placeholder="Direccion"   th:text="${oferta.tipo}"></span>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="defaultCheck1">Nuevo Modo de atención:</label>
+                                                <select class="form-select" id="inputGroupSelect01" name="tipoOferta">
+                                                    <option value="" disabled selected>Seleccione...</option>
+                                                    <option th:each=" tipo:${tipos}"
+                                                            th:value="${tipo}" th:text="${tipo}"></option>
 
-
-                                        <label class="col-sm-4 col-form-label" for="defaultCheck1">Modo de atención:</label>
-                                        <select class="form-select" id="inputGroupSelect01" name="tipoOferta">
-                                            <option value="" disabled selected>Seleccione...</option>
-                                            <option th:each=" tipo:${tipos}"
-                                                    th:value="${tipo}" th:text="${tipo}"></option>
-
-                                        </select>
-                                        <br>
-                                        <br>
-                                        <br>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <h5>Atención</h5>
                                         <div class="form-group row">
                                             <label class="col-sm-4 col-form-label" for="defaultCheck1">Lugar de atención</label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
+                                            <div class="col-sm-4">
+                                                <input class="form-control form-control" type="text" id="address" placeholder="Direccion" name="direccion"  th:value="${oferta.ubicacion}">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="card mb">
+
+                                    <h5>  Obras Sociales Actuales</h5>
+
+                                    <div th:each="obra : ${obras}" >
+
+                                        <span th:text="${obra.nombre}"></span>
+                                    </div>
+
+
+
+
+                                </div>
+
+                                <div class="card mb">
+                                    <div class="card-header">
+                                        Nueva Seleccion de Obras Sociales
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row gy-5">
+                                            <div class="col-md">
+                                                <!-- Lista para mostrar las selecciones -->
+                                                <div class="form-group">
+                                                    <label>Seleccionadas:</label>
+                                                    <ul id="seleccionadas"></ul>
+                                                </div>
+
+
+
+                                                <!-- Select para obras sociales preexistentes -->
+                                                <div class="form-group">
+                                                    <label for="obrasPreexistentes">Seleccionar obras sociales:</label>
+                                                    <select class="form-control" id="obrasPreexistentes" onchange="manejarSeleccion()">
+                                                        <option value="">Seleccionar</option>
+                                                        <option th:each="obra : ${todas}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
+                                                        <option value="otra">Otra</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- Campo para agregar una nueva obra social -->
+                                                <div id="nuevaObraSocialFields" style="display: none;">
+                                                    <div class="form-group">
+                                                        <label for="nombreNuevaObraSocial">Nombre de nueva obra social:</label>
+                                                        <input type="text" class="form-control" id="nombreNuevaObraSocial" placeholder="Nombre" />
+                                                    </div>
+                                                    <button type="button" class="btn btn-primary" onclick="agregarNuevaObraSocial()">Agregar Nueva</button>
+                                                </div>
+
+                                                <!-- Input oculto para almacenar las selecciones -->
+                                                <input type="hidden" id="seleccionesInput" name="selecciones" />
+
+                                                <script>
+                                                    var selecciones = [];
+
+                                                    function manejarSeleccion() {
+                                                        var select = document.getElementById("obrasPreexistentes");
+                                                        var selectedOption = select.options[select.selectedIndex];
+                                                        var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
+
+                                                        if (selectedOption.value === "otra") {
+                                                            nuevaObraSocialFields.style.display = "block";
+                                                        } else {
+                                                            nuevaObraSocialFields.style.display = "none";
+                                                            agregarSeleccion(selectedOption.textContent);
+                                                        }
+                                                    }
+
+                                                    function agregarNuevaObraSocial() {
+                                                        var nombre = document.getElementById("nombreNuevaObraSocial").value.trim();
+
+                                                        if (nombre !== "") {
+                                                            agregarSeleccion(nombre);
+                                                            document.getElementById("nombreNuevaObraSocial").value = "";
+                                                            var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
+                                                            nuevaObraSocialFields.style.display = "none";
+                                                        }
+                                                    }
+
+                                                    function agregarSeleccion(nombre) {
+                                                        var seleccionadasList = document.getElementById("seleccionadas");
+                                                        var nuevaObraSocial = document.createElement("li");
+                                                        nuevaObraSocial.textContent = nombre;
+                                                        seleccionadasList.appendChild(nuevaObraSocial);
+
+                                                        // Agregar a la lista de selecciones
+                                                        selecciones.push(nombre);
+
+                                                        // Actualizar el input oculto con las selecciones
+                                                        document.getElementById("seleccionesInput").value = selecciones.join(",");
+                                                    }
+                                                </script>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
 
-                        
-                        
-                <div class="card mb">
-                    <div class="card-header">
-                        Obra Social
-                    </div>
-                    <div class="card-body">
-                        <div class="row gy-5">
-                            <div class="col-md">
-                                <!-- Lista para mostrar las selecciones -->
-                                <div class="form-group">
-                                    <label>Seleccionadas:</label>
-                                    <ul id="seleccionadas"></ul>
+
+                                <div class="d-grid gap-2 col-12 mx-auto text-center">
+                                    <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>
                                 </div>
 
 
-                
-                <!-- Select para obras sociales preexistentes -->
-                <div class="form-group">
-                    <label for="obrasPreexistentes">Seleccionar obras sociales:</label>
-                    <select class="form-control" id="obrasPreexistentes" onchange="manejarSeleccion()">
-                        <option value="">Seleccionar</option>
-                        <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
-                        <option value="otra">Otra</option>
-                    </select>
+
+
+
+
+                            </div>
+
+                        </div>
+
+
+                    </form>
+
+
+
+                    <!-- Fin del contenido principal -->
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>HealtCooperationWeb ©2023</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- Fin del Footer -->
                 </div>
-                
-                <!-- Campo para agregar una nueva obra social -->
-                <div id="nuevaObraSocialFields" style="display: none;">
-                    <div class="form-group">
-                        <label for="nombreNuevaObraSocial">Nombre de nueva obra social:</label>
-                        <input type="text" class="form-control" id="nombreNuevaObraSocial" placeholder="Nombre" />
-                    </div>
-                    <button type="button" class="btn btn-primary" onclick="agregarNuevaObraSocial()">Agregar Nueva</button>
-                </div>
-                
-                <!-- Input oculto para almacenar las selecciones -->
-                <input type="hidden" id="seleccionesInput" name="selecciones" />
-
-                <script>
-                    var selecciones = [];
-
-                    function manejarSeleccion() {
-                        var select = document.getElementById("obrasPreexistentes");
-                        var selectedOption = select.options[select.selectedIndex];
-                        var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
-
-                        if (selectedOption.value === "otra") {
-                            nuevaObraSocialFields.style.display = "block";
-                        } else {
-                            nuevaObraSocialFields.style.display = "none";
-                            agregarSeleccion(selectedOption.textContent);
-                        }
-                    }
-
-                    function agregarNuevaObraSocial() {
-                        var nombre = document.getElementById("nombreNuevaObraSocial").value.trim();
-
-                        if (nombre !== "") {
-                            agregarSeleccion(nombre);
-                            document.getElementById("nombreNuevaObraSocial").value = "";
-                            var nuevaObraSocialFields = document.getElementById("nuevaObraSocialFields");
-                            nuevaObraSocialFields.style.display = "none";
-                        }
-                    }
-
-                    function agregarSeleccion(nombre) {
-                        var seleccionadasList = document.getElementById("seleccionadas");
-                        var nuevaObraSocial = document.createElement("li");
-                        nuevaObraSocial.textContent = nombre;
-                        seleccionadasList.appendChild(nuevaObraSocial);
-
-                        // Agregar a la lista de selecciones
-                        selecciones.push(nombre);
-
-                        // Actualizar el input oculto con las selecciones
-                           document.getElementById("seleccionesInput").value = selecciones.join(",");
-                    }
-                </script>
-            </div>
+            </div>                
+            <!-- Fin del contenedor de contenido -->
         </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        <div class="d-grid gap-2 col-12 mx-auto text-center">
-                            <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>
-                        </div>
-                </form>
-
-                          </div>
-                    </div>
-
-                <!-- Fin del contenido principal -->
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>HealtCooperationWeb ©2023</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- Fin del Footer -->
-            </div>
-        </div>                
-        <!-- Fin del contenedor de contenido -->
-    </div>
         <!-- Envoltura de fin de página -->
         <!-- Desplácese hasta el botón superior-->
         <a class="scroll-to-top rounded" href="#page-top">

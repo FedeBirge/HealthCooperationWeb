@@ -21,14 +21,16 @@ public class AdminControlador {
 
     @GetMapping("/dashboard") 
     public String panelAdministrador(ModelMap modelo, HttpSession session) {
- 
+         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
             return "panelAdmin.html";
        
     }
 
     @GetMapping("/registrar") 
     public String registrar(ModelMap modelo, HttpSession session) {
-    
+         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
             return "altaUsuario.html";
 
         

@@ -1,12 +1,8 @@
 package com.grupo3.HealthCooperationWeb.controladores;
 
-import com.grupo3.HealthCooperationWeb.entidades.HistoriaClinica;
-import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
+
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
-import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
-import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
-import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import java.io.IOException;
@@ -63,7 +59,7 @@ public class PacienteControlador {
     public String crearUsuario(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-            String fecha_nac, String obrasocial, String gruposanguineo,
+            String fecha_nac, @RequestParam String obrasocial,  @RequestParam String gruposanguineo,
             String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException {
 
         try {
@@ -72,17 +68,14 @@ public class PacienteControlador {
             pacienteServicio.registrarPaciente(archivo, nombre, apellido, dni,
                     email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
             modelo.put("exito", "¡Usuario registrado con exito!");
-            if (logueado.getRol() != null) {
-                return "altaPaciente.html";
-            } else {
-            }
-            return "redirect:/";
+          
+            return "redirect:/login";
 
         } catch (MyException ex) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.put("error", ex.getMessage());
-            return crearPaciente(modelo, session);
+            return registrar(modelo);
         }
 
     }

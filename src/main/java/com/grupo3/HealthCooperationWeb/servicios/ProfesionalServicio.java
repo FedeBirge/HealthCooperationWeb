@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
+import com.grupo3.HealthCooperationWeb.enumeradores.Dias;
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
@@ -27,6 +28,10 @@ public class ProfesionalServicio extends UsuarioServicio {
     private ProfesionalRepositorio profesionalRepositorio;
     @Autowired
     private ImagenServicio imagenServ; //
+    @Autowired
+    private OfertaServicio servOferta;
+    @Autowired
+    private ObraSocialServicio servObra;
 
     // listar todos los médicos ACTIVOS
     @Transactional
@@ -91,10 +96,6 @@ public class ProfesionalServicio extends UsuarioServicio {
         }
         profesional.setEspecialidad(pasarStringEspecialidad(especialidad));
         profesional.setValorConsulta(valorConsulta);
-        // NO esta funcionando
-//        profesional.setAgenda(new AgendaSemanal());
-//        profesional.setOferta(new Oferta());
-//        profesional.setDiasDisponibles(new ArrayList());
         profesional.setRol(Rol.MODERADOR);
 
         Imagen imagen = imagenServ.guardar(archivo);
@@ -231,4 +232,79 @@ public class ProfesionalServicio extends UsuarioServicio {
     }
 
     // FALTAN METODOS PARA LA AGENDA, LA OFERTA Y DIAS DISPONIBLES
+    private List<Dias> pasarDiasEnum(ArrayList<String> diasSeleccionados) throws MyException {
+        List<Dias> diasEnum = new ArrayList<>();
+        for (String diasSeleccionado : diasSeleccionados) {
+            switch (diasSeleccionado.toUpperCase()) {
+                case "LUNES":
+                    diasEnum.add(Dias.LUNES);
+                    break;
+                case "MARTES":
+                    diasEnum.add(Dias.MARTES);
+                    break;
+                case "MIERCOLES":
+                    diasEnum.add(Dias.MIERCOLES);
+                    break;
+                case "JUEVES":
+                    diasEnum.add(Dias.JUEVES);
+                    break;
+                case "VIERNES":
+                    diasEnum.add(Dias.VIERNES);
+                    break;
+                default:
+                    throw new MyException("Dia no valido: " + diasSeleccionado);
+            }
+        }
+        return diasEnum;
+
+    }
+
+    @Transactional
+    public void asignarDisponibilidad(String id, ArrayList<String> diasSeleccionados) throws MyException {
+
+        
+        if (diasSeleccionados == null || diasSeleccionados.isEmpty()) {
+            throw new MyException("Debe seleccionar al menos un día disponible");
+        }
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+            Profesional profesional = (Profesional) (respuesta.get());
+
+            List<Dias> diasDisponibles = pasarDiasEnum(diasSeleccionados);
+            profesional.setDiasDisponibles(diasDisponibles);
+             System.out.println(profesional.getDiasDisponibles());
+        }
+
+    }
+    @Transactional
+    public void asignarAgenda(String id, ArrayList<AgendaSemanal> semanas) throws MyException {
+
+       
+        if (semanas == null || semanas.isEmpty()) {
+            throw new MyException("la agenda semanal no puede estar vacio");
+        }
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+            Profesional profesional = (Profesional) (respuesta.get());
+           
+            profesional.setAgendasSemanales(semanas);
+        }
+
+    }
+
+    @Transactional
+    public void asignarOferta(String id, String horaInicial, String horaFinal,
+            String duracion, String tipoOferta, String direccion,
+            List<String> selecciones) throws MyException {
+
+        Oferta oferta = servOferta.crearOferta(tipoOferta, horaInicial,
+                horaFinal, duracion, direccion, servObra.pasarObras(selecciones));
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+        if (respuesta.isPresent()) {
+            Profesional profesional = (Profesional) (respuesta.get());
+            profesional.setOferta(oferta);
+        }
+    }
 }

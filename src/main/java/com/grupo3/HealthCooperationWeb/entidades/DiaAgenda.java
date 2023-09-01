@@ -1,42 +1,47 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+
 @Getter
 @Setter
-
-public class Ficha implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+public class DiaAgenda implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha_consulta;
-
-    private String nota;
-
-    // No comprendo este OneToOne con profesional. Es el paciente el que tiene
-    // fichas (bren)
-    // @OneToOne
-    // private Profesional profesional;
-
-    // agrego esta relación (bren)
-    // muchas fichas tienen una historiaClinica
     @ManyToOne
-    private HistoriaClinica historiaClinica;
+
+    private AgendaSemanal agenda;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
+
+    @OneToMany
+     @OrderBy("hora")
+    private List<Turno> turnos;
 }

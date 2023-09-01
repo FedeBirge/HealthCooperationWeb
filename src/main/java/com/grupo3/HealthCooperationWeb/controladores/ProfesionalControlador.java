@@ -14,14 +14,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
+import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
+import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.enumeradores.TipoOferta;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
+import com.grupo3.HealthCooperationWeb.servicios.TurnoServicio;
 import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.util.Date;
 import javax.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -36,15 +42,18 @@ public class ProfesionalControlador {
     private PacienteServicio pacienteServicio;
     @Autowired
     UsuarioServicio usuarioServicio;
+    @Autowired
+    private TurnoServicio turnoServ;
 
     // En el panel, el doc ve la lista de pacientes
     // Falta refinar esto para que sean solo SUS pacientes, no todos
     @GetMapping("/dashboard")
-    public String panelAdministrativo(ModelMap modelo, HttpSession session) {
+    public String panelAdministrativo(ModelMap modelo, HttpSession session) throws MyException {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         List<Paciente> pacientes = pacienteServicio.mostrarPacientes();
         modelo.addAttribute("pacientes", pacientes);
+     
         return "panelProfesional.html";
     }
 
@@ -65,7 +74,7 @@ public class ProfesionalControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-     
+
             Especialidad[] especialidades = Especialidad.values();
             modelo.addAttribute("especialidades", especialidades);
 
@@ -95,7 +104,7 @@ public class ProfesionalControlador {
 
             profesionalServicio.registrarProfesional(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
             modelo.put("exito", "!Profesional registrado con exito!");
-            return "altaProfesional.html";
+            return registrar(modelo, session);
 
         } catch (MyException ex) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -265,8 +274,7 @@ public class ProfesionalControlador {
         }
     }
 
-    
-       @PostMapping("/agenda/{id}")
+    @PostMapping("/agenda/{id}")
     public String agenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
 
         try {
@@ -284,7 +292,8 @@ public class ProfesionalControlador {
 
         }
     }
-       @GetMapping("/agenda/{id}")
+
+    @GetMapping("/agenda/{id}")
     public String agendaa(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
 
         try {

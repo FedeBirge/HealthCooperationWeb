@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
         <title>Mi Perfil</title>
 
         <!-- Fuentes personalizadas-->
@@ -66,11 +66,8 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-
                             <a class="collapse-item" th:href="@{/inicio}">Ver mi Perfil</a>
                             <a class="collapse-item" th:href="@{/user/perfil/__${log.id}__}">Modificar mi Perfil</a>
-                            <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}">Ver mis Turnos</a>
-
                         </div>
                     </div>
                 </li>
