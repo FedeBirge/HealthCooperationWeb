@@ -64,10 +64,17 @@ public class ObraSocialServicio {
 
         List<ObraSocial> obras = new ArrayList();
 
+        List<ObraSocial> aux = new ArrayList();
+
         try {
             obras = obraRepo.findAll();
-     
-            return obras;
+            for (ObraSocial obra : obras) {
+                if(!obra.getNombre().equals("Particular")){
+                    aux.add(obra);
+                }
+                
+            }
+            return aux;
 
         } catch (Exception e) {
             throw new MyException("No pudieron ser listadas");
@@ -95,9 +102,10 @@ public class ObraSocialServicio {
         }
     }
     
-    private ObraSocial buscarXNombre(String nombre){
+    public ObraSocial buscarXNombre(String nombre){
         return obraRepo.findByNombre(nombre);
     }
+    
     public List<ObraSocial> pasarObras(List<String >selecciones) throws MyException{
         List<ObraSocial> obras = new ArrayList<>();
         List<String> nombres = listarNombreObrasSociales();

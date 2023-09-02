@@ -22,7 +22,7 @@ public class HistoriaClinicaControlador {
     // (edito: bren)
     // para que se vea la HC del paciente seleccionado x id
     // recordar que este {id} corresponde al id del paciente
-    @GetMapping("/verHistoria/{id}")
+    @GetMapping("/ver/{id}")
     public String mostrarHistoria(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
         try {
