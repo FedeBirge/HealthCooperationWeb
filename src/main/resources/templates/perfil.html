@@ -76,7 +76,7 @@
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
-                        <span>Pacientes</span>
+                        <span>Perfíl</span>
                     </a>
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
@@ -88,7 +88,21 @@
                         </div>
                     </div>
                 </li>
-                
+                 <li class="nav-item" sec:authorize="hasAnyRole('ADMINISTRADOR')" >
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-hospital-user"></i>
+                        <span>Profesionales</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Acciones</h6>
+                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
+                            <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
+
+                        </div>
+                    </div>
+                </li>
                 <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
@@ -106,21 +120,7 @@
                     </div>
                 </li>
                 
-                <li class="nav-item" sec:authorize="hasAnyRole('ADMINISTRADOR')" >
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                       aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-hospital-user"></i>
-                        <span>Profesionales</span>
-                    </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Acciones</h6>
-                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
-                            <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
-
-                        </div>
-                    </div>
-                </li>
+               
 
 
 
@@ -134,7 +134,7 @@
 
             </ul>
             <!-- Fin de la barra lateral -->
-
+            
             <!-- Contenedor de contenido -->
             <div id="content-wrapper" class="d-flex flex-column">
 
@@ -152,7 +152,7 @@
 
 
                         <!-- Barra superior Barra de navegación -->
-                        <ul class="navbar-nav ml-auto">
+                           <ul class="navbar-nav ml-auto">
 
 
 
@@ -161,13 +161,23 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "${log.nombre}"></span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
                                     <img class="/img-profile rounded-circle"
-                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 35px;">
+                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}" sec:authorize="hasRole('ADMINISTRADOR')">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Perfil
+                                    </a>
+                                    <a class="dropdown-item" th:href="@{/inicio}" sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')">
+
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Mi Área
+                                    </a>
+                                    <div class="dropdown-divider" sec:authorize="hasRole('ADMINISTRADOR')"></div>
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Cerrar sesión
@@ -182,41 +192,41 @@
 
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
-
+                        <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Modificar </a>
                         <!-- Encabezado de página -->
                         <div class="d-sm-flex align-items-center justify-content-center mb-4">
-                            <h1 class="h3 mb-0 text-gray-800" th:text="'Bienvenido ' + ${log.nombre}"></h1>
+                            <h1 class="h3 mb-0 text-gray-800" th:text="'Usuario ' + ${user.nombre}"></h1>
                         </div>
 
                         <div class="row text-center">
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Nombre: ' + ${log.nombre}"></h2>
+                                <h2 th:text=" 'Nombre: ' + ${user.nombre}"></h2>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Apellido: ' + ${log.apellido}"></h2>
+                                <h2 th:text=" 'Apellido: ' + ${user.apellido}"></h2>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Direccion: ' + ${log.direccion}"></h2>
+                                <h2 th:text=" 'Direccion: ' + ${user.direccion}"></h2>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Telefono: ' + ${log.telefono}"></h2>
+                                <h2 th:text=" 'Telefono: ' + ${user.telefono}"></h2>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Email: ' + ${log.email}"></h2>
+                                <h2 th:text=" 'Email: ' + ${user.email}"></h2>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Fecha nacimiento: ' + ${log.fecha_nac}"></h2>
+                                <h2 th:text="'Fecha nacimiento: ' + ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></h2>
+
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'DNI: '+ ${log.dni}"></h2>
-                            </div>
-                            
+                                <h2 th:text=" 'DNI: '+ ${user.dni}"></h2>
+                            </div>                                                   
                             
                             
                             <div class="col-sm-6 mb-3">
                                 <h2>Tu foto</h2>
                                 <img class="/img-profile rounded-circle"
-                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 150px;">
+                                         th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 150px;">
                             </div>
                             
                             
