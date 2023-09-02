@@ -79,8 +79,16 @@ public class PacienteServicio extends UsuarioServicio {
         // paciente.setTurnos(new ArrayList<Turno>());
         // paciente.setHistoria(new HistoriaClinica());
         paciente.setRol(Rol.USUARIO);
-        Imagen imagen = imagenServicio.guardar(archivo);
-        paciente.setImagen(imagen);
+        if (archivo.isEmpty()) {
+            // Si el archivo está vacío, crea el paciente con una imagen predeterminada
+            Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la imagen predeterminada
+            paciente.setImagen(imagenPredeterminada);
+        } else {
+            // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
+            Imagen imagen = imagenServicio.guardar(archivo);
+            paciente.setImagen(imagen);
+        }
+
         pacienteRepositorio.save(paciente);
 
     }
@@ -110,8 +118,16 @@ public class PacienteServicio extends UsuarioServicio {
                     "Completar telefono");
             pas.setGrupoSanguineo(grupoSanguineo);
 
-            Imagen imagen = imagenServicio.actualizar(archivo, id);
-            pas.setImagen(imagen);
+            String idImg = null;
+            if (pas.getImagen() != null) {
+                idImg = pas.getImagen().getId();
+            }
+            if (archivo != null && archivo.getBytes().length != 0) {
+                Imagen imagen = imagenServicio.actualizar(archivo, id);
+                pas.setImagen(imagen);
+            } else {
+                // No se proporcionó un archivo nuevo, no se actualiza la imagen del usuario
+            }
 
             pacienteRepositorio.save(pas);
 
@@ -230,21 +246,20 @@ public class PacienteServicio extends UsuarioServicio {
             for (Map.Entry<Date, DiaAgenda> entry : fechasTturnos.entrySet()) {
                 Date key = entry.getKey();
                 DiaAgenda value = entry.getValue();
-                
+
                 for (Paciente paciente : pacientes) {
                     if (paciente.getTurnos() != null) {
                         turnosPaciente = paciente.getTurnos();
                         for (Turno turno : turnosPaciente) {
-                               
-                            if(value.getTurnos().contains(turno)){ 
+
+                            if (value.getTurnos().contains(turno)) {
                                 turnoYpaciente.put(turno, paciente);
-                               }
-                            
+                            }
+
                         }
                     }
                 }
             }
-            
 
             return turnoYpaciente;
         } catch (Exception e) {

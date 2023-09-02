@@ -76,7 +76,7 @@
 
                                     <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
                                 </div>
-                                
+
                                 <div  class="input-group mb-4">
 
                                     <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
@@ -91,58 +91,68 @@
                                         <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
                                         <label class="form-check-label" for="inlineCheckbox2">No</label>
                                     </div>
-                                    
+
 
                                     <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                        const checkbox = document.getElementById('inlineCheckbox1');
-                                        const inputContainer = document.getElementById('inputContainer');
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const checkbox = document.getElementById('inlineCheckbox1');
+                                            const inputContainer = document.getElementById('inputContainer');
 
-                                        checkbox.addEventListener('change', function() {
-                                        if (checkbox.checked) {
-                                        inputContainer.style.display = 'block';
-                                        } else {
-                                        inputContainer.style.display = 'none';
-                                        }
-                                        });
+                                            checkbox.addEventListener('change', function () {
+                                                if (checkbox.checked) {
+                                                    inputContainer.style.display = 'block';
+                                                } else {
+                                                    inputContainer.style.display = 'none';
+                                                }
+                                            });
                                         });
                                     </script>
 
                                 </div>
                                 <div id="inputContainer" style="display: none" class="pb-2">
-                                        <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
+                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
                                 </div>
-                                <div class="contenedorImagen">
-                                    <img id="imagenPrevia" src="#" alt="" class="imagenPrevia">
-                                </div>    
+
+
+
                                 <div class="input-group mb-4">
-                                    <span class="input-group-text">Foto</span>
-                                    <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
+
+
+                                    <div class="contenedorImagen">
+    <img id="imagenPrevia" src="/ruta/de/imagen/predeterminada.jpg" alt="" class="imagenPrevia">
+</div>    
+<div class="input-group mb-4">
+    <span class="input-group-text">Foto</span>
+    <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
+</div>
+
+<script>
+    function previsualizarImagen() {
+        var archivo = document.getElementById('foto').files[0];
+        var imagenPrevia = document.getElementById('imagenPrevia');
+        var nombreCampo = "archivo"; // Nombre predeterminado del campo de entrada
+
+        if (archivo) {
+            var lector = new FileReader();
+
+            lector.onload = function (event) {
+                imagenPrevia.src = event.target.result;
+            };
+
+            lector.readAsDataURL(archivo);
+        } else {
+            // Si no se selecciona ningún archivo, cambia el nombre del campo de entrada
+            nombreCampo = "imagenPredeterminada";
+            imagenPrevia.src = "/ruta/de/imagen/predeterminada.jpg"; // Cambia la ruta según tu imagen predeterminada
+        }
+
+        // Cambiar el nombre del campo de entrada
+        document.getElementById('foto').name = nombreCampo;
+    }
+</script>
+
+
                                 </div>
-
-
-                                <script>
-                                    function previsualizarImagen() {
-                                    var archivo = document.getElementById('foto').files[0];
-                                    var imagenPrevia = document.getElementById('imagenPrevia');
-
-                                    if (archivo) {
-                                    var lector = new FileReader();
-
-                                    lector.onload = function (event) {
-                                    imagenPrevia.src = event.target.result;
-                                    };
-
-                                    lector.readAsDataURL(archivo);
-                                    } else {
-                                    imagenPrevia.src = "#";
-                                    }
-                                    }
-                                </script>
-                                
-                                
-
-
                                 <div class="d-grid gap-2 col-12 mx-auto ">
                                     <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Registrarse</button>
                                 </div>

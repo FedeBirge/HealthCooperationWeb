@@ -4,6 +4,7 @@ import com.grupo3.HealthCooperationWeb.entidades.Imagen;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
+import com.grupo3.HealthCooperationWeb.repositorios.ImagenRepositorio;
 import com.grupo3.HealthCooperationWeb.repositorios.UsuarioRepositorio;
 import java.io.IOException;
 import java.text.ParseException;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,6 +30,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.StreamUtils;
 
 @Primary
 @Service
@@ -38,6 +42,8 @@ public class UsuarioServicio implements UserDetailsService {
 
     @Autowired
     private ImagenServicio imagenServ; //
+     @Autowired
+    ImagenRepositorio imagenRepo;
 
     @Transactional
     // Metodo para crear un usuario
@@ -45,7 +51,7 @@ public class UsuarioServicio implements UserDetailsService {
             String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException, IOException {
         // Se validan los datos ingresados
         validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
-           if (usuarioRepo.buscarPorEmail(email) != null) {
+        if (usuarioRepo.buscarPorEmail(email) != null) {
             throw new MyException("EL mail ingresado ya existe! Ingreso otro!");
         }
         Usuario usuario = new Usuario();
@@ -60,9 +66,13 @@ public class UsuarioServicio implements UserDetailsService {
         usuario.setActivo(true);
 
         usuario.setRol(Rol.USUARIO);
-
-        Imagen imagen = imagenServ.guardar(archivo);
-        usuario.setImagen(imagen);
+        if (archivo.isEmpty()) {
+            Imagen imagen = imagenServ.guardar(archivo);
+            usuario.setImagen(imagen);
+        } else {
+            Imagen imagen = imagenServ.guardar(archivo);
+            usuario.setImagen(imagen);
+        }
         return usuarioRepo.save(usuario);
 
     }
@@ -77,7 +87,7 @@ public class UsuarioServicio implements UserDetailsService {
         Optional<Usuario> respuesta = usuarioRepo.findById(id);
         if (respuesta.isPresent()) {
             Usuario usuario = respuesta.get();
-      
+
             usuario.setNombre(nombre);
             usuario.setApellido(apellido);
             usuario.setDni(dni);
@@ -85,21 +95,46 @@ public class UsuarioServicio implements UserDetailsService {
             usuario.setPassword(new BCryptPasswordEncoder().encode(password));
             usuario.setTelefono(telefono);
             usuario.setDireccion(direccion);
-             usuario.setFecha_nac(pasarStringDate(fecha_nac));
+            usuario.setFecha_nac(pasarStringDate(fecha_nac));
             usuario.setActivo(true);
 
             String idImg = null;
             if (usuario.getImagen() != null) {
                 idImg = usuario.getImagen().getId();
             }
-            if (archivo.getBytes().length != 0) {
+            if (archivo != null && archivo.getBytes().length != 0) {
                 Imagen imagen = imagenServ.actualizar(archivo, id);
                 usuario.setImagen(imagen);
+            } else {
+                // No se proporcionó un archivo nuevo, no se actualiza la imagen del usuario
             }
+
             usuarioRepo.save(usuario);
 
         }
 
+    }
+
+ 
+
+    public Imagen obtenerImagenPredeterminada() {
+        try {
+            // Lee la imagen predeterminada desde recursos estáticos
+            Resource resource = new ClassPathResource("/static/img/user_logo.png"); // Cambia la ruta según la ubicación de tu imagen
+            byte[] contenidoImagen = StreamUtils.copyToByteArray(resource.getInputStream());
+
+            // Crea una instancia de Imagen y establece sus propiedades
+            Imagen imagenPredeterminada = new Imagen();
+            imagenPredeterminada.setMime("image/png"); // Cambia el tipo MIME según tu imagen
+            imagenPredeterminada.setNombre("user_logo.png"); // Cambia el nombre según tu imagen
+            imagenPredeterminada.setContenido(contenidoImagen);
+            imagenRepo.save(imagenPredeterminada);
+            return imagenPredeterminada;
+        } catch (IOException e) {
+            // Maneja cualquier error de lectura de archivo aquí
+            e.printStackTrace();
+            return null; // O devuelve una imagen predeterminada alternativa o lanza una excepción
+        }
     }
 
     @Transactional
@@ -116,12 +151,12 @@ public class UsuarioServicio implements UserDetailsService {
             System.out.println("No es posible eliminar el ususario");
         }
     }
+
     // Metodo para listar todos los usuarios, sin tener en cuenta si estan dados de baja
     public List<Usuario> listarTodosUsuarios() {
-     
 
         try {
-           
+
             return usuarioRepo.findAll();
 
         } catch (Exception e) {
@@ -130,6 +165,7 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
+
     // Metodo para listar todos los usuarios
     public List<Usuario> listarUsuarios() {
         List<Usuario> aux = new ArrayList();
@@ -151,9 +187,11 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
-    public Usuario buscarPorMail(String email){
+
+    public Usuario buscarPorMail(String email) {
         return usuarioRepo.buscarPorEmail(email);
     }
+
     // Metodo para validar los datos ingresados antes de persistirlos
     protected void validar(String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac)
@@ -170,11 +208,10 @@ public class UsuarioServicio implements UserDetailsService {
 
         if (email == null || email.isEmpty()) {
             throw new MyException("Debe ingresar un email");
-        }     
+        }
 //         if (usuarioRepo.buscarPorEmail(email) != null) {
 //            throw new MyException("Debe ingresar otro email. El ingresdo ya existe!");
 //        } 
-        
 
         if (password == null || password.isEmpty() || password.length() < 6) {
             throw new MyException("Debe ingresar una contraseña válida");

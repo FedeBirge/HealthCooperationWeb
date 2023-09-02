@@ -30,6 +30,7 @@ public class PacienteControlador {
     public String panelAdministrativo(ModelMap modelo, HttpSession session) {
         Paciente logueado = (Paciente) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
+        modelo.addAttribute("user", logueado);
 
         return "perfil.html";
     }
