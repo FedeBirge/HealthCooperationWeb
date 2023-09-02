@@ -7,6 +7,7 @@ import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 import java.io.IOException;
+import java.text.ParseException;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,6 +54,7 @@ public class PortalControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
+            modelo.addAttribute("user", logueado);
             if (logueado.getRol().toString().equals("ADMINISTRADOR")) {
                 return "redirect:/admin/dashboard";
             } else {
@@ -66,6 +68,7 @@ public class PortalControlador {
         } catch (Exception ex) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
+             modelo.addAttribute("user", logueado);
             modelo.put("error", ex.getMessage());
             return "login.html";
         }
@@ -76,7 +79,7 @@ public class PortalControlador {
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
             String fecha_nac, String obrasocial, String gruposanguineo,
-            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException {
+            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException, ParseException {
 
         try {
             pacienteServ.registrarPaciente(archivo, nombre, apellido, dni,

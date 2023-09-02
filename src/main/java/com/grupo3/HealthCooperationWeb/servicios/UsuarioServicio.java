@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,17 +43,38 @@ public class UsuarioServicio implements UserDetailsService {
 
     @Autowired
     private ImagenServicio imagenServ; //
-     @Autowired
+    @Autowired
     ImagenRepositorio imagenRepo;
 
+    
+    
+     public static boolean validarFecha(Date fecha) {
+        Calendar calendario = Calendar.getInstance();
+        calendario.setTime(fecha);
+
+        int año = calendario.get(Calendar.YEAR);
+        int mes = calendario.get(Calendar.MONTH) + 1; 
+        int dia = calendario.get(Calendar.DAY_OF_MONTH);
+
+        if (año >= 1900 && año <= 2099 && mes >= 1 && mes <= 12 && dia >= 1 && dia <= 31) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     @Transactional
     // Metodo para crear un usuario
     public Usuario crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
-            String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException, IOException {
+            String password, String password2, String telefono, String direccion, String fecha_nac) throws MyException, IOException, ParseException {
         // Se validan los datos ingresados
-        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+        validar("1", nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         if (usuarioRepo.buscarPorEmail(email) != null) {
             throw new MyException("EL mail ingresado ya existe! Ingreso otro!");
+        }
+        
+        Date fecha = pasarStringDate(fecha_nac);
+        if (!validarFecha(fecha)) {
+                throw new MyException("la fecha no es valida");
         }
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
@@ -62,7 +84,7 @@ public class UsuarioServicio implements UserDetailsService {
         usuario.setPassword(new BCryptPasswordEncoder().encode(password));
         usuario.setTelefono(telefono);
         usuario.setDireccion(direccion);
-        usuario.setFecha_nac(pasarStringDate(fecha_nac));
+        usuario.setFecha_nac(fecha);
         usuario.setActivo(true);
 
         usuario.setRol(Rol.USUARIO);
@@ -81,21 +103,25 @@ public class UsuarioServicio implements UserDetailsService {
     // Metodo para modificar un usuario
     public void modificarUsuario(MultipartFile archivo, String id, String nombre, String apellido, String dni,
             String email, String password, String password2, String telefono, String direccion, String fecha_nac)
-            throws MyException, IOException {
+            throws MyException, IOException, ParseException {
 
-        validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+        validar(id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         Optional<Usuario> respuesta = usuarioRepo.findById(id);
+         Date fecha = pasarStringDate(fecha_nac);
+           if (!validarFecha(fecha)) {
+                throw new MyException("la fecha no es válida");
+        }
         if (respuesta.isPresent()) {
             Usuario usuario = respuesta.get();
 
             usuario.setNombre(nombre);
             usuario.setApellido(apellido);
             usuario.setDni(dni);
-            usuario.setEmail(email);
+
             usuario.setPassword(new BCryptPasswordEncoder().encode(password));
             usuario.setTelefono(telefono);
             usuario.setDireccion(direccion);
-            usuario.setFecha_nac(pasarStringDate(fecha_nac));
+            usuario.setFecha_nac(fecha);
             usuario.setActivo(true);
 
             String idImg = null;
@@ -114,8 +140,6 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
-
- 
 
     public Imagen obtenerImagenPredeterminada() {
         try {
@@ -193,7 +217,7 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     // Metodo para validar los datos ingresados antes de persistirlos
-    protected void validar(String nombre, String apellido, String dni, String email,
+    protected void validar(String id, String nombre, String apellido, String dni, String email,
             String password, String password2, String telefono, String direccion, String fecha_nac)
             throws MyException {
         if (nombre == null || nombre.isEmpty()) {
@@ -209,9 +233,11 @@ public class UsuarioServicio implements UserDetailsService {
         if (email == null || email.isEmpty()) {
             throw new MyException("Debe ingresar un email");
         }
-//         if (usuarioRepo.buscarPorEmail(email) != null) {
-//            throw new MyException("Debe ingresar otro email. El ingresdo ya existe!");
-//        } 
+        if (usuarioRepo.buscarPorEmail(email) != null) {
+            if (!usuarioRepo.buscarPorEmail(email).getId().equals(id)) {
+                throw new MyException("Debe ingresar otro email. El ingresdo ya existe!");
+            }
+        }
 
         if (password == null || password.isEmpty() || password.length() < 6) {
             throw new MyException("Debe ingresar una contraseña válida");
@@ -240,7 +266,7 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     // Pasar un string a date
-    protected Date pasarStringDate(String fecha) {
+    protected Date pasarStringDate(String fecha) throws MyException, ParseException {
 
         String pattern = "yyyy-MM-dd"; // Formato de la cadena de fecha
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
@@ -250,7 +276,7 @@ public class UsuarioServicio implements UserDetailsService {
 
             return date;
         } catch (ParseException e) {
-            return null;
+           throw new MyException("La fecha ingresada no es válida");
         }
     }
 

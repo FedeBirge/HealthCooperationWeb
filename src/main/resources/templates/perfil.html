@@ -38,14 +38,14 @@
                     </div>
                     <div class="sidebar-brand-text mx-3">Panel Admin</div>
                 </a>
-                
+
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('USUARIO')">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
                     <div class="sidebar-brand-text mx-3">Panel Paciente</div>
                 </a>
-                
+
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('MODERADOR')">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                 </li>
-                 <li class="nav-item" sec:authorize="hasAnyRole('ADMINISTRADOR')" >
+                <li class="nav-item" sec:authorize="hasAnyRole('ADMINISTRADOR')" >
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-hospital-user"></i>
@@ -112,15 +112,15 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                        
+
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
                         </div>
                     </div>
                 </li>
-                
-               
+
+
 
 
 
@@ -134,7 +134,7 @@
 
             </ul>
             <!-- Fin de la barra lateral -->
-            
+
             <!-- Contenedor de contenido -->
             <div id="content-wrapper" class="d-flex flex-column">
 
@@ -152,7 +152,7 @@
 
 
                         <!-- Barra superior Barra de navegación -->
-                           <ul class="navbar-nav ml-auto">
+                        <ul class="navbar-nav ml-auto">
 
 
 
@@ -168,7 +168,7 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}" sec:authorize="hasRole('ADMINISTRADOR')">
+                                    <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}" >
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
@@ -194,6 +194,18 @@
                     <div class="container-fluid">
                         <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Modificar </a>
                         <!-- Encabezado de página -->
+                        <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Error!</h5>
+                                    <p class="card-text text-center" th:text="${error}"></p>
+                                </div>
+                            </div>
+                            <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Exito!</h5>
+                                    <p class="card-text text-center" th:text="${exito}"></p>
+                                </div>
+                            </div> 
                         <div class="d-sm-flex align-items-center justify-content-center mb-4">
                             <h1 class="h3 mb-0 text-gray-800" th:text="'Usuario ' + ${user.nombre}"></h1>
                         </div>
@@ -220,82 +232,110 @@
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <h2 th:text=" 'DNI: '+ ${user.dni}"></h2>
-                            </div>                                                   
-                            
-                            
+                            </div>   
+                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
+                                <h2 th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text="'Grupo Sanguíneo: '+ ${user.grupoSanguineo}"></h2>
+                            </div>    
+                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
+
+                                <h2 th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text="'Obra Social: '+${user.obraSocial.nombre}"></h2>
+                            </div>
+
                             <div class="col-sm-6 mb-3">
                                 <h2>Tu foto</h2>
                                 <img class="/img-profile rounded-circle"
-                                         th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 150px;">
+                                     th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 150px;">
                             </div>
-                            
-                            
-                        </div>
 
+
+                        </div>
+                        <div th:if="${#strings.trim(user.rol) =='USUARIO'}"  class="container card-container">
+                            <div class="custom-card">
+                                <div class="left-column">
+                                    <h2>Ver Mis Turnos</h2>
+
+
+                                    <a type="button" class="full-rounded"th:href="@{/turno/misturnos/__${log.id}__}">
+                                        <span>Ver Aquí</span>
+                                        <div class="border full-rounded"></div></a>
+                                </div>
+                            </div>
+
+
+                            <div class="custom-card">
+                                <div class="left-column">
+                                    <h2>Buscar un Turno</h2>
+
+
+                                    <a type="button" class="full-rounded" th:href="@{/turno/panel/__${log.id}__}">
+                                        <span>Ver Aquí</span>
+                                        <div class="border full-rounded"></div></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
+
+                    <!-- Fin del contenido principal -->
+
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>HealtCooperationWeb ©2023</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- Fin del Footer -->
+
                 </div>
-
-
-
-                <!-- Fin del contenido principal -->
-
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>HealtCooperationWeb ©2023</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- Fin del Footer -->
+                <!-- Fin del contenedor de contenido -->
 
             </div>
-            <!-- Fin del contenedor de contenido -->
+            <!-- Envoltura de fin de página -->
 
-        </div>
-        <!-- Envoltura de fin de página -->
+            <!-- Desplácese hasta el botón superior-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
 
-        <!-- Desplácese hasta el botón superior-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-
-        <!-- Cierre de sesión modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                     <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+            <!-- Cierre de sesión modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="/vendor/jquery/jquery.min.js"></script>
-        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <!-- Bootstrap core JavaScript-->
+            <script src="/vendor/jquery/jquery.min.js"></script>
+            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+            <!-- Core plugin JavaScript-->
+            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="/js/sb-admin-2.min.js"></script>
+            <!-- Custom scripts for all pages-->
+            <script src="/js/sb-admin-2.min.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="/vendor/chart.js/Chart.min.js"></script>
+            <!-- Page level plugins -->
+            <script src="/vendor/chart.js/Chart.min.js"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="/js/demo/chart-area-demo.js"></script>
-        <script src="/js/demo/chart-pie-demo.js"></script>
+            <!-- Page level custom scripts -->
+            <script src="/js/demo/chart-area-demo.js"></script>
+            <script src="/js/demo/chart-pie-demo.js"></script>
 
     </body>
 

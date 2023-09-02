@@ -159,7 +159,7 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}" sec:authorize="hasRole('ADMINISTRADOR')">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
@@ -249,7 +249,12 @@
 
                                 <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
                                     <label  class="form-label">Obra Social</label>
-                                    <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="nombreObraSocial" >
+                                     <select class="form-control" id="obrasPreexistentes" name="obraSocial">
+                                        <option th:value="${user.obraSocial.nombre}" th:text="${user.obraSocial.nombre}"></option>
+
+                                        <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
+                                        
+                                    </select>
                                 </div>
 
                                 <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
