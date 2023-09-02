@@ -200,7 +200,11 @@
                                         
                                         <div class="weeks-container">
                                             <ul th:each="semana : ${semanas}">
+<<<<<<< HEAD
                                                 <li  style="display: flex; margin-right: 10px;">
+=======
+                                                <li  style="display: inline-block; margin-right: 10px;">
+>>>>>>> developer
 
 
 
@@ -214,9 +218,11 @@
 
 
 
-                                                                    <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 'btn btn-success')}"
+                                                                    <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
+                                                                            (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
+                                                                            (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
                                                                             th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
-                                                                        <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+turno.estado : turno.hora}"></span>
+                                                                        <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
 
                                                                     </button>
                                                                 </p>

@@ -225,7 +225,8 @@
                                                 <tr>
                                                     <th>Nombre</th>
                                                     <th>Apellido</th>
-                                                    <th>Rol</th>   
+                                                    <th>Rol Actual</th>   
+                                                    <th>Cambiar Rol</th>   
 
 
                                                     <th></th>                                           
@@ -236,13 +237,21 @@
                                                 <tr th:each="user : ${users}">
                                                     <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
                                                     <td th:value="${user.apellido}" th:text="${user.apellido}"></td>                                                  
-                                                    <td th:value="${user.rol}" th:text="${user.rol}"></td>
+                                                    <td th:value="${user.rol}" th:text="${user.rol}"> </td>
+                                                        
+                                            <td>
+                                            <select  class="estado-select form-control" style="width: auto; display: inline" >
+                                                                    <option  name = "rol" th:value="${user.rol}" th:text="${user.rol}" h:value="${user.rol}" ></option>
+                                                                    <option th:each="rol: ${roles}" th:value="${user.rol}" th:text="${rol}"></option>
+
+                                                                </select>
+                                                   
                                                  
                                                     <td>
-                                                        <a type="button" class="btn btn-success me-md-2"th:href="@{/user/verUsuario/__${log.id}__}">Perfil                                                       </a>
+                                                        <a type="button" class="btn btn-success me-md-2"th:href="@{/admin/verUsuario/__${user.id}__}">Ver Perfil                                                       </a>
                                                     </td>
                                                     <td>
-                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
+                                                        
                                                     </td>
                                                     <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR'}" >
                                                         <form  th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">

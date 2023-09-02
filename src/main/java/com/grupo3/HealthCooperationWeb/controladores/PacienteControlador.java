@@ -30,6 +30,7 @@ public class PacienteControlador {
     public String panelAdministrativo(ModelMap modelo, HttpSession session) {
         Paciente logueado = (Paciente) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
+        modelo.addAttribute("user", logueado);
 
         return "perfil.html";
     }
@@ -164,16 +165,16 @@ public class PacienteControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-//            List<Paciente> users = pacienteServicio.mostrarPacientes();
-            List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
-            System.out.println(users);
+           List<Paciente> users = pacienteServicio.mostrarPacientes();
+//            List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
+            
             modelo.addAttribute("users", users);
             return "verPacientes.html";
         } catch (Exception e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-//            List<Paciente> users = pacienteServicio.mostrarPacientes();
-            List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
+            List<Paciente> users = pacienteServicio.mostrarPacientes();
+//            List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
             modelo.addAttribute("users", users);
             modelo.put("error", e.getMessage());
             return "verPacientes.html";

@@ -280,7 +280,7 @@
                                                     <th>Nombre</th>
                                                     <th>Apellido</th>
 
-                                                    <th >Turnos</th>
+                                                    <th sec:authorize="hasRole('ADMINISTRADOR')"  >Turnos</th>
                                                     <th>Historia Clínica</th>
                                                   
 
@@ -295,12 +295,12 @@
                                                     <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
                                                     <td th:value="${user.apellido}" th:text="${user.apellido}"></td>
 
-                                                    <td >
+                                                    <td sec:authorize="hasRole('ADMINISTRADOR')" >
                                                           <a type="button" class="btn btn-success me-md-2" th:href="@{/}">Turnos</a>
                                                     </td>
                                                     <td >
 
-                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/historia/verHistoria/__${user.id}__}">H.C.</a>
+                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/historia/verHistoria/__${user.id}__}">Ver</a>
                                                     </td>
 
                                                     <td sec:authorize="hasRole('ADMINISTRADOR')">

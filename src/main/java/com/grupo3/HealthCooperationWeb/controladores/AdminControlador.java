@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -34,6 +35,14 @@ public class AdminControlador {
             return "altaUsuario.html";
 
         
+    }
+      @GetMapping("/verUsuario/{id}") // ruta para ver el perfil de un usuario
+    public String verPerfilUsusario(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+        modelo.addAttribute("user", userServ.getOne(id));
+        return "perfil.html";
+
     }
 
 }
