@@ -1,8 +1,11 @@
 package com.grupo3.HealthCooperationWeb.servicios;
 
+import com.grupo3.HealthCooperationWeb.entidades.AgendaSemanal;
+import com.grupo3.HealthCooperationWeb.entidades.DiaAgenda;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
+import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 
 import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
@@ -10,7 +13,9 @@ import com.grupo3.HealthCooperationWeb.repositorios.PacienteRepositorio;
 import com.grupo3.HealthCooperationWeb.repositorios.TurnoRepositorio;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +48,7 @@ public class TurnoServicio {
         turno.setMotivo(motivo);
         turno.setProfesional(prof);
         turnoRepo.saveAndFlush(turno);
-         
+
         return turno;
     }
 
@@ -76,6 +81,21 @@ public class TurnoServicio {
             return turnoRepo.save(turno);
         } else {
             throw new MyException("Turno no encontrado ");
+        }
+    }
+
+    public EstadoTurno pasarStringEstado(String estado) throws MyException {
+        switch (estado) {
+            case "CANCELADO":
+                return EstadoTurno.CANCELADO;
+            case "COMPLETADO":
+                return EstadoTurno.COMPLETADO;
+            case "DISPONIBLE":
+                return EstadoTurno.DISPONIBLE;
+            case "RESERVADO":
+                return EstadoTurno.RESERVADO;
+            default:
+                throw new MyException("Estado turno no válido: " + estado);
         }
     }
 
@@ -144,6 +164,28 @@ public class TurnoServicio {
 
     }
 
+    public void cancelarTurnosProf(String id) {
+        try {
+            List<Turno> turnos = new ArrayList();
+            Profesional prof = profServ.getOne(id);
+
+            turnos = turnoRepo.findAll();
+
+            for (Turno turno : turnos) {
+                if (turno.getProfesional().getId().equals(prof.getId())) {
+              
+                    System.out.println("cancelando");
+                    cancelarTurno(turno.getId());
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Turno: No pudieron ser listados");
+
+        }
+
+    }
+
     public List<Turno> misTurnos(String id) {
 
         try {
@@ -201,6 +243,40 @@ public class TurnoServicio {
             return null;
         }
 
+    }
+
+    public Turno getOne(String id) {
+        return turnoRepo.getOne(id);
+    }
+
+    @Transactional
+    public void cancelarTurnosSemana(String id, List<AgendaSemanal> semana) throws MyException {
+
+        Map<Date, DiaAgenda> fechasYturnos = semana.get(0).getFechasYTurnos();
+
+        for (Map.Entry<Date, DiaAgenda> entry : fechasYturnos.entrySet()) {
+            Date key = entry.getKey();
+            DiaAgenda value = entry.getValue();
+            List<Turno> turnos = value.getTurnos();
+            for (Turno turno : turnos) {
+                System.out.println(turno.getEstado());
+                cancelarTurno(turno.getId());
+            }
+
+        }
+    }
+
+    @Transactional
+    public void actualizarEstados(List<Turno> turnos) throws MyException {
+        List<Turno> turnero = turnoRepo.findAll();
+        if (turnos != null) {
+            for (Turno turno : turnos) {
+                Turno inter = getOne(turno.getId());
+                inter.setEstado(turno.getEstado());
+                turnoRepo.save(inter);
+
+            }
+        }
     }
 
 }

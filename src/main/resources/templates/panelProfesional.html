@@ -115,9 +115,7 @@
 
 
                 <!-- Sidebar Toggler (Sidebar) -->
-                <div class="text-center d-none d-md-inline">
-                    <button class="rounded-circles border-2" id="sidebarToggle"></button>
-                </div>
+               
             </ul>
             <!-- Fin de la barra lateral -->
 
@@ -203,9 +201,9 @@
                                         <h2>¿Ver Turnos de Hoy?</h2>
                                         
                                         
-                                        <button class="full-rounded"th:href="@{/turnos/verHoy/__${log.id}__}">
+                                         <a type="button" class="full-rounded"th:href="@{/turno/verHoy/__${log.id}__}">
                                             <span>Ver Aquí</span>
-                                            <div class="border full-rounded"></div></button>
+                                            <div class="border full-rounded"></div></a>
                                     </div>
                                 </div>
 
@@ -214,9 +212,9 @@
                                         <h2>¿Ver Turnos de la semana?</h2>
                                   
                                         
-                                        <button class="full-rounded"th:href="@{/turnos/verSemana__${log.id}__}">
+                                          <a type="button" class="full-rounded"th:href="@{/turno/verSemana/__${log.id}__}">
                                             <span>Ver Aquí</span>
-                                            <div class="border full-rounded"></div></button>
+                                            <div class="border full-rounded"></div></a>
                                     </div>
                                 </div>
                                 
@@ -226,9 +224,9 @@
                                         <h2>¿Ver Todos los Turnos?</h2>
                                  
                                         
-                                        <button class="full-rounded"th:href="@{/turnos/verTodos/__${log.id}__}">
-                                            < <span>Ver Aquí</span>
-                                            <div class="border full-rounded"></div></button>
+                                          <a type="button" class="full-rounded"th:href="@{/turno/verTodos/__${log.id}__}">
+                                             <span>Ver Aquí</span>
+                                            <div class="border full-rounded"></div></a>
                                     </div>
                                 </div>
 

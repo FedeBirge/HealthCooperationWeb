@@ -173,7 +173,27 @@ public class AgendaServicio {
 
         return mapaOrdenado;
     }
-
+   public List<AgendaSemanal> obtenerSemanaActual(String id,List<AgendaSemanal> semanas) {
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+        List<AgendaSemanal> una = new ArrayList<>();
+        
+           for (AgendaSemanal semana : semanas) {
+                Map<Date, DiaAgenda> fechasYTurnos = semana.getFechasYTurnos();
+                for (Map.Entry<Date, DiaAgenda> entry : fechasYTurnos.entrySet()) {
+                    Date key = entry.getKey();
+                    if(key.before(new Date())|| key.equals(new Date())){
+                        
+                        una.add(semana);
+                        return una;
+                    }
+                    DiaAgenda value = entry.getValue();
+                    
+                }
+               
+                
+            }
+        return null;
+    }
     public List<AgendaSemanal> obtenerAgendaxProf(String id) {
         Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
         if (respuesta.isPresent()) {

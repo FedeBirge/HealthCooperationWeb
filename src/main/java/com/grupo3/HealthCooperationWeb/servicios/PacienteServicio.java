@@ -1,5 +1,7 @@
 package com.grupo3.HealthCooperationWeb.servicios;
 
+import com.grupo3.HealthCooperationWeb.entidades.AgendaSemanal;
+import com.grupo3.HealthCooperationWeb.entidades.DiaAgenda;
 import com.grupo3.HealthCooperationWeb.entidades.Imagen;
 import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
@@ -14,7 +16,10 @@ import com.grupo3.HealthCooperationWeb.repositorios.TurnoRepositorio;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +31,23 @@ import org.springframework.web.multipart.MultipartFile;
 public class PacienteServicio extends UsuarioServicio {
 
     @Autowired
+    private AgendaServicio agendaServ;
+    @Autowired
     private PacienteRepositorio pacienteRepositorio;
     @Autowired
     private ImagenServicio imagenServicio;
     @Autowired
     private ObraSocialRepositorio obraRepo;
     @Autowired
-    ObraSocialServicio obraSocialServicio;
+    private ObraSocialServicio obraSocialServicio;
     @Autowired
-    UsuarioServicio usuarioServicio;
+    private UsuarioServicio usuarioServicio;
     @Autowired
-    TurnoRepositorio turnoRepositorio;
+    private TurnoRepositorio turnoRepositorio;
     @Autowired
-    ProfesionalRepositorio profesionalRepositorio;
+    private ProfesionalRepositorio profesionalRepositorio;
+    @Autowired
+    private TurnoServicio turnoServ;
 
     @Transactional
     public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
@@ -70,8 +79,16 @@ public class PacienteServicio extends UsuarioServicio {
         // paciente.setTurnos(new ArrayList<Turno>());
         // paciente.setHistoria(new HistoriaClinica());
         paciente.setRol(Rol.USUARIO);
-        Imagen imagen = imagenServicio.guardar(archivo);
-        paciente.setImagen(imagen);
+        if (archivo.isEmpty()) {
+            // Si el archivo está vacío, crea el paciente con una imagen predeterminada
+            Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la imagen predeterminada
+            paciente.setImagen(imagenPredeterminada);
+        } else {
+            // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
+            Imagen imagen = imagenServicio.guardar(archivo);
+            paciente.setImagen(imagen);
+        }
+
         pacienteRepositorio.save(paciente);
 
     }
@@ -101,8 +118,16 @@ public class PacienteServicio extends UsuarioServicio {
                     "Completar telefono");
             pas.setGrupoSanguineo(grupoSanguineo);
 
-            Imagen imagen = imagenServicio.actualizar(archivo, id);
-            pas.setImagen(imagen);
+            String idImg = null;
+            if (pas.getImagen() != null) {
+                idImg = pas.getImagen().getId();
+            }
+            if (archivo != null && archivo.getBytes().length != 0) {
+                Imagen imagen = imagenServicio.actualizar(archivo, id);
+                pas.setImagen(imagen);
+            } else {
+                // No se proporcionó un archivo nuevo, no se actualiza la imagen del usuario
+            }
 
             pacienteRepositorio.save(pas);
 
@@ -160,6 +185,85 @@ public class PacienteServicio extends UsuarioServicio {
             return pacientesXProfesional;
         } catch (Exception e) {
             System.out.println("Servicio paciente: Hubo un error al listar pacientes por profesional");
+            return null;
+        }
+
+    }
+
+    // Mapeo los turnos y paciente filtraos por profesional para el dia de hoy.
+    // para la vista de turnos hoy
+    public Map<Turno, Paciente> mapearPacientesXprofHoy(String idProfesional) {
+        // un paciente tiene una lista de turnos...
+        List<Paciente> pacientes = new ArrayList<>();
+        // traigo todos los pacientes
+        pacientes = pacienteRepositorio.findAll();
+        // preparo la lsita de pacietnes que voy a devolver
+        List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
+
+        // Repo de turnos
+        List<Turno> turnos = turnoServ.listarTurnosXProfesional(idProfesional);
+
+        // en esa lista de turnos, cada turno tiene un profesional:
+        Profesional profesional = profesionalRepositorio.getOne(idProfesional);
+        Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
+        try {
+            for (Paciente paciente : pacientes) {
+                if (paciente.getTurnos() != null) {
+                    turnos = paciente.getTurnos();
+                    for (Turno turno : turnos) {
+                        if (turno.getFecha().equals(new Date())) {
+                            turnoYpaciente.put(turno, paciente);
+
+                        }
+                    }
+                }
+            }
+            return turnoYpaciente;
+        } catch (Exception e) {
+            System.out.println("Servicio paciente: Hubo un error al mapear pacientes por profesional");
+            return null;
+        }
+
+    }
+    // Mapeo los turnos y paciente filtrados por profesional para la semana actual.
+    // para la vista de turnos semanal
+
+    public Map<Turno, Paciente> mapearPacientesXprofSemana(String idProfesional, List<AgendaSemanal> semana) {
+        // un paciente tiene una lista de turnos...
+        List<Paciente> pacientes = new ArrayList<>();
+        // traigo todos los pacientes
+        pacientes = pacienteRepositorio.findAll();
+        // preparo la lsita de pacietnes que voy a devolver
+        List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
+        List<Turno> turnosPaciente = new ArrayList<>();
+        // Repo de turnos
+//       
+        try {
+            Profesional profesional = profesionalRepositorio.getOne(idProfesional);
+            Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
+            AgendaSemanal sem = semana.get(0);
+            Map<Date, DiaAgenda> fechasTturnos = sem.getFechasYTurnos();
+            for (Map.Entry<Date, DiaAgenda> entry : fechasTturnos.entrySet()) {
+                Date key = entry.getKey();
+                DiaAgenda value = entry.getValue();
+
+                for (Paciente paciente : pacientes) {
+                    if (paciente.getTurnos() != null) {
+                        turnosPaciente = paciente.getTurnos();
+                        for (Turno turno : turnosPaciente) {
+
+                            if (value.getTurnos().contains(turno)) {
+                                turnoYpaciente.put(turno, paciente);
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            return turnoYpaciente;
+        } catch (Exception e) {
+            System.out.println("Servicio paciente: Hubo un error al mapear pacientes por profesional");
             return null;
         }
 

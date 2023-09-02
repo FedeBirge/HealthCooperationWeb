@@ -45,7 +45,7 @@ public class UsuarioControlador {
     public String verPerfilUsusario(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
-        modelo.put("log", userServ.getOne(id));
+        modelo.addAttribute("user", userServ.getOne(id));
         return "perfil.html";
 
     }
@@ -83,12 +83,17 @@ public class UsuarioControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             List<Usuario> users = userServ.listarUsuarios();
+            Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
             modelo.addAttribute("users", users);
+
             return "verUsuarios.html";
         } catch (Exception ex) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             List<Usuario> users = userServ.listarUsuarios();
+             Rol[] roles = Rol.values();
+            modelo.addAttribute("roles", roles);
             modelo.addAttribute("users", users);
             modelo.put("error", ex.getMessage());
             return "redirect:/admin/dashboard";

@@ -14,6 +14,7 @@ import com.grupo3.HealthCooperationWeb.servicios.AgendaServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ObraSocialServicio;
 import com.grupo3.HealthCooperationWeb.servicios.OfertaServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
+import com.grupo3.HealthCooperationWeb.servicios.TurnoServicio;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,14 +28,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/agenda")
 public class AgendaControlador {
 
+    @Autowired
+    private TurnoServicio servTurno;
     @Autowired
     private AgendaServicio servAgenda;
     @Autowired
@@ -71,7 +76,8 @@ public class AgendaControlador {
             return "verAgenda.html";
 
         } else {
-
+            modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
+            modelo.addAttribute("obras", servObra.listarObrasSociales());
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
@@ -131,52 +137,140 @@ public class AgendaControlador {
     }
 
     @GetMapping("/editar/{id}") // Vista principal para el Admin al Logearse (LT)
-    public String editarAgenda(@PathVariable("id") String id,ModelMap modelo, HttpSession session) throws MyException {
+    public String editarAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
+        try {
+            List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+            Collections.sort(semanas, (semana1, semana2) -> {
+                Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
+                Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
+                return fecha1.compareTo(fecha2);
+            });
 
-         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
-        Collections.sort(semanas, (semana1, semana2) -> {
-            Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
-            Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
-            return fecha1.compareTo(fecha2);
-        });
+            if (semanas.size() != 0) {
 
-        if (semanas.size() != 0) {
+                EstadoTurno[] estados = EstadoTurno.values();
+                Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+                modelo.addAttribute("log", logueado);
+                modelo.addAttribute("semanas", semanas);
+                modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
+                modelo.addAttribute("obras", servObra.listarObrasSociales());
+                modelo.addAttribute("estados", estados);
+                return "editarAgenda.html";
 
-            EstadoTurno[] estados = EstadoTurno.values();
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-            modelo.addAttribute("semanas", semanas);
-            modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
-            modelo.addAttribute("obras", servObra.listarObrasSociales());
-               modelo.addAttribute("estados", estados);
-            return "editarAgenda.html";
+            } else {
 
-        } else {
+                Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+                modelo.addAttribute("log", logueado);
+                modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
+                return "editarAgenda.html";
 
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-            modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
-            return "editarAgenda.html";
+            }
+        } catch (MyException ex) {
+            List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+            Collections.sort(semanas, (semana1, semana2) -> {
+                Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
+                Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
+                return fecha1.compareTo(fecha2);
+            });
 
+            if (semanas.size() != 0) {
+
+                EstadoTurno[] estados = EstadoTurno.values();
+                Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+                modelo.addAttribute("log", logueado);
+                modelo.addAttribute("semanas", semanas);
+                modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
+                modelo.addAttribute("obras", servObra.listarObrasSociales());
+                modelo.addAttribute("estados", estados);
+                return editarAgenda(id, modelo, session);
+            }
         }
-
+        return null;
     }
 
     @PostMapping("/editar/{id}") // Vista principal para el Admin al Logearse (LT)
-    public String ediar(ModelMap modelo, HttpSession session) {
-        try {
+    public String ediar(@PathVariable("id") String id, ModelMap modelo,
+            HttpSession session, @RequestParam("turnoList") ArrayList<String> turnoList) throws MyException {
 
+        ArrayList<Turno> turnos = new ArrayList();
+
+        try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
+            for (String turno : turnoList) {
+                String[] partes = turno.split(",");
 
-            return "panelAdmin.html";
-        } catch (Exception e) {
+                Turno tur = new Turno();
+                tur.setId(partes[0]);
+                tur.setEstado(servTurno.pasarStringEstado(partes[1]));
+                turnos.add(tur);
+            }
+
+            servTurno.actualizarEstados(turnos);
+            modelo.put("Exito", "Estados cambiados!!");
+            return verrAgenda(id, modelo, session);
+        } catch (MyException e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
 
             modelo.put("error", e.getMessage());
-            return "redirect: /dashboard";
+            return editarAgenda(id, modelo, session);
         }
+    }
+
+    @GetMapping("/editarActual/{id}") // Vista principal para el Admin al Logearse (LT)
+    public String editarActual(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
+        try {
+            List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+            semanas = servAgenda.obtenerSemanaActual(id, semanas);
+
+            Collections.sort(semanas, (semana1, semana2) -> {
+                Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
+                Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
+                return fecha1.compareTo(fecha2);
+            });
+
+            if (semanas.size() != 0) {
+
+                EstadoTurno[] estados = EstadoTurno.values();
+                Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+                modelo.addAttribute("log", logueado);
+                modelo.addAttribute("semanas", semanas);
+                modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
+                modelo.addAttribute("obras", servObra.listarObrasSociales());
+                modelo.addAttribute("estados", estados);
+                modelo.put("Exito", "Estados cambiados!!");
+                return "editarAgenda.html";
+
+            } else {
+
+                Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+                modelo.addAttribute("log", logueado);
+                modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
+                return "editarAgenda.html";
+
+            }
+        } catch (MyException ex) {
+            List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+            Collections.sort(semanas, (semana1, semana2) -> {
+                Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
+                Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
+                return fecha1.compareTo(fecha2);
+            });
+
+            if (semanas.size() != 0) {
+
+                EstadoTurno[] estados = EstadoTurno.values();
+                Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+                modelo.addAttribute("log", logueado);
+                modelo.addAttribute("semanas", semanas);
+                modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
+                modelo.addAttribute("obras", servObra.listarObrasSociales());
+                modelo.addAttribute("estados", estados);
+                return editarAgenda(id, modelo, session);
+            }
+        }
+        return null;
     }
 
 }

@@ -180,16 +180,16 @@
                     <!-- Pending Requests Card Example -->
                     <div class="col-xl-4 col-md-7 mb-5">
                     </div>                    
-                    <form th:action="@{/oferta/editar/__${log.id}__}" method="POST" enctype="multipart/form-data">
+                    <form th:action="@{/agenda/editar/__${log.id}__}" method="POST" enctype="multipart/form-data">
                         <!-- Collapsable Card Example -->
                         <div class="card mb-4">
                             <div class="card-header">
                                 Agenda
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/verActual/__${log.id}__}">Semana Actual</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/crear/__${log.id}__}">Todas las semanas</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/}">Cancelar Semana actual</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/}">Cancelar Todos los Turnos</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editarActual/__${log.id}__}">Semana Actual</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editar/__${log.id}__}">Todas las semanas</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/turno/cancelarSemana/__${log.id}__}">Cancelar Semana actual</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/turno/cancelarTodos/__${log.id}__}">Cancelar Todos los Turnos</a>
 
 
                             </div>
@@ -210,22 +210,27 @@
                                                         <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
                                                         <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
                                                         <ul >
-                                                            <li th:each="turno : ${entry.value.turnos}">
+                                                            <li th:each="turno,index : ${entry.value.turnos}" class="turno-item">
 
-                                                                
-
-
-                                                                <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 'btn btn-success')}"
+                                                                <button block
+                                                                        th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
+                                                                        (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
+                                                                        (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
                                                                         th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
-                                                                    <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+turno.estado : turno.hora}"></span>
-                                                                    
+                                                                    <span th:text="${turno.hora}"></span>
                                                                 </button>
 
 
-                                                                <!-- Botón "Cambiar" para mostrar la lista desplegable -->
-                                                                <button type="button" class="btn btn-secondary" onclick="mostrarEstados()">Cambiar</button>
+
+                                                                <!-- Lista desplegable de estados para el turno -->
+                                                                <select  name="turnoList" th:value="${turno.id} + ',' + ${turno.estado}" class="estado-select form-control" style="width: auto; display: inline">
+                                                                    <option  th:value="${turno.id} + ',' + ${turno.estado}" th:text="${turno.estado}" ></option>
+                                                                    <option th:each="estado : ${estados}" th:value="${turno.id} + ',' + ${estado}" th:text="${estado}"></option>
+
+                                                                </select>
 
                                                             </li>
+
                                                         </ul>
                                                     </ul>
 
@@ -240,21 +245,24 @@
 
                                         </form>
                                         <script th:inline="javascript">
-                                            /* Función para mostrar la lista desplegable de estados para un turno específico */
-                                            function mostrarEstado(boton) {
-                                                var selectEstado = boton.previousElementSibling; // Encuentra el elemento <select> anterior al botón
-                                                var botonGuardarCambios = boton.nextElementSibling; // Encuentra el botón "Guardar cambios" siguiente al botón
+                                            /* Función para mostrar la lista desplegable de estados y el botón "Guardar cambios" para el turno específico */
+                                            function mostrarEstados(boton) {
+                                                /* Encuentra el elemento padre <li> que contiene los elementos relacionados con el turno */
+                                                var liElement = boton.closest('.turno-item');
 
-                                                /* Mostrar la lista desplegable y ocultar el botón "Cambiar" */
+                                                /* Encuentra la lista desplegable y el botón "Guardar cambios" dentro del <li> */
+                                                var selectEstado = liElement.querySelector('.estado-select');
+                                                var botonGuardarCambios = liElement.querySelector('.btn-primary');
+
+                                                /* Mostrar la lista desplegable y el botón "Guardar cambios" */
                                                 selectEstado.style.display = 'inline-block';
-                                                boton.style.display = 'none';
+                                                botonGuardarCambios.style.display = 'inline-block';
 
-                                                /* Cuando el usuario seleccione un estado, mostrar el botón "Guardar cambios" para este turno */
-                                                selectEstado.addEventListener('change', function () {
-                                                    botonGuardarCambios.style.display = 'inline-block';
-                                                });
+                                                /* Cuando el usuario seleccione un estado, puedes realizar la lógica necesaria aquí */
+                                                /* Por ejemplo, puedes enviar una solicitud al servidor para actualizar el estado del turno. */
                                             }
                                         </script>
+
 
                                         <!-- Fin del contenido principal -->
                                         <!-- Footer -->
