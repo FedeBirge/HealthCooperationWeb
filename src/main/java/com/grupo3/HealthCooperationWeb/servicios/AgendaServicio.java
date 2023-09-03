@@ -103,7 +103,7 @@ public class AgendaServicio {
     public ArrayList<AgendaSemanal> crearAgenda(String idProf) throws MyException {
         ArrayList<AgendaSemanal> semanas = new ArrayList<>();
 
-        Optional<Profesional> respuesta = profRepo.findById(idProf);
+        Optional<Profesional> respuesta = profRepo.findById(idProf); /// lo traigo pero no asocio aqui con prof
         System.out.println(idProf);
         if (respuesta.isPresent()) {
             Profesional prof = respuesta.get();
