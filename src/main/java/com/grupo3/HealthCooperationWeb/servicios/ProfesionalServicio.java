@@ -350,29 +350,7 @@ public class ProfesionalServicio extends UsuarioServicio {
 
     }
 
-    // @Transactional
-    // public void agregarSemanas(String id) throws MyException {
-    //
-    //
-    // if (semanas == null || semanas.isEmpty()) {
-    // throw new MyException("la agenda semanal no puede estar vacia");
-    // }
-    // Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
-    //
-    // if (respuesta.isPresent()) {
-    // Profesional profesional = (Profesional) (respuesta.get());
-    //
-    // for (AgendaSemanal semana : semanas) {
-    // if(!existeSemana(semana,profesional)){
-    // // si la semana no existe entre la lista de actuales agrego
-    // profesional.getAgendasSemanales().add(semana);
-    // System.out.println("agrego semanas");
-    // }
-    //
-    // }
-    // }
-    //
-    // }
+   
 
     @Transactional
     public void asignarOferta(String id, String horaInicial, String horaFinal,

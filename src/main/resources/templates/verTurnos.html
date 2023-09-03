@@ -215,11 +215,11 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
+                                    <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                                    <a class="dropdown-item" th:href="@{/inicio}">
+                                    <a class="dropdown-item"sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" th:href="@{/inicio}">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Mi Área
                                     </a>

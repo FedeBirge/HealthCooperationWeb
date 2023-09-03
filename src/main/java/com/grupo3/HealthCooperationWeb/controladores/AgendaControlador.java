@@ -308,6 +308,7 @@ public class AgendaControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("oferta", oferta);
+            servAgenda.agregarSemanas(id);
 
             return "crearAgenda.html";
         } else {

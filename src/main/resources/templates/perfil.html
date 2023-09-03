@@ -87,7 +87,7 @@
                     </div>
                 </li>
                 
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')" class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-hospital-user"></i>
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')" class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -117,7 +117,7 @@
                     </div>
 
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -206,6 +206,7 @@
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
                         <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Modificar </a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Solicitar Baja </a>
                         <!-- Encabezado de página -->
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                 <div class="card-body">
@@ -265,6 +266,8 @@
 
                         </div>
                         
+                        <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/misturnos/__${log.id}__}"> Ver Mis Turnos </a>
+                        <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/panel/}"> Ir al Panel de Turnos </a>
 
 
 

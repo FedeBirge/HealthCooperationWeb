@@ -39,7 +39,7 @@ public class TurnoControlador {
     public String misTurnos(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
-        List<Turno> turnos = turnoServ.misTurnos(id);
+        List<Turno> turnos = turnoServ.misTurnos(id);  // el paciente ve sus turnos
         modelo.addAttribute("turnos", turnos);
 
         return "verTurnos.html";
