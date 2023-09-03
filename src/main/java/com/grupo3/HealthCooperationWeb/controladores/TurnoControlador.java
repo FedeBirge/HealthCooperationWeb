@@ -31,8 +31,9 @@ public class TurnoControlador {
     private TurnoServicio turnoServ;
     @Autowired
     private AgendaServicio servAgenda;
-     @Autowired
+    @Autowired
     private PacienteServicio pacServ;
+
     @GetMapping("/misturnos/{id}") // ruta para el panel administrativo
     public String misTurnos(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -55,8 +56,8 @@ public class TurnoControlador {
         modelo.addAttribute("log", logueado);
         turnoServ.cancelarTurnosProf(id);
         modelo.put("Exito", "Estados cancelados!!");
-         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
-         modelo.addAttribute("semanas", semanas);
+        List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+        modelo.addAttribute("semanas", semanas);
         return "verAgenda.html";
     }
 
@@ -122,26 +123,28 @@ public class TurnoControlador {
 
         }
     }
-       @GetMapping("/verHoy/{id}") // ruta para el panel administrativo
+
+    @GetMapping("/verHoy/{id}") // ruta para el panel administrativo
     public String verHoy(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
-        Map<Turno,Paciente> turnos = pacServ.mapearPacientesXprofHoy(id);
-        
-         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
-         modelo.addAttribute("turnos", turnos);
+        Map<Turno, Paciente> turnos = pacServ.mapearPacientesXprofHoy(id);
+
+        List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+        modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
     }
-          @GetMapping("/verSemana/{id}") // ruta para el panel administrativo
+
+    @GetMapping("/verSemana/{id}") // ruta para el panel administrativo
     public String verSemana(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
-            semanas = servAgenda.obtenerSemanaActual(id, semanas);
-        Map<Turno,Paciente> turnos = pacServ.mapearPacientesXprofSemana(id,semanas);
-        
-        
-         modelo.addAttribute("turnos", turnos);
+        semanas = servAgenda.obtenerSemanaActual(id, semanas);
+        Map<Turno, Paciente> turnos = pacServ.mapearPacientesXprofSemana(id, semanas);
+
+        modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
     }
+    
 }

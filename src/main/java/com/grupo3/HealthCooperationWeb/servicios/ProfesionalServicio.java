@@ -108,8 +108,15 @@ public class ProfesionalServicio extends UsuarioServicio {
         profesional.setValorConsulta(valorConsulta);
         profesional.setRol(Rol.MODERADOR);
 
-        Imagen imagen = imagenServ.guardar(archivo);
-        profesional.setImagen(imagen);
+        if (archivo.isEmpty()) {
+            // Si el archivo está vacío, crea el paciente con una imagen predeterminada
+            Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la imagen predeterminada
+            profesional.setImagen(imagenPredeterminada);
+        } else {
+            // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
+            Imagen imagen = imagenServ.guardar(archivo);
+            profesional.setImagen(imagen);
+        }
 
         profesionalRepositorio.save(profesional);
 
@@ -137,8 +144,16 @@ public class ProfesionalServicio extends UsuarioServicio {
             System.out.println("valor" + valorConsulta);
             prof.setEspecialidad(pasarStringEspecialidad(especialidad));
             prof.setValorConsulta(valorConsulta);
-            Imagen imagen = imagenServ.actualizar(archivo, id);
-            prof.setImagen(imagen);
+            String idImg = null;
+            if (prof.getImagen() != null) {
+                idImg = prof.getImagen().getId();
+            }
+            if (archivo != null && archivo.getBytes().length != 0) {
+                Imagen imagen = imagenServ.actualizar(archivo, id);
+                prof.setImagen(imagen);
+            } else {
+                // No se proporcionó un archivo nuevo, no se actualiza la imagen del usuario
+            }
 
             profesionalRepositorio.save(prof);
 

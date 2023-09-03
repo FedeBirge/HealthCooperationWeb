@@ -249,11 +249,11 @@
 
                                 <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
                                     <label  class="form-label">Obra Social</label>
-                                     <select class="form-control" id="obrasPreexistentes" name="obraSocial">
+                                    <select class="form-control" id="obrasPreexistentes" name="obraSocial">
                                         <option th:value="${user.obraSocial.nombre}" th:text="${user.obraSocial.nombre}"></option>
 
                                         <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
-                                        
+
                                     </select>
                                 </div>
 
@@ -276,101 +276,108 @@
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <p class="form-label">¡Actualice su foto aquí!</p>
-                                    <input type="file" class="form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" name="archivo" id="archivoInput" />
 
-                                    <a class="d-flex align-items-center">
-                                        <img id="imagenPerfil" class="form-label" th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 100px;" />
-                                    </a>
-                                </div> 
+                                    <div class="contenedorImagen">
+                                        <img class="/img-profile rounded-circle"
+                                             th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 150px;">
+                                    </div>    
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text">Foto</span>
+                                        <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
+                                    </div>
 
-                                <script>
-                                    const archivoInput = document.getElementById('archivoInput');
-                                    const imagenPerfil = document.getElementById('imagenPerfil');
-                                    const imagenPredeterminadaURL = '/static/img/user_logo.png'; // Cambia la ruta según tu imagen predeterminada
+                                    <script>
+                                        function previsualizarImagen() {
+                                            var archivo = document.getElementById('foto').files[0];
+                                            var imagenPrevia = document.getElementById('imagenPrevia');
+                                            var nombreCampo = "archivo"; // Nombre predeterminado del campo de entrada
 
-                                    archivoInput.addEventListener('change', function () {
-                                        if (archivoInput.files && archivoInput.files[0]) {
-                                            const reader = new FileReader();
-                                            reader.onload = function (e) {
-                                                imagenPerfil.src = e.target.result;
-                                            };
-                                            reader.readAsDataURL(archivoInput.files[0]);
-                                        } else {
-                                            // No se seleccionó ningún archivo, mantén la imagen actual
-                                            // Puedes cargar la imagen predeterminada en lugar de mantener la actual
-                                            // Si deseas mantener la imagen actual, no hagas ningún cambio aquí
+                                            if (archivo) {
+                                                var lector = new FileReader();
+
+                                                lector.onload = function (event) {
+                                                    imagenPrevia.src = event.target.result;
+                                                };
+
+                                                lector.readAsDataURL(archivo);
+                                            } else {
+                                                // Si no se selecciona ningún archivo, cambia el nombre del campo de entrada
+                                                nombreCampo = "imagenPredeterminada";
+                                                imagenPrevia.src = "/ruta/de/imagen/predeterminada.jpg"; // Cambia la ruta según tu imagen predeterminada
+                                            }
+
+                                            // Cambiar el nombre del campo de entrada
+                                            document.getElementById('foto').name = nombreCampo;
                                         }
-                                    });
-                                </script>
+                                    </script>
 
 
-
+                                </div>
                             </div>
-                    </div>
-                    <div class="text-center">
-                        <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Modificacion</button>
-                    </div>
-                    </form>
-                    <!-- Fin del contenido principal -->
-
-                    <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>HealtCooperationWeb ©2023</span>
+                            <div class="text-center">
+                                <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Modificacion</button>
                             </div>
-                        </div>
-                    </footer>
-                    <!-- Fin del Footer -->
+                        </form>
+                        <!-- Fin del contenido principal -->
+
+                        <!-- Footer -->
+                        <footer class="sticky-footer bg-white">
+                            <div class="container my-auto">
+                                <div class="copyright text-center my-auto">
+                                    <span>HealtCooperationWeb ©2023</span>
+                                </div>
+                            </div>
+                        </footer>
+                        <!-- Fin del Footer -->
+
+                    </div>
+                    <!-- Fin del contenedor de contenido -->
 
                 </div>
-                <!-- Fin del contenedor de contenido -->
+                <!-- Envoltura de fin de página -->
 
-            </div>
-            <!-- Envoltura de fin de página -->
+                <!-- Desplácese hasta el botón superior-->
+                <a class="scroll-to-top rounded" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
 
-            <!-- Desplácese hasta el botón superior-->
-            <a class="scroll-to-top rounded" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
-
-            <!-- Cierre de sesión modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                <!-- Cierre de sesión modal-->
+                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="/vendor/jquery/jquery.min.js"></script>
-            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <!-- Bootstrap core JavaScript-->
+                <script src="/vendor/jquery/jquery.min.js"></script>
+                <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-            <!-- Core plugin JavaScript-->
-            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+                <!-- Core plugin JavaScript-->
+                <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-            <!-- Custom scripts for all pages-->
-            <script src="/js/sb-admin-2.min.js"></script>
+                <!-- Custom scripts for all pages-->
+                <script src="/js/sb-admin-2.min.js"></script>
 
-            <!-- Page level plugins -->
-            <script src="/vendor/chart.js/Chart.min.js"></script>
+                <!-- Page level plugins -->
+                <script src="/vendor/chart.js/Chart.min.js"></script>
 
-            <!-- Page level custom scripts -->
-            <script src="/js/demo/chart-area-demo.js"></script>
-            <script src="/js/demo/chart-pie-demo.js"></script>
+                <!-- Page level custom scripts -->
+                <script src="/js/demo/chart-area-demo.js"></script>
+                <script src="/js/demo/chart-pie-demo.js"></script>
 
-    </body>
+                </body>
 
-</html>
+                </html>
