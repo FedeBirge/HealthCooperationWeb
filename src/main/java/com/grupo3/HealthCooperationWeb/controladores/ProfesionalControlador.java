@@ -70,6 +70,7 @@ public class ProfesionalControlador {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR')")
     @GetMapping("/registrar") // *************REgistro de prof por el admin(LT)*****//
     public String registrar(ModelMap modelo, HttpSession session) {
         try {
@@ -91,6 +92,7 @@ public class ProfesionalControlador {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR')")
     @PostMapping("/crear") // ruta para crear un usuario POST
     public String crearUsuario(HttpSession session, MultipartFile archivo, @RequestParam String nombre,
             @RequestParam String apellido,
@@ -121,6 +123,7 @@ public class ProfesionalControlador {
     }
 
     // listar todos los médicos activos(LT) panel del administrador
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR')")
     @GetMapping("/listar")
     public String listarProfesionales(ModelMap modelo, HttpSession session) {
         try {
@@ -141,7 +144,8 @@ public class ProfesionalControlador {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
+    // SOLO EL DOCTOR VE SU PERFIL
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/perfil/{id}")
     public String perfil(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
 
@@ -168,15 +172,15 @@ public class ProfesionalControlador {
 
     }
 
+    // EL ADMIN da de alta a doctores, pero SOLO los docs pueden modificar su perfil
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @PostMapping("/modificar/{id}") // ******ruta para modificar un usuario POST(LT)
     public String modificarUsusarios(MultipartFile archivo, @PathVariable("id") String id,
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-
             String fecha_nac, String especialidad, String valorConsulta, ModelMap modelo, HttpSession session)
             throws IOException, MyException, ParseException {
-
 
         try {
             Especialidad[] especialidades = Especialidad.values();
@@ -204,7 +208,9 @@ public class ProfesionalControlador {
 
     }
 
-    // darse de baja con GET
+    // darse de baja con GET: puede darlo de baja el ADMIN o el mismo médico a sí
+    // mismo
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
     @GetMapping("/darseBaja/{id}")
     public String darseBaja(@PathVariable("id") String id, ModelMap modelo) {
         try {
@@ -223,6 +229,7 @@ public class ProfesionalControlador {
     }
 
     // darse de baja con POST
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
     @PostMapping("/darseBaja/{id}")
     public String darseBaja(@PathVariable("id") String id, @RequestParam MultipartFile archivo, ModelMap modelo)
             throws IOException {
@@ -243,6 +250,7 @@ public class ProfesionalControlador {
     }
 
     // Listar por especialidad, ordenando según precio consulta:
+    // acceden todos
     @GetMapping("/especialidadesYPrecios")
     public String listarEspecialistasXPrecio(ModelMap modelo, String especialidad) {
         try {
@@ -256,6 +264,7 @@ public class ProfesionalControlador {
     }
 
     // Listar por especialidad, SIN ordenar por precio de consulta
+    // acceden todos
     @GetMapping("/especialidades")
     public String listarXEspecialidad(ModelMap modelo, Especialidad especialidad) {
         try {
@@ -282,6 +291,7 @@ public class ProfesionalControlador {
     }
 
     @PostMapping("/agenda/{id}")
+    // acceden todos
     public String agenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
 
         try {

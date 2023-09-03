@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +50,9 @@ public class AgendaControlador {
     @Autowired
     private ProfesionalServicio profesionalServicio;
 
+    // todos pueden ver la agenda del controlador profesional, pero esta agenda
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/verAgenda/{id}") // Vista principal para el Admin al Logearse (LT)
     public String verrAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
@@ -70,7 +74,6 @@ public class AgendaControlador {
             // System.out.println("Lunes: " +fechaActual.plusDays(daysToAdd));
             // }
 
-
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("semanas", semanas);
@@ -91,6 +94,8 @@ public class AgendaControlador {
 
     }
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/crear/{id}")
     public String crear(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
@@ -115,27 +120,27 @@ public class AgendaControlador {
 
     }
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @PostMapping("/crear/{id}")
     public String crearAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-               List<AgendaSemanal> semanasprof = servAgenda.obtenerAgendaxProf(id);
-             /// si la lista del prof está vacia, le creo una Agenda nueva
-             if(semanasprof.isEmpty()){
-            ArrayList<AgendaSemanal> semanas = servAgenda.crearAgenda(id);
-               profesionalServicio.asignarAgenda(id, semanas);
-             modelo.addAttribute("semanas", semanas);
-            modelo.put("exito", "¡Agenda generada con exito!");
-             }else{ // sino agrego semanas
-//                 profesionalServicio.agregarSemanas(id);
-//                  modelo.addAttribute("semanas", semanas);
-            modelo.put("exito", "¡Agenda generada con exito!");
-             }
+            List<AgendaSemanal> semanasprof = servAgenda.obtenerAgendaxProf(id);
+            /// si la lista del prof está vacia, le creo una Agenda nueva
+            if (semanasprof.isEmpty()) {
+                ArrayList<AgendaSemanal> semanas = servAgenda.crearAgenda(id);
+                profesionalServicio.asignarAgenda(id, semanas);
+                modelo.addAttribute("semanas", semanas);
+                modelo.put("exito", "¡Agenda generada con exito!");
+            } else { // sino agrego semanas
+                // profesionalServicio.agregarSemanas(id);
+                // modelo.addAttribute("semanas", semanas);
+                modelo.put("exito", "¡Agenda generada con exito!");
+            }
 
-          
-           
             return "verAgenda.html";
         } catch (MyException e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -149,6 +154,8 @@ public class AgendaControlador {
         }
     }
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/editar/{id}") // Vista principal para el Admin al Logearse (LT)
     public String editarAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
         try {
@@ -201,6 +208,8 @@ public class AgendaControlador {
         return null;
     }
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @PostMapping("/editar/{id}") // Vista principal para el Admin al Logearse (LT)
     public String ediar(@PathVariable("id") String id, ModelMap modelo,
             HttpSession session, @RequestParam("turnoList") ArrayList<String> turnoList) throws MyException {
@@ -231,6 +240,8 @@ public class AgendaControlador {
         }
     }
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/editarActual/{id}") // Vista principal para el Admin al Logearse (LT)
     public String editarActual(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
         try {
@@ -285,8 +296,12 @@ public class AgendaControlador {
         }
         return null;
     }
+
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/agregar/{id}")
-    public String agregarsemamas(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
+    public String agregarsemamas(@PathVariable("id") String id, ModelMap modelo, HttpSession session)
+            throws MyException {
 
         Oferta oferta = servOferta.obtenerOfertaxProf(id);
         if (oferta != null) {
@@ -308,8 +323,9 @@ public class AgendaControlador {
         }
 
     }
-    
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/eliminarAgenda/{id}") // ruta para eliminar (no tiene una vista, es para un boton
     public String eliminarAgenda(@PathVariable("id") String id, ModelMap modelo) {
 

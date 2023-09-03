@@ -314,9 +314,11 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
         }
     }
 
+    // agrego esto para indicar permisos particulares de paciente (son los mismos
+    // que el rol usuario)
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {   
-        Paciente paciente = pacienteRepositorio.buscarPorEmail(email);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Paciente paciente = pacienteRepositorio.findByEmail(email);
         if (paciente != null && paciente.getActivo().equals(Boolean.TRUE)) {
             List<GrantedAuthority> permisos = new ArrayList<>();
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + paciente.getRol().toString());

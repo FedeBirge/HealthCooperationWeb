@@ -4,11 +4,15 @@ import com.grupo3.HealthCooperationWeb.entidades.AgendaSemanal;
 import com.grupo3.HealthCooperationWeb.entidades.DiaAgenda;
 import com.grupo3.HealthCooperationWeb.entidades.Imagen;
 import com.grupo3.HealthCooperationWeb.entidades.Oferta;
+import com.grupo3.HealthCooperationWeb.entidades.Paciente;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +26,15 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -77,16 +89,18 @@ public class ProfesionalServicio extends UsuarioServicio {
     }
 
     @Transactional
-    // el administrador crea un Profesional, luego ´ste actualiza sus atributos particulares
-    public void registrarProfesional(MultipartFile archivo, String nombre, String apellido, String dni, String email, String password,
+    // el administrador crea un Profesional, luego ´ste actualiza sus atributos
+    // particulares
+    public void registrarProfesional(MultipartFile archivo, String nombre, String apellido, String dni, String email,
+            String password,
             String password2, String telefono, String direccion, String fecha_nac, String especialidad,
             String valorConsulta) throws MyException, IOException, ParseException {
         // Se validan los datos especificos de profesional
         // faltaria descripcion
-        super.validar("1",nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+        super.validar("1", nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         Date fecha = pasarStringDate(fecha_nac);
-           if (!validarFecha(fecha)) {
-                throw new MyException("la fecha no es válida");
+        if (!validarFecha(fecha)) {
+            throw new MyException("la fecha no es válida");
         }
         Profesional profesional = new Profesional();
         profesional.setNombre(nombre);
@@ -106,22 +120,16 @@ public class ProfesionalServicio extends UsuarioServicio {
         profesional.setValorConsulta(valorConsulta);
         profesional.setRol(Rol.MODERADOR);
 
-        if (archivo.isEmpty()) {
-            // Si el archivo está vacío, crea el paciente con una imagen predeterminada
-            Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la imagen predeterminada
-            profesional.setImagen(imagenPredeterminada);
-        } else {
-            // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
-            Imagen imagen = imagenServ.guardar(archivo);
-            profesional.setImagen(imagen);
-        }
+        Imagen imagen = imagenServ.guardar(archivo);
+        profesional.setImagen(imagen);
 
         profesionalRepositorio.save(profesional);
 
     }
 
     @Transactional
-    // mopdificamos como si fuera un profesional, luego metodos especificos cambiar cada cosa
+    // mopdificamos como si fuera un profesional, luego metodos especificos cambiar
+    // cada cosa
     public void modificarProfesional(String id, MultipartFile archivo, String nombre,
             String apellido, String dni, String email, String password,
             String password2, String telefono, String direccion, String fecha_nac,
@@ -130,8 +138,9 @@ public class ProfesionalServicio extends UsuarioServicio {
         Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
         if (respuesta.isPresent()) {
             Profesional prof = respuesta.get();
-            super.validar(id,nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
-            super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+            super.validar(id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+            super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion,
+                    fecha_nac);
             if (especialidad == null) {
 
                 throw new MyException("Debe ingresar una especialidad al profesional");
@@ -140,16 +149,8 @@ public class ProfesionalServicio extends UsuarioServicio {
             System.out.println("valor" + valorConsulta);
             prof.setEspecialidad(pasarStringEspecialidad(especialidad));
             prof.setValorConsulta(valorConsulta);
-            String idImg = null;
-            if (prof.getImagen() != null) {
-                idImg = prof.getImagen().getId();
-            }
-            if (archivo != null && archivo.getBytes().length != 0) {
-                Imagen imagen = imagenServ.actualizar(archivo, id);
-                prof.setImagen(imagen);
-            } else {
-                // No se proporcionó un archivo nuevo, no se actualiza la imagen del usuario
-            }
+            Imagen imagen = imagenServ.actualizar(archivo, id);
+            prof.setImagen(imagen);
 
             profesionalRepositorio.save(prof);
 
@@ -284,7 +285,6 @@ public class ProfesionalServicio extends UsuarioServicio {
     @Transactional
     public void asignarDisponibilidad(String id, ArrayList<String> diasSeleccionados) throws MyException {
 
-        
         if (diasSeleccionados == null || diasSeleccionados.isEmpty()) {
             throw new MyException("Debe seleccionar al menos un día disponible");
         }
@@ -295,14 +295,14 @@ public class ProfesionalServicio extends UsuarioServicio {
 
             List<Dias> diasDisponibles = pasarDiasEnum(diasSeleccionados);
             profesional.setDiasDisponibles(diasDisponibles);
-             System.out.println(profesional.getDiasDisponibles());
+            System.out.println(profesional.getDiasDisponibles());
         }
 
     }
+
     @Transactional
     public void asignarAgenda(String id, ArrayList<AgendaSemanal> semanas) throws MyException {
 
-       
         if (semanas == null || semanas.isEmpty()) {
             throw new MyException("la agenda semanal no puede estar vacia");
         }
@@ -310,54 +310,53 @@ public class ProfesionalServicio extends UsuarioServicio {
 
         if (respuesta.isPresent()) {
             Profesional profesional = (Profesional) (respuesta.get());
-           
+
             profesional.setAgendasSemanales(semanas);
         }
 
     }
-    public boolean existeSemana(AgendaSemanal semana, Profesional prof){
-        
+
+    public boolean existeSemana(AgendaSemanal semana, Profesional prof) {
+
         List<AgendaSemanal> agendasProf = prof.getAgendasSemanales();
         for (AgendaSemanal agendaSemanal : agendasProf) {
-           Map<Date,DiaAgenda> fechas = agendaSemanal.getFechasYTurnos();
+            Map<Date, DiaAgenda> fechas = agendaSemanal.getFechasYTurnos();
             for (Map.Entry<Date, DiaAgenda> entry : fechas.entrySet()) {
                 Date key = entry.getKey();
                 DiaAgenda value = entry.getValue();
-                if(semana.getFechasYTurnos().containsKey(key)){
+                if (semana.getFechasYTurnos().containsKey(key)) {
                     return true;
                 }
-                
-                
+
             }
         }
         return false;
-        
+
     }
-               
-    
-//       @Transactional
-//    public void agregarSemanas(String id) throws MyException {
-//
-//       
-//        if (semanas == null || semanas.isEmpty()) {
-//            throw new MyException("la agenda semanal no puede estar vacia");
-//        }
-//        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
-//
-//        if (respuesta.isPresent()) {
-//            Profesional profesional = (Profesional) (respuesta.get());
-//           
-//            for (AgendaSemanal semana : semanas) {
-//                if(!existeSemana(semana,profesional)){
-//                // si la semana no existe entre la lista de actuales agrego
-//                profesional.getAgendasSemanales().add(semana);
-//                    System.out.println("agrego semanas");
-//                }
-//                
-//            }
-//        }
-//
-//    }
+
+    // @Transactional
+    // public void agregarSemanas(String id) throws MyException {
+    //
+    //
+    // if (semanas == null || semanas.isEmpty()) {
+    // throw new MyException("la agenda semanal no puede estar vacia");
+    // }
+    // Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+    //
+    // if (respuesta.isPresent()) {
+    // Profesional profesional = (Profesional) (respuesta.get());
+    //
+    // for (AgendaSemanal semana : semanas) {
+    // if(!existeSemana(semana,profesional)){
+    // // si la semana no existe entre la lista de actuales agrego
+    // profesional.getAgendasSemanales().add(semana);
+    // System.out.println("agrego semanas");
+    // }
+    //
+    // }
+    // }
+    //
+    // }
 
     @Transactional
     public void asignarOferta(String id, String horaInicial, String horaFinal,
@@ -372,4 +371,28 @@ public class ProfesionalServicio extends UsuarioServicio {
             profesional.setOferta(oferta);
         }
     }
+
+    // agrego esto para indicar permisos particulares de profesional (rol MODERADOR)
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Profesional profesional = profesionalRepositorio.findByEmail(email);
+        if (profesional != null && profesional.getActivo().equals(Boolean.TRUE)) {
+            List<GrantedAuthority> permisos = new ArrayList<>();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + profesional.getRol().toString());
+
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("pacientesession", profesional);
+
+            return new User(profesional.getEmail(), profesional.getPassword(), permisos);
+
+        } else {
+            return null;
+        }
+    }
+
 }

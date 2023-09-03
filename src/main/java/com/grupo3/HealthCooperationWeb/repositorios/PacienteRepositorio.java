@@ -4,6 +4,7 @@ package com.grupo3.HealthCooperationWeb.repositorios;
 import com.grupo3.HealthCooperationWeb.entidades.HistoriaClinica;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
+import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Repository;
 public interface PacienteRepositorio extends JpaRepository<Paciente, String> {
 
     public Optional<Paciente> findById(Paciente usuario);
+
+    public Paciente findByEmail(@Param("email") String email);
 
     // MSJ LT: la queryno es necesaria, se usa lo del padre
 

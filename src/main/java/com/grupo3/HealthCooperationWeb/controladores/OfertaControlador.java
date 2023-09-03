@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,8 @@ public class OfertaControlador {
     @Autowired
     private OfertaServicio servOferta;
 
+    // solo el doc crea su oferta
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/crear/{id}")
     public String crear(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
@@ -62,6 +65,8 @@ public class OfertaControlador {
 
     }
 
+    // solo el doc crea su oferta
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @PostMapping("/crear/{id}")
     public String crear(@PathVariable("id") String id, ModelMap modelo, HttpSession session,
             @RequestParam(required = false) ArrayList<String> diasSeleccionados,
@@ -100,6 +105,7 @@ public class OfertaControlador {
         }
     }
 
+    // todos pueden ver la oferta
     @GetMapping("/verOferta/{id}")
     public String verOferta(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
@@ -121,6 +127,8 @@ public class OfertaControlador {
 
     }
 
+    // solo el doc edita su oferta
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
@@ -150,6 +158,8 @@ public class OfertaControlador {
 
     }
 
+    // solo el doc edita su oferta
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @PostMapping("/editar/{id}")
     public String editar(@PathVariable("id") String id, ModelMap modelo, HttpSession session,
             @RequestParam(required = false) ArrayList<String> diasSeleccionados,
