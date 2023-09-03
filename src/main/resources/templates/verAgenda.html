@@ -203,7 +203,7 @@
 
 
 
-                                                    <ul   class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
+                                                    <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
 
                                                         <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
                                                         <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
