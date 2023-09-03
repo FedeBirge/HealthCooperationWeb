@@ -183,112 +183,110 @@
                     <form th:action="@{/oferta/editar/__${log.id}__}" method="POST" enctype="multipart/form-data">
                         <!-- Collapsable Card Example -->
                         <div class="card mb-4">
-                            <div class="card-header">
-                                Agenda
+                           
+                                <small>Nota: si no visualiza ninguna semana deberá generarla en Administrar Agenda</small>
+                                 <div class="card-header">
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editar/__${log.id}__}">Administrar Agenda</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
 
-
                             </div>
 
-                            <div th:if="${semanas!= null}" class="card-body">
-                                <div class="row gy-3">
-                                    <div class="col-md">
-
-
-                                        <h1>Mi Agenda en bloques semanales</h1>
-                                        <div class="weeks-container">
+                            <div class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <div class="card-body">
+                                            <h1>Mi Agenda en bloques semanales</h1>
                                             <ul th:each="semana : ${semanas}">
                                                 <li  style="display: inline-block; margin-right: 10px;">
-
-
-
                                                     <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
+
 
                                                         <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
                                                         <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
                                                         <ul >
                                                             <li th:each="turno : ${entry.value.turnos}">
                                                                 <p>
-
-
-
                                                                     <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
                                                                             (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
                                                                             (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
                                                                             th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
                                                                         <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
-
                                                                     </button>
                                                                 </p>
                                                             </li>
                                                         </ul>
                                                     </ul>
-
-                                                </li>                                           
-
+                                                </li>
                                             </ul>
                                         </div>
-
-                                        </form>
-
-
-
-                                        <!-- Fin del contenido principal -->
-                                        <!-- Footer -->
-                                        <footer class="sticky-footer bg-white">
-                                            <div class="container my-auto">
-                                                <div class="copyright text-center my-auto">
-                                                    <span>HealtCooperationWeb ©2023</span>
-                                                </div>
-                                            </div>
-                                        </footer>
-                                        <!-- Fin del Footer -->
                                     </div>
-                                </div>                
-                                <!-- Fin del contenedor de contenido -->
-                            </div>
-                            <!-- Envoltura de fin de página -->
-                            <!-- Desplácese hasta el botón superior-->
-                            <a class="scroll-to-top rounded" href="#page-top">
-                                <i class="fas fa-angle-up"></i>
-                            </a>
-                            <!-- Cierre de sesión modal-->
-                            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                                    <div class="carousel-item">
+                                        <div class="card-body">
+                                            <h1>Otro bloque de agenda</h1>
+                                            <p>Este es otro bloque de agenda, con un contenido diferente.</p>
                                         </div>
                                     </div>
                                 </div>
+                                <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Anterior</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Siguiente</span>
+                                </a>
+                            </div>              
+                            <!-- Fin del contenedor de contenido -->
+                        </div>
+                    </form>
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>HealtCooperationWeb ©2023</span>
                             </div>
-                            <!-- Bootstrap core JavaScript-->
-                            <script src="/vendor/jquery/jquery.min.js"></script>
-                            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                        </div>
+                    </footer>
+                    <!-- Envoltura de fin de página -->
+                    <!-- Desplácese hasta el botón superior-->
+                    <a class="scroll-to-top rounded" href="#page-top">
+                        <i class="fas fa-angle-up"></i>
+                    </a>
+                    <!-- Cierre de sesión modal-->
+                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                    <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Bootstrap core JavaScript-->
+                    <script src="/vendor/jquery/jquery.min.js"></script>
+                    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-                            <!-- Core plugin JavaScript-->
-                            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+                    <!-- Core plugin JavaScript-->
+                    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-                            <!-- Custom scripts for all pages-->
-                            <script src="/js/sb-admin-2.min.js"></script>
+                    <!-- Custom scripts for all pages-->
+                    <script src="/js/sb-admin-2.min.js"></script>
 
-                            <!-- Page level plugins -->
-                            <script src="/vendor/chart.js/Chart.min.js"></script>
+                    <!-- Page level plugins -->
+                    <script src="/vendor/chart.js/Chart.min.js"></script>
 
-                            <!-- Page level custom scripts -->
-                            <script src="/js/demo/chart-area-demo.js"></script>
-                            <script src="/js/demo/chart-pie-demo.js"></script>
+                    <!-- Page level custom scripts -->
+                    <script src="/js/demo/chart-area-demo.js"></script>
+                    <script src="/js/demo/chart-pie-demo.js"></script>
 
-                            </body>
+                    </body>
 
-                            </html>
+                    </html>

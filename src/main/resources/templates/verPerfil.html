@@ -71,6 +71,7 @@
                     Gestion
                 </div>
 
+                <!-- Elemento de navegación - Menú Contraer utilidades -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
@@ -80,29 +81,12 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/user/verUsuario/__${log.id}__}">Ver mi perfil</a>
+                            <a class="collapse-item" th:href="@{/user/perfil/__${log.id}__}">Ver mi Perfil</a>
                             <a class="collapse-item" th:href="@{/user/perfil/__${log.id}__}">Modificar mi Perfil</a>
                             <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}" sec:authorize="hasRole('USUARIO')">Ver mis Turnos</a>
                         </div>
                     </div>
                 </li>
-                
-                <li class="nav-item" sec:authorize="hasAnyRole('ADMINISTRADOR')">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePaciente"
-                       aria-expanded="true" aria-controls="collapsePaciente">
-                        <i class="fas fa-user"></i>
-                        <span>Pacientes</span>
-                    </a>
-                    <div id="collapsePaciente" class="collapse" aria-labelledby="headingPaciente"
-                         data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/}" sec:authorize="hasRole('ADMINISTRADOR')">Alta Paciente</a>
-                            <a class="collapse-item" th:href="@{/paciente/listar}" sec:authorize="hasRole('ADMINISTRADOR')">Ver Pacientes</a>
-                        </div>
-                    </div>
-                </li>
-                
-                
                 <li class="nav-item" sec:authorize="hasAnyRole('ADMINISTRADOR')" >
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
@@ -210,63 +194,47 @@
                         <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Modificar </a>
                         <!-- Encabezado de página -->
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Error!</h5>
-                                    <p class="card-text text-center" th:text="${error}"></p>
-                                </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Error!</h5>
+                                <p class="card-text text-center" th:text="${error}"></p>
                             </div>
-                            <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Exito!</h5>
-                                    <p class="card-text text-center" th:text="${exito}"></p>
-                                </div>
-                            </div> 
+                        </div>
+                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Exito!</h5>
+                                <p class="card-text text-center" th:text="${exito}"></p>
+                            </div>
+                        </div> 
                         <div class="d-sm-flex align-items-center justify-content-center mb-4">
-                            <h1 class="h3 mb-0 text-gray-800" th:text="'Usuario ' + ${user.nombre}"></h1>
-                        </div>
-                        
-                        <div class="row text-center">
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Nombre: ' + ${user.nombre}"></h2>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Apellido: ' + ${user.apellido}"></h2>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Direccion: ' + ${user.direccion}"></h2>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Telefono: ' + ${user.telefono}"></h2>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Email: ' + ${user.email}"></h2>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text="'Fecha nacimiento: ' + ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></h2>
-
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'DNI: '+ ${user.dni}"></h2>
-                            </div>   
-                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
-                                <h2 th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text="'Grupo Sanguíneo: '+ ${user.grupoSanguineo}"></h2>
-                            </div>    
-                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
-
-                                <h2 th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text="'Obra Social: '+${user.obraSocial.nombre}"></h2>
-                            </div>
-
-                            <div class="col-sm-6 mb-3">
-                                <h2>Tu foto</h2>
-                                <img class="/img-profile rounded-circle"
-                                     th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 150px;">
-                            </div>
-
-
+                            <h1 class="h3 mb-0 text-gray-800" th:text="'Bienvenido ' + ${user.nombre}"></h1>
                         </div>
 
+                        <div th:if="${#strings.trim(user.rol) =='USUARIO'}"  class="container card-container">
+                            <div class="custom-card">
+                                <div class="left-column">
+                                    <h2>Ver Mis Turnos</h2>
+
+
+                                    <a type="button" class="full-rounded"th:href="@{/turno/misturnos/__${log.id}__}">
+                                        <span>Ver Aquí</span>
+                                        <div class="border full-rounded"></div></a>
+                                </div>
+                            </div>
+
+
+                            <div class="custom-card">
+                                <div class="left-column">
+                                    <h2>Buscar un Turno</h2>
+
+
+                                    <a type="button" class="full-rounded" th:href="@{/turno/panel/__${log.id}__}">
+                                        <span>Ver Aquí</span>
+                                        <div class="border full-rounded"></div></a>
+                                </div>
+                            </div>
                         </div>
-                        
+                    </div>
+
 
 
 
@@ -333,4 +301,3 @@
     </body>
 
 </html>
-

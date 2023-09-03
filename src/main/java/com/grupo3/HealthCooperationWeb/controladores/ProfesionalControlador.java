@@ -173,8 +173,10 @@ public class ProfesionalControlador {
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
+
             String fecha_nac, String especialidad, String valorConsulta, ModelMap modelo, HttpSession session)
             throws IOException, MyException, ParseException {
+
 
         try {
             Especialidad[] especialidades = Especialidad.values();
