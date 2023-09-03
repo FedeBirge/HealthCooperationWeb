@@ -53,19 +53,24 @@ public class AgendaControlador {
     public String verrAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
-        System.out.println(semanas.size());
-        if (!semanas.isEmpty()) {
-            Collections.sort(semanas, (semana1, semana2) -> {
-                Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
-                Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
-                return fecha1.compareTo(fecha2);
-            });
-//            for (int i = 0; i < 3; i++) {
-//                LocalDate fechaActual = LocalDate.now().plusDays(7*i); 
-//            int daysToAdd = DayOfWeek.TUESDAY.getValue() - fechaActual.getDayOfWeek().getValue()-1;
-//
-//            System.out.println("Lunes: " +fechaActual.plusDays(daysToAdd));
-//            }
+
+        Collections.sort(semanas, (semana1, semana2) -> {
+            Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
+            Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
+            return fecha1.compareTo(fecha2);
+        });
+
+        if (semanas.size() != 0) {
+
+            // for (int i = 0; i < 3; i++) {
+            // LocalDate fechaActual = LocalDate.now().plusDays(7*i);
+            // int daysToAdd = DayOfWeek.TUESDAY.getValue() -
+            // fechaActual.getDayOfWeek().getValue()-1;
+            //
+            // System.out.println("Lunes: " +fechaActual.plusDays(daysToAdd));
+            // }
+
+
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("semanas", semanas);
@@ -304,5 +309,19 @@ public class AgendaControlador {
 
     }
     
+
+    @GetMapping("/eliminarAgenda/{id}") // ruta para eliminar (no tiene una vista, es para un boton
+    public String eliminarAgenda(@PathVariable("id") String id, ModelMap modelo) {
+
+        try {
+            eliminarAgenda(id, modelo);
+            modelo.put("exito", "Agenda eliminada con exito!");
+            return "redirect:";
+        } catch (Exception ex) {
+            modelo.put("error", ex.getMessage());
+            return "redirect:/";
+        }
+
+    }
 
 }
