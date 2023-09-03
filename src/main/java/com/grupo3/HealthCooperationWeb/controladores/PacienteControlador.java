@@ -34,7 +34,7 @@ public class PacienteControlador {
 
     @GetMapping("/dashboard") // ruta para el panel administrativo
     public String panelAdministrativo(ModelMap modelo, HttpSession session) {
-        Paciente logueado = (Paciente) session.getAttribute("usuariosession");
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         modelo.addAttribute("user", logueado);
 
