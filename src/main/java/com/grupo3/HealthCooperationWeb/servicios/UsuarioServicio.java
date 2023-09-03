@@ -135,6 +135,7 @@ public class UsuarioServicio implements UserDetailsService {
                 // No se proporcionó un archivo nuevo, no se actualiza la imagen del usuario
             }
 
+
             usuarioRepo.save(usuario);
 
         }
