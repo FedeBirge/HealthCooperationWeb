@@ -7,6 +7,7 @@ import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
+import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.ObraSocialRepositorio;
@@ -22,14 +23,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class PacienteServicio extends UsuarioServicio {
+public class PacienteServicio extends UsuarioServicio implements UserDetailsService {
 
     @Autowired
     private AgendaServicio agendaServ;
@@ -90,7 +101,8 @@ public class PacienteServicio extends UsuarioServicio {
         paciente.setRol(Rol.USUARIO);
         if (archivo.isEmpty()) {
             // Si el archivo está vacío, crea el paciente con una imagen predeterminada
-            Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la imagen predeterminada
+            Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la
+                                                                         // imagen predeterminada
             paciente.setImagen(imagenPredeterminada);
         } else {
             // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
@@ -253,7 +265,7 @@ public class PacienteServicio extends UsuarioServicio {
         List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
         List<Turno> turnosPaciente = new ArrayList<>();
         // Repo de turnos
-//       
+        //
         try {
             Profesional profesional = profesionalRepositorio.getOne(idProfesional);
             Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
@@ -299,6 +311,28 @@ public class PacienteServicio extends UsuarioServicio {
 
         if (obraSocial == null || obraSocial.isEmpty()) {
             throw new MyException("Debe ingresar si tiene obra social o no");
+        }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {   
+        Paciente paciente = pacienteRepositorio.buscarPorEmail(email);
+        if (paciente != null && paciente.getActivo().equals(Boolean.TRUE)) {
+            List<GrantedAuthority> permisos = new ArrayList<>();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + paciente.getRol().toString());
+
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("pacientesession", paciente);
+
+            return new User(paciente.getEmail(), paciente.getPassword(), permisos);
+
+        } else {
+            return null;
         }
     }
 

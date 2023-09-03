@@ -1,6 +1,5 @@
 package com.grupo3.HealthCooperationWeb.controladores;
 
-
 import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
@@ -29,7 +28,7 @@ public class PacienteControlador {
 
     @Autowired
     private PacienteServicio pacienteServicio;
-    
+
     @Autowired
     private ObraSocialServicio obraServ;
 
@@ -38,18 +37,18 @@ public class PacienteControlador {
         Paciente logueado = (Paciente) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         modelo.addAttribute("user", logueado);
-        
+
         return "perfil.html";
     }
 
     @GetMapping("/registrar") // *************BOTON registrarme en index(LT)*****//
     public String registrar(ModelMap modelo) throws MyException {
         try {
-             List<ObraSocial> obras = obraServ.listarObrasSociales();
+            List<ObraSocial> obras = obraServ.listarObrasSociales();
             modelo.addAttribute("obras", obras);
             return "registro.html";
         } catch (Exception ex) {
-             List<ObraSocial> obras = obraServ.listarObrasSociales();
+            List<ObraSocial> obras = obraServ.listarObrasSociales();
             modelo.addAttribute("obras", obras);
             modelo.put("error", ex.getMessage());
             return "registro.html";
@@ -70,22 +69,24 @@ public class PacienteControlador {
     public String crearUsuario(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-            String fecha_nac, @RequestParam String obrasocial,  @RequestParam String gruposanguineo,
-            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session ,RedirectAttributes redirectAttributes) throws IOException, MyException, ParseException {
-        
+            String fecha_nac, @RequestParam String obrasocial, @RequestParam String gruposanguineo,
+            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session,
+            RedirectAttributes redirectAttributes) throws IOException, MyException, ParseException {
+
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             pacienteServicio.registrarPaciente(archivo, nombre, apellido, dni,
                     email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
             redirectAttributes.addFlashAttribute("exito", "¡Usuario registrado con exito!");
-          
+
             return "redirect:/login";
 
         } catch (MyException ex) {
-           
-             List<ObraSocial> obras = obraServ.listarObrasSociales();
-            modelo.addAttribute("obras", obras);Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+
+            List<ObraSocial> obras = obraServ.listarObrasSociales();
+            modelo.addAttribute("obras", obras);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.put("error", ex.getMessage());
             return registrar(modelo);
@@ -120,16 +121,16 @@ public class PacienteControlador {
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-            String fecha_nac, String gruposanguineo,    String nombreObraSocial, 
+            String fecha_nac, String gruposanguineo, String nombreObraSocial,
             ModelMap modelo, HttpSession session) throws IOException, MyException, ParseException {
 
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("user", pacienteServicio.getOne(id));
-            System.out.println("obra: "+nombreObraSocial);
+            System.out.println("obra: " + nombreObraSocial);
             pacienteServicio.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono,
-                    direccion, fecha_nac, gruposanguineo, 
+                    direccion, fecha_nac, gruposanguineo,
                     nombreObraSocial);
 
             modelo.put("exito", "¡Paciente modificado con exito!");
@@ -176,16 +177,16 @@ public class PacienteControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-           List<Paciente> users = pacienteServicio.mostrarPacientes();
-//            List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
-            
+            List<Paciente> users = pacienteServicio.mostrarPacientes();
+            // List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
+
             modelo.addAttribute("users", users);
             return "verPacientes.html";
         } catch (Exception e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             List<Paciente> users = pacienteServicio.mostrarPacientes();
-//            List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
+            // List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
             modelo.addAttribute("users", users);
             modelo.put("error", e.getMessage());
             return "verPacientes.html";

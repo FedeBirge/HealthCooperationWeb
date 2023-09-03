@@ -29,7 +29,7 @@ public class PortalControlador {
     @Autowired
     private PacienteServicio pacienteServ;
 
-    @GetMapping("/") //************ Vista principal (LT)***************///
+    @GetMapping("/") // ************ Vista principal (LT)***************///
     public String index(ModelMap modelo) {
         Especialidad[] especialidades = Especialidad.values();
         modelo.addAttribute("especialidades", especialidades);
@@ -68,18 +68,20 @@ public class PortalControlador {
         } catch (Exception ex) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-             modelo.addAttribute("user", logueado);
+            modelo.addAttribute("user", logueado);
             modelo.put("error", ex.getMessage());
             return "login.html";
         }
     }
 
-    @PostMapping("/crear") //************* POST del form del registro.html LT)
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
+    @PostMapping("/crear") // ************* POST del form del registro.html LT)
     public String crearUsuario(MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
             String fecha_nac, String obrasocial, String gruposanguineo,
-            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException, ParseException {
+            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session)
+            throws IOException, ParseException {
 
         try {
             pacienteServ.registrarPaciente(archivo, nombre, apellido, dni,
