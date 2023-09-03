@@ -185,6 +185,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     // *****COMPLETAR para traer los pacientes asociados a un profesional(id)
     public List<Paciente> listarPacientesXprof(String idProfesional) {
         // un paciente tiene una lista de turnos...
+        // primero creo un paciente
         List<Paciente> pacientes = new ArrayList<>();
         // traigo todos los pacientes
         pacientes = pacienteRepositorio.findAll();
@@ -195,7 +196,8 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
         List<Turno> turnos = new ArrayList<>();
         turnos = turnoRepositorio.findAll();
 
-        // en esa lista de turnos, cada turno tiene un profesional:
+        // en esa lista de turnos, cada turno tiene un profesional
+        // creo un profesional:
         Profesional profesional = profesionalRepositorio.getOne(idProfesional);
 
         try {
