@@ -19,33 +19,21 @@ public class HistoriaClinicaControlador {
     @Autowired
     private HistoriaClinicaServicio historiaClinicaServicio;
 
-    // (edito: bren)
-    // para que se vea la HC del paciente seleccionado x id
-    // recordar que este {id} corresponde al id del paciente
+    // ruta para ver la historia clínica según id paciente
     @GetMapping("/ver/{id}")
-    public String mostrarHistoria(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
+    public String mostrarHistoria(@PathVariable("id") String id, ModelMap modelo, HttpSession session)
+            throws MyException {
 
         try {
-             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        modelo.addAttribute("log", logueado);
-//            modelo.addAttribute("HistoriaClinica", historiaClinicaServicio.mostrarHistoria(id));
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.addAttribute("HistoriaClinica", historiaClinicaServicio.mostrarHistoria(id));
             return "Consulta historial.html";
         } catch (Exception e) {
-                return "Consulta historial.html";
+            return "Consulta historial.html";
         }
     }
 
-    // (mariela)
-    /*
-     * @PostMapping("/historia/registro")
-     * public String registro(@RequestParam List<Ficha> fichas, ModelMap modelo)
-     * throws MyException {
-     * 
-     * // historiaClinicaServicio.crearHistoriaClinica( fichas);
-     * // modelo.put("exito", "La historia clinica se registro correctamente");
-     * 
-     * return "index.html";
-     * }
-     */
+    // las Historias Clínicas no se modifican ni se eliminan (pedido del cliente)
 
 }
