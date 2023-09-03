@@ -20,7 +20,7 @@ public class ObraSocialControlador {
     @Autowired
     private ObraSocialServicio obraServ;
 
-    @GetMapping("/listarObras") // ruta para listar los usuarios
+    @GetMapping("/listarObras") // ruta para listar las obras sociales
     public String listarObras(ModelMap modelo) {
         try {
             List<ObraSocial> obras = obraServ.listarObrasSociales();
@@ -36,7 +36,7 @@ public class ObraSocialControlador {
     @GetMapping("/verObraSocial/{id}") // ruta para ver el perfil de un usuario
     public String verObraSocial(@PathVariable("id") String id, ModelMap modelo) throws MyException {
         try {
-            modelo.put("oobra", obraServ.getObraSocialById(id));
+            modelo.put("obra", obraServ.getObraSocialById(id));
             return "obra.html";
         } catch (MyException ex) {
             System.out.println("");
@@ -75,8 +75,9 @@ public class ObraSocialControlador {
 
     }
 
-    @PostMapping("/modificarObra/{id}") // ruta para crear una obra social GET
-    public String crearObraSocial(@PathVariable("id") String id, ModelMap modelo, String nombre, String email, String telefono) {
+    @PostMapping("/modificarObra/{id}") // ruta para modificar una obra social POST
+    public String crearObraSocial(@PathVariable("id") String id, ModelMap modelo, String nombre, String email,
+            String telefono) {
 
         try {
             modelo.put("obra", obraServ.getObraSocialById(id));
@@ -93,11 +94,12 @@ public class ObraSocialControlador {
 
     }
 
-    @GetMapping("/eliminarObra/{id}") // ruta para eliminar (no tiene una vista, es para un boton                              
+    @GetMapping("/eliminarObra/{id}") // ruta para eliminar (no tiene una vista, es para un boton
     public String eliminarObra(@PathVariable("id") String id, ModelMap modelo) {
 
         try {
-
+            // (agrego siguiente línea: bren)
+            obraServ.eliminarObraSocial(id);
             modelo.put("exito", "Obra Social eliminada con exito!");
             return "redirect:";
         } catch (Exception ex) {
@@ -107,12 +109,13 @@ public class ObraSocialControlador {
 
     }
 
-    @PostMapping("/eliminarObra/{id}") // ruta para eliminar (no tiene una vista, es para un boton 
+    @PostMapping("/eliminarObra/{id}") // ruta para eliminar (no tiene una vista, es para un boton
     public String eliminarObra1(@PathVariable("id") String id, ModelMap modelo) {
 
         try {
             obraServ.eliminarObraSocial(id);
-            modelo.put("exito", "Obra Social eliminada con exito!");;
+            modelo.put("exito", "Obra Social eliminada con exito!");
+            ;
             return "";
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());

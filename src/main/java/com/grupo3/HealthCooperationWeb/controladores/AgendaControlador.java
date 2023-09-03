@@ -53,6 +53,7 @@ public class AgendaControlador {
     public String verrAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+
         Collections.sort(semanas, (semana1, semana2) -> {
             Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
             Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
@@ -61,12 +62,15 @@ public class AgendaControlador {
 
         if (semanas.size() != 0) {
 
-//            for (int i = 0; i < 3; i++) {
-//                LocalDate fechaActual = LocalDate.now().plusDays(7*i); 
-//            int daysToAdd = DayOfWeek.TUESDAY.getValue() - fechaActual.getDayOfWeek().getValue()-1;
-//
-//            System.out.println("Lunes: " +fechaActual.plusDays(daysToAdd));
-//            }
+            // for (int i = 0; i < 3; i++) {
+            // LocalDate fechaActual = LocalDate.now().plusDays(7*i);
+            // int daysToAdd = DayOfWeek.TUESDAY.getValue() -
+            // fechaActual.getDayOfWeek().getValue()-1;
+            //
+            // System.out.println("Lunes: " +fechaActual.plusDays(daysToAdd));
+            // }
+
+
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("semanas", semanas);
@@ -80,7 +84,7 @@ public class AgendaControlador {
             modelo.addAttribute("obras", servObra.listarObrasSociales());
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
+            modelo.put("vacia", "¡Su Agenda no tiene semanas disponibles! Seleccione el botón Generar Agenda");
             return "verAgenda.html";
 
         }
@@ -117,12 +121,21 @@ public class AgendaControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-
+               List<AgendaSemanal> semanasprof = servAgenda.obtenerAgendaxProf(id);
+             /// si la lista del prof está vacia, le creo una Agenda nueva
+             if(semanasprof.isEmpty()){
             ArrayList<AgendaSemanal> semanas = servAgenda.crearAgenda(id);
-
-            profesionalServicio.asignarAgenda(id, semanas);
-            modelo.addAttribute("semanas", semanas);
+               profesionalServicio.asignarAgenda(id, semanas);
+             modelo.addAttribute("semanas", semanas);
             modelo.put("exito", "¡Agenda generada con exito!");
+             }else{ // sino agrego semanas
+//                 profesionalServicio.agregarSemanas(id);
+//                  modelo.addAttribute("semanas", semanas);
+            modelo.put("exito", "¡Agenda generada con exito!");
+             }
+
+          
+           
             return "verAgenda.html";
         } catch (MyException e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -271,6 +284,44 @@ public class AgendaControlador {
             }
         }
         return null;
+    }
+    @GetMapping("/agregar/{id}")
+    public String agregarsemamas(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
+
+        Oferta oferta = servOferta.obtenerOfertaxProf(id);
+        if (oferta != null) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.addAttribute("oferta", oferta);
+
+            return "crearAgenda.html";
+        } else {
+
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.put("vacia", "¡Oferta y disponibilidad no creada! Puede hacerlo aquí");
+            TipoOferta[] tipos = TipoOferta.values();
+            List<ObraSocial> obras = servObra.listarObrasSociales();
+            modelo.addAttribute("obras", obras);
+            modelo.addAttribute("tipos", tipos);
+            return "miOfertayDisponibilidad.html";
+        }
+
+    }
+    
+
+    @GetMapping("/eliminarAgenda/{id}") // ruta para eliminar (no tiene una vista, es para un boton
+    public String eliminarAgenda(@PathVariable("id") String id, ModelMap modelo) {
+
+        try {
+            eliminarAgenda(id, modelo);
+            modelo.put("exito", "Agenda eliminada con exito!");
+            return "redirect:";
+        } catch (Exception ex) {
+            modelo.put("error", ex.getMessage());
+            return "redirect:/";
+        }
+
     }
 
 }

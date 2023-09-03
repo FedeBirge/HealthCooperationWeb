@@ -183,10 +183,12 @@
                     <form th:action="@{/oferta/editar/__${log.id}__}" method="POST" enctype="multipart/form-data">
                         <!-- Collapsable Card Example -->
                         <div class="card mb-4">
-                            <div class="card-header">
-                                Agenda
+                           
+                                <small>Nota: si no visualiza ninguna semana deberá generarla en Administrar Agenda</small>
+                                 <div class="card-header">
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editar/__${log.id}__}">Administrar Agenda</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
+
                             </div>
 
                             <div class="carousel slide" data-bs-ride="carousel">
@@ -197,6 +199,8 @@
                                             <ul th:each="semana : ${semanas}">
                                                 <li  style="display: inline-block; margin-right: 10px;">
                                                     <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
+
+
                                                         <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
                                                         <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
                                                         <ul >

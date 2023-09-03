@@ -30,13 +30,6 @@ public class Ficha implements Serializable {
 
     private String nota;
 
-    // No comprendo este OneToOne con profesional. Es el paciente el que tiene
-    // fichas (bren)
-    // @OneToOne
-    // private Profesional profesional;
-
-    // agrego esta relación (bren)
-    // muchas fichas tienen una historiaClinica
     @ManyToOne
     private HistoriaClinica historiaClinica;
 }

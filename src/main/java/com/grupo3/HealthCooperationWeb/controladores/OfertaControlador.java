@@ -64,7 +64,8 @@ public class OfertaControlador {
 
     @PostMapping("/crear/{id}")
     public String crear(@PathVariable("id") String id, ModelMap modelo, HttpSession session,
-            @RequestParam(required = false) ArrayList<String> diasSeleccionados, @RequestParam("horaInicial") String horaInicial,
+            @RequestParam(required = false) ArrayList<String> diasSeleccionados,
+            @RequestParam("horaInicial") String horaInicial,
             @RequestParam("horaFinal") String horaFinal, @RequestParam String duracion,
             String tipoOferta, @RequestParam String direccion,
             @RequestParam("selecciones") String selecciones) throws MyException {
@@ -76,11 +77,13 @@ public class OfertaControlador {
 
             List<ObraSocial> obras = servObra.listarObrasSociales();
             modelo.addAttribute("obras", obras);
-            // Asignar a diasDisponibles(Enum lista) los diasSeleccionados que traigo al prof
+            // Asignar a diasDisponibles(Enum lista) los diasSeleccionados que traigo al
+            // prof
             profesionalServicio.asignarDisponibilidad(id, diasSeleccionados);
 
-            /// Asignar Oferta  al prof con
-            profesionalServicio.asignarOferta(id, horaInicial, horaFinal, duracion, tipoOferta, direccion, listaDeSelecciones);
+            /// Asignar Oferta al prof con
+            profesionalServicio.asignarOferta(id, horaInicial, horaFinal, duracion, tipoOferta, direccion,
+                    listaDeSelecciones);
             ///
 
             modelo.put("exito", "¡Oferta y disponibilidad cargada con exito!");
@@ -149,7 +152,8 @@ public class OfertaControlador {
 
     @PostMapping("/editar/{id}")
     public String editar(@PathVariable("id") String id, ModelMap modelo, HttpSession session,
-            @RequestParam(required = false) ArrayList<String> diasSeleccionados, @RequestParam("horaInicial") String horaInicial,
+            @RequestParam(required = false) ArrayList<String> diasSeleccionados,
+            @RequestParam("horaInicial") String horaInicial,
             @RequestParam("horaFinal") String horaFinal, @RequestParam String duracion,
             String tipoOferta, @RequestParam String direccion,
             @RequestParam("selecciones") String selecciones) throws MyException {
@@ -158,7 +162,8 @@ public class OfertaControlador {
             List<String> listaDeSelecciones = Arrays.asList(selecciones.split(","));
             if (oferta != null) {
                 profesionalServicio.asignarDisponibilidad(id, diasSeleccionados);
-                profesionalServicio.getOne(id).setOferta(servOferta.modificarOferta(oferta.getId(), tipoOferta, horaInicial, horaFinal, duracion, direccion, servObra.pasarObras(listaDeSelecciones)));
+                profesionalServicio.getOne(id).setOferta(servOferta.modificarOferta(oferta.getId(), tipoOferta,
+                        horaInicial, horaFinal, duracion, direccion, servObra.pasarObras(listaDeSelecciones)));
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("oferta", oferta);
