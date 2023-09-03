@@ -250,8 +250,8 @@
                                                     <td>
                                                         <a type="button" class="btn btn-success me-md-2"th:href="@{/admin/verUsuario/__${user.id}__}">Ver Perfil                                                       </a>
                                                     </td>
-                                                    <td>
-                                                        
+                                                     <td >
+                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
                                                     </td>
                                                     <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR'}" >
                                                         <form  th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">

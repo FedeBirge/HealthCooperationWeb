@@ -82,7 +82,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                             <a class="collapse-item" th:href="@{/paciente/crear}">Alta Paciente</a>
+                            <a class="collapse-item" th:href="@{/paciente/crear}">Alta Paciente</a>
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -97,7 +97,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                      
+
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -109,7 +109,7 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
-             
+
 
                 <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">
@@ -121,8 +121,8 @@
 
             <!-- Contenedor de contenido -->
             <div id="content-wrapper" class="d-flex flex-column">
-          
-                 
+
+
                 <!-- Contenido principal -->
                 <div id="content">
 
@@ -153,12 +153,12 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                     <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                               <a class="dropdown-item" th:href="@{/inicio}">
-                                       
+                                    <a class="dropdown-item" th:href="@{/inicio}">
+
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Mi Área
                                     </a>
@@ -179,7 +179,7 @@
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
 
-                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Alta Paciente</h1>
                         </div>
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
@@ -219,7 +219,7 @@
                                     <input class="form-control form-control-user" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
                                 </div>
 
-                                
+
                                 <div class="col-sm-6 mb-3">
                                     <input  class="form-control form-control-user" type="password" id="password" placeholder="Contraseña" name="password" th:value="${password}">
                                 </div>
@@ -230,86 +230,114 @@
                                     <input  class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
                                 </div>
                                 <div  class="col-sm-6 mb-3">
-                  
+
                                     <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    
+
                                     <input class="form-control form-control-user" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
                                 </div>
                                 <div>
-                                    <img id="imagenPrevia" src="#" alt="" style="max-width: 100%; max-height: 100px;">
-                                </div> 
-                                
-                                <div class="grid w-full max-w-xs items-center gap-1.5">
-                                    <label class="text-sm text-gray-400 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Imagen</label>
-                                    <input id="picture" type="file" class="flex h-10 w-full rounded-full border border-input bg-white px-3 py-2 text-sm text-gray-400 file:border-0 file:bg-transparent file:text-gray-600 file:text-sm file:font-medium">
+                                    <label for="largeSelect" class="form-label">Imagen</label>
+
+
+                                    <div class="contenedorImagen">
+                                        <img id="imagenPrevia" src="/img/user_logo.png" alt="" class="imagenPrevia" width="100" height="100">
+                                    </div>    
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text">Foto</span>
+                                        <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
+                                    </div>
+
+                                    <script>
+                                        function previsualizarImagen() {
+                                            var archivo = document.getElementById('foto').files[0];
+                                            var imagenPrevia = document.getElementById('imagenPrevia');
+                                            var nombreCampo = "archivo"; // Nombre predeterminado del campo de entrada
+
+                                            if (archivo) {
+                                                var lector = new FileReader();
+
+                                                lector.onload = function (event) {
+                                                    imagenPrevia.src = event.target.result;
+                                                };
+
+                                                lector.readAsDataURL(archivo);
+                                            } else {
+                                                // Si no se selecciona ningún archivo, cambia el nombre del campo de entrada
+                                                nombreCampo = "imagenPredeterminada";
+                                                imagenPrevia.src = "/ruta/de/imagen/predeterminada.jpg"; // Cambia la ruta según tu imagen predeterminada
+                                            }
+
+                                            // Cambiar el nombre del campo de entrada
+                                            document.getElementById('foto').name = nombreCampo;
+                                        }
+                                    </script>
+
+                                    <div class="d-grid gap-2 col-12 mx-auto text-center">
+                                        <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Dar de Alta</button>
+                                    </div>
+                                    </form>
+                                    <!-- Fin del contenido principal -->
+
+                                    <!-- Footer -->
+                                    <footer class="sticky-footer bg-white">
+                                        <div class="container my-auto">
+                                            <div class="copyright text-center my-auto">
+                                                <span>HealtCooperationWeb ©2023</span>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- Fin del Footer -->
+
                                 </div>
+                                <!-- Fin del contenedor de contenido -->
 
-                    <div class="d-grid gap-2 col-12 mx-auto text-center">
-                        <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Dar de Alta</button>
-                    </div>
-                    </form>
-                    <!-- Fin del contenido principal -->
-
-                    <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>HealtCooperationWeb ©2023</span>
                             </div>
-                        </div>
-                    </footer>
-                    <!-- Fin del Footer -->
+                            <!-- Envoltura de fin de página -->
 
-                </div>
-                <!-- Fin del contenedor de contenido -->
+                            <!-- Desplácese hasta el botón superior-->
+                            <a class="scroll-to-top rounded" href="#page-top">
+                                <i class="fas fa-angle-up"></i>
+                            </a>
 
-            </div>
-            <!-- Envoltura de fin de página -->
-
-            <!-- Desplácese hasta el botón superior-->
-            <a class="scroll-to-top rounded" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
-
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="../vendor/jquery/jquery.min.js"></script>
-            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                            <!-- Bootstrap core JavaScript-->
+                            <script src="../vendor/jquery/jquery.min.js"></script>
+                            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-            <!-- Core plugin JavaScript-->
-            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+                            <!-- Core plugin JavaScript-->
+                            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-            <!-- Custom scripts for all pages-->
-            <script src="../js/sb-admin-2.min.js"></script>
+                            <!-- Custom scripts for all pages-->
+                            <script src="../js/sb-admin-2.min.js"></script>
 
-            <!-- Page level plugins -->
-            <script src="../vendor/chart.js/Chart.min.js"></script>
+                            <!-- Page level plugins -->
+                            <script src="../vendor/chart.js/Chart.min.js"></script>
 
-            <!-- Page level custom scripts -->
-            <script src="../js/demo/chart-area-demo.js"></script>
-            <script src="../js/demo/chart-pie-demo.js"></script>
+                            <!-- Page level custom scripts -->
+                            <script src="../js/demo/chart-area-demo.js"></script>
+                            <script src="../js/demo/chart-pie-demo.js"></script>
 
-    </body>
+                            </body>
 
-</html>
+                            </html>

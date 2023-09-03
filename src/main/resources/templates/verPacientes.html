@@ -296,23 +296,14 @@
                                                     <td th:value="${user.apellido}" th:text="${user.apellido}"></td>
 
                                                     <td sec:authorize="hasRole('ADMINISTRADOR')" >
-                                                          <a type="button" class="btn btn-success me-md-2" th:href="@{/}">Turnos</a>
+                                                          <a type="button" class="btn btn-success me-md-2" th:href="@{/turno/misturnos/__${user.id}__}">Turnos</a>
                                                     </td>
                                                     <td >
 
                                                         <a type="button" class="btn btn-success me-md-2" th:href="@{/historia/ver/__${user.id}__}">Ver</a>
                                                     </td>
 
-                                                    <td sec:authorize="hasRole('ADMINISTRADOR')">
-
-                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
-                                                    </td>
-
-                                                    <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR'}" >
-                                                        <form  th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
-                                                            <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
-                                                        </form>
-                                                    </td>         
+                                                      
 
                                             </tbody>
                                         </table>
