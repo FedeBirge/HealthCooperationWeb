@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
+    <html lang="en">
+        <head>
+            <meta charset="utf-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
             <meta name="description" content="" />
             <meta name="author" content="" />
@@ -15,379 +15,163 @@
             <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
             <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
-    <link rel="stylesheet" href="/css/turno.css">
-</head>
-<body>
-    <header class="header">
-       <a class="navbar-brand" href="#page-top">
-                        <img src="../assets/img/biomedical (2).svg" alt="Logo" class="navbar-logo">
-                       
-                    </a>
-        <nav>
-         <div class="container">
-                     <div class="select-container">
-    <div class="d-flex justify-content-center">
-        <select class="form-select" id="select1" name="especialidad">
-           <option value="" disabled selected>Especialidad</option>
-                                <option th:each="especialidad : ${especialidades}"
-                                        th:value="${especialidad}" th:text="${especialidad}"></option>
-        </select>
-    </div>
-    <div class="d-flex justify-content-center">
-        <select class="form-select" id="select2" name="tipoOferta">
-            <option value="" disabled selected>Modalidad</option>
-                                <option th:each=" tipo:${tipos}"
-                                        th:value="${tipo}" th:text="${tipo}"></option>
-        </select>
-        <a href="#" class="btn btn-outline-secondary">
-                                <i class="bi bi-search"></i>
-                            </a>
-    </div>
-</div>            
-        </nav>
-        <a class="btn" th:if="${session.usuariosession == null}"  th:href="@{/login}"><button>Login</button></a>
-    </header>
-    
-   <div class="outer-container">
-                        <div class="container1 ">
-                            <div class="form-group select-container1 text-center">
-                          
-                                <div class="d-flex justify-content-center"> 
-                                    <select class=select-container1  id="obrasPreexistentes" onchange="manejarSeleccion()">
-                                        <option value="">Obra Social </option>
-                                        <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
-                                        <option value="otra">Otra</option>
-                                    </select>
-                                    <select class="select-container1 "  id="obrasPreexistentes" onchange="manejarSeleccion()">
-                                        <option value="">Precio</option>
-                                        <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
-                                        <option value="otra">Otra</option>
-                                    </select>
-                                  
-                                </div>
+            <link rel="stylesheet" href="/css/turno.css">
+        </head>
+        <body>
+
+            <header class="header">
+                <a class="navbar-brand" href="#page-top">
+                    <img src="../assets/img/biomedical (2).svg" alt="Logo" class="navbar-logo">
+
+                </a>
+                <nav>
+                    <div class="container">
+                        <div class="select-container">
+                            <div class="d-flex justify-content-center">
+                                <select class="form-select" id="select1" name="especialidad">
+                                    <option value="" disabled selected>Especialidad</option>
+                                    <option th:each="especialidad : ${especialidades}"
+                                            th:value="${especialidad}" th:text="${especialidad}"></option>
+                                </select>
                             </div>
+                            <div class="d-flex justify-content-center">
+                                <select class="form-select" id="select2" name="tipoOferta">
+                                    <option value="" disabled selected>Modalidad</option>
+                                    <option th:each=" tipo:${tipos}"
+                                            th:value="${tipo}" th:text="${tipo}"></option>
+                                </select>
+                                <a href="#" class="btn btn-outline-secondary">
+                                    <i class="bi bi-search"></i>
+                                </a>
+                            </div>
+                        </div>            
+                </nav>
+                <a class="btn" th:if="${session.usuariosession == null}"  th:href="@{/login}"><button>Login</button></a>
+            </header>
+
+            <div class="outer-container">
+                <div class="container1 ">
+                    <div class="form-group select-container1 text-center">
+
+                        <div class="d-flex justify-content-center"> 
+                            <select class=select-container1  id="obrasPreexistentes" onchange="manejarSeleccion()">
+                                <option value="">Obra Social </option>
+                                <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
+                                <option value="otra">Otra</option>
+                            </select>
+                            <select class="select-container1 "  id="obrasPreexistentes" onchange="manejarSeleccion()">
+                                <option value="">Precio</option>
+                                <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
+                                <option value="otra">Otra</option>
+                            </select>
+
                         </div>
-                    </div>
-
-
-     <div class="carta-medico">
-    <section>
-        <div class="card">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
-            <div class="card__content">
-                <p class="card__title">Nombre del medico</p>
-                <p class="card__description">Descripcion</p>
-            </div>
-        </div>
-        <div class="rating">
-          <input value="5" name="rate" id="star5" type="radio">
-          <label title="text" for="star5"></label>
-          <input value="4" name="rate" id="star4" type="radio">
-          <label title="text" for="star4"></label>
-          <input value="3" name="rate" id="star3" type="radio" checked="">
-          <label title="text" for="star3"></label>
-          <input value="2" name="rate" id="star2" type="radio">
-          <label title="text" for="star2"></label>
-          <input value="1" name="rate" id="star1" type="radio">
-          <label title="text" for="star1"></label>
-      </div>
-        <div class="wrapper">
-            <h1>Selecciona el dia y horario</h1>
-            <table class="column-divider-table">
-                <thead>
-                    <tr>
-                        <th>Lun</th>
-                        <th>Mar</th>
-                        <th>Mie</th>
-                        <th>Jue</th>
-                        <th>Vie</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="pure-table-odd">
-                        <td><button>8:30</button></td>
-                        <td><button>8:30</button></td>
-                        <td><button>8:30</button></td>
-                        <td><button>8:30</button></td>
-                        <td><button>8:30</button></td>
-                    </tr>
-                    <tr>
-                        <td><button>9:00</button></td>
-                        <td><button>9:00</button></td>
-                        <td><button>9:00</button></td>
-                        <td><button>9:00</button></td>
-                        <td><button>9:00</button></td>
-                    </tr>
-                    <tr class="pure-table-odd">
-                        <td><button>9:30</button></td>
-                        <td><button>9:30</button></td>
-                        <td><button>9:30</button></td>
-                        <td><button>9:30</button></td>
-                        <td><button>9:30</button></td>
-                    </tr>
-                    <tr>
-                        <td><button>10:00</button></td>
-                        <td><button>10:00</button></td>
-                        <td><button>10:00</button></td>
-                        <td><button>10:00</button></td>
-                        <td><button>10:00</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-    </div>
-    <script>
-        const daysTag = document.querySelector(".days"),
-currentDate = document.querySelector(".current-date"),
-prevNextIcon = document.querySelectorAll(".icons span");
-
-// getting new date, current year and month
-let date = new Date(),
-currYear = date.getFullYear(),
-currMonth = date.getMonth();
-
-// storing full name of all months in array
-const months = ["January", "February", "March", "April", "May", "June", "July",
-              "August", "September", "October", "November", "December"];
-
-const renderCalendar = () => {
-    let firstDayofMonth = new Date(currYear, currMonth, 1).getDay(), // getting first day of month
-    lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(), // getting last date of month
-    lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(), // getting last day of month
-    lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate(); // getting last date of previous month
-    let liTag = "";
-
-    for (let i = firstDayofMonth; i > 0; i--) { // creating li of previous month last days
-        liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
-    }
-
-    for (let i = 1; i <= lastDateofMonth; i++) { // creating li of all days of current month
-        // adding active class to li if the current day, month, and year matched
-        let isToday = i === date.getDate() && currMonth === new Date().getMonth() 
-                     && currYear === new Date().getFullYear() ? "active" : "";
-        liTag += `<li class="${isToday}">${i}</li>`;
-    }
-
-    for (let i = lastDayofMonth; i < 6; i++) { // creating li of next month first days
-        liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
-    }
-    currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
-    daysTag.innerHTML = liTag;
-}
-renderCalendar();
-
-prevNextIcon.forEach(icon => { // getting prev and next icons
-    icon.addEventListener("click", () => { // adding click event on both icons
-        // if clicked icon is previous icon then decrement current month by 1 else increment it by 1
-        currMonth = icon.id === "prev" ? currMonth - 1 : currMonth + 1;
-
-        if(currMonth < 0 || currMonth > 11) { // if current month is less than 0 or greater than 11
-            // creating a new date of current year & month and pass it as date value
-            date = new Date(currYear, currMonth, new Date().getDate());
-            currYear = date.getFullYear(); // updating current year with new date year
-            currMonth = date.getMonth(); // updating current month with new date month
-        } else {
-            date = new Date(); // pass the current date as date value
-        }
-        renderCalendar(); // calling renderCalendar function
-    });
-});
-
- document.addEventListener("DOMContentLoaded", function() {
-        const calendarDays = document.getElementById("calendarDays").querySelectorAll("li");
-        const reservarBtn = document.getElementById("reservarBtn");
-        const appointmentWindow = document.getElementById("horarios");
-
-        calendarDays.forEach(day => {
-            day.addEventListener("click", function() {
-                // Display the appointment window with animation
-                appointmentWindow.classList.add("show");
-            });
-        });
-
-        reservarBtn.addEventListener("click", function() {
-            // Hide the appointment window with animation
-            appointmentWindow.classList.remove("show");
-        });
-    });
-    </script>
-    <div class="carta-medico">
-    <section>
-        <div class="card">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
-            <div class="card__content">
-                <p class="card__title">Nombre del medico</p>
-                <p class="card__description">Descripcion</p>
-            </div>
-        </div>
-        <div class="rating">
-          <input value="5" name="rate" id="star5" type="radio">
-          <label title="text" for="star5"></label>
-          <input value="4" name="rate" id="star4" type="radio">
-          <label title="text" for="star4"></label>
-          <input value="3" name="rate" id="star3" type="radio" checked="">
-          <label title="text" for="star3"></label>
-          <input value="2" name="rate" id="star2" type="radio">
-          <label title="text" for="star2"></label>
-          <input value="1" name="rate" id="star1" type="radio">
-          <label title="text" for="star1"></label>
-      </div>
-        <div class="wrapper">
-            <h1>Selecciona el dia y horario</h1>
-            <table class="column-divider-table">
-                <thead>
-                    <tr>
-                        <th>Lun</th>
-                        <th>Mar</th>
-                        <th>Mie</th>
-                        <th>Jue</th>
-                        <th>Vie</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="pure-table-odd">
-                        <td><button>8:30</button></td>
-                        <td><button>8:30</button></td>
-                        <td><button>8:30</button></td>
-                        <td><button>8:30</button></td>
-                        <td><button>8:30</button></td>
-                    </tr>
-                    <tr>
-                        <td><button>9:00</button></td>
-                        <td><button>9:00</button></td>
-                        <td><button>9:00</button></td>
-                        <td><button>9:00</button></td>
-                        <td><button>9:00</button></td>
-                    </tr>
-                    <tr class="pure-table-odd">
-                        <td><button>9:30</button></td>
-                        <td><button>9:30</button></td>
-                        <td><button>9:30</button></td>
-                        <td><button>9:30</button></td>
-                        <td><button>9:30</button></td>
-                    </tr>
-                    <tr>
-                        <td><button>10:00</button></td>
-                        <td><button>10:00</button></td>
-                        <td><button>10:00</button></td>
-                        <td><button>10:00</button></td>
-                        <td><button>10:00</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-    </div>
-    <script>
-        const daysTag = document.querySelector(".days"),
-currentDate = document.querySelector(".current-date"),
-prevNextIcon = document.querySelectorAll(".icons span");
-
-// getting new date, current year and month
-let date = new Date(),
-currYear = date.getFullYear(),
-currMonth = date.getMonth();
-
-// storing full name of all months in array
-const months = ["January", "February", "March", "April", "May", "June", "July",
-              "August", "September", "October", "November", "December"];
-
-const renderCalendar = () => {
-    let firstDayofMonth = new Date(currYear, currMonth, 1).getDay(), // getting first day of month
-    lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(), // getting last date of month
-    lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(), // getting last day of month
-    lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate(); // getting last date of previous month
-    let liTag = "";
-
-    for (let i = firstDayofMonth; i > 0; i--) { // creating li of previous month last days
-        liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
-    }
-
-    for (let i = 1; i <= lastDateofMonth; i++) { // creating li of all days of current month
-        // adding active class to li if the current day, month, and year matched
-        let isToday = i === date.getDate() && currMonth === new Date().getMonth() 
-                     && currYear === new Date().getFullYear() ? "active" : "";
-        liTag += `<li class="${isToday}">${i}</li>`;
-    }
-
-    for (let i = lastDayofMonth; i < 6; i++) { // creating li of next month first days
-        liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
-    }
-    currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
-    daysTag.innerHTML = liTag;
-}
-renderCalendar();
-
-prevNextIcon.forEach(icon => { // getting prev and next icons
-    icon.addEventListener("click", () => { // adding click event on both icons
-        // if clicked icon is previous icon then decrement current month by 1 else increment it by 1
-        currMonth = icon.id === "prev" ? currMonth - 1 : currMonth + 1;
-
-        if(currMonth < 0 || currMonth > 11) { // if current month is less than 0 or greater than 11
-            // creating a new date of current year & month and pass it as date value
-            date = new Date(currYear, currMonth, new Date().getDate());
-            currYear = date.getFullYear(); // updating current year with new date year
-            currMonth = date.getMonth(); // updating current month with new date month
-        } else {
-            date = new Date(); // pass the current date as date value
-        }
-        renderCalendar(); // calling renderCalendar function
-    });
-});
-
- document.addEventListener("DOMContentLoaded", function() {
-        const calendarDays = document.getElementById("calendarDays").querySelectorAll("li");
-        const reservarBtn = document.getElementById("reservarBtn");
-        const appointmentWindow = document.getElementById("horarios");
-
-        calendarDays.forEach(day => {
-            day.addEventListener("click", function() {
-                // Display the appointment window with animation
-                appointmentWindow.classList.add("show");
-            });
-        });
-
-        reservarBtn.addEventListener("click", function() {
-            // Hide the appointment window with animation
-            appointmentWindow.classList.remove("show");
-        });
-    });
-    </script>
-    <!--fotter--->
-        <footer class="footer text-center">
-            <div class="container">
-                <div class="row">
-                    <!-- Footer Location-->
-                    <div class="col-lg-4 mb-5 mb-lg-0">
-                        <h4 class="text-uppercase mb-4">Direccion</h4>
-                        <p class="lead mb-0">
-                            Buenos Aires, Argentina
-                            <br />
-                            Av.Panamericana
-                        </p>
-                    </div>
-                    <!-- Footer Social Icons-->
-                    <div class="col-lg-4 mb-5 mb-lg-0">
-                        <h4 class="text-uppercase mb-4">Redes</h4>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-dribbble"></i></a>
-                    </div>
-                    <!-- Footer About Text-->
-                    <div class="col-lg-4">
-                        <h4 class="text-uppercase mb-4">Proyecto Final Egg</h4>
-                        <p class="lead mb-0">
-                            Proyecto Final Grupo 3
-                        </p>
                     </div>
                 </div>
             </div>
-        </footer>
-  
-</div>
-     <!-- Copyright Section-->
+
+            <main>
+                <div class="carta-medico">
+                    <section>
+                        <div class="card1">
+                            <div class="header1">
+                                <div class="image"></div>
+                                <div>
+                                    <div class="rating">
+                                        <input value="5" name="rate" id="star5" type="radio">
+                                        <label title="text" for="star5"></label>
+                                        <input value="4" name="rate" id="star4" type="radio">
+                                        <label title="text" for="star4"></label>
+                                        <input value="3" name="rate" id="star3" type="radio" checked="">
+                                        <label title="text" for="star3"></label>
+                                        <input value="2" name="rate" id="star2" type="radio">
+                                        <label title="text" for="star2"></label>
+                                        <input value="1" name="rate" id="star1" type="radio">
+                                        <label title="text" for="star1"></label>
+                                    </div>
+                                    <p class="name">John Doe</p>
+                                </div>
+                            </div>
+                            <p class="message">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
+                                voluptatem alias ut provident sapiente repellendus.
+                            </p>
+                            <button class="boton"><span>ver turnos</span></button>
+                        </div>
+                    </section>
+
+                </div>
+
+                <div class="carta-medico">
+                    <section>
+                        <div class="card1">
+                            <div class="header1">
+                                <div class="image"></div>
+                                <div>
+                                    <div class="rating">
+                                        <input value="5" name="rate" id="star5" type="radio">
+                                        <label title="text" for="star5"></label>
+                                        <input value="4" name="rate" id="star4" type="radio">
+                                        <label title="text" for="star4"></label>
+                                        <input value="3" name="rate" id="star3" type="radio" checked="">
+                                        <label title="text" for="star3"></label>
+                                        <input value="2" name="rate" id="star2" type="radio">
+                                        <label title="text" for="star2"></label>
+                                        <input value="1" name="rate" id="star1" type="radio">
+                                        <label title="text" for="star1"></label>
+                                    </div>
+                                    <p class="name">John Doe</p>
+                                </div>
+                            </div>
+                            <p class="message">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
+                                voluptatem alias ut provident sapiente repellendus.
+                            </p>
+                            <button class="boton"><span>ver turnos</span></button>
+                        </div>
+                        <section class="fixed-section">
+                            <div class="cookie-card">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d26275.05765963241!2d-58.40323675!3d-34.5944955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2sar!4v1693005218530!5m2!1ses-419!2sar" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </section>
+                    </section>
+                </div>
+
+            </main>
+            <!--fotter--->
+            <footer class="footer text-center">
+                <div class="container">
+                    <div class="row">
+                        <!-- Footer Location-->
+                        <div class="col-lg-4 mb-5 mb-lg-0">
+                            <h4 class="text-uppercase mb-4">Direccion</h4>
+                            <p class="lead mb-0">
+                                Buenos Aires, Argentina
+                                <br />
+                                Av.Panamericana
+                            </p>
+                        </div>
+                        <!-- Footer Social Icons-->
+                        <div class="col-lg-4 mb-5 mb-lg-0">
+                            <h4 class="text-uppercase mb-4">Redes</h4>
+                            <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a>
+                            <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-dribbble"></i></a>
+                        </div>
+                        <!-- Footer About Text-->
+                        <div class="col-lg-4">
+                            <h4 class="text-uppercase mb-4">Proyecto Final Egg</h4>
+                            <p class="lead mb-0">
+                                Proyecto Final Grupo 3
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+
+            <!-- Copyright Section-->
             <div class="copyright py-4 text-center text-white">
                 <div class="container"><small>HealtCooperationWeb ©2023</small></div>
             </div>
@@ -399,5 +183,5 @@ prevNextIcon.forEach(icon => { // getting prev and next icons
 
 
             <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-</body>
-</html>
+        </body>
+    </html>

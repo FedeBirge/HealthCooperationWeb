@@ -1,6 +1,157 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
+.fixed-section {
+  position: relative;
+  height: 500px;
+}
+
+.cookie-card {
+  max-width: 600px;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 20px 20px 30px rgba(0, 0, 0, .05);
+  position: absolute;
+  top: -400px;
+  right: -350px;
+  text-align: center;
+  overflow: auto;
+}
+
+.cookie-card iframe {
+  width: auto;
+  height: 900px;
+  margin: 0 auto;
+}
+
+
+
+
+.card1 {
+    
+  background-color: rgba(243, 244, 246, 1);
+  padding: 2.5rem;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 20px 30px -20px rgba(5, 5, 5, 0.24);
+   
+}
+
+.header1 {
+  display: flex;
+  align-items: center;
+  grid-gap: 1rem;
+  gap: 1rem;
+}
+
+.header1 .image {
+  height: 8rem;
+  width: 8rem;
+  border-radius: 9999px;
+  object-fit: cover;
+  background-color: royalblue;
+}
+section {
+    margin: 30px;
+    padding: 0 80px;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    min-height: 50vh;
+}
+.rating:not(:checked) > input {
+  position: absolute;
+  appearance: none;
+}
+
+.rating:not(:checked) > label {
+  float: right;
+  cursor: pointer;
+  font-size: 30px;
+  color: #666;
+}
+
+.rating:not(:checked) > label:before {
+  content: '★';
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+  color: #e58e09;
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+  color: #ff9e0b;
+}
+
+.rating > input:checked ~ label {
+  color: #ffa723;
+}
+
+
+
+
+ 
+.name {
+  margin-top: 0.25rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgba(55, 65, 81, 1);
+}
+
+.message {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  margin-top: 1rem;
+  color: rgba(107, 114, 128, 1);
+}
+.boton {
+ 
+  padding: 1.2em;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+    margin-left: 60px;
+  
+}
+
+.boton:hover {
+  background-color: #1abc9c;
+box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #fff;
+  transform: translateY(-3px);
+  
+}
+
+.boton:active {
+ransform: translateY(-1px);
+}
+
+.fixed-section {
+  position: relative; /* Asegúrate de que el contenedor principal tenga una posición relativa */
+  height: 500px; /* Establece la altura de la sección según tus necesidades */
+}
+
+
+
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -90,7 +241,7 @@ body {
   line-height: var(--bs-body-line-height);
   color: var(--bs-body-color);
   text-align: var(--bs-body-text-align);
-  background-color: var(--bs-body-bg);
+  background-color: #1abc9c;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -130,7 +281,7 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
     font-weight: 700;
     font-size: 16px;
     color: #1b3039;
-    padding: 1px 4px;
+    padding: 5px 8px;
     background: #eceff1;
     border: none;
     border-radius: 50px;
@@ -11182,7 +11333,9 @@ a{
 }
 
 .btn.btn-outline-secondary {
-    display: inline-block;
+       display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 6px 12px;
     margin-bottom: 0;
     font-size: 14px;
@@ -11202,7 +11355,9 @@ a{
     border: none; /* Elimina el borde */
     border-radius: 1; /* Elimina los bordes redondeados */
     color: #333;
-    background-color: #32be8f; /* Cambia el color de fondo al deseado */
+    background-color: #32be8f; 
+    border-radius: 50%;
+    /* Cambia el color de fondo al deseado */
 }
 
 .container-at-top{
@@ -11335,250 +11490,35 @@ body{
  <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-.carta-medico {
-    
-    background-color: #f2f2f2;
-    border: 1px solid #333; 
-    border-radius: 10px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-    padding: 0;
-    width: fit-content;
-    margin: 0;
-    
-}
-section {
-    margin: 0;
-    padding: 0 10px;
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; 
-    min-height: 50vh;
+
+
+
+.search-static-map-wrapper {
+  position: relative;
+  height: 500vh; /* Esto es solo un ejemplo. Ajusta la altura según tus necesidades. */
 }
 
-.wrapper {
-    margin-top: 10px;
-    width: 385px;
-    height: 470px;
-    background: #fff;
-    border: 1px solid #333; 
-    border-radius: 10px;
-    border-radius: 10px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-   
-    margin-left: 10px; 
+
+.search-static-map-wrapper #staticGoogleMapsImg {
+    border-radius: .2667rem;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    height: 640px;
+    transition: .3s;
+    width: 270px
 }
 
-.wrapper h1 {
-    font-size: 24px; /* Tamaño de fuente */
-    color: #333; /* Color del texto */
-    text-align: center; /* Alineación del texto */
-    margin-top: 20px;
-    margin-left: 30px;
+#sectionContainer {
+  position: relative;
+  /* Otros estilos para el contenedor de la sección si es necesario */
 }
 
-.column-divider-table {
-    border-collapse: collapse;
-  }
-  
-  
-  .column-divider-table td {
-    padding: 8px;
-    text-align: center;
-  }
-  
-  
-  .column-divider-table td:not(:last-child) {
-    border-right: 1px solid black;
-  }
-
-button {
-    width: 60px;
-    height: 30px;
-    border: 2px solid #315cfd;
-    border-radius: 1px;
-    transition: all 0.3s;
-    cursor: pointer;
-    background: white;
-    font-size: 1em;
-    font-weight: 550;
-    font-family: 'Montserrat', sans-serif;
-  }
-  
-  button:hover {
-    background: #315cfd;
-    color: white;
-    font-size: 0.8em;
-  }
-
-.btn-reserve:hover {
-    background-color: #0056b3;
-}
-.container form {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-}
-.container {
-    color: #333;
-    font-size: 1rem; /* Ajusta el tamaño de fuente de los días */
-
-}
-.container label {
-    display: flex;
-    cursor: pointer;
-    font-weight: 500;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 0.375em;
-}
-
-.container  label input {
-    position: absolute;
-    left: -9999px;
-}
-
-.container label input:checked + span {
-    background-color: #414181;
-    color: white;
-}
-
-.container label input:checked + span:before {
-    box-shadow: inset 0 0 0 0.4375em #00005c;
-}
-
-.container label span {
-    display: flex;
-    align-items: center;
-    padding: 0.375em 0.75em 0.375em 0.375em;
-    border-radius: 99em;
-    transition: 0.25s ease;
-    color: 333;
-}
-
-.container label span:hover {
-    background-color: #d6d6e5;
-}
-
-.container label span:before {
-    display: flex;
-    flex-shrink: 0;
-    content: "";
-    background-color: #fff;
-    width: 1.5em;
-    height: 1.5em;
-    border-radius: 50%;
-    margin-right: 0.375em;
-    transition: 0.25s ease;
-    box-shadow: inset 0 0 0 0.125em #00005c;
-}
-.card {
-    top: -80px;
-    margin-left: 5px;
-    position: relative;
-    width: 300px;
-    height: 300px;
-    background-color: #f2f2f2;
-    border: 1px solid #333; /* Add border style */
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    perspective: 1000px;
-    box-shadow: 0 0 0 5px #ffffff80;
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.card svg {
-    width: 48px;
-    fill: #333;
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
-}
-
-.card__content {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #f2f2f2;
-    transform: rotateX(-90deg);
-    transform-origin: bottom;
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.card:hover .card__content {
-    transform: rotateX(0deg);
-}
-
-.card__title {
-    margin: 0;
-    font-size: 24px;
-    color: #333;
-    font-weight: 700;
-}
-
-.card:hover svg {
-    scale: 0;
-}
-
-.card__description {
-    margin: 10px 0 0;
-    font-size: 14px;
-    color: #777;
-    line-height: 1.4;
-}
-
-.rating {
-    top: 150px;
-    margin-left: -300px;
-    position: relative;
-    border: 1px solid #333; /* Add border style */
-    border-radius: 10px;
-    padding: 10px; /* Add some padding */
-}
-
-.rating:not(:checked) > input {
+#staticGoogleMapsImg {
   position: absolute;
-  appearance: none;
+  top: 0;
+  right: 0;
 }
 
-.rating:not(:checked) > label {
-  float: right;
-  cursor: pointer;
-  font-size: 67px;
-  color: #666;
-}
 
-.rating:not(:checked) > label:before {
-  content: '★';
-}
 
-.rating > input:checked + label:hover,
-.rating > input:checked + label:hover ~ label,
-.rating > input:checked ~ label:hover,
-.rating > input:checked ~ label:hover ~ label,
-.rating > label:hover ~ input:checked ~ label {
-  color: #e58e09;
-}
 
-.rating:not(:checked) > label:hover,
-.rating:not(:checked) > label:hover ~ label {
-  color: #ff9e0b;
-}
 
-.rating > input:checked ~ label {
-  color: #ffa723;
-  }
-
- 
