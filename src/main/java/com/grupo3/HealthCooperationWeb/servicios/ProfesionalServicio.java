@@ -1,6 +1,7 @@
 package com.grupo3.HealthCooperationWeb.servicios;
 
 import com.grupo3.HealthCooperationWeb.entidades.AgendaSemanal;
+import com.grupo3.HealthCooperationWeb.entidades.DiaAgenda;
 import com.grupo3.HealthCooperationWeb.entidades.Imagen;
 import com.grupo3.HealthCooperationWeb.entidades.Oferta;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import com.grupo3.HealthCooperationWeb.repositorios.ProfesionalRepositorio;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Map;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -287,7 +289,7 @@ public class ProfesionalServicio extends UsuarioServicio {
 
        
         if (semanas == null || semanas.isEmpty()) {
-            throw new MyException("la agenda semanal no puede estar vacio");
+            throw new MyException("la agenda semanal no puede estar vacia");
         }
         Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
 
@@ -298,6 +300,49 @@ public class ProfesionalServicio extends UsuarioServicio {
         }
 
     }
+    public boolean existeSemana(AgendaSemanal semana, Profesional prof){
+        
+        List<AgendaSemanal> agendasProf = prof.getAgendasSemanales();
+        for (AgendaSemanal agendaSemanal : agendasProf) {
+           Map<Date,DiaAgenda> fechas = agendaSemanal.getFechasYTurnos();
+            for (Map.Entry<Date, DiaAgenda> entry : fechas.entrySet()) {
+                Date key = entry.getKey();
+                DiaAgenda value = entry.getValue();
+                if(semana.getFechasYTurnos().containsKey(key)){
+                    return true;
+                }
+                
+                
+            }
+        }
+        return false;
+        
+    }
+               
+    
+//       @Transactional
+//    public void agregarSemanas(String id) throws MyException {
+//
+//       
+//        if (semanas == null || semanas.isEmpty()) {
+//            throw new MyException("la agenda semanal no puede estar vacia");
+//        }
+//        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+//
+//        if (respuesta.isPresent()) {
+//            Profesional profesional = (Profesional) (respuesta.get());
+//           
+//            for (AgendaSemanal semana : semanas) {
+//                if(!existeSemana(semana,profesional)){
+//                // si la semana no existe entre la lista de actuales agrego
+//                profesional.getAgendasSemanales().add(semana);
+//                    System.out.println("agrego semanas");
+//                }
+//                
+//            }
+//        }
+//
+//    }
 
     @Transactional
     public void asignarOferta(String id, String horaInicial, String horaFinal,

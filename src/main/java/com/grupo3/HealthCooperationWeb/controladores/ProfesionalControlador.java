@@ -26,6 +26,7 @@ import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 import com.grupo3.HealthCooperationWeb.servicios.TurnoServicio;
 import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
 import java.sql.Time;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
 import javax.servlet.http.HttpSession;
@@ -95,7 +96,7 @@ public class ProfesionalControlador {
             @RequestParam String dni,
             @RequestParam String email, @RequestParam String password, @RequestParam String password2,
             @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
-            String especialidad, String valorConsulta, ModelMap modelo) throws IOException {
+            String especialidad, String valorConsulta, ModelMap modelo) throws IOException, ParseException {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
@@ -170,7 +171,7 @@ public class ProfesionalControlador {
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-            String fecha_nac, String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException, MyException {
+            String fecha_nac, String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException, MyException, ParseException {
 
         try {
             Especialidad[] especialidades = Especialidad.values();
