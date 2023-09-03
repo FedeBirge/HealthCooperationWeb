@@ -1,29 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
-.fixed-section {
-  position: relative;
-  height: 500px;
-}
-
-.cookie-card {
-  max-width: 600px;
-  padding: 1rem;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 20px 20px 30px rgba(0, 0, 0, .05);
-  position: absolute;
-  top: -400px;
-  right: -350px;
-  text-align: center;
-  overflow: auto;
-}
-
-.cookie-card iframe {
-  width: auto;
-  height: 900px;
-  margin: 0 auto;
-}
 
 
 
