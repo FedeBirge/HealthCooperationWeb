@@ -46,8 +46,7 @@ public class ProfesionalControlador {
     @Autowired
     private TurnoServicio turnoServ;
 
-    // En el panel, el doc ve la lista de pacientes
-    // Falta refinar esto para que sean solo SUS pacientes, no todos
+    // Listado de todos los pacientes
     @GetMapping("/dashboard")
     public String panelAdministrativo(ModelMap modelo, HttpSession session) throws MyException {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -58,6 +57,20 @@ public class ProfesionalControlador {
         return "panelProfesional.html";
     }
 
+    // listado SOLO de SUS pacientes (con los que tiene o ha tenido algun turno):
+    @GetMapping("/mis_pacientes")
+    public String listarMisPacientes(ModelMap modelo, HttpSession session, String idProfesional) throws MyException {
+        try {
+            modelo.addAttribute("pacientes", pacienteServicio.listarPacientesXprof(idProfesional));
+            modelo.put("Exito", "Lista de pacientes encontrada con exito");
+            return "panelProfesional.html";
+        } catch (Exception e) {
+            modelo.put("error", e.getMessage());
+            return "redirect:/dashboard";
+        }
+
+    }
+
     // Acceden pacientes y profesionales al perfil del profesional
     @GetMapping("/MiPerfil/{id}")
     public String vistaPerfilProfesional(@PathVariable("id") String id, ModelMap modelo) throws MyException {
@@ -66,7 +79,7 @@ public class ProfesionalControlador {
             modelo.addAttribute("profesional", usuarioServicio.getOne(id));
             return "perfilProfesional.html";
         } catch (Exception e) {
-            return "redirect: /panelProfesional.html";
+            return "redirect:";
         }
     }
 
