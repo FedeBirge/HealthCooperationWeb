@@ -47,20 +47,21 @@ public class ObraSocialServicio {
     public ObraSocial getObraSocialById(String id) throws MyException {
         return obraRepo.getById(id);
     }
-     public List<String> listarNombreObrasSociales() {
-         List<ObraSocial> obras = new ArrayList();
+
+    public List<String> listarNombreObrasSociales() {
+        List<ObraSocial> obras = new ArrayList();
         List<String> nombres = new ArrayList();
 
-            obras = obraRepo.findAll();
-            for (ObraSocial obra : obras) {
-                nombres.add(obra.getNombre());
-               
-             
-         }
-            return nombres;
+        obras = obraRepo.findAll();
+        for (ObraSocial obra : obras) {
+            nombres.add(obra.getNombre());
+
+        }
+        return nombres;
 
     }
-    public List<ObraSocial> listarObrasSociales() throws MyException{
+
+    public List<ObraSocial> listarObrasSociales() throws MyException {
 
         List<ObraSocial> obras = new ArrayList();
 
@@ -69,16 +70,16 @@ public class ObraSocialServicio {
         try {
             obras = obraRepo.findAll();
             for (ObraSocial obra : obras) {
-                if(!obra.getNombre().equals("Particular")){
+                if (!obra.getNombre().equals("Particular")) {
                     aux.add(obra);
                 }
-                
+
             }
             return aux;
 
         } catch (Exception e) {
             throw new MyException("No pudieron ser listadas");
-            
+
         }
 
     }
@@ -101,29 +102,28 @@ public class ObraSocialServicio {
 
         }
     }
-    
-    public ObraSocial buscarXNombre(String nombre){
+
+    public ObraSocial buscarXNombre(String nombre) {
         return obraRepo.findByNombre(nombre);
     }
-    
-    public List<ObraSocial> pasarObras(List<String >selecciones) throws MyException{
+
+    public List<ObraSocial> pasarObras(List<String> selecciones) throws MyException {
         List<ObraSocial> obras = new ArrayList<>();
         List<String> nombres = listarNombreObrasSociales();
-        
+
         for (String selc : selecciones) {
-        
-            if(nombres.contains(selc)){
+
+            if (nombres.contains(selc)) {
                 obras.add(buscarXNombre(selc));
-            }
-            else{
+            } else {
                 obras.add(crearObraSocialReturn(selc, "mail", "tel"));
             }
-            
+
         }
         return obras;
-        
-        
+
     }
+
     @Transactional
     public void eliminarObraSocial(String id) throws MyException {
 

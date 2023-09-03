@@ -98,7 +98,8 @@ public class ObraSocialControlador {
     public String eliminarObra(@PathVariable("id") String id, ModelMap modelo) {
 
         try {
-
+            // (agrego siguiente línea: bren)
+            obraServ.eliminarObraSocial(id);
             modelo.put("exito", "Obra Social eliminada con exito!");
             return "redirect:";
         } catch (Exception ex) {

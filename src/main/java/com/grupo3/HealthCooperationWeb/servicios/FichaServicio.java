@@ -89,11 +89,17 @@ public class FichaServicio {
 
     }
 
-    // (mariela)
-    public List<Ficha> mostrarFichas() {
-        List<Ficha> fichas = new ArrayList();
-        fichas = fichaRepositorio.findAll();
-        return fichas;
+    // (edito para que se muestren todas las fichas según paciente: bren)
+    public List<Ficha> mostrarFichas(String idPaciente) throws MyException {
+        Paciente paciente = (Paciente) pacienteServicio.getOne(idPaciente);
+
+        if (paciente == null) {
+            throw new MyException("No existe un paciente con ese ID");
+        } else {
+            List<Ficha> fichas = new ArrayList();
+            fichas = paciente.getHistoria().getFichas();
+            return fichas;
+        }
     }
 
     // (mariela)

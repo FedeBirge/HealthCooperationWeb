@@ -61,12 +61,13 @@ public class AgendaControlador {
 
         if (semanas.size() != 0) {
 
-//            for (int i = 0; i < 3; i++) {
-//                LocalDate fechaActual = LocalDate.now().plusDays(7*i); 
-//            int daysToAdd = DayOfWeek.TUESDAY.getValue() - fechaActual.getDayOfWeek().getValue()-1;
-//
-//            System.out.println("Lunes: " +fechaActual.plusDays(daysToAdd));
-//            }
+            // for (int i = 0; i < 3; i++) {
+            // LocalDate fechaActual = LocalDate.now().plusDays(7*i);
+            // int daysToAdd = DayOfWeek.TUESDAY.getValue() -
+            // fechaActual.getDayOfWeek().getValue()-1;
+            //
+            // System.out.println("Lunes: " +fechaActual.plusDays(daysToAdd));
+            // }
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("semanas", semanas);
@@ -271,6 +272,20 @@ public class AgendaControlador {
             }
         }
         return null;
+    }
+
+    @GetMapping("/eliminarAgenda/{id}") // ruta para eliminar (no tiene una vista, es para un boton
+    public String eliminarAgenda(@PathVariable("id") String id, ModelMap modelo) {
+
+        try {
+            eliminarAgenda(id, modelo);
+            modelo.put("exito", "Agenda eliminada con exito!");
+            return "redirect:";
+        } catch (Exception ex) {
+            modelo.put("error", ex.getMessage());
+            return "redirect:/";
+        }
+
     }
 
 }

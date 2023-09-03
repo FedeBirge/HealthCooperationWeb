@@ -26,6 +26,7 @@ import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 import com.grupo3.HealthCooperationWeb.servicios.TurnoServicio;
 import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
 import java.sql.Time;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
 import javax.servlet.http.HttpSession;
@@ -53,7 +54,7 @@ public class ProfesionalControlador {
         modelo.addAttribute("log", logueado);
         List<Paciente> pacientes = pacienteServicio.mostrarPacientes();
         modelo.addAttribute("pacientes", pacientes);
-     
+
         return "panelProfesional.html";
     }
 
@@ -91,18 +92,20 @@ public class ProfesionalControlador {
     }
 
     @PostMapping("/crear") // ruta para crear un usuario POST
-    public String crearUsuario(HttpSession session, MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
+    public String crearUsuario(HttpSession session, MultipartFile archivo, @RequestParam String nombre,
+            @RequestParam String apellido,
             @RequestParam String dni,
             @RequestParam String email, @RequestParam String password, @RequestParam String password2,
             @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
-            String especialidad, String valorConsulta, ModelMap modelo) throws IOException {
+            String especialidad, String valorConsulta, ModelMap modelo) throws IOException, ParseException {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
 
-            profesionalServicio.registrarProfesional(archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
+            profesionalServicio.registrarProfesional(archivo, nombre, apellido, dni, email, password, password2,
+                    telefono, direccion, fecha_nac, especialidad, valorConsulta);
             modelo.put("exito", "!Profesional registrado con exito!");
             return registrar(modelo, session);
 
@@ -170,7 +173,8 @@ public class ProfesionalControlador {
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-            String fecha_nac, String especialidad, String valorConsulta, ModelMap modelo, HttpSession session) throws IOException, MyException {
+            String fecha_nac, String especialidad, String valorConsulta, ModelMap modelo, HttpSession session)
+            throws IOException, MyException, ParseException {
 
         try {
             Especialidad[] especialidades = Especialidad.values();
@@ -179,7 +183,8 @@ public class ProfesionalControlador {
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("user", profesionalServicio.getOne(id));
             modelo.addAttribute("id", profesionalServicio.getOne(id).getId());
-            profesionalServicio.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac, especialidad, valorConsulta);
+            profesionalServicio.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2,
+                    telefono, direccion, fecha_nac, especialidad, valorConsulta);
             modelo.put("exito", "¡Profesional modificado con exito!");
             return "modificar_prof.html";
         } catch (MyException ex) {
