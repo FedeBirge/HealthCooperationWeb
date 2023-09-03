@@ -15,6 +15,7 @@ import com.grupo3.HealthCooperationWeb.repositorios.ProfesionalRepositorio;
 import com.grupo3.HealthCooperationWeb.repositorios.TurnoRepositorio;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,11 +54,15 @@ public class PacienteServicio extends UsuarioServicio {
     public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2,
             String telefono, String direccion, String fecha_nac, String grupoSanguineo, String obraSocial)
-            throws MyException, IOException {
+            throws MyException, IOException, ParseException {
 
-        super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+        super.validar("1", nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         validar(grupoSanguineo, obraSocial);
 
+        Date fecha = pasarStringDate(fecha_nac);
+        if (!validarFecha(fecha)) {
+            throw new MyException("la fecha no es válida");
+        }
         Paciente paciente = new Paciente();
         paciente.setNombre(nombre);
         paciente.setApellido(apellido);
@@ -66,14 +71,18 @@ public class PacienteServicio extends UsuarioServicio {
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
         paciente.setTelefono(telefono);
         paciente.setDireccion(direccion);
-        paciente.setFecha_nac(pasarStringDate(fecha_nac));
+        paciente.setFecha_nac(fecha);
         paciente.setActivo(true);
         paciente.setGrupoSanguineo(grupoSanguineo);
 
-        // Crear obra social
-        ObraSocial obraSocial2 = obraSocialServicio.crearObraSocialReturn(obraSocial, "Completar email",
-                "Completar telefono");
-        obraRepo.save(obraSocial2);
+        // Crear obra social o buscar
+        ObraSocial obraSocial2 = obraSocialServicio.buscarXNombre(obraSocial);
+
+        if (obraSocial2 == null) {
+            obraSocial2 = obraSocialServicio.crearObraSocialReturn(obraSocial, "Completar email", "Completar telefono");
+            obraRepo.save(obraSocial2);
+        }
+
         paciente.setObraSocial(obraSocial2);
 
         // paciente.setTurnos(new ArrayList<Turno>());
@@ -98,14 +107,19 @@ public class PacienteServicio extends UsuarioServicio {
     }
 
     @Transactional
-    public void modificarPaciente(String id, MultipartFile archivo, String nombre, String apellido, String dni,
+    public void modificarPaciente(String id, MultipartFile archivo, String nombre,
+            String apellido, String dni,
             String email,
             String password, String password2,
-            String telefono, String direccion, String fecha_nac, String grupoSanguineo, String idObraSocial,
-            String nombreObraSocial, String emailObraSocial, String telefonoObraSocial)
-            throws MyException, IOException {
+            String telefono, String direccion, String fecha_nac, String grupoSanguineo,
+            String obraSocial)
+            throws MyException, IOException, ParseException {
 
         Optional<Paciente> respuesta = pacienteRepositorio.findById(id);
+        Date fecha = pasarStringDate(fecha_nac);
+        if (!validarFecha(fecha)) {
+            throw new MyException("la fecha no es válida");
+        }
         if (respuesta.isPresent()) {
             Paciente pas = respuesta.get();
             // if (!super.buscarPorMail(email).getId().equals(prof.getId())) {
@@ -114,8 +128,10 @@ public class PacienteServicio extends UsuarioServicio {
             // }
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
-            obraSocialServicio.modificarObraSocial(idObraSocial, nombreObraSocial, "Completar email",
-                    "Completar telefono");
+            System.out.println("obra Cont " + obraSocial);
+            ObraSocial obraSocial2 = obraSocialServicio.buscarXNombre(obraSocial);
+
+            pas.setObraSocial(obraSocial2);
             pas.setGrupoSanguineo(grupoSanguineo);
 
             String idImg = null;

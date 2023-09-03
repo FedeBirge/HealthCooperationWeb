@@ -18,6 +18,8 @@ import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.ProfesionalRepositorio;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,10 +78,14 @@ public class ProfesionalServicio extends UsuarioServicio {
     // el administrador crea un Profesional, luego ´ste actualiza sus atributos particulares
     public void registrarProfesional(MultipartFile archivo, String nombre, String apellido, String dni, String email, String password,
             String password2, String telefono, String direccion, String fecha_nac, String especialidad,
-            String valorConsulta) throws MyException, IOException {
+            String valorConsulta) throws MyException, IOException, ParseException {
         // Se validan los datos especificos de profesional
         // faltaria descripcion
-        super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+        super.validar("1",nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+        Date fecha = pasarStringDate(fecha_nac);
+           if (!validarFecha(fecha)) {
+                throw new MyException("la fecha no es válida");
+        }
         Profesional profesional = new Profesional();
         profesional.setNombre(nombre);
         profesional.setApellido(apellido);
@@ -88,7 +94,7 @@ public class ProfesionalServicio extends UsuarioServicio {
         profesional.setPassword(new BCryptPasswordEncoder().encode(password));
         profesional.setTelefono(telefono);
         profesional.setDireccion(direccion);
-        profesional.setFecha_nac(pasarStringDate(fecha_nac));
+        profesional.setFecha_nac(fecha);
         profesional.setActivo(true);
         if (especialidad == null) {
 
@@ -110,13 +116,12 @@ public class ProfesionalServicio extends UsuarioServicio {
     public void modificarProfesional(String id, MultipartFile archivo, String nombre,
             String apellido, String dni, String email, String password,
             String password2, String telefono, String direccion, String fecha_nac,
-            String especialidad, String valorConsulta) throws MyException, IOException {
-        super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+            String especialidad, String valorConsulta) throws MyException, IOException, ParseException {
 
         Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
         if (respuesta.isPresent()) {
             Profesional prof = respuesta.get();
-            super.validar(nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
+            super.validar(id,nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
             if (especialidad == null) {
 

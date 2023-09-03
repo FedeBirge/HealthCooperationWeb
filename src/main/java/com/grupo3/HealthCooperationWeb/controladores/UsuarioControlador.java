@@ -1,13 +1,16 @@
 package com.grupo3.HealthCooperationWeb.controladores;
 
+import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
+import com.grupo3.HealthCooperationWeb.servicios.ObraSocialServicio;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 
@@ -33,6 +37,8 @@ public class UsuarioControlador {
 
     @Autowired
     private PacienteServicio pacienteServ;
+    @Autowired
+    private ObraSocialServicio obraServ;
 
     @GetMapping("/dashboard") // ruta para el panel administrativo
     public String panelAdministrativo(ModelMap modelo) {
@@ -45,7 +51,9 @@ public class UsuarioControlador {
     public String verPerfilUsusario(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
+    
         modelo.addAttribute("user", userServ.getOne(id));
+      
         return "perfil.html";
 
     }
@@ -56,7 +64,7 @@ public class UsuarioControlador {
             @RequestParam String dni,
             @RequestParam String email, @RequestParam String password, @RequestParam String password2,
             @RequestParam String telefono, @RequestParam String direccion, @RequestParam String fecha_nac,
-            ModelMap modelo) throws IOException {
+            ModelMap modelo) throws IOException, ParseException {
         try {
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
@@ -92,7 +100,7 @@ public class UsuarioControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             List<Usuario> users = userServ.listarUsuarios();
-             Rol[] roles = Rol.values();
+            Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);
             modelo.addAttribute("users", users);
             modelo.put("error", ex.getMessage());
@@ -103,7 +111,7 @@ public class UsuarioControlador {
 
     @PreAuthorize("hasAnyRole('ROLE_USUARIO','ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
     @GetMapping("/perfil/{id}")
-    public String perfil(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+    public String perfil(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
         try {
             Rol[] roles = Rol.values();
@@ -129,7 +137,8 @@ public class UsuarioControlador {
             if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("user", pacienteServ.getOne(id));
-
+                List<ObraSocial> obras = obraServ.listarObrasSociales();
+                modelo.addAttribute("obras", obras);
                 modelo.addAttribute("log", logueado);
 
                 return "modificar_user.html";
@@ -137,6 +146,8 @@ public class UsuarioControlador {
 
         } catch (Exception ex) {
             Rol[] roles = Rol.values();
+            List<ObraSocial> obras = obraServ.listarObrasSociales();
+            modelo.addAttribute("obras", obras);
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("user", pacienteServ.getOne(id));
@@ -152,10 +163,10 @@ public class UsuarioControlador {
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-            String fecha_nac, String idObraSocial,
-            String nombreObraSocial, String emailObraSocial, String telefonoObraSocial, String gruposanguineo,
-            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session)
-            throws IOException, MyException {
+            String fecha_nac, String obraSocial, String gruposanguineo,
+            String especialidad, String valorConsulta, ModelMap modelo, HttpSession session,
+            RedirectAttributes redirectAttributes)
+            throws IOException, MyException, ParseException {
 
         try {
 
@@ -183,15 +194,19 @@ public class UsuarioControlador {
                 return "modificar_user.html";
             }
             if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
+                System.out.println("obra Cont "+obraSocial);
                 pacienteServ.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono,
-                        direccion, fecha_nac, gruposanguineo, "5", "obra", emailObraSocial,
-                        telefonoObraSocial);
+                        direccion, fecha_nac, gruposanguineo, obraSocial);
                 System.out.println("Post de modificar paciente");
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("user", pacienteServ.getOne(id));
-                modelo.put("exito", "¡Usuario modificado con exito!");
-                return "modificar_user.html";
+                redirectAttributes.addFlashAttribute("exito", "¡Usuario modificado con exito!");
+                List<ObraSocial> obras = obraServ.listarObrasSociales();
+                modelo.addAttribute("obras", obras);
+               
+          
+            return "redirect:/paciente/dashboard";
             }
 
         } catch (MyException ex) {

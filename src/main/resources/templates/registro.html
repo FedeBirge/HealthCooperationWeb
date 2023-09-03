@@ -82,36 +82,77 @@
                                     <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
                                 </div>  
                                 <h4 class="text-center">¿Tienes Obra Social?</h4>
-                                <div  class="input-group mb-4 d-flex justify-content-center">
+                                <div class="input-group mb-4 d-flex justify-content-center">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                        <input class="form-check-input" type="radio" id="inlineCheckbox1" name="obrasocial" value="Si">
                                         <label class="form-check-label" for="inlineCheckbox1">Si</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                                        <input class="form-check-input" type="radio" id="inlineCheckbox2" name="obrasocial" value="Particular" checked>
                                         <label class="form-check-label" for="inlineCheckbox2">No</label>
                                     </div>
+                                </div>
 
+                                
+                                   
+                                <div class="form-group" id="inputContainer" style="display: none;">
+                                    <label for="obrasPreexistentes">Seleccione su Obra Social:</label>
+                                    <select class="form-control" id="obrasPreexistentes" onchange="manejarSeleccion()" name="obrasocial_select">
+                                        <option value="">Seleccionar</option>
+                                        <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
+                                        
+                                    </select>
+                                </div>
 
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function () {
-                                            const checkbox = document.getElementById('inlineCheckbox1');
-                                            const inputContainer = document.getElementById('inputContainer');
+                                <script>
+                                    function manejarSeleccion() {
+                                        const select = document.getElementById('obrasPreexistentes');
+                                        const obrasocialInput = document.querySelector('input[name="obrasocial"]');
 
-                                            checkbox.addEventListener('change', function () {
-                                                if (checkbox.checked) {
+                                        if (select.value === 'IngreseNueva') {
+                                            obrasocialInput.value = 'Particular';
+                                        } else {
+                                            obrasocialInput.value = select.value;
+                                        }
+                                    }
+
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const radios = document.querySelectorAll('input[name="obrasocial"]');
+                                        const inputContainer = document.getElementById('inputContainer');
+
+                                        radios.forEach(radio => {
+                                            radio.addEventListener('change', function () {
+                                                if (radio.id === 'inlineCheckbox1') {
                                                     inputContainer.style.display = 'block';
                                                 } else {
                                                     inputContainer.style.display = 'none';
+                                                    manejarSeleccion();
                                                 }
                                             });
                                         });
-                                    </script>
 
-                                </div>
-                                <div id="inputContainer" style="display: none" class="pb-2">
-                                    <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
-                                </div>
+                                        // Llamar a manejarSeleccion en la carga inicial para establecer el valor predeterminado
+                                        manejarSeleccion();
+                                    });
+                                </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -119,37 +160,37 @@
 
 
                                     <div class="contenedorImagen">
-    <img id="imagenPrevia" src="/ruta/de/imagen/predeterminada.jpg" alt="" class="imagenPrevia">
-</div>    
-<div class="input-group mb-4">
-    <span class="input-group-text">Foto</span>
-    <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
-</div>
+                                        <img id="imagenPrevia" src="/ruta/de/imagen/predeterminada.jpg" alt="" class="imagenPrevia">
+                                    </div>    
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text">Foto</span>
+                                        <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
+                                    </div>
 
-<script>
-    function previsualizarImagen() {
-        var archivo = document.getElementById('foto').files[0];
-        var imagenPrevia = document.getElementById('imagenPrevia');
-        var nombreCampo = "archivo"; // Nombre predeterminado del campo de entrada
+                                    <script>
+                                        function previsualizarImagen() {
+                                            var archivo = document.getElementById('foto').files[0];
+                                            var imagenPrevia = document.getElementById('imagenPrevia');
+                                            var nombreCampo = "archivo"; // Nombre predeterminado del campo de entrada
 
-        if (archivo) {
-            var lector = new FileReader();
+                                            if (archivo) {
+                                                var lector = new FileReader();
 
-            lector.onload = function (event) {
-                imagenPrevia.src = event.target.result;
-            };
+                                                lector.onload = function (event) {
+                                                    imagenPrevia.src = event.target.result;
+                                                };
 
-            lector.readAsDataURL(archivo);
-        } else {
-            // Si no se selecciona ningún archivo, cambia el nombre del campo de entrada
-            nombreCampo = "imagenPredeterminada";
-            imagenPrevia.src = "/ruta/de/imagen/predeterminada.jpg"; // Cambia la ruta según tu imagen predeterminada
-        }
+                                                lector.readAsDataURL(archivo);
+                                            } else {
+                                                // Si no se selecciona ningún archivo, cambia el nombre del campo de entrada
+                                                nombreCampo = "imagenPredeterminada";
+                                                imagenPrevia.src = "/ruta/de/imagen/predeterminada.jpg"; // Cambia la ruta según tu imagen predeterminada
+                                            }
 
-        // Cambiar el nombre del campo de entrada
-        document.getElementById('foto').name = nombreCampo;
-    }
-</script>
+                                            // Cambiar el nombre del campo de entrada
+                                            document.getElementById('foto').name = nombreCampo;
+                                        }
+                                    </script>
 
 
                                 </div>
