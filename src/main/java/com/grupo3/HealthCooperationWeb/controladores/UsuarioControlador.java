@@ -178,8 +178,8 @@ public class UsuarioControlador {
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("user", userServ.getOne(id));
-                modelo.put("exito", "¡Admin modificado con exito!");
-                return "modificar_user.html";
+                redirectAttributes.addFlashAttribute("exito", "¡Admin modificado con exito!");
+                  return "redirect:/admin/dashboard";
             }
             if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
 
@@ -190,8 +190,8 @@ public class UsuarioControlador {
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("user", profServ.getOne(id));
-                modelo.put("exito", "¡Profesional modificado con exito!");
-                return "modificar_user.html";
+                redirectAttributes.addFlashAttribute("exito", "¡Profesional modificado con exito!");
+               return "redirect:/profesionales/dashboard";
             }
             if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
                 System.out.println("obra Cont "+obraSocial);

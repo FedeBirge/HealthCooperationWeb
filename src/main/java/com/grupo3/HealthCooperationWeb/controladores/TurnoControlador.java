@@ -159,5 +159,17 @@ public class TurnoControlador {
         modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
     }
+    
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
+    @GetMapping("/verTodos/{id}") // ruta para el panel administrativo
+    public String vertodos(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+//        List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+//        semanas = servAgenda.obtenerSemanaActual(id, semanas);
+//        Map<Turno, Paciente> turnos = pacServ.mapearPacientesXprofTodos(id, semanas);
 
+//        modelo.addAttribute("turnos", turnos);
+        return "verTurnos.html";
+    }
 }
