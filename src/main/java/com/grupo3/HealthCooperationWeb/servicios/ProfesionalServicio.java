@@ -4,11 +4,15 @@ import com.grupo3.HealthCooperationWeb.entidades.AgendaSemanal;
 import com.grupo3.HealthCooperationWeb.entidades.DiaAgenda;
 import com.grupo3.HealthCooperationWeb.entidades.Imagen;
 import com.grupo3.HealthCooperationWeb.entidades.Oferta;
+import com.grupo3.HealthCooperationWeb.entidades.Paciente;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +26,15 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -108,15 +120,8 @@ public class ProfesionalServicio extends UsuarioServicio {
         profesional.setValorConsulta(valorConsulta);
         profesional.setRol(Rol.MODERADOR);
 
-        if (archivo.isEmpty()) {
-            // Si el archivo está vacío, crea el paciente con una imagen predeterminada
-            Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la imagen predeterminada
-            profesional.setImagen(imagenPredeterminada);
-        } else {
-            // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
-            Imagen imagen = imagenServ.guardar(archivo);
-            profesional.setImagen(imagen);
-        }
+        Imagen imagen = imagenServ.guardar(archivo);
+        profesional.setImagen(imagen);
 
         profesionalRepositorio.save(profesional);
 
@@ -144,16 +149,8 @@ public class ProfesionalServicio extends UsuarioServicio {
             System.out.println("valor" + valorConsulta);
             prof.setEspecialidad(pasarStringEspecialidad(especialidad));
             prof.setValorConsulta(valorConsulta);
-            String idImg = null;
-            if (prof.getImagen() != null) {
-                idImg = prof.getImagen().getId();
-            }
-            if (archivo != null && archivo.getBytes().length != 0) {
-                Imagen imagen = imagenServ.actualizar(archivo, id);
-                prof.setImagen(imagen);
-            } else {
-                // No se proporcionó un archivo nuevo, no se actualiza la imagen del usuario
-            }
+            Imagen imagen = imagenServ.actualizar(archivo, id);
+            prof.setImagen(imagen);
 
             profesionalRepositorio.save(prof);
 
@@ -374,4 +371,28 @@ public class ProfesionalServicio extends UsuarioServicio {
             profesional.setOferta(oferta);
         }
     }
+
+    // agrego esto para indicar permisos particulares de profesional (rol MODERADOR)
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Profesional profesional = profesionalRepositorio.findByEmail(email);
+        if (profesional != null && profesional.getActivo().equals(Boolean.TRUE)) {
+            List<GrantedAuthority> permisos = new ArrayList<>();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + profesional.getRol().toString());
+
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("pacientesession", profesional);
+
+            return new User(profesional.getEmail(), profesional.getPassword(), permisos);
+
+        } else {
+            return null;
+        }
+    }
+
 }

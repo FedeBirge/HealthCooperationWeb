@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,6 +51,8 @@ public class TurnoControlador {
         return "turnero.html";
     }
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/cancelarTodos/{id}") // ruta para el panel administrativo
     public String cancelarmisTurnos(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -61,8 +64,11 @@ public class TurnoControlador {
         return "verAgenda.html";
     }
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/cancelarSemana/{id}") // ruta para el panel administrativo
-    public String cancelarSemana(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
+    public String cancelarSemana(@PathVariable("id") String id, ModelMap modelo, HttpSession session)
+            throws MyException {
 
         try {
             List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
@@ -101,8 +107,11 @@ public class TurnoControlador {
         return null;
     }
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @PostMapping("/cancelarSemana/{id}") // ruta para el panel administrativo
-    public String cancelarSemanaActual(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
+    public String cancelarSemanaActual(@PathVariable("id") String id, ModelMap modelo, HttpSession session)
+            throws MyException {
 
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
 
@@ -124,6 +133,8 @@ public class TurnoControlador {
         }
     }
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/verHoy/{id}") // ruta para el panel administrativo
     public String verHoy(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -135,6 +146,8 @@ public class TurnoControlador {
         return "verTurnos.html";
     }
 
+    // solo la ve el doctor con este id
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/verSemana/{id}") // ruta para el panel administrativo
     public String verSemana(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -146,5 +159,5 @@ public class TurnoControlador {
         modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
     }
-    
+
 }

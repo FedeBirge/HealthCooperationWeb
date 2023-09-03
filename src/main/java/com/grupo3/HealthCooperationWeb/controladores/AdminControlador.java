@@ -20,23 +20,23 @@ public class AdminControlador {
     @Autowired
     private UsuarioServicio userServ;
 
-    @GetMapping("/dashboard") 
+    @GetMapping("/dashboard")
     public String panelAdministrador(ModelMap modelo, HttpSession session) {
-         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
-            return "panelAdmin.html";
-       
+        return "panelAdmin.html";
+
     }
 
-    @GetMapping("/registrar") 
+    @GetMapping("/registrar")
     public String registrar(ModelMap modelo, HttpSession session) {
-         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
-            return "altaUsuario.html";
+        return "altaUsuario.html";
 
-        
     }
-      @GetMapping("/verUsuario/{id}") // ruta para ver el perfil de un usuario
+
+    @GetMapping("/verUsuario/{id}") // ruta para ver el perfil de un usuario
     public String verPerfilUsusario(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
