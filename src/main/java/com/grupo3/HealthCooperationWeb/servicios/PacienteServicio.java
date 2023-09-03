@@ -223,21 +223,18 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     // Mapeo los turnos y paciente filtraos por profesional para el dia de hoy.
     // para la vista de turnos hoy
     public Map<Turno, Paciente> mapearPacientesXprofHoy(String idProfesional) {
-        // un paciente tiene una lista de turnos...
-        List<Paciente> pacientes = new ArrayList<>();
-        // traigo todos los pacientes
-        pacientes = pacienteRepositorio.findAll();
+        
         // preparo la lsita de pacietnes que voy a devolver
         List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
 
         // Repo de turnos
-        List<Turno> turnos = turnoServ.listarTurnosXProfesional(idProfesional);
-
+        List<Turno> turnos = new ArrayList<>();
+        
         // en esa lista de turnos, cada turno tiene un profesional:
         Profesional profesional = profesionalRepositorio.getOne(idProfesional);
         Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
         try {
-            for (Paciente paciente : pacientes) {
+            for (Paciente paciente : pacientesXProfesional) {
                 if (paciente.getTurnos() != null) {
                     turnos = paciente.getTurnos();
                     for (Turno turno : turnos) {
@@ -259,25 +256,25 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     // para la vista de turnos semanal
 
     public Map<Turno, Paciente> mapearPacientesXprofSemana(String idProfesional, List<AgendaSemanal> semana) {
-        // un paciente tiene una lista de turnos...
-        List<Paciente> pacientes = new ArrayList<>();
-        // traigo todos los pacientes
-        pacientes = pacienteRepositorio.findAll();
+       
         // preparo la lsita de pacietnes que voy a devolver
         List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
         List<Turno> turnosPaciente = new ArrayList<>();
         // Repo de turnos
         //
         try {
-            Profesional profesional = profesionalRepositorio.getOne(idProfesional);
+            
             Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
+            
             AgendaSemanal sem = semana.get(0);
+            
             Map<Date, DiaAgenda> fechasTturnos = sem.getFechasYTurnos();
+            
             for (Map.Entry<Date, DiaAgenda> entry : fechasTturnos.entrySet()) {
                 Date key = entry.getKey();
                 DiaAgenda value = entry.getValue();
 
-                for (Paciente paciente : pacientes) {
+                for (Paciente paciente : pacientesXProfesional) {
                     if (paciente.getTurnos() != null) {
                         turnosPaciente = paciente.getTurnos();
                         for (Turno turno : turnosPaciente) {
@@ -291,6 +288,38 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
                 }
             }
 
+            return turnoYpaciente;
+        } catch (Exception e) {
+            System.out.println("Servicio paciente: Hubo un error al mapear pacientes por profesional");
+            return null;
+        }
+
+    }
+    // Mapeo los turnos y paciente filtraos por profesional para el dia de hoy.
+    // para la vista de turnos hoy
+    public Map<Turno, Paciente> mapearPacientesXprofTodos(String idProfesional) {
+     
+        // preparo la lsita de pacietnes que voy a devolver
+        List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
+
+        // Repo de turnos
+        List<Turno> turnos = turnoServ.listarTurnosXProfesional(idProfesional);
+
+        // en esa lista de turnos, cada turno tiene un profesional:
+      
+        Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
+        try {
+            for (Paciente paciente : pacientesXProfesional) {
+                if (paciente.getTurnos() != null) {
+                    turnos = paciente.getTurnos();
+                    for (Turno turno : turnos) {
+                        
+                            turnoYpaciente.put(turno, paciente);
+
+                        
+                    }
+                }
+            }
             return turnoYpaciente;
         } catch (Exception e) {
             System.out.println("Servicio paciente: Hubo un error al mapear pacientes por profesional");

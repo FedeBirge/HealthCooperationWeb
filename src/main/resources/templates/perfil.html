@@ -87,54 +87,52 @@
                     </div>
                 </li>
                 
-                <li class="nav-item" sec:authorize="hasAnyRole('ADMINISTRADOR')">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePaciente"
-                       aria-expanded="true" aria-controls="collapsePaciente">
-                        <i class="fas fa-user"></i>
-                        <span>Pacientes</span>
-                    </a>
-                    <div id="collapsePaciente" class="collapse" aria-labelledby="headingPaciente"
-                         data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/}" sec:authorize="hasRole('ADMINISTRADOR')">Alta Paciente</a>
-                            <a class="collapse-item" th:href="@{/paciente/listar}" sec:authorize="hasRole('ADMINISTRADOR')">Ver Pacientes</a>
-                        </div>
-                    </div>
-                </li>
-                
-                
-                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')" >
+                <li sec:authorize="hasRole('MODERADOR')" class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-hospital-user"></i>
-                        <span>Profesionales</span>
+                        <span>Agenda</span>
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Acciones</h6>
-                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
-                            <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
+                            <a class="collapse-item" th:href="@{/agenda/verAgenda/__${log.id}__}">Ver Mi Agenda</a>
+
 
                         </div>
                     </div>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                <li sec:authorize="hasRole('MODERADOR')" class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Oferta y Disponibilidad</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
+
+
+                        </div>
+                    </div>
+
+                </li>
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
-                        <span>Usuarios</span>
+                        <span>Pacientes</span>
                     </a>
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
 
-                            <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
-
+                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Mis Pacientes</a>
 
                         </div>
                     </div>
-                </li>
 
+                </li>
 
 
 
@@ -207,7 +205,8 @@
 
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
-                        <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Modificar </a>
+                        <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Modificar </a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Solicitar Baja </a>
                         <!-- Encabezado de página -->
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                 <div class="card-body">
@@ -267,6 +266,8 @@
 
                         </div>
                         
+                        <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/misturnos/__${log.id}__}"> Ver Mis Turnos </a>
+                        <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/panel/}"> Ir al Panel de Turnos </a>
 
 
 

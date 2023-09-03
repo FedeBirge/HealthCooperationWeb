@@ -200,45 +200,70 @@
                                     <div class="col-md">
 
 
-                                        <div class="weeks-container">
-                                            <ul th:each="semana : ${semanas}">
-                                                <li  style="display: inline-block; margin-right: 10px;">
+                                        <div class="scroll-buttons">
+                                            <button type="button" class="scroll-button btn btn-success" id="scroll-left">←</button>
+                                            <div class="lista-horizontal" id="scroll-container">
+
+
+                                                <ul class="lista" th:each="semana : ${semanas}">
+
+                                                    <li  style="display: inline-block; margin-right: 10px;">
 
 
 
-                                                    <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
+                                                        <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
 
-                                                        <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
-                                                        <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
-                                                        <ul >
-                                                            <li th:each="turno,index : ${entry.value.turnos}" class="turno-item">
+                                                            <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
+                                                            <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
+                                                            <ul >
+                                                                <li th:each="turno,index : ${entry.value.turnos}" class="turno-item">
 
-                                                                <button block
-                                                                        th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
-                                                                        (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
-                                                                        (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
-                                                                        th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
-                                                                    <span th:text="${turno.hora}"></span>
-                                                                </button>
+                                                                    <button block
+                                                                            th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
+                                                                            (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
+                                                                            (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
+                                                                            th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
+                                                                        <span th:text="${turno.hora}"></span>
+                                                                    </button>
 
 
 
-                                                                <!-- Lista desplegable de estados para el turno -->
-                                                                <select  name="turnoList" th:value="${turno.id} + ',' + ${turno.estado}" class="estado-select form-control" style="width: auto; display: inline">
-                                                                    <option  th:value="${turno.id} + ',' + ${turno.estado}" th:text="${turno.estado}" ></option>
-                                                                    <option th:each="estado : ${estados}" th:value="${turno.id} + ',' + ${estado}" th:text="${estado}"></option>
+                                                                    <!-- Lista desplegable de estados para el turno -->
+                                                                    <select  name="turnoList" th:value="${turno.id} + ',' + ${turno.estado}" class="estado-select form-control" style="width: auto; display: inline">
+                                                                        <option  th:value="${turno.id} + ',' + ${turno.estado}" th:text="${turno.estado}" ></option>
+                                                                        <option th:each="estado : ${estados}" th:value="${turno.id} + ',' + ${estado}" th:text="${estado}"></option>
 
-                                                                </select>
+                                                                    </select>
 
-                                                            </li>
+                                                                </li>
 
+                                                            </ul>
                                                         </ul>
-                                                    </ul>
 
-                                                </li>                                           
+                                                    </li>                                           
 
-                                            </ul>
+                                                </ul>
+                                            </div>
+                                            <button type="button" class="scroll-button btn btn-success" id="scroll-right">→</button>
                                         </div>
+
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                const scrollContainer = document.getElementById("scroll-container");
+                                                const scrollLeftButton = document.getElementById("scroll-left");
+                                                const scrollRightButton = document.getElementById("scroll-right");
+
+                                                scrollLeftButton.addEventListener("click", function () {
+                                                    scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
+                                                });
+
+                                                scrollRightButton.addEventListener("click", function () {
+                                                    scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
+                                                });
+                                            });
+                                        </script>
+
+
 
                                         <div class="d-grid gap-2 col-12 mx-auto text-center">
                                             <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>

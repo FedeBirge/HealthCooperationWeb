@@ -89,9 +89,12 @@ public class UsuarioServicio implements UserDetailsService {
 
         usuario.setRol(Rol.USUARIO);
         if (archivo.isEmpty()) {
-            Imagen imagen = imagenServ.guardar(archivo);
-            usuario.setImagen(imagen);
+            // Si el archivo está vacío, crea el paciente con una imagen predeterminada
+            Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la
+                                                                         // imagen predeterminada
+            usuario.setImagen(imagenPredeterminada);
         } else {
+            // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
             Imagen imagen = imagenServ.guardar(archivo);
             usuario.setImagen(imagen);
         }

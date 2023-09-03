@@ -21,6 +21,7 @@ import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.enumeradores.TipoOferta;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
+import com.grupo3.HealthCooperationWeb.servicios.EmailServicio;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 import com.grupo3.HealthCooperationWeb.servicios.TurnoServicio;
@@ -31,6 +32,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import javax.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 
@@ -45,6 +47,8 @@ public class ProfesionalControlador {
     UsuarioServicio usuarioServicio;
     @Autowired
     private TurnoServicio turnoServ;
+    @Autowired
+    private EmailServicio emailServ;
 
     // Listado de todos los pacientes
     @GetMapping("/dashboard")
@@ -81,6 +85,14 @@ public class ProfesionalControlador {
         } catch (Exception e) {
             return "redirect:";
         }
+    }
+    
+      @GetMapping("/turnoIndividual")
+    public String panelTurno(ModelMap modelo, HttpSession session) throws MyException {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+      
+        return "turneroIndividual.html";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR')")
@@ -224,40 +236,49 @@ public class ProfesionalControlador {
     // darse de baja con GET: puede darlo de baja el ADMIN o el mismo médico a sí
     // mismo
     @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
-    @GetMapping("/darseBaja/{id}")
-    public String darseBaja(@PathVariable("id") String id, ModelMap modelo) {
-        try {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            modelo.put("profesional", usuarioServicio.getOne(id));
-            modelo.addAttribute("id", usuarioServicio.getOne(id).getId());
-            profesionalServicio.darDeBajaProfesional(id);
-            return "panelAdmin.html";
+    @GetMapping("/solicitarBaja/{id}")
+    public String darseBaja(@PathVariable("id") String id, ModelMap modelo,  RedirectAttributes redirectAttributes,HttpSession session) {
+             try {
+             Profesional logueado = (Profesional) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+            emailServ.sendEmail(logueado.getNombre(), logueado.getApellido(),
+                    logueado.getEmail(), logueado.getTelefono(), 
+                    logueado.getEspecialidad().toString(), "Solicita la baja de mis servicios en el Sitio");
+            
+            redirectAttributes.addFlashAttribute("exito", "!Solicitud de baja de servicios envíada!");
+            profesionalServicio.darDeBajaProfesional(id);      
+
+              return "redirect:/pprofesionales/dashboard";
         } catch (Exception ex) {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            modelo.put("error", ex.getMessage());
-            return "redirect: /dashboard";
+             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+           redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/pprofesionales/dashboard";
         }
     }
 
     // darse de baja con POST
     @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
-    @PostMapping("/darseBaja/{id}")
-    public String darseBaja(@PathVariable("id") String id, @RequestParam MultipartFile archivo, ModelMap modelo)
+    @PostMapping("/solicitarBaja/{id}")
+    public String darseBaja(@PathVariable("id") String id, @RequestParam MultipartFile archivo, ModelMap modelo,
+            RedirectAttributes redirectAttributes,HttpSession session)
             throws IOException {
         try {
-            Rol[] roles = Rol.values();
-            modelo.addAttribute("roles", roles);
-            modelo.put("profesional", usuarioServicio.getOne(id));
-            modelo.addAttribute("id", usuarioServicio.getOne(id).getId());
-            profesionalServicio.darDeBajaProfesional(id);
-            modelo.put("exito", "Se ha dado de baja su usuario.");
+             Profesional logueado = (Profesional) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+            emailServ.sendEmail(logueado.getNombre(), logueado.getApellido(),
+                    logueado.getEmail(), logueado.getTelefono(), 
+                    logueado.getEspecialidad().toString(), "Solicita la baja de mis servicios en el Sitio");
+            
+            redirectAttributes.addFlashAttribute("exito", "!Solicitud de baja de servicios envíada!");
+            profesionalServicio.darDeBajaProfesional(id);      
 
-            return "darseBaja.html";
+              return "redirect:/pprofesionales/dashboard";
         } catch (Exception ex) {
-            modelo.put("error", ex.getMessage());
-            return "redirect: /dashboard";
+             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+           redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/pprofesionales/dashboard";
         }
 
     }
