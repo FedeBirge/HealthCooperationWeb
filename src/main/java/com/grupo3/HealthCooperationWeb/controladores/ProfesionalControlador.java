@@ -87,12 +87,13 @@ public class ProfesionalControlador {
         }
     }
     
-      @GetMapping("/turnoIndividual")
-    public String panelTurno(ModelMap modelo, HttpSession session) throws MyException {
+      @GetMapping("/turnoIndividual/{id}")
+    public String panelTurno(@PathVariable("id") String id,ModelMap modelo, HttpSession session) throws MyException {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
+        modelo.addAttribute("user", profesionalServicio.getOne(id));
       
-        return "turneroIndividual.html";
+        return "turneroindividual.html";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR')")
