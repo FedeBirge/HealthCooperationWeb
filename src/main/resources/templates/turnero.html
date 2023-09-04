@@ -20,60 +20,67 @@
         <body>
 
             <header class="header">
-                <a class="navbar-brand" href="#page-top">
-                    <img src="../assets/img/biomedical (2).svg" alt="Logo" class="navbar-logo">
+                <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+                <div class="container">
+                    <a class="navbar-brand" href="#page-top">
+                        <img src="../assets/img/biomedical (2).svg" alt="Logo" class="navbar-logo">
+                        <span class="navbar-logo-text">Health Cooperation</span>
+                    </a>
+                    <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        Menu
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">Especialidades</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">About</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contactanos</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}" th:href="@{/paciente/registrar}">Registrarme</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}"  th:href="@{/login}">Login</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"  th:href="@{/email/contacto}">Eres un doctor?</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/logout}">Log out</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/inicio}">Perfil</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            </header>
 
-                </a>
-                <nav>
-                    <div class="container">
-                        <div class="select-container">
+            <nav class="navFiltro">
+                    <div class="containerFiltro">
+                        <div class="select-containerFiltro">
                             <div class="d-flex justify-content-center">
-                                <select class="form-select" id="select1" name="especialidad">
+                                <select class="form-selectFiltro"  name="especialidad">
                                     <option value="" disabled selected>Especialidad</option>
                                     <option th:each="especialidad : ${especialidades}"
                                             th:value="${especialidad}" th:text="${especialidad}"></option>
                                 </select>
                             </div>
+                               <div class="d-flex justify-content-center">
+                                <select class="form-selectFiltro"  name="especialidad">
+                                    <option value="" disabled selected>Obra Social</option>
+                                    <option th:each="especialidad : ${especialidades}"
+                                            th:value="${especialidad}" th:text="${especialidad}"></option>
+                                </select>
+                            </div>
                             <div class="d-flex justify-content-center">
-                                <select class="form-select" id="select2" name="tipoOferta">
-                                    <option value="" disabled selected>Modalidad</option>
+                                <select class="form-selectFiltro"  name="tipoOferta">
+                                    <option value="" disabled selected>Valoracion</option>
                                     <option th:each=" tipo:${tipos}"
                                             th:value="${tipo}" th:text="${tipo}"></option>
                                 </select>
-                                <a href="#" class="btn btn-outline-secondary">
+                                <a href="#" class="btn btn-outline-secondary2">
                                     <i class="bi bi-search"></i>
                                 </a>
                             </div>
                         </div>            
                 </nav>
-                <a class="btn" th:if="${session.usuariosession == null}"  th:href="@{/login}"><button>Login</button></a>
-            </header>
-
-            <div class="outer-container">
-                <div class="container1 ">
-                    <div class="form-group select-container1 text-center">
-
-                        <div class="d-flex justify-content-center"> 
-                            <select class=select-container1  id="obrasPreexistentes" onchange="manejarSeleccion()">
-                                <option value="">Obra Social </option>
-                                <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
-                                <option value="otra">Otra</option>
-                            </select>
-                            <select class="select-container1 "  id="obrasPreexistentes" onchange="manejarSeleccion()">
-                                <option value="">Precio</option>
-                                <option th:each="obra : ${obras}" th:value="${obra.nombre}" th:text="${obra.nombre}"></option>
-                                <option value="otra">Otra</option>
-                            </select>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <main>
 
                 <div class="carta-medico" th:each="prof : ${profes}">
-                    <section>
+                    <section class =cardsection >
                         <div class="card1">
                             <div class="header1">
                                 <div class="image">
@@ -81,6 +88,19 @@
                                          th:src="@{/imagen/perfil/__${prof.id}__}" style="max-width: 100%; max-height: 150px;">
                                 </div>
                                 <div>
+                                    <div class="rating">
+                                        <input value="5" name="rating" id="star5" type="radio">
+                                        <label for="star5"></label>
+                                        <input value="4" name="rating" id="star4" type="radio">
+                                        <label for="star4"></label>
+                                        <input value="3" name="rating" id="star3" type="radio">
+                                        <label for="star3"></label>
+                                        <input value="2" name="rating" id="star2" type="radio">
+                                        <label for="star2"></label>
+                                        <input value="1" name="rating" id="star1" type="radio">
+                                        <label for="star1"></label>
+                                    </div>
+
                                     
                                     <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="name" th:text="'Dra./Dr '+${prof.apellido}+' '+${prof.nombre}" > </a>                                
                                        <p class="name" th:text="'Especialsita en '+${prof.especialidad}"></p>
@@ -89,7 +109,7 @@
                                         <label title="text" for="star5"></label>
 
                                     </div>
-
+                                       
                                 
                                 </div>
                             </div>
@@ -99,14 +119,14 @@
                             <p class="message" th:if='${prof.oferta} != null' th:text="'Lugar de atencion:  '+${prof.oferta.ubicacion}" >  </p>                      
                             <p class="message" th:text="'Valor de la consulta $ '+${prof.valorConsulta}" >  </p>                      
 
-                            <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="boton" type="button"><span>Vera turnos</span></a>
+                            <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="boton" type="button"><span>Ver turnos</span></a>
                         </div>
                     </section>
 
                 </div>
-
+<!-- -
                 <div class="carta-medico">
-                    <section>
+                    <section class =cardsection >
                         <div class="card1">
                             <div class="header1">
                                 <div class="image"></div>
@@ -135,7 +155,7 @@
 
                     </section>
                 </div>
-
+-->
             </main>
             <!--fotter--->
             <footer class="footer text-center">
