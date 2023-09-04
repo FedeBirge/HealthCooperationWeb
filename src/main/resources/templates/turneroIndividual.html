@@ -51,137 +51,53 @@
             <div>
                 <section class="cartasection">
 <div class="card5">
-    <div class="scroll-buttons">
-      <button type="button" class="scroll-button btn btn-success" id="left-arrow">←</button>
-    
-        <div class="carousel-container">
-          <table class="table">
-            <tr>
-              <th>Lunes</th>
-              <th>Martes</th>
-              <th>Miércoles</th>
-              <th>Jueves</th>
-              <th>Viernes</th>
-            </tr>
-            <tr>
-              <td>Actividad 1</td>
-              <td>Actividad 2</td>
-              <td>Actividad 3</td>
-              <td>Actividad 4</td>
-              <td>Actividad 5</td>
-            </tr>
-            <tr>
-              <td>Actividad 6</td>
-              <td>Actividad 7</td>
-              <td>Actividad 8</td>
-              <td>Actividad 9</td>
-              <td>Actividad 10</td>
-            </tr>
-            <tr>
-                <td>Actividad 6</td>
-                <td>Actividad 7</td>
-                <td>Actividad 8</td>
-                <td>Actividad 9</td>
-                <td>Actividad 10</td>
-              </tr>
-              <tr>
-                <td>Actividad 6</td>
-                <td>Actividad 7</td>
-                <td>Actividad 8</td>
-                <td>Actividad 9</td>
-                <td>Actividad 10</td>
-              </tr>
-              <tr>
-                <td>Actividad 6</td>
-                <td>Actividad 7</td>
-                <td>Actividad 8</td>
-                <td>Actividad 9</td>
-                <td>Actividad 10</td>
-              </tr>
-               <tr>
-                <td>Actividad 6</td>
-                <td>Actividad 7</td>
-                <td>Actividad 8</td>
-                <td>Actividad 9</td>
-                <td>Actividad 10</td>
-              </tr>
-               <tr>
-                <td>Actividad 6</td>
-                <td>Actividad 7</td>
-                <td>Actividad 8</td>
-                <td>Actividad 9</td>
-                <td>Actividad 10</td>
-              </tr>
-               <tr>
-                <td>Actividad 6</td>
-                <td>Actividad 7</td>
-                <td>Actividad 8</td>
-                <td>Actividad 9</td>
-                <td>Actividad 10</td>
-              </tr>
-              
-            <!-- Agrega más filas de actividades aquí -->
-          </table>
-            
-        </div>
-  
-    <button type="button" class="scroll-button btn btn-success" id="right-arrow">→</button>
-      </div>
-     </div>
-                </div>    
-                    
-                       <script>
-                          $(document).ready(function () {
-  // Obtén los elementos relevantes
-  const container = $(".carousel-container");
-  const leftArrow = $(".left-arrow");
-  const rightArrow = $(".right-arrow");
+     <div class="scroll-buttons">
+                           <button type="button" class="scroll-button btn btn-success" id="scroll-left">←</button>
+                                <div class="lista-horizontal" id="scroll-container">
 
-  // Establece la cantidad de desplazamiento por clic
-  const scrollAmount = 200;
+                                    <ul class="lista" th:each="semana : ${semanas}">
+                                        <li  style="display: inline-block; margin-right: 10px;">
+                                            <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
 
-  // Al hacer clic en la flecha izquierda
-  leftArrow.click(function () {
-    container.scrollLeft(container.scrollLeft() - scrollAmount);
-  });
 
-  // Al hacer clic en la flecha derecha
-  rightArrow.click(function () {
-    container.scrollLeft(container.scrollLeft() + scrollAmount);
-  });
-});
+                                                <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
+                                                <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
+                                                <ul >
+                                                    <li th:each="turno : ${entry.value.turnos}">
+                                                        <p>
+                                                            <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
+                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
+                                                                    (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
+                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
+                                                                <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
+                                                            </button>
+                                                        </p>
+                                                    </li>
+                                                </ul>
+                                            </ul>
+                                        </li>
+                                    </ul>
 
-                            </script>
-     <div class="carta-medico" th:each="prof : ${profes}">
-                    <section class =cardsection >
-                        <div class="card1">
-                            <div class="header1">
-                                <div class="image">
-                                    <img class="/img-profile rounded-circle"
-                                         th:src="@{/imagen/perfil/__${prof.id}__}" style="max-width: 100%; max-height: 150px;">
                                 </div>
-                                <div>
-                                    
-                                    <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="name" th:text="'Dra./Dr '+${prof.apellido}+' '+${prof.nombre}" > </a>                                
-                                       <p class="name" th:text="'Especialsita en '+${prof.especialidad}"></p>
-                                    <div th:text="${prof.reputacion}" class="rating">
-                                        <input value="5" name="rate" id="star5" type="radio">
-                                        <label title="text" for="star5"></label>
-
-                                    </div>
-
-                                
-                                </div>
+                           <button type="button" class="scroll-button btn btn-success" id="scroll-right">→</button>
                             </div>
-                            <p class="message" th:text="${prof.descripcion}" >  </p>                      
-                            <p class="message" th:if='${prof.oferta} != null' th:text="'Modo de Atención '+${prof.oferta.tipo}" >  </p>                      
-                            <p class="message" th:if='${prof.oferta} != null' th:text="'Horarios  '+${prof.oferta.horaInicio}+' a '+${prof.oferta.horaFin}+' Hs.'" >  </p>                      
-                            <p class="message" th:if='${prof.oferta} != null' th:text="'Lugar de atencion:  '+${prof.oferta.ubicacion}" >  </p>                      
-                            <p class="message" th:text="'Valor de la consulta $ '+${prof.valorConsulta}" >  </p>                      
 
-                            <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="boton" type="button"><span>Vera turnos</span></a>
-                        </div>
-                    </section>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    const scrollContainer = document.getElementById("scroll-container");
+                                    const scrollLeftButton = document.getElementById("scroll-left");
+                                    const scrollRightButton = document.getElementById("scroll-right");
+
+                                    scrollLeftButton.addEventListener("click", function () {
+                                        scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
+                                    });
+
+                                    scrollRightButton.addEventListener("click", function () {
+                                        scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
+                                    });
+                                });
+                            </script>
+    
 
       <!--   Button trigger modal 
           <button
@@ -240,7 +156,10 @@
                     <section class="cartasection">
                         <div class="card2">
                             <div class="header2">
-                                <div class="image"></div>
+                               <div class="image">
+                                    <img class="/img-profile rounded-circle"
+                                         th:src="@{/imagen/perfil/__${prof.id}__}" style="max-width: 100%; max-height: 150px;">
+                                </div>
                                 <div>
                                     <div class="rating">
                                         <input value="5" name="rate" id="star5" type="radio">
@@ -254,14 +173,24 @@
                                         <input value="1" name="rate" id="star1" type="radio">
                                         <label title="text" for="star1"></label>
                                     </div>
-                                    <p class="name">John Doe</p>
+                                   
+                                    <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="name" th:text="'Dra./Dr '+${prof.apellido}+' '+${prof.nombre}" > </a>                                
+                                       <p class="name" th:text="'Especialsita en '+${prof.especialidad}"></p>
+                                    <div th:text="${prof.reputacion}" class="rating">
+                                        <input value="5" name="rate" id="star5" type="radio">
+                                                    </div>
+                                       
+                                
                                 </div>
                             </div>
-                            <p class="message">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-                                voluptatem alias ut provident sapiente repellendus.
-                            </p>
-                            <button class="boton"><span>ver turnos</span></button>
+                            <p class="message" th:text="${prof.descripcion}" >  </p>                      
+                            <p class="message" th:if='${prof.oferta} != null' th:text="'Modo de Atención '+${prof.oferta.tipo}" >  </p>                      
+                            <p class="message" th:if='${prof.oferta} != null' th:text="'Horarios  '+${prof.oferta.horaInicio}+' a '+${prof.oferta.horaFin}+' Hs.'" >  </p>                      
+                            <p class="message" th:if='${prof.oferta} != null' th:text="'Lugar de atencion:  '+${prof.oferta.ubicacion}" >  </p>                      
+                            <p class="message" th:text="'Valor de la consulta $ '+${prof.valorConsulta}" >  </p>       
+                            <p class="message"  th:each="obra: ${prof.oferta.obrasSociales}" >
+                                Obras Sociales: 
+                                <span th:text="${obra.nombre}" ></span></p>       
                         </div>
                         <div>
                             
@@ -273,9 +202,8 @@
             
               </section>
                 <section class="fixed-section">
-                            <div class="cookie-card">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d26275.05765963241!2d-58.40323675!3d-34.5944955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2sar!4v1693005218530!5m2!1ses-419!2sar" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            </div>
+                           
+                 
                         </section>
 
     </main>

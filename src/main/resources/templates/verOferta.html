@@ -31,11 +31,17 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Barra lateral - Marca -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/profesionales/dashboard}">
+                <a sec:authorize="hasRole('MODERADOR')"  class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/profesionales/dashboard}">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
                     <div class="sidebar-brand-text mx-3">Panel Profesional</div>
+                </a>
+                <a  class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Administrador</div>
                 </a>
 
                 <!-- Divisor -->
@@ -45,7 +51,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/}">
 
-                        <span>Index</span></a>
+                        <span>Home</span></a>
                 </li>
 
                 <!-- Divisor -->
@@ -56,7 +62,7 @@
                     Gestion
                 </div>
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-hospital-user"></i>
@@ -65,11 +71,11 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/agenda/verAgenda/__${log.id}__}">Ver Mi Agenda</a>
-                            
+
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -79,12 +85,12 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
-                           
+
 
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -94,6 +100,54 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Mis Pacientes</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-hospital-user"></i>
+                        <span>Profesionales</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Acciones</h6>
+                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
+                            <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Elemento de navegación - Menú Contraer utilidades -->
+                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                       
+                            <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
+
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Usuarios</span>
+                    </a>
+                    <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+
+                            <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
+
+
                         </div>
                     </div>
                 </li>
@@ -182,12 +236,12 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 Mi Disponibilidad 
-                                 <a type="button" class="btn btn-success me-md-2"  th:if="${oferta != null}" th:href="@{/oferta/editar/__${log.id}__}">Editar</a>
-                                 <a type="button" class="btn btn-success me-md-2"  th:if="${oferta == null}" th:href="@{/oferta/crear/__${log.id}__}">Nueva Oferta</a>
-                                 
-                                
+                                <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2"  th:if="${oferta != null}" th:href="@{/oferta/editar/__${log.id}__}">Editar</a>
+                                <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2"  th:if="${oferta == null}" th:href="@{/oferta/crear/__${log.id}__}">Nueva Oferta</a>
+
+
                             </div>
-                           
+
                             <div th:if="${oferta != null}" class="card-body">
                                 <div class="row gy-3">
                                     <div class="col-md">
@@ -256,27 +310,27 @@
 
                                     </div>
                                 </div>
-                           
 
 
 
 
-                            <div class="card mb">
-                                <div class="card-header">
-                                   <h5>  Obras Sociales</h5>
 
-                                    <div th:each="obra : ${obras}" >
-                                      
+                                <div class="card mb">
+                                    <div class="card-header">
+                                        <h5>  Obras Sociales</h5>
+
+                                        <div th:each="obra : ${obras}" >
+
                                             <span th:text="${obra.nombre}"></span>
                                         </div>
 
                                     </div>
-                             
+
 
                                 </div>
                             </div>
-                        
-                             </div>
+
+                        </div>
 
 
                     </form>

@@ -248,11 +248,11 @@
                                 <h2 th:text=" 'DNI: '+ ${user.dni}"></h2>
                             </div>   
                             <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
-                                <h2 th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text="'Grupo Sanguíneo: '+ ${user.grupoSanguineo}"></h2>
+                                <h2 th:if='${user.grupoSanguineo} != null' th:text="${user.grupoSanguineo}"></h2>
                             </div>    
                             <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
 
-                                <h2 th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text="'Obra Social: '+${user.obraSocial.nombre}"></h2>
+                                <h2 th:if='${user.grupoSanguineo} != null' th:text="'Obra Social: '+${user.obraSocial.nombre}"></h2>
                             </div>
 
                             <div class="col-sm-6 mb-3">

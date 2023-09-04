@@ -303,9 +303,11 @@
                                 <div class="col-sm-6 mb-3">
                                     <p class="form-label">¡Actualice su foto aquí!</p>
 
-                                    <div class="contenedorImagen">
-                                        <img class="/img-profile rounded-circle"
-                                             th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 150px;">
+                           
+                                 
+                                                                                
+                                                    <div class="contenedorImagen">
+                                        <img id="imagenPrevia" src="/img/user_logo.png" alt="" class="imagenPrevia" width="100" height="100">
                                     </div>    
                                     <div class="input-group mb-4">
                                         <span class="input-group-text">Foto</span>
@@ -336,7 +338,6 @@
                                             document.getElementById('foto').name = nombreCampo;
                                         }
                                     </script>
-
 
                                 </div>
                             </div>

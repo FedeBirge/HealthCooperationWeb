@@ -1,5 +1,6 @@
 package com.grupo3.HealthCooperationWeb.controladores;
 
+import com.grupo3.HealthCooperationWeb.entidades.AgendaSemanal;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.enumeradores.TipoOferta;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
+import com.grupo3.HealthCooperationWeb.servicios.AgendaServicio;
 import com.grupo3.HealthCooperationWeb.servicios.EmailServicio;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
@@ -29,6 +31,7 @@ import com.grupo3.HealthCooperationWeb.servicios.UsuarioServicio;
 import java.sql.Time;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Date;
 import javax.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,6 +52,8 @@ public class ProfesionalControlador {
     private TurnoServicio turnoServ;
     @Autowired
     private EmailServicio emailServ;
+     @Autowired
+    private AgendaServicio servAgenda;
 
     // Listado de todos los pacientes
     @GetMapping("/dashboard")
@@ -91,8 +96,15 @@ public class ProfesionalControlador {
     public String panelTurno(@PathVariable("id") String id,ModelMap modelo, HttpSession session) throws MyException {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
-        modelo.addAttribute("user", profesionalServicio.getOne(id));
-      
+        modelo.addAttribute("prof", profesionalServicio.getOne(id));
+         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+
+        Collections.sort(semanas, (semana1, semana2) -> {
+            Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
+            Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
+            return fecha1.compareTo(fecha2);
+        });
+          modelo.addAttribute("semanas", semanas);
         return "turneroindividual.html";
     }
 

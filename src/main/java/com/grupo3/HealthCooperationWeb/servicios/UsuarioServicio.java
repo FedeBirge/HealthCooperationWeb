@@ -46,14 +46,12 @@ public class UsuarioServicio implements UserDetailsService {
     @Autowired
     ImagenRepositorio imagenRepo;
 
-    
-    
-     public static boolean validarFecha(Date fecha) {
+    public static boolean validarFecha(Date fecha) {
         Calendar calendario = Calendar.getInstance();
         calendario.setTime(fecha);
 
         int año = calendario.get(Calendar.YEAR);
-        int mes = calendario.get(Calendar.MONTH) + 1; 
+        int mes = calendario.get(Calendar.MONTH) + 1;
         int dia = calendario.get(Calendar.DAY_OF_MONTH);
 
         if (año >= 1900 && año <= 2099 && mes >= 1 && mes <= 12 && dia >= 1 && dia <= 31) {
@@ -62,6 +60,7 @@ public class UsuarioServicio implements UserDetailsService {
             return false;
         }
     }
+
     @Transactional
     // Metodo para crear un usuario
     public Usuario crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
@@ -71,10 +70,10 @@ public class UsuarioServicio implements UserDetailsService {
         if (usuarioRepo.buscarPorEmail(email) != null) {
             throw new MyException("EL mail ingresado ya existe! Ingreso otro!");
         }
-        
+
         Date fecha = pasarStringDate(fecha_nac);
         if (!validarFecha(fecha)) {
-                throw new MyException("la fecha no es valida");
+            throw new MyException("la fecha no es valida");
         }
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
@@ -91,7 +90,7 @@ public class UsuarioServicio implements UserDetailsService {
         if (archivo.isEmpty()) {
             // Si el archivo está vacío, crea el paciente con una imagen predeterminada
             Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la
-                                                                         // imagen predeterminada
+            // imagen predeterminada
             usuario.setImagen(imagenPredeterminada);
         } else {
             // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
@@ -110,9 +109,9 @@ public class UsuarioServicio implements UserDetailsService {
 
         validar(id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         Optional<Usuario> respuesta = usuarioRepo.findById(id);
-         Date fecha = pasarStringDate(fecha_nac);
-           if (!validarFecha(fecha)) {
-                throw new MyException("la fecha no es válida");
+        Date fecha = pasarStringDate(fecha_nac);
+        if (!validarFecha(fecha)) {
+            throw new MyException("la fecha no es válida");
         }
         if (respuesta.isPresent()) {
             Usuario usuario = respuesta.get();
@@ -137,7 +136,6 @@ public class UsuarioServicio implements UserDetailsService {
             } else {
                 // No se proporcionó un archivo nuevo, no se actualiza la imagen del usuario
             }
-
 
             usuarioRepo.save(usuario);
 
@@ -196,16 +194,9 @@ public class UsuarioServicio implements UserDetailsService {
 
     // Metodo para listar todos los usuarios
     public List<Usuario> listarUsuarios() {
-        List<Usuario> aux = new ArrayList();
-        List<Usuario> usuarios = new ArrayList();
 
         try {
-            aux = usuarioRepo.findAll();
-            for (Usuario usuario : aux) {
-                if (usuario.getActivo().equals(Boolean.TRUE)) {
-                    usuarios.add(usuario);
-                }
-            }
+            List<Usuario> usuarios = usuarioRepo.findAll();
 
             return usuarios;
 
@@ -280,7 +271,7 @@ public class UsuarioServicio implements UserDetailsService {
 
             return date;
         } catch (ParseException e) {
-           throw new MyException("La fecha ingresada no es válida");
+            throw new MyException("La fecha ingresada no es válida");
         }
     }
 
