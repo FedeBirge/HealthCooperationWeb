@@ -141,7 +141,7 @@ public class ProfesionalServicio extends UsuarioServicio {
     public void modificarProfesional(String id, MultipartFile archivo, String nombre,
             String apellido, String dni, String email, String password,
             String password2, String telefono, String direccion, String fecha_nac,
-            String especialidad, String valorConsulta) throws MyException, IOException, ParseException {
+            String especialidad, String valorConsulta, String descripcion) throws MyException, IOException, ParseException {
 
         Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
         if (respuesta.isPresent()) {
@@ -153,10 +153,10 @@ public class ProfesionalServicio extends UsuarioServicio {
 
                 throw new MyException("Debe ingresar una especialidad al profesional");
             }
-            System.out.println("esp " + especialidad);
-            System.out.println("valor" + valorConsulta);
+            
             prof.setEspecialidad(pasarStringEspecialidad(especialidad));
             prof.setValorConsulta(valorConsulta);
+            prof.setDescripcion(descripcion);
            String idImg = null;
             if (prof.getImagen() != null) {
                 idImg = prof.getImagen().getId();
@@ -311,13 +311,13 @@ public class ProfesionalServicio extends UsuarioServicio {
 
             List<Dias> diasDisponibles = pasarDiasEnum(diasSeleccionados);
             profesional.setDiasDisponibles(diasDisponibles);
-            System.out.println(profesional.getDiasDisponibles());
+       
         }
 
     }
 
     @Transactional
-    public void asignarAgenda(String id, ArrayList<AgendaSemanal> semanas) throws MyException {
+    public void asignarAgenda(String id, List<AgendaSemanal> semanas) throws MyException {
 
         if (semanas == null || semanas.isEmpty()) {
             throw new MyException("la agenda semanal no puede estar vacia");

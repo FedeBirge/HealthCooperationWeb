@@ -199,7 +199,7 @@
 
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
-
+    <form th:action="@{/admin/actualizarRoles}" method="POST" enctype="multipart/form-data">
                             <!-- Page Heading -->
                             <h1 class="h3 mb-2 text-gray-800">Lista de Usuarios</h1>
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
@@ -271,10 +271,14 @@
                                     </div>
                                 </div>
                             </div>
+                                                          <div class="d-grid gap-2 col-12 mx-auto text-center">
+                                            <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>
+                                        </div>
 
+                                        </form>
                         </div>
                         <!-- /.container-fluid -->
-
+                            
                     </div>
                     <!-- End of Main Content -->
 
