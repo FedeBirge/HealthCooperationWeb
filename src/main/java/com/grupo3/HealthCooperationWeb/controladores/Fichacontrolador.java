@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/paciente/historia_clilnica/ficha")
+@RequestMapping("/ficha")
 public class Fichacontrolador {
 
     @Autowired
@@ -49,7 +49,7 @@ public class Fichacontrolador {
     }
 
     // ruta para agregar ficha POST
-    @PostMapping("/paciente/historia_clinica/ficha/{id}")
+    @PostMapping("/ficha/{id}")
     public String agregarFicha(@PathVariable("id") String idPaciente, String fecha_consulta, String nota,
             ModelMap modelo)
             throws MyException {

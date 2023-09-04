@@ -30,7 +30,7 @@ public class HistoriaClinicaControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-             modelo.addAttribute("user", paciServ.getOne(id));
+            modelo.addAttribute("user", paciServ.getOne(id));
             modelo.addAttribute("historia", historiaClinicaServicio.mostrarHistoria(id));
             return "Consulta historial.html";
         } catch (Exception e) {
