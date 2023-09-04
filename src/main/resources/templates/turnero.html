@@ -79,7 +79,7 @@
 
             <main>
 
-                <div class="carta-medico" th:each="prof : ${profes}">
+                <div th:if="${prof.agendasSemanales} !=null" class="carta-medico" th:each="prof : ${profes}">
                     <section class =cardsection >
                         <div class="card1">
                             <div class="header1">

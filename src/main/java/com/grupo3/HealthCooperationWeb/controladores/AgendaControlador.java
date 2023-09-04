@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/agenda")
@@ -253,7 +254,7 @@ public class AgendaControlador {
                 Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
                 return fecha1.compareTo(fecha2);
             });
-            System.out.println(semanas.size());
+       
             if (semanas.size() != 0) {
 
                 EstadoTurno[] estados = EstadoTurno.values();
@@ -300,7 +301,8 @@ public class AgendaControlador {
     // solo la ve el doctor con este id
     @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/agregar/{id}")
-    public String agregarsemamas(@PathVariable("id") String id, ModelMap modelo, HttpSession session)
+    public String agregarsemamas(@PathVariable("id") String id, ModelMap modelo, HttpSession session,
+            RedirectAttributes redirectAttributes)
             throws MyException {
 
         Oferta oferta = servOferta.obtenerOfertaxProf(id);
@@ -308,9 +310,9 @@ public class AgendaControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("oferta", oferta);
-            servAgenda.agregarSemanas(id);
-
-            return "crearAgenda.html";
+            redirectAttributes.addFlashAttribute("exito", "¡Se agregaron 3 semanas a su agenda, de acuerdo a su disponibilidad");
+                profesionalServicio.asignarAgenda(id, servAgenda.agregarSemanas(id));
+          return "redirect:/profesionales/dashboard";
         } else {
 
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");

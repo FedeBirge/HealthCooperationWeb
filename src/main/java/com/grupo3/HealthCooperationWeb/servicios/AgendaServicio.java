@@ -52,7 +52,7 @@ public class AgendaServicio {
 
         LocalDate fechaActual = fecha.plusDays(7 * sem);
         int daysToAdd = dia.getValue() - fechaActual.getDayOfWeek().getValue();
-
+   
         return fechaActual.plusDays(daysToAdd);
 
     }
@@ -106,7 +106,7 @@ public class AgendaServicio {
         ArrayList<AgendaSemanal> semanas = new ArrayList<>();
 
         Optional<Profesional> respuesta = profRepo.findById(idProf); /// lo traigo pero no asocio aqui con prof
-        System.out.println(idProf);
+      
         if (respuesta.isPresent()) {
             Profesional prof = respuesta.get();
             if (prof == null) {
@@ -125,7 +125,7 @@ public class AgendaServicio {
                 AgendaSemanal agenda = new AgendaSemanal();
                 TreeMap<Date, DiaAgenda> fechaYTurnos = new TreeMap<>(Comparator.comparingLong(Date::getDay));
 
-                for (Dias dia : dias) {             // recorro los dias disponibles
+                 for (Dias dia : prof.getDiasDisponibles()){       // recorro los dias disponibles
                     // si el dia pertenece a los disponibles del prof armo la lista de turnos
 
                     // primero paso el dia Enum a fecha calendario, y d LocalDate a Date(por ahora)
@@ -141,6 +141,8 @@ public class AgendaServicio {
                 agenda.setFechasYTurnos(fechaYTurnos);
                 agendaRepo.save(agenda);
                 semanas.add(agenda);
+                
+                
 //                for (Map.Entry<Date, DiaAgenda> entry : fechaYTurnos.entrySet()) {
 //                    Date key = entry.getKey();
 //                    System.out.println("Dia: ");
@@ -151,7 +153,7 @@ public class AgendaServicio {
 //                    }
 
             }
-
+          
             return semanas;
         }
 
@@ -207,7 +209,7 @@ public class AgendaServicio {
        
 
         Optional<Profesional> respuesta = profRepo.findById(id); /// lo traigo pero no asocio aqui con prof
-        System.out.println(id);
+      
         if (respuesta.isPresent()) {
             Profesional prof = respuesta.get();
             if (prof == null) {
@@ -219,18 +221,18 @@ public class AgendaServicio {
             if (prof.getOferta() == null) {
                 throw new MyException("No hay Oferta disponible del profesional!");
             }
-            List<AgendaSemanal> semanas = prof.getAgendasSemanales();
-            List<Dias> dias = prof.getDiasDisponibles();
+           List<AgendaSemanal> semanas = prof.getAgendasSemanales();
+            
             //Buscarultimo dia en agendas
             Date ultimoAgenda = buscarUltimo(prof.getAgendasSemanales());
-            System.out.println("ULTIMO: " + ultimoAgenda);
+            
             Date proximoLunes = proximoLunes(ultimoAgenda);
-            System.out.println("Proximo: " + proximoLunes);
+          
             for (int i = 0; i < 3; i++) { // Recorro 3 veces para armar 3 semanas
                 AgendaSemanal agenda = new AgendaSemanal();
                 Map<Date, DiaAgenda> fechaYTurnos = new TreeMap<>(Comparator.comparingLong(Date::getDay));
-
-                for (Dias dia : dias) {             // recorro los dias disponibles
+        
+                for (Dias dia : prof.getDiasDisponibles()) {             // recorro los dias disponibles
                     // si el dia pertenece a los disponibles del prof armo la lista de turnos
 
                     // primero paso el dia Enum a fecha calendario, y d LocalDate a Date(por ahora)
@@ -240,14 +242,16 @@ public class AgendaServicio {
                     //armo el dia de agenda
                     DiaAgenda diaAgenda = diaServ.crearDia(fechaturno, turnos);
                     fechaYTurnos.put(fechaturno, diaAgenda);
-                    fechaYTurnos = ordenarMapPorFecha(fechaYTurnos);
-                    System.out.println(i+ "vueltas");
+//                    fechaYTurnos = ordenarMapPorFecha(fechaYTurnos);
+                    
                 }
 
                 agenda.setFechasYTurnos(fechaYTurnos);
                 agendaRepo.save(agenda);
                 semanas.add(agenda);
-//                for (Map.Entry<Date, DiaAgenda> entry : fechaYTurnos.entrySet()) {
+                
+                     
+//                or (Map.Entry<Date, DiaAgenda> entry : fechaYTurnos.entrySet()) {
 //                    Date key = entry.getKey();
 //                    System.out.println("Dia: ");
 //                    DiaAgenda value = entry.getValue();
@@ -257,7 +261,7 @@ public class AgendaServicio {
 //                    }
 
             }
-            prof.setAgendasSemanales(semanas);
+       
             return semanas;
         }
 

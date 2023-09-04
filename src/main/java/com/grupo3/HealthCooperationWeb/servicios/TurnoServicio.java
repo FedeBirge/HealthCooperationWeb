@@ -259,7 +259,7 @@ public class TurnoServicio {
             DiaAgenda value = entry.getValue();
             List<Turno> turnos = value.getTurnos();
             for (Turno turno : turnos) {
-                System.out.println(turno.getEstado());
+               
                 cancelarTurno(turno.getId());
             }
 

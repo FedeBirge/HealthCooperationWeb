@@ -300,6 +300,10 @@
                                     <label  class="form-label">Valor Consulta</label>
                                     <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="" id="valorConsulta"  name="valorConsulta" th:value="${user.valorConsulta}">
                                 </div>
+                                 <div   th:if="${#strings.trim(user.rol) =='MODERADOR'}" class="col-sm-6 mb-3">
+                                    <label  class="form-label">Breve Descrición</label>
+                                    <textarea class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="textbox" id="valorConsulta" th:text="${user.descripcion}" name="descripcion" th:value="${user.descripcion}"></textarea>
+                                </div>
                                 <div class="col-sm-6 mb-3">
                                     <p class="form-label">¡Actualice su foto aquí!</p>
 
