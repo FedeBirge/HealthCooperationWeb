@@ -52,7 +52,7 @@ public class AgendaControlador {
 
     // todos pueden ver la agenda del controlador profesional, pero esta agenda
     // solo la ve el doctor con este id
-    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR','ADMINISTRADOR')")
     @GetMapping("/verAgenda/{id}") // Vista principal para el Admin al Logearse (LT)
     public String verrAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 

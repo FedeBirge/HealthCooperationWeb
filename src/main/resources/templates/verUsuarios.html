@@ -173,8 +173,8 @@
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                                  <a class="dropdown-item" th:href="@{/inicio}">
-                                       
+                                    <a class="dropdown-item" th:href="@{/inicio}">
+
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Mi Área
                                     </a>
@@ -208,7 +208,7 @@
                                     <p class="card-text text-center" th:text="${error}"></p>
                                 </div>
                             </div>
-                            <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                            <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
                                 <div class="card-body">
                                     <h5 class="card-title text-center">Exito!</h5>
                                     <p class="card-text text-center" th:text="${exito}"></p>
@@ -227,6 +227,7 @@
                                                     <th>Apellido</th>
                                                     <th>Rol Actual</th>   
                                                     <th>Cambiar Rol</th>   
+                                                    <th>Estado</th>   
 
 
                                                     <th></th>                                           
@@ -238,22 +239,25 @@
                                                     <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
                                                     <td th:value="${user.apellido}" th:text="${user.apellido}"></td>                                                  
                                                     <td th:value="${user.rol}" th:text="${user.rol}"> </td>
-                                                        
-                                            <td>
-                                            <select  class="estado-select form-control" style="width: auto; display: inline" >
-                                                                    <option  name = "rol" th:value="${user.rol}" th:text="${user.rol}" h:value="${user.rol}" ></option>
-                                                                    <option th:each="rol: ${roles}" th:value="${user.rol}" th:text="${rol}"></option>
 
-                                                                </select>
-                                                   
-                                                 
                                                     <td>
-                                                        <a type="button" class="btn btn-success me-md-2"th:href="@{/admin/verUsuario/__${user.id}__}">Ver Perfil                                                       </a>
+                                                        <select class="estado-select form-control" style="width: auto; display: inline" th:disabled="${not user.activo}">
+                                                            <option name="rol" th:value="${user.rol}" th:text="${user.rol}" h:value="${user.rol}"></option>
+                                                            <option th:each="rol: ${roles}" th:value="${user.rol}" th:text="${rol}"></option>
+                                                        </select>
+
+
+                                                    <td >
+                                                        <p th:text="${user.activo ? 'Activo' : 'Baja'}"></p>
+
                                                     </td>
-                                                     <td >
-                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
+                                                    <td>
+                                                        <a type="button" class="btn btn-success me-md-2"th:href="@{/user/verUsuario/__${user.id}__}">Ver Perfil                                                       </a>
                                                     </td>
-                                                    <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR'}" >
+                                                    <td>
+                                                                            <a  type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
+ </td>
+                                                    <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR' && user.activo}">
                                                         <form  th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
                                                             <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
                                                         </form>

@@ -11897,3 +11897,24 @@ td {
   color: #6f00ff;
   transition: color 0.3s;
 }
+
+  .lista-horizontal {
+        white-space: nowrap;
+        overflow: hidden; /* Oculta la barra de desplazamiento */
+        width: 100%;
+    }
+
+    .lista-horizontal ul {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .scroll-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .scroll-button {
+        cursor: pointer;
+    }
