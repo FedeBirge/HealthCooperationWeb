@@ -11026,7 +11026,7 @@ html {
 
 @media (min-width: 992px) {
   .masthead {
-    padding-top: calc(6rem + 104px);
+    padding-top: calc(6rem + 20px);
     padding-bottom: 6rem;
   }
   .masthead .masthead-heading {
@@ -11096,7 +11096,9 @@ a{
     margin-right: auto;
 }
 .select-container .d-flex {
+    
     justify-content: center;
+     
 }
 
 .select-container select {
@@ -11151,4 +11153,35 @@ a{
 .error{
     font-size: 5rem;
     color: red;
+}
+
+.botonIndex {
+ 
+  padding: 1.3em;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+    margin-left: 10px;
+  margin-top: 20px;
+}
+
+.botonIndex:hover {
+  background-color: #2c3e50;
+box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #fff;
+  transform: translateY(-3px);
+  
+}
+
+.botonIndex:active {
+ransform: translateY(-1px);
 }
