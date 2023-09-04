@@ -194,20 +194,67 @@
                     <!-- Comenzar contenido de la página -->
 
                     <div class="container-fluid">
-                        <h1>Historia Clinica</h1>
+                        <h1 >Historia Clinica</h1>
                         <div class="row">
-                            
-                            <div class="col">
-                                <h2 th:text=" 'Nombre: ' + ${log.nombre}"></h2>
-                                
+
+                            <div class="col-sm-6 mb-6">
+
+                                <h2><span class="badge bg-success text-white">Nombre</span> <span th:text=" ${user.nombre}"></span></h2>
                             </div>
+                            <div class="col-sm-6 mb-6">
+                                <h2><span class="badge bg-success text-white">Apellido</span> <span th:text=" ${user.apellido}"></span></h2>
+                            </div>
+                            <div class="col-sm-6 mb-6">
+                                <h2><span class="badge bg-success text-white">Direccion</span> <span th:text=" ${user.direccion}"></span></h2>
+                            </div>
+                            <div class="col-sm-6 mb-6">
+                                <h2><span class="badge bg-success text-white">Telefono</span> <span th:text=" ${user.telefono}"></span></h2>
+                            </div>
+
+                            <div class="col-sm-6 mb-6">
+                                <h2><span class="badge bg-success text-white">Nacimiento</span> <span th:text=" ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></span></h2>
+                            </div>
+                            <div class="col-sm-6 mb-6">
+                                <h2><span class="badge bg-success text-white">DNI</span> <span th:text=" ${user.dni}"></span></h2>
+                            </div>   
+                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-6">
+                                <h2><span class="badge bg-success text-white">Grupo Sanguíneo</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.grupoSanguineo}"></span></h2>
+                            </div>    
+                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-6">
+                                <h2><span class="badge bg-success text-white">Obra Social</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.obraSocial.nombre}"></span></h2>
+                            </div>
+                            <div class="col-sm-6 mb-6">
+                                <h2><span class="badge bg-success text-white">Email</span> <span th:text=" ${user.email}"></span></h2>
+                            </div> 
+                        </div>
+
+                        <hr class="border border-success border-3 opacity-75">
+
+                        <h1></h1>
+                        <button class="btn btn-sucess" style='color: #fff;background-color: #1cc88a;border-color: #1cc88a;'><a style='text-decoration: none' th:href="@{/ficha/ficha/__${user.id}__}">Crear Ficha</a></button>
+                        <div class="row py-4">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First</th>
+                                        <th scope="col">Last</th>
+                                        <th scope="col">Handle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+
+
                         </div>
 
 
                     </div>
 
 
-                    <footer class="sticky-footer bg-white">
+                    <footer class="sticky-footer" style='padding-top: 500px;'>
                         <div class="container my-auto">
                             <div class="copyright text-center my-auto">
                                 <span>HealtCooperationWeb ©2023</span>

@@ -253,7 +253,7 @@ public class AgendaControlador {
                 Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
                 return fecha1.compareTo(fecha2);
             });
-
+            System.out.println(semanas.size());
             if (semanas.size() != 0) {
 
                 EstadoTurno[] estados = EstadoTurno.values();
@@ -270,7 +270,7 @@ public class AgendaControlador {
 
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
-                modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
+                modelo.put("vacia", "¡No existe informacion para la semana actual");
                 return "editarAgenda.html";
 
             }
@@ -308,6 +308,7 @@ public class AgendaControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("oferta", oferta);
+            servAgenda.agregarSemanas(id);
 
             return "crearAgenda.html";
         } else {

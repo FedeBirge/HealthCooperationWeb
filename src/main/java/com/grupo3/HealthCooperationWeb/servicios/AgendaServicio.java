@@ -156,6 +156,16 @@ public class AgendaServicio {
         return null;
 
     }
+    
+      @Transactional
+      
+      /// igual que CrearAgenda pero pasando una fehca especifica
+     public void agregarSemanas(String id) throws MyException {
+    
+         
+    
+    
+     }
 
     public AgendaSemanal getOne(String id) {
         return agendaRepo.getOne(id);
