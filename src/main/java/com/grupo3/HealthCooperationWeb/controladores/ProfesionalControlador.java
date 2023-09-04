@@ -261,12 +261,12 @@ public class ProfesionalControlador {
             redirectAttributes.addFlashAttribute("exito", "!Solicitud de baja de servicios envíada!");
             profesionalServicio.darDeBajaProfesional(id);      
 
-              return "redirect:/pprofesionales/dashboard";
+              return "redirect:/profesionales/dashboard";
         } catch (Exception ex) {
              Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
            redirectAttributes.addFlashAttribute("error", ex.getMessage());
-            return "redirect:/pprofesionales/dashboard";
+            return "redirect:/profesionales/dashboard";
         }
     }
 

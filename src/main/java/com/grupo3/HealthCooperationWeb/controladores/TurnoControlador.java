@@ -1,12 +1,15 @@
 package com.grupo3.HealthCooperationWeb.controladores;
 
 import com.grupo3.HealthCooperationWeb.entidades.AgendaSemanal;
+import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
+import com.grupo3.HealthCooperationWeb.enumeradores.Especialidad;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.AgendaServicio;
+import com.grupo3.HealthCooperationWeb.servicios.ObraSocialServicio;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ProfesionalServicio;
 import com.grupo3.HealthCooperationWeb.servicios.TurnoServicio;
@@ -38,15 +41,24 @@ public class TurnoControlador {
     
  @Autowired
     private ProfesionalServicio profesionalServicio;
- 
+   @Autowired
+    private ObraSocialServicio obraServ;
 
     @GetMapping("/panel") // ruta para el panel administrativo
-    public String panelturnos(ModelMap modelo, HttpSession session) {
+    public String panelturnos(ModelMap modelo, HttpSession session) throws MyException {
         
          List<Profesional> profes = profesionalServicio.listarProfesionales();
-            modelo.addAttribute("profes", profes);
+         Especialidad[] especialidades = Especialidad.values();
+          List<ObraSocial> obras = obraServ.listarObrasSociales();
+            modelo.addAttribute("obras", obras);
+         modelo.addAttribute("profes", profes);
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
+            modelo.addAttribute("especialidades", especialidades);
+            
+            if(profes.isEmpty()){
+                modelo.put("vacia", "No existen profesionales para mosrtar. Disculpe las molestias");
+            }
         return "turnero.html";
     }
     
