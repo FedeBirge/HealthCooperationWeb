@@ -216,7 +216,7 @@ public class ProfesionalControlador {
     public String modificarUsusarios(MultipartFile archivo, @PathVariable("id") String id,
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
-            @RequestParam String password2, String telefono, String direccion,
+            @RequestParam String password2, String telefono, String direccion,String descripcion,
             String fecha_nac, String especialidad, String valorConsulta, ModelMap modelo, HttpSession session)
             throws IOException, MyException, ParseException {
 
@@ -228,7 +228,7 @@ public class ProfesionalControlador {
             modelo.addAttribute("user", profesionalServicio.getOne(id));
             modelo.addAttribute("id", profesionalServicio.getOne(id).getId());
             profesionalServicio.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2,
-                    telefono, direccion, fecha_nac, especialidad, valorConsulta);
+                    telefono, direccion, fecha_nac, especialidad, valorConsulta, descripcion);
             modelo.put("exito", "¡Profesional modificado con exito!");
             return "modificar_prof.html";
         } catch (MyException ex) {
@@ -261,12 +261,12 @@ public class ProfesionalControlador {
             redirectAttributes.addFlashAttribute("exito", "!Solicitud de baja de servicios envíada!");
             profesionalServicio.darDeBajaProfesional(id);      
 
-              return "redirect:/pprofesionales/dashboard";
+              return "redirect:/profesionales/dashboard";
         } catch (Exception ex) {
              Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
            redirectAttributes.addFlashAttribute("error", ex.getMessage());
-            return "redirect:/pprofesionales/dashboard";
+            return "redirect:/profesionales/dashboard";
         }
     }
 

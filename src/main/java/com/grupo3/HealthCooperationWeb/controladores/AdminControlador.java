@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
@@ -42,6 +44,15 @@ public class AdminControlador {
         modelo.addAttribute("log", logueado);
         modelo.addAttribute("user", userServ.getOne(id));
         return "perfil.html";
+
+    }
+      @PostMapping("/actualizarRoles")
+    public String panelAdministrador(ModelMap modelo, HttpSession session, RedirectAttributes redirectAttributes) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+        redirectAttributes.addFlashAttribute("exito", "!Roles Cambiados!");
+        
+        return "redirect:/user/listar";
 
     }
 

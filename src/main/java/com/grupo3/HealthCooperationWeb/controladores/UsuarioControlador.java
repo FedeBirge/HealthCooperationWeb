@@ -179,7 +179,7 @@ public class UsuarioControlador {
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-            String fecha_nac, String obraSocial, String gruposanguineo,
+            String fecha_nac, String obraSocial, String gruposanguineo, String descripcion,
             String especialidad, String valorConsulta, ModelMap modelo, HttpSession session,
             RedirectAttributes redirectAttributes)
             throws IOException, MyException, ParseException {
@@ -200,7 +200,7 @@ public class UsuarioControlador {
             if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
 
                 profServ.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono,
-                        direccion, fecha_nac, especialidad, valorConsulta);
+                        direccion, fecha_nac, especialidad, valorConsulta,descripcion);
                 Especialidad[] especialidades = Especialidad.values();
                 modelo.addAttribute("especialidades", especialidades);
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
