@@ -199,86 +199,92 @@
 
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
-    <form th:action="@{/admin/actualizarRoles}" method="POST" enctype="multipart/form-data">
-                            <!-- Page Heading -->
-                            <h1 class="h3 mb-2 text-gray-800">Lista de Usuarios</h1>
-                            <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Error!</h5>
-                                    <p class="card-text text-center" th:text="${error}"></p>
-                                </div>
-                            </div>
-                            <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Exito!</h5>
-                                    <p class="card-text text-center" th:text="${exito}"></p>
-                                </div>
-                            </div> 
-                            <!-- DataTales Example -->
-                            <div class="card shadow mb-4">
-
-                                <div class="card-body">
-                                    <div class="table-responsive">
-
-                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Apellido</th>
-                                                    <th>Rol Actual</th>   
-                                                    <th>Cambiar Rol</th>   
-                                                    <th>Estado</th>   
-
-
-                                                    <th></th>                                           
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                <tr th:each="user : ${users}">
-                                                    <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
-                                                    <td th:value="${user.apellido}" th:text="${user.apellido}"></td>                                                  
-                                                    <td th:value="${user.rol}" th:text="${user.rol}"> </td>
-
-                                                    <td>
-                                                        <select class="estado-select form-control" style="width: auto; display: inline" th:disabled="${not user.activo}">
-                                                            <option name="rol" th:value="${user.rol}" th:text="${user.rol}" h:value="${user.rol}"></option>
-                                                            <option th:each="rol: ${roles}" th:value="${user.rol}" th:text="${rol}"></option>
-                                                        </select>
-
-
-                                                    <td >
-                                                        <p th:text="${user.activo ? 'Activo' : 'Baja'}"></p>
-
-                                                    </td>
-                                                    <td>
-                                                        <a type="button" class="btn btn-success me-md-2"th:href="@{/user/verUsuario/__${user.id}__}">Ver Perfil                                                       </a>
-                                                    </td>
-                                                    <td>
-                                                                            <a  type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
- </td>
-                                                    <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR' && user.activo}">
-                                                        <form  th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
-                                                            <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
-                                                        </form>
-                                                    </td>                   
-                                                </tr>
-                                            </tbody>
-
-
-
-                                        </table>
+                            <form th:action="@{/admin/actualizarRoles}" method="POST" enctype="multipart/form-data">
+                                <!-- Page Heading -->
+                                <h1 class="h3 mb-2 text-gray-800">Lista de Usuarios</h1>
+                                <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">Error!</h5>
+                                        <p class="card-text text-center" th:text="${error}"></p>
                                     </div>
                                 </div>
-                            </div>
-                                                          <div class="d-grid gap-2 col-12 mx-auto text-center">
-                                            <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>
-                                        </div>
+                                <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">Exito!</h5>
+                                        <p class="card-text text-center" th:text="${exito}"></p>
+                                    </div>
+                                </div> 
+                                <!-- DataTales Example -->
+                                <div class="card shadow mb-4">
 
-                                        </form>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Apellido</th>
+                                                        <th>Rol Actual</th>   
+                                                        <th>Cambiar Rol</th>   
+                                                        <th>Estado</th>   
+
+
+                                                        <th></th>                                           
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr th:each="user : ${users}">
+                                                        <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
+                                                        <td th:value="${user.apellido}" th:text="${user.apellido}"></td>                                                  
+                                                        <td th:value="${user.rol}" th:text="${user.rol}"> </td>
+
+                                                        <td>
+                                                            <select class="estado-select form-control" style="width: auto; display: inline" th:disabled="${not user.activo}">
+                                                                <option name="rol" th:value="${user.rol}" th:text="${user.rol}" h:value="${user.rol}"></option>
+                                                                <option th:each="rol: ${roles}" th:value="${user.rol}" th:text="${rol}"></option>
+                                                            </select>
+
+
+                                                        <td >
+                                                            <p th:text="${user.activo ? 'Activo' : 'Baja'}"></p>
+
+                                                        </td>
+                                                        <td>
+                                                            <a type="button" class="btn btn-success me-md-2"th:href="@{/user/verUsuario/__${user.id}__}">Ver Perfil                                                       </a>
+                                                        </td>
+                                                        <td>
+                                                            <a  type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
+                                                        </td>
+                                                        <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR' && user.activo}">
+                                                            <form  th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
+                                                                <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
+                                                            </form>
+                                                        </td>
+
+                                                        <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR' && user.activo}"> <!-- En esta parte que dice user.activo, tendria que ir user.inactivo??-->
+                                                            <form th:action="@{/admin/darAlta/__${user.id}__}" method="post" th:id="'reactivateForm_' + ${user.id}">
+                                                                <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showReactivationPopup(\'' + ${user.id} + '\')'">Reactivar</a>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+
+
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2 col-12 mx-auto text-center">
+                                    <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>
+                                </div>
+
+                            </form>
                         </div>
                         <!-- /.container-fluid -->
-                            
+
                     </div>
                     <!-- End of Main Content -->
 
@@ -324,35 +330,70 @@
 
             <!--  Script de comfiramcion de eliminacion-->
             <div id="confirmationPopup" class="confirmation-popup">
-                <p>¿Estás seguro de que quieres eliminar este Profesional?</p>
+                <p>¿Estás seguro de que quieres eliminar este Usuario?</p>
                 <button id="confirmButton" class="btn btn-danger" onclick="confirmDeletion()">Confirmar</button>
                 <button id="cancelButton" class="btn btn-secondary" onclick="cancelDeletion()">Cancelar</button>
             </div>
 
             <script th:inline="javascript">
                 function showConfirmationPopup(userId) {
-                    document.getElementById('confirmationPopup').style.display = 'block';
-                    document.getElementById('overlay').style.display = 'block';
-                    userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                document.getElementById('confirmationPopup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
                 }
 
                 function confirmDeletion() {
 
-                    document.getElementById('deleteForm_' + userIdToDelete).submit();
+                document.getElementById('deleteForm_' + userIdToDelete).submit();
 
-                    closeConfirmationPopup();
+                closeConfirmationPopup();
                 }
 
                 function cancelDeletion() {
-                    closeConfirmationPopup();
+                closeConfirmationPopup();
                 }
 
 
                 function closeConfirmationPopup() {
-                    document.getElementById('confirmationPopup').style.display = 'none';
-                    document.getElementById('overlay').style.display = 'none';
+                document.getElementById('confirmationPopup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
                 }
             </script>
+
+
+            <!-- script para volver a activar un usuario -->
+
+            <div id="reactivationPopup" class="confirmation-popup">
+                <p>¿Estás seguro de que quieres reactivar este Usuario?</p>
+                <button id="confirmButton" class="btn btn-danger" onclick="confirmReactivation()">Confirmar</button>
+                <button id="cancelButton" class="btn btn-secondary" onclick="cancelReactivation()">Cancelar</button>
+            </div>
+
+            <script th:inline="javascript">
+                function showReactivationPopup(userId) {
+                document.getElementById('reactivationPopup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                userIdToReactivate = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                }
+
+                function confirmReactivation() {
+
+                document.getElementById('reactivateForm_' + userIdToReactivate).submit();
+
+                closeReactivationPopup();
+                }
+
+                function cancelReactivation() {
+                closeReactivationPopup();
+                }
+
+
+                function closeReactivationPopup() {
+                document.getElementById('reactivationPopup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+                }
+            </script>
+
             <div id="overlay" class="overlay"></div>
 
             <!-- Bootstrap core JavaScript-->
