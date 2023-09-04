@@ -177,7 +177,20 @@ public class UsuarioServicio implements UserDetailsService {
             System.out.println("No es posible eliminar el ususario");
         }
     }
-
+  @Transactional
+    // Metodo para eliminar un usuario, se cambia el estado a inactivo
+    public void altaUsuario(String id) {
+        try {
+            Optional<Usuario> resp = usuarioRepo.findById(id);
+            if (resp.isPresent()) {
+                Usuario user = (Usuario) (resp.get());
+                user.setActivo(Boolean.TRUE);
+                usuarioRepo.save(user);
+            }
+        } catch (Exception e) {
+            System.out.println("No es posible dar de alta el ususario");
+        }
+    }
     // Metodo para listar todos los usuarios, sin tener en cuenta si estan dados de baja
     public List<Usuario> listarTodosUsuarios() {
 

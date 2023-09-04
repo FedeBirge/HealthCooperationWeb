@@ -47,7 +47,25 @@
             </nav>
 
             <main class="masthead bg-primary1 ">
-
+                 <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Error!</h5>
+                                <p class="card-text text-center" th:text="${error}"></p>
+                            </div>
+                        </div>
+                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Exito!</h5>
+                                <p class="card-text text-center" th:text="${exito}"></p>
+                            </div>
+                        </div> 
+                        <div th:if="${vacia != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Atencion!</h5>
+                                <p class="card-text text-center" th:text="${vacia}"></p>
+                            </div>
+                        </div> 
+                
                
                     <section class="cartasection">
                         <div class="card5">
