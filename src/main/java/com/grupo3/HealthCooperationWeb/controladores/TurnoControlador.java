@@ -2,6 +2,7 @@ package com.grupo3.HealthCooperationWeb.controladores;
 
 import com.grupo3.HealthCooperationWeb.entidades.AgendaSemanal;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
+import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
@@ -34,8 +35,22 @@ public class TurnoControlador {
     private AgendaServicio servAgenda;
     @Autowired
     private PacienteServicio pacServ;
+    
+ @Autowired
+    private ProfesionalServicio profesionalServicio;
+ 
 
-    @GetMapping("/misturnos/{id}") // ruta para el panel administrativo
+    @GetMapping("/panel") // ruta para el panel administrativo
+    public String panelturnos(ModelMap modelo, HttpSession session) {
+        
+         List<Profesional> profes = profesionalServicio.listarProfesionales();
+            modelo.addAttribute("profes", profes);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+        return "turnero.html";
+    }
+    
+       @GetMapping("/misturnos/{id}") // ruta para el panel administrativo
     public String misTurnos(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
@@ -43,12 +58,6 @@ public class TurnoControlador {
         modelo.addAttribute("turnos", turnos);
 
         return "verTurnos.html";
-    }
-
-    @GetMapping("/panel") // ruta para el panel administrativo
-    public String misTurnos() {
-
-        return "turnero.html";
     }
 
     // solo la ve el doctor con este id
