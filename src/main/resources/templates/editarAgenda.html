@@ -22,6 +22,32 @@
 
         <!-- Css -->
         <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+        <style>
+
+            .contenedorFooter{
+                display:flex;
+                justify-content: center;
+
+            }
+
+            .btnModal{
+                display: block;
+                width: 40%;
+                height: 50px;
+                border-radius: 25px;
+                outline: none;
+                border: none;
+                background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+                background-size: 200%;
+                font-size: 1.2rem;
+                color: #fff;
+                font-family: "Poppins", sans-serif;
+                margin: 1rem 0;
+                cursor: pointer;
+                transition: 0.5s;
+                margin-right: 10px;
+            }
+        </style>
 
     </head>
 
@@ -188,9 +214,9 @@
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editarActual/__${log.id}__}">Semana Actual</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editar/__${log.id}__}">Todas las semanas</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/turno/cancelarSemana/__${log.id}__}">Cancelar Semana actual</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/turno/cancelarTodos/__${log.id}__}">Cancelar Todos los Turnos</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/agregar/__${log.id}__}">Agregar Semanas</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarSemanaActual">Cancelar Semana actual</a> 
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarTodo">Cancelar Todos los Turnos</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#agregarSemanas">Agregar Semanas</a>
 
 
                             </div>
@@ -273,19 +299,19 @@
                                         <script th:inline="javascript">
                                             /* Función para mostrar la lista desplegable de estados y el botón "Guardar cambios" para el turno específico */
                                             function mostrarEstados(boton) {
-                                                /* Encuentra el elemento padre <li> que contiene los elementos relacionados con el turno */
-                                                var liElement = boton.closest('.turno-item');
+                                            /* Encuentra el elemento padre <li> que contiene los elementos relacionados con el turno */
+                                            var liElement = boton.closest('.turno-item');
 
-                                                /* Encuentra la lista desplegable y el botón "Guardar cambios" dentro del <li> */
-                                                var selectEstado = liElement.querySelector('.estado-select');
-                                                var botonGuardarCambios = liElement.querySelector('.btn-primary');
+                                            /* Encuentra la lista desplegable y el botón "Guardar cambios" dentro del <li> */
+                                            var selectEstado = liElement.querySelector('.estado-select');
+                                            var botonGuardarCambios = liElement.querySelector('.btn-primary');
 
-                                                /* Mostrar la lista desplegable y el botón "Guardar cambios" */
-                                                selectEstado.style.display = 'inline-block';
-                                                botonGuardarCambios.style.display = 'inline-block';
+                                            /* Mostrar la lista desplegable y el botón "Guardar cambios" */
+                                            selectEstado.style.display = 'inline-block';
+                                            botonGuardarCambios.style.display = 'inline-block';
 
-                                                /* Cuando el usuario seleccione un estado, puedes realizar la lógica necesaria aquí */
-                                                /* Por ejemplo, puedes enviar una solicitud al servidor para actualizar el estado del turno. */
+                                            /* Cuando el usuario seleccione un estado, puedes realizar la lógica necesaria aquí */
+                                            /* Por ejemplo, puedes enviar una solicitud al servidor para actualizar el estado del turno. */
                                             }
                                         </script>
 
@@ -321,13 +347,72 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                                        <div class="contenedorFooter">
+                                            <a class="btn btnModal" type="button" data-dismiss="modal">Cancelar</a>
+                                            <a class="btn btnModal" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- -->
+
+                            <div class="modal fade" id="cancelarSemanaActual" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres cancelar los turnos de tu semana actual?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Cancelar" a continuación si está listo para cancelar los turnos de la semana actual.</div>
+                                        <div class="contenedorFooter">
+                                            <a class="btn btnModal" type="button" data-dismiss="modal">Conservar</a>
+                                            <a class="btn btnModal" th:if="${semanas != null}" th:href="@{/turno/cancelarSemana/__${log.id}__}">Cancelar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="cancelarTodo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres cancelar todos los turnos?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Cancelar" a continuación si está listo para cancelar todos los turnos.</div>
+                                        <div class="contenedorFooter">
+                                            <a class="btn btnModal" type="button" data-dismiss="modal">Conservar</a>
+                                            <a class="btn btnModal" th:if="${semanas != null}" th:href="@{/turno/cancelarTodos/__${log.id}__}">Cancelar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="agregarSemanas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres agregar mas semanas?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Agregar" a continuación si está listo para agregar mas semanas.</div>
+                                        <div class="contenedorFooter">
+                                            <a class="btn btnModal" type="button" data-dismiss="modal">Cancelar</a>
+                                            <a class="btn btnModal" th:if="${semanas != null}" th:href="@{/agenda/agregar/__${log.id}__}"><span class="text-center">Agregar </span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Bootstrap core JavaScript-->
                             <script src="/vendor/jquery/jquery.min.js"></script>
                             <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
