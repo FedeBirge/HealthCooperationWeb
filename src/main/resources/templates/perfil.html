@@ -206,7 +206,7 @@
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
                         <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Modificar </a>
-                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Solicitar Baja </a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/profesionales/solicitarBaja/__${log.id}__}"> Solicitar Baja </a>
                         <!-- Encabezado de página -->
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                 <div class="card-body">

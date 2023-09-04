@@ -55,5 +55,16 @@ public class AdminControlador {
         return "redirect:/user/listar";
 
     }
+    
+     @PostMapping("/darAlta/{id}")
+    public String alta(@PathVariable("id") String id,ModelMap modelo, HttpSession session, RedirectAttributes redirectAttributes) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+        userServ.altaUsuario(id);
+        redirectAttributes.addFlashAttribute("exito", "!Usuario dado de alta!");
+        
+        return "redirect:/user/listar";
+
+    }
 
 }
