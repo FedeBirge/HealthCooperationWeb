@@ -112,6 +112,7 @@ public class ProfesionalServicio extends UsuarioServicio {
         profesional.setDireccion(direccion);
         profesional.setFecha_nac(fecha);
         profesional.setActivo(true);
+        profesional.setReputacion(0);
         if (especialidad == null) {
 
             throw new MyException("Debe ingresar una especialidad al profesional");

@@ -11872,35 +11872,12 @@ td {
     background-color:#2c3e50;
     margin-left: 10px; /* Añade un margen a la izquierda para separar el botón del select */
 }
-..rating {
+.rating {
   display: inline-block;
   margin-right: 60px;
 }
 
-.rating input {
-  display: none;
-}
 
-.rating label 
-{
-    
-  float: right;
-  cursor: pointer;
-  color: #ccc;
-  transition: color 0.3s;
-}
-
-.rating label:before {
-  content: '\2605';
-  font-size: 30px;
-}
-
-.rating input:checked ~ label,
-.rating label:hover,
-.rating label:hover ~ label {
-  color: #6f00ff;
-  transition: color 0.3s;
-}
 
   .lista-horizontal {
         white-space: nowrap;
@@ -11949,3 +11926,45 @@ td {
 .botonTurno:hover::after, button:hover::before {
   width: 100%;
 }
+
+
+.rating{
+    font-size: 30px;
+}
+/* Estilo básico para todas las estrellas */
+.rating.empty {
+ 
+  color: #17a387; /* Color de estrella vacía */
+}
+
+.star.filled {
+  color: #6f00ff; 
+}
+
+
+/* Estilo para las estrellas llenas 
+.rating input {
+  display: none;
+}
+
+.rating label 
+{
+    
+  float: right;
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.3s;
+}
+
+.rating label:before {
+  content: '\2605';
+  font-size: 30px;
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+  color: #6f00ff;
+  transition: color 0.3s;
+}*/
+
