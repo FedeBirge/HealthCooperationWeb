@@ -12037,9 +12037,9 @@ td {
     font-size: 30px;
 }
 /* Estilo básico para todas las estrellas */
-.rating.empty {
+.star.empty {
  
-  color: #17a387; /* Color de estrella vacía */
+  color: #ccc; /* Color de estrella vacía */
 }
 
 .star.filled {
@@ -12246,8 +12246,8 @@ td {
 }
 
 .botonflecha {
-  border: none;
-  background: none;
+  border-radius: 0.5rem;
+      background-color:#1abc9c;
   
 }
 

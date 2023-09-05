@@ -80,7 +80,7 @@
                                     <p class="message" th:if='${prof.oferta} != null' th:text="'Horarios  '+${#strings.substring(prof.oferta.horaInicio, 0, 5)}+' a '+${prof.oferta.horaFin}+' Hs.'" >  </p>                      
                                     <p class="message" th:if='${prof.oferta} != null' th:text="'Lugar de atencion:  '+${prof.oferta.ubicacion}" >  </p>                      
                                     <p class="message" th:text="'Valor de la consulta $ '+${prof.valorConsulta}" >  </p>       
-                                    <p class="message"  th:each="obra: ${prof.oferta.obrasSociales}" >
+                                    <p th:if='${prof.oferta.obrasSociales} != null' class="message"  th:each="obra: ${prof.oferta.obrasSociales}" >
                                         Obras Sociales: 
                                         <span th:text="${obra.nombre}" ></span></p>       
                                 </div>
@@ -92,11 +92,11 @@
 
                         <div class="card5">
                             <div class="scroll-buttons">
-                                <button type="button" class="scroll-button botonflecha " id="scroll-left">←</button>
+                                <button type="button" class="scroll-button botonflecha" id="scroll-left">←</button>
                                 <div class="lista-horizontal" id="scroll-container">
                                     <p class="message" th:if="${semanas} ==null" > No existen turnos disponibles </p> 
                                     <ul th:if="${semanas} !=null" class="lista" th:each="semana : ${semanas}">
-                                        <li  style="display: inline-block; margin-right: 10px;">
+                                        <li  style="display: inline-block; margin-right: 50px;">
                                             <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
 
 
@@ -132,11 +132,11 @@
                                     const scrollRightButton = document.getElementById("scroll-right");
 
                                     scrollLeftButton.addEventListener("click", function () {
-                                        scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
+                                        scrollContainer.scrollLeft -= 300; // Ajusta el valor de desplazamiento
                                     });
 
                                     scrollRightButton.addEventListener("click", function () {
-                                        scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
+                                        scrollContainer.scrollLeft += 300; // Ajusta el valor de desplazamiento
                                     });
                                 });
                             </script>
