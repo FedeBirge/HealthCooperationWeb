@@ -245,12 +245,12 @@
                                                 <td th:if="${user.activo}"> <!-- En esta parte que dice user.activo, tendria que ir user.inactivo??-->
                                                     <form th:action="@{/admin/cambioRol/__${user.id}__}" method="POST" >
                                                         
-                                                        <select name="rol" th:value="${user.rol}" class="estado-select form-control" style="width: auto; display: inline" th:disabled="${not user.activo}">
-                                                        <option    th:text="${user.rol}" th:value="${user.rol}"></option>
-                                                        <option   th:each="rol: ${roles}" th:value="${user.rol}" th:text="${rol}"></option>
+                                                        <select name="rol" class="estado-select form-control" style="width: auto; display: inline" th:disabled="${not user.activo}">
+                                                        <option  name="rol"  th:text="${user.rol}" th:value="${user.rol}"></option>
+                                                        <option   th:each="rol: ${roles}" th:value="${rol}" th:text="${rol}"></option>
                                                     </select>
                                                        
-                                                          <a type="submit" class="btn btn-success me-md-2" th:href="@{/admin/cambioRol/__${user.id}__}">↻ </a>
+                                                          <button type="submit" class="btn btn-success me-md-2" >↻ </button>
                                                         
                                                     </form>
                                                 </td>
