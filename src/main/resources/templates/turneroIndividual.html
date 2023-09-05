@@ -46,12 +46,12 @@
                 </div>
             </nav>
 
-          <main class="masthead bg-primary1 ">
-  <section class="fixed-section">
-               
+            <main class="masthead bg-primary1 ">
+                <section class="fixed-section">
+
                     <section class="cartasection">
-                        
-                        
+
+
                         <div class="carta-medico">
                             <section class="cartasection">
                                 <div class="card2">
@@ -61,31 +61,23 @@
                                                  th:src="@{/imagen/perfil/__${prof.id}__}" style="max-width: 100%; max-height: 150px;">
                                         </div>
                                         <div>
-                                            <div class="rating">
-                                                <input value="5" name="rate" id="star5" type="radio">
-                                                <label title="text" for="star5"></label>
-                                                <input value="4" name="rate" id="star4" type="radio">
-                                                <label title="text" for="star4"></label>
-                                                <input value="3" name="rate" id="star3" type="radio" checked="">
-                                                <label title="text" for="star3"></label>
-                                                <input value="2" name="rate" id="star2" type="radio">
-                                                <label title="text" for="star2"></label>
-                                                <input value="1" name="rate" id="star1" type="radio">
-                                                <label title="text" for="star1"></label>
-                                            </div>
+
 
                                             <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="name" th:text="'Dra./Dr '+${prof.apellido}+' '+${prof.nombre}" > </a>                                
                                             <p class="name" th:text="'Especialsita en '+${prof.especialidad}"></p>
-                                            <div th:text="${prof.reputacion}" class="rating">
-                                                <input value="5" name="rate" id="star5" type="radio">
-                                            </div>
+                                            <a class="rating" href="">
+                                                <div   class="rating">
+                                                    <span th:if="${prof.reputacion > 0}" th:each="starNum : ${#numbers.sequence(0, prof.reputacion-1)}" class="star filled">&#9733;</span>
+                                                    <span th:if="${prof.reputacion < 5}" th:each="starNum : ${#numbers.sequence(prof.reputacion + 1 , 5)}" class="star empty">&#9733;</span>
+                                                </div>
+                                            </a>
 
 
                                         </div>
                                     </div>
                                     <p class="message" th:text="${prof.descripcion}" >  </p>                      
                                     <p class="message" th:if='${prof.oferta} != null' th:text="'Modo de Atención '+${prof.oferta.tipo}" >  </p>                      
-                                    <p class="message" th:if='${prof.oferta} != null' th:text="'Horarios  '+${prof.oferta.horaInicio}+' a '+${prof.oferta.horaFin}+' Hs.'" >  </p>                      
+                                    <p class="message" th:if='${prof.oferta} != null' th:text="'Horarios  '+${#strings.substring(prof.oferta.horaInicio, 0, 5)}+' a '+${prof.oferta.horaFin}+' Hs.'" >  </p>                      
                                     <p class="message" th:if='${prof.oferta} != null' th:text="'Lugar de atencion:  '+${prof.oferta.ubicacion}" >  </p>                      
                                     <p class="message" th:text="'Valor de la consulta $ '+${prof.valorConsulta}" >  </p>       
                                     <p class="message"  th:each="obra: ${prof.oferta.obrasSociales}" >
@@ -98,11 +90,11 @@
 
                         </div>
 
-             <div class="card5">
+                        <div class="card5">
                             <div class="scroll-buttons">
                                 <button type="button" class="scroll-button botonflecha " id="scroll-left">←</button>
                                 <div class="lista-horizontal" id="scroll-container">
-                                             <p class="message" th:if="${semanas} ==null" > No existen turnos disponibles </p> 
+                                    <p class="message" th:if="${semanas} ==null" > No existen turnos disponibles </p> 
                                     <ul th:if="${semanas} !=null" class="lista" th:each="semana : ${semanas}">
                                         <li  style="display: inline-block; margin-right: 10px;">
                                             <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
@@ -113,12 +105,16 @@
                                                 <ul >
                                                     <li class="lista-elemento" th:each="turno : ${entry.value.turnos}">
                                                         <p>
-                                                         <button th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? ' botonTurno botonCalcelado' : 
-                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'botonTurno botonReservado' : 
-                                                                    (#strings.trim(turno.estado) == 'COMPLETADO' ? 'botonTurno btn-info' : 'botonTurno botonSucces'))}"
-                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
-                                                                <span class="hover-underline-animation" th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
-                                                            </button>
+ <button th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'botonTurno botonCalcelado' : 
+                  (#strings.trim(turno.estado) == 'RESERVADO' ? 'botonTurno botonReservado' : 
+                  (#strings.trim(turno.estado) == 'COMPLETADO' ? 'botonTurno btn-info' : 'botonTurno botonSucces'))}"
+        th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
+    <span th:if="${#strings.trim(turno.estado) == 'DISPONIBLE'}" class="hover-underline-animation" th:text="${turno.hora}"></span>
+    <span th:if="${#strings.trim(turno.estado) != 'DISPONIBLE'}" class="text-strikethrough" th:text="${turno.hora}"></span>
+</button>
+
+
+
                                                     </li>
                                                 </ul>
                                             </ul>
@@ -152,76 +148,20 @@
                                     <br>
                                     <form id="modal-form">
                                         <div class="inputbox w100">
-                                <textarea required id="msj" name="msj"></textarea>
-                                <span>Motivo de la consulta....</span>
-                            </div>
+                                            <textarea required id="msj" name="msj"></textarea>
+                                            <span>Motivo de la consulta....</span>
+                                        </div>
                                         <button  class="boton-secondary" type="button" id="cancelar-modal">Cancelar</button>
                                         <button class="boton-primary" type="submit" id="confirmar-modal">Confirmar Turno</button>
                                     </form>
                                 </div>
                             </div>
-                        
-                            
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                                const modal = document.getElementById("modal1");
-                                const closeModalButton = document.getElementById("close-modal1");
-                                const showModalButton = document.querySelectorAll(".lista-elemento");
-                                const cancelarButton = document.getElementById("cancelar-modal");
-                                const modalForm = document.getElementById("modal-form");
-
-                                // Función para mostrar el modal
-                                function mostrarModal() {
-                                modal.style.display = "block";
-                                }
-
-                                // Función para ocultar el modal
-                                function ocultarModal() {
-                                modal.style.display = "none";
-                                }
-
-                                // Evento para mostrar el modal al hacer clic en elementos de la lista
-                                showModalButton.forEach(function (elemento) {
-                                elemento.addEventListener("click", mostrarModal);
-                                });
-
-                                // Evento para ocultar el modal al hacer clic en el botón de cancelar
-                                cancelarButton.addEventListener("click", ocultarModal);
-
-                                // Evento para enviar el formulario (puedes agregar tu lógica de manejo de formularios aquí)
-                                modalForm.addEventListener("submit", function (event) {
-                                event.preventDefault();
-                                // Aquí puedes agregar la lógica para procesar los datos del formulario
-                                // Después de procesar los datos, puedes ocultar el modal si es necesario
-                                ocultarModal();
-                                });
-
-                                // Evento para ocultar el modal al hacer clic en el botón de cierre
-                                closeModalButton.addEventListener("click", ocultarModal);
-
-                                // Evento para ocultar el modal si se hace clic fuera de él
-                                window.addEventListener("click", function (event) {
-                                if (event.target === modal) {
-                                ocultarModal();
-                                }
-                                });
-                                });
-                          
-
-                            </script>
-
                         </div>
+                    </section>
+                </section>
+            </main>
 
 
-            </section>
-          
-
-                
-            </section>
-
-        </main>
-
-                 
             <!-- Footer-->
             <footer class="footer text-center">
                 <div class="container">
@@ -252,26 +192,65 @@
                         </div>
                     </div>
                 </div>
+
+
             </footer>
             <!-- Copyright Section-->
             <div class="copyright py-4 text-center text-white">
                 <div class="container"><small>HealtCooperationWeb ©2023</small></div>
             </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const modal = document.getElementById("modal1");
+                    const closeModalButton = document.getElementById("close-modal1");
+                    const showModalButton = document.querySelectorAll(".lista-elemento");
+                    const cancelarButton = document.getElementById("cancelar-modal");
+                    const modalForm = document.getElementById("modal-form");
 
-        </footer>
-        <!-- Copyright Section-->
-        <div class="copyright py-4 text-center text-white">
-            <div class="container"><small>HealtCooperationWeb ©2023</small></div>
-        </div>
-        
-        <script src="/vendor/jquery/jquery.min.js"></script>
-        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="/js/scripts.js"></script>
-        <script src="/js/bootstrap1"></script>
-        <script src="js/modals1"></script>
+                    // Función para mostrar el modal
+                    function mostrarModal() {
+                        modal.style.display = "block";
+                    }
+
+                    // Función para ocultar el modal
+                    function ocultarModal() {
+                        modal.style.display = "none";
+                    }
+
+
+                    showModalButton.forEach(function (elemento) {
+                        elemento.addEventListener("click", mostrarModal);
+                    });
+
+
+                    cancelarButton.addEventListener("click", ocultarModal);
+
+                    modalForm.addEventListener("submit", function (event) {
+                        event.preventDefault();
+                        ocultarModal();
+                    });
+
+                    closeModalButton.addEventListener("click", ocultarModal);
+
+
+                    window.addEventListener("click", function (event) {
+                        if (event.target === modal) {
+                            ocultarModal();
+                        }
+                    });
+                });
+
+
+            </script>
+
+            <script src="/vendor/jquery/jquery.min.js"></script>
+            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <!-- Bootstrap core JS-->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Core theme JS-->
+            <script src="/js/scripts.js"></script>
+            <script src="/js/bootstrap1"></script>
+            <script src="js/modals1"></script>
 
 
             <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>

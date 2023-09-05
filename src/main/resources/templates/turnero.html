@@ -129,7 +129,8 @@
                             </div>
                             <p class="message" th:text="${prof.descripcion}" >  </p>                      
                             <p class="message" th:if='${prof.oferta} != null' th:text="'Modo de Atención '+${prof.oferta.tipo}" >  </p>                      
-                            <p class="message" th:if='${prof.oferta} != null' th:text="'Horarios  '+${prof.oferta.horaInicio}+' a '+${prof.oferta.horaFin}+' Hs.'" >  </p>                      
+                            <p class="message" th:if='${prof.oferta} != null' th:text="'Horarios  '+${#strings.substring(prof.oferta.horaInicio, 0, 5)}+' a '+${prof.oferta.horaFin}+' Hs.'" >  </p>                      
+                            
                             <p class="message" th:if='${prof.oferta} != null' th:text="'Lugar de atencion:  '+${prof.oferta.ubicacion}" >  </p>                      
                             <p class="message" th:text="'Valor de la consulta $ '+${prof.valorConsulta}" >  </p>                      
 
