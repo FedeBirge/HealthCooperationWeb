@@ -31,12 +31,27 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Barra lateral - Marca -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/profesionales/dashboard}">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Administrador</div>
+                </a>
+
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('USUARIO')">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Paciente</div>
+                </a>
+
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('MODERADOR')">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
                     <div class="sidebar-brand-text mx-3">Panel Profesional</div>
                 </a>
+
 
                 <!-- Divisor -->
                 <hr class="sidebar-divider my-0">
@@ -61,7 +76,23 @@
 
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
 
-                <li class="nav-item">
+                  <li sec:authorize="hasRole('USUARIO')" class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Perfíl</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a sec:authorize="hasRole('USUARIO')" class="collapse-item" th:href="@{/inicio}">Ver mi perfil</a>
+                            <a class="collapse-item" th:href="@{/user/perfil/__${log.id}__}">Modificar mi Perfil</a>
+                            <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}" sec:authorize="hasRole('USUARIO')">Ver mis Turnos</a>
+                        </div>
+                    </div>
+                </li>
+                
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-hospital-user"></i>
@@ -75,7 +106,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -91,7 +122,7 @@
                     </div>
 
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -107,7 +138,6 @@
                     </div>
 
                 </li>
-
 
 
                 <!-- Divider -->
@@ -231,8 +261,8 @@
                         <hr class="border border-success border-3 opacity-75">
 
                         <!-- a verse que pondre aqui -->
-                        
-                        
+
+
 
 
                     </div>
