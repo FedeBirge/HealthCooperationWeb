@@ -311,8 +311,8 @@
 
                                             </td>
 
-                                            <td  sec:authorize="hasRole('MODERADOR')"
-                                                 <a type="button" class="btn btn-success me-md-2" th:href="@{/historia/verHistoria/__${entry.value.id}__}">Historia Clínica</a>>
+                                            <td  sec:authorize="hasRole('MODERADOR')">
+                                                 <a type="button" class="btn btn-success me-md-2" th:href="@{/historia/verHistoria/__${entry.value.id}__}">Historia Clínica</a>
 
                                             </td>
                                         </tr>     
