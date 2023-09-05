@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap');
+</style>
 
 .card1 {
     
@@ -429,7 +432,7 @@ address {
 
 ol,
 ul {
-  padding-left: 2rem;
+  padding-left: 1px;
 }
 
 ol,
@@ -11253,9 +11256,12 @@ html {
 }
 
 .masthead {
-  padding-top:calc(6rem + 30px);
-  padding-bottom: 6rem;
+  height: auto;
+  weigh: 800px;
+  padding-top: 6rem; /* Ajusta tu valor de padding-top según sea necesario */
+  padding-bottom: 6rem; /* Ajusta tu valor de padding-bottom según sea necesario */
 }
+
 .masthead .masthead-heading {
   font-size: 2.75rem;
   line-height: 2.75rem;
@@ -11523,40 +11529,31 @@ body{
 
 .card5 {
   background-color: #fff;
-  width: 1000px;
-  height: 800px;
-  overflow: hidden;
   border: 1px solid #ccc;
   border-radius: 10px;
   position: absolute; /* Cambia a posición absoluta */
-  top: 10px; /* Ajusta la distancia desde la parte superior */
-  right: 165px; /* Ajusta la distancia desde la derecha */
-  margin: 0;
+  
+  top: 30%; /* Centra verticalmente */
+  left: 60%; /* Centra horizontalmente */
+  
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden; 
+  width: 480px; /* Ancho fijo de 800px *//* Esto oculta el contenido que excede los límites de la tarjeta */
+   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Agrega sombra aquí */
 }
 
-.carousel-container {
-  overflow-y: scroll;
-  white-space: nowrap;
-  width: 100%;
-  height: 100%; /* Cambia la altura al 100% si es necesario */
-}
-/* Estilo de las flechas */
-.arrow {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  color: #333;
-}
 
-.left-arrow {
-  position: absolute;
-  left: 10px; /* Ajusta la posición de la flecha izquierda */
+div span{
+    font-family: 'Poppins', sans-serif;
 }
-
-.right-arrow {
-  position: absolute;
-  right: 10px; /* Ajusta la posición de la flecha derecha */
+    div p{
+    font-family: 'Poppins', sans-serif;
+}
+    div h1 h2 h3 h4 h5 h6 h7{
+    font-family: 'Poppins', sans-serif;
+}
+    div a{
+    font-family: 'Poppins', sans-serif;
 }
   .scroll-buttons {
         display: flex;
@@ -11778,7 +11775,12 @@ td {
 .fixed-section {
   position: relative;
   height: 800px;
+  display: flex;
+  
+  
+   margin-top: calc((100% - 1600px) / 2); /* Calcula el margen superior automáticamente */
 }
+
 
 .cookie-card {
   max-width: 600px;
@@ -11910,7 +11912,8 @@ td {
 
     .lista-horizontal ul {
         display: inline-block;
-        margin-right: 10px;
+        margin-right: 0;
+         vertical-align: top; /* Alinea las filas en la parte superior */
     }
 
     .scroll-buttons {
@@ -11922,30 +11925,61 @@ td {
     .scroll-button {
         cursor: pointer;
     }
-    
-    .botonTurno {
-  color: white;
-  text-decoration: none;
-  font-size: 25px;
+.botonTurno {
   border: none;
   background: none;
-  font-weight: 600;
+}
+
+.botonTurno span {
+  padding-bottom: 7px;
+  letter-spacing: 4px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
   font-family: 'Poppins', sans-serif;
+  
 }
 
-.botonTurno::before {
-  margin-left: auto;
+
+
+.hover-underline-animation {
+  position: relative;
+  color: black;
+  padding-bottom: 2px;
 }
 
-.botonTurno::after, button::before {
-  content: '';
-  width: 0%;
+.hover-underline-animation:after {
+  content: "";
+  position: absolute;
+  width: 70%;
+  transform: scaleX(0);
   height: 2px;
-  background: #f44336;
-  display: block;
-  transition: 0.5s;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
 }
 
-.botonTurno:hover::after, button:hover::before {
-  width: 100%;
+.botonTurno:hover .hover-underline-animation:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+.lista li {
+  list-style: none; /* Elimina las viñetas */
+}
+
+.botonflecha {
+  border: none;
+  background: none;
+  
+}
+
+.botonflecha span {
+  padding-bottom: 7px;
+  letter-spacing: 4px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
 }

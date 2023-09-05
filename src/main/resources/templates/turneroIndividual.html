@@ -47,9 +47,10 @@
             </nav>
 
             <main class="masthead bg-primary1 ">
-
+  <section class="fixed-section">
                
                     <section class="cartasection">
+                        
                         
                         <div class="carta-medico">
                             <section class="cartasection">
@@ -97,14 +98,9 @@
 
                         </div>
 
-             
-
-            </section>
-            <section class="fixed-section">
-
-                <div class="card5">
+             <div class="card5">
                             <div class="scroll-buttons">
-                                <button type="button" class="scroll-button " id="scroll-left">←</button>
+                                <button type="button" class="scroll-button botonflecha " id="scroll-left">←</button>
                                 <div class="lista-horizontal" id="scroll-container">
                                              <p class="message" th:if="${semanas} ==null" > No existen turnos disponibles </p> 
                                     <ul th:if="${semanas} !=null" class="lista" th:each="semana : ${semanas}">
@@ -117,10 +113,12 @@
                                                 <ul >
                                                     <li th:each="turno : ${entry.value.turnos}">
                                                         <p>
-                                                            <button  block th:class="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' ? 'botonTurno' }">
-                                                                <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
-                                                            </button>
-                                                        </p>
+                                                         <button th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'botonTurno btn-danger' : 
+                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'botonTurno btn-default' : 
+                                                                    (#strings.trim(turno.estado) == 'COMPLETADO' ? 'botonTurno btn-info' : 'botonTurno btn-success'))}"
+                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
+                                                                <span class="hover-underline-animation" th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
+                                                            </button>
                                                     </li>
                                                 </ul>
                                             </ul>
@@ -128,7 +126,7 @@
                                     </ul>
 
                                 </div>
-                                <button type="button" class="scroll-button " id="scroll-right">→</button>
+                                <button type="button" class="scroll-button botonflecha " id="scroll-right">→</button>
                             </div>
 
                             <script>
@@ -148,7 +146,7 @@
                             </script>
 
 
-                            <!--   Button trigger modal -->
+                            <!--   Button trigger modal 
                             <button
                                 type="button"
                                 class="btn btn-primary"
@@ -158,7 +156,7 @@
                    
                             </button>           <!-- Button trigger modal -->
                       
-                            <!-- Modal -->
+                            <!-- Modal 
                             <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                   <div class="modal-content">
@@ -200,7 +198,12 @@
                               </div>
 
 
-                        </div>
+                        </div>-->
+
+            </section>
+          
+
+                
             </section>
 
         </main>
