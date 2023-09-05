@@ -224,7 +224,7 @@ public class UsuarioServicio implements UserDetailsService {
                 usuarioRepo.save(user);
             }
         } catch (Exception e) {
-            System.out.println("No es posible dar de alta el ususario");
+            System.out.println("No es posible cambiar de rol");
         }
     }
     // Metodo para listar todos los usuarios, sin tener en cuenta si estan dados de baja

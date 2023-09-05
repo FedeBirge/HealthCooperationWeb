@@ -69,7 +69,7 @@ public class AdminControlador {
     }
     @GetMapping("/cambioRol/{id}")
     public String cambioRol(@PathVariable("id") String id,ModelMap modelo, HttpSession session
-            ,@RequestParam String rol, RedirectAttributes redirectAttributes) {
+            ,@RequestParam() String rol, RedirectAttributes redirectAttributes) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         System.out.println("ROL "+rol);
@@ -82,12 +82,12 @@ public class AdminControlador {
     
     @PostMapping("/cambioRol/{id}")
     public String cambioRoles(@PathVariable("id") String id,ModelMap modelo, HttpSession session
-            , String rol, RedirectAttributes redirectAttributes) {
+            , @RequestParam() String rol, RedirectAttributes redirectAttributes) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         System.out.println("ROL "+rol);
         userServ.cambioRol(id,rol);
-        redirectAttributes.addFlashAttribute("exito", "!Rol Usuario!");
+        redirectAttributes.addFlashAttribute("exito", "!Rol Usuario cambiado!!");
         
         return "redirect:/user/listar";
 
