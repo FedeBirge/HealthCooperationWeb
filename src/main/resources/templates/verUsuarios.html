@@ -240,21 +240,21 @@
                                                 <td  th:value="${user.rol}" th:text="${user.rol}"> </td>
 
                                                 <td>
-                                                    
-                                                     
+
+
                                                 <td th:if="${user.activo}"> <!-- En esta parte que dice user.activo, tendria que ir user.inactivo??-->
-                                                    <form th:action="@{/admin/cambioRol/__${user.id}__}" method="POST" >
-                                                        
+                                                    <form th:action="@{/admin/cambioRol/__${user.id}__}" method="POST" th:id="'changeRol_' + ${user.id}" >
+
                                                         <select name="rol" class="estado-select form-control" style="width: auto; display: inline" th:disabled="${not user.activo}">
-                                                        <option  name="rol"  th:text="${user.rol}" th:value="${user.rol}"></option>
-                                                        <option   th:each="rol: ${roles}" th:value="${rol}" th:text="${rol}"></option>
-                                                    </select>
-                                                       
-                                                          <button type="submit" class="btn btn-success me-md-2" >↻ </button>
-                                                        
+                                                            <option  name="rol"  th:text="${user.rol}" th:value="${user.rol}"></option>
+                                                            <option   th:each="rol: ${roles}" th:value="${rol}" th:text="${rol}"></option>
+                                                        </select>
+
+                                                        <a th:href="'javascript:void(0)'" class="btn btn-success me-md-2"  th:attr="onclick='showRolPopup(\'' + ${user.id} + '\')'" >↻ </a>
+
                                                     </form>
                                                 </td>
-                                                  
+
 
                                                 <td >
                                                     <p th:text="${user.activo ? 'Activo' : 'Baja'}"></p>
@@ -280,7 +280,7 @@
                                             </tr>
                                         </tbody>
 
-                                        
+
 
                                     </table>
                                 </div>
@@ -326,42 +326,43 @@
                     </div>
                     <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                        <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                     </div>
                 </div>
             </div>
         </div>
 
+       
         <!--  Script de comfiramcion de eliminacion-->
         <div id="confirmationPopup" class="confirmation-popup">
             <p>¿Estás seguro de que quieres eliminar este Usuario?</p>
-            <button id="confirmButton" class="btn btn-danger" onclick="confirmDeletion()">Confirmar</button>
-            <button id="cancelButton" class="btn btn-secondary" onclick="cancelDeletion()">Cancelar</button>
+            <button id="confirmButton" class="btn btn-success" onclick="confirmDeletion()">Confirmar</button>
+            <button id="cancelButton" class="btn btn-danger" onclick="cancelDeletion()">Cancelar</button>
         </div>
 
         <script th:inline="javascript">
             function showConfirmationPopup(userId) {
-                document.getElementById('confirmationPopup').style.display = 'block';
-                document.getElementById('overlay').style.display = 'block';
-                userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+            document.getElementById('confirmationPopup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
             }
 
             function confirmDeletion() {
 
-                document.getElementById('deleteForm_' + userIdToDelete).submit();
+            document.getElementById('deleteForm_' + userIdToDelete).submit();
 
-                closeConfirmationPopup();
+            closeConfirmationPopup();
             }
 
             function cancelDeletion() {
-                closeConfirmationPopup();
+            closeConfirmationPopup();
             }
 
 
             function closeConfirmationPopup() {
-                document.getElementById('confirmationPopup').style.display = 'none';
-                document.getElementById('overlay').style.display = 'none';
+            document.getElementById('confirmationPopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
             }
         </script>
 
@@ -370,35 +371,68 @@
 
         <div id="reactivationPopup" class="confirmation-popup">
             <p>¿Estás seguro de que quieres reactivar este Usuario?</p>
-            <button id="confirmButton" class="btn btn-danger" onclick="confirmReactivation()">Confirmar</button>
-            <button id="cancelButton" class="btn btn-secondary" onclick="cancelReactivation()">Cancelar</button>
+            <button id="confirmButton" class="btn btn-sucess" onclick="confirmReactivation()">Confirmar</button>
+            <button id="cancelButton" class="btn btn-danger" onclick="cancelReactivation()">Cancelar</button>
         </div>
 
         <script th:inline="javascript">
             function showReactivationPopup(userId) {
-                document.getElementById('reactivationPopup').style.display = 'block';
-                document.getElementById('overlay').style.display = 'block';
-                userIdToReactivate = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+            document.getElementById('reactivationPopup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            userIdToReactivate = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
             }
 
             function confirmReactivation() {
 
-                document.getElementById('reactivateForm_' + userIdToReactivate).submit();
+            document.getElementById('reactivateForm_' + userIdToReactivate).submit();
 
-                closeReactivationPopup();
+            closeReactivationPopup();
             }
 
             function cancelReactivation() {
-                closeReactivationPopup();
+            closeReactivationPopup();
             }
 
 
             function closeReactivationPopup() {
-                document.getElementById('reactivationPopup').style.display = 'none';
-                document.getElementById('overlay').style.display = 'none';
+            document.getElementById('reactivationPopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
             }
         </script>
+        
+        <!-- script para abrir el modal y cambiar de rol -->
 
+        <div id="rolPopup" class="confirmation-popup">
+            <p>¿Estás seguro de que quieres cambiarle el rol a este Usuario?</p>
+            <button id="confirmButton" class="btn btn-sucess" onclick="confirmRol()"style="background-color: #38d39f; color: #fff;">Confirmar</button>
+            <button id="cancelButton" class="btn btn-danger" onclick="cancelRol()" >Cancelar</button>
+        </div>
+
+        <script th:inline="javascript">
+            function showRolPopup(userId) {
+            document.getElementById('rolPopup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            userIdToChangeRol = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+            }
+
+            function confirmRol() {
+
+            document.getElementById('changeRol_' + userIdToChangeRol).submit();
+
+            closRolPopup();
+            }
+
+            function cancelRol() {
+            closeRolPopup();
+            }
+
+
+            function closeRolPopup() {
+            document.getElementById('rolPopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            }
+        </script>
+        
         <div id="overlay" class="overlay"></div>
 
         <!-- Bootstrap core JavaScript-->

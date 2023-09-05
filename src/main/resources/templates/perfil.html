@@ -22,33 +22,6 @@
         <!-- Css -->
         <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-        <style>
-
-            .contenedorFooter{
-                display:flex;
-                justify-content: center;
-
-            }
-
-            .btnModal{
-                display: block;
-                width: 40%;
-                height: 50px;
-                border-radius: 25px;
-                outline: none;
-                border: none;
-                background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
-                background-size: 200%;
-                font-size: 1.2rem;
-                color: #fff;
-                font-family: "Poppins", sans-serif;
-                margin: 1rem 0;
-                cursor: pointer;
-                transition: 0.5s;
-                margin-right: 10px;
-            }
-        </style>
-
     </head>
     <body id="page-top">
 
@@ -344,9 +317,9 @@
                 </div>
             </div>
 
-            
+
             <!-- Modal de darse de baja -->
-            
+
             <div class="modal fade" id="solicitarBaja" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -358,10 +331,9 @@
                             </button>
                         </div>
                         <div class="modal-body">Seleccione "Dar Baja" a continuación si está listo para dar de baja el usuario.</div>
-                        <div class="contenedorFooter">
-                            <a class="btn btnModal" type="button" data-dismiss="modal">Conservar</a>
-                            
-                            <a class="btn btnModal"th:href="@{/profesionales/solicitarBaja/__${log.id}__}">Dar Baja</a>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                         </div>
                     </div>
                 </div>

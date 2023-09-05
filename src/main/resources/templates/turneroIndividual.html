@@ -47,6 +47,7 @@
             </nav>
 
             <main class="masthead bg-primary1 ">
+
                 <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                     <div class="card-body">
                         <h5 class="card-title text-center">Error!</h5>
@@ -117,8 +118,10 @@
 
 
 
+
                 </section>
                 <section class="fixed-section">
+
 
                     <div class="card5">
                         <div class="scroll-buttons">
@@ -129,44 +132,79 @@
                                     <li  style="display: inline-block; margin-right: 10px;">
                                         <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
 
-
-                                            <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
-                                            <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
-                                            <ul >
-                                                <li th:each="turno : ${entry.value.turnos}">
-                                                    <p>
-                                                <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
-                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
-                                                                    (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
+                                                <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
+                                                <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
+                                                <ul >
+                                                    <li th:each="turno : ${entry.value.turnos}">
+                                                        <p>
+                                                         <button th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'botonTurno btn-danger' : 
+                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'botonTurno btn-default' : 
+                                                                    (#strings.trim(turno.estado) == 'COMPLETADO' ? 'botonTurno btn-info' : 'botonTurno btn-success'))}"
                                                                     th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
-                                                                <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
-                                                            </button>
+                                                                <span class="hover-underline-animation" th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
+                                                            </button>
+                                                    </li>
+                                                </ul>
 
 
-                                                    </p>
-                                                </li>
-                                            </ul>
+                                  
                                         </ul>
                                     </li>
                                 </ul>
 
-                            </div>
-                            <button type="button" class="scroll-button " id="scroll-right">→</button>
+
+                                </div>
+                                <button type="button" class="scroll-button botonflecha " id="scroll-right">→</button>
+
+                            
                         </div>
 
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {
-                                const scrollContainer = document.getElementById("scroll-container");
-                                const scrollLeftButton = document.getElementById("scroll-left");
-                                const scrollRightButton = document.getElementById("scroll-right");
+                            const scrollContainer = document.getElementById("scroll-container");
+                            const scrollLeftButton = document.getElementById("scroll-left");
+                            const scrollRightButton = document.getElementById("scroll-right");
 
-                                scrollLeftButton.addEventListener("click", function () {
-                                    scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
-                                });
 
-                                scrollRightButton.addEventListener("click", function () {
-                                    scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    const scrollContainer = document.getElementById("scroll-container");
+                                    const scrollLeftButton = document.getElementById("scroll-left");
+                                    const scrollRightButton = document.getElementById("scroll-right");
+
+                                    scrollLeftButton.addEventListener("click", function () {
+                                        scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
+                                    });
+
+                                    scrollRightButton.addEventListener("click", function () {
+                                        scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
+                                    });
                                 });
+                            </script>
+
+
+                            <!--   Button trigger modal 
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#basicModal"
+                                >
+                   
+                            </button>           <!-- Button trigger modal -->
+                      
+                            <!-- Modal 
+                            <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+
+                            scrollLeftButton.addEventListener("click", function () {
+                            scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
+                            });
+
+                            scrollRightButton.addEventListener("click", function () {
+                            scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
+                            });
                             });
                         </script>
 
@@ -185,6 +223,7 @@
                         <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
+
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel1">Modal title</h5>
                                         <button
@@ -213,21 +252,26 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                            Close
-                                        </button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
 
-                    </div>
-                </section>
 
-            </main>
+                        </div>-->
 
+            </section>
+          
+
+                
+            </section>
+
+        </main>
+
+                 
             <!-- Footer-->
             <footer class="footer text-center">
                 <div class="container">
