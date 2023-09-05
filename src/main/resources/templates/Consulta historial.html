@@ -76,7 +76,7 @@
 
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
 
-                  <li sec:authorize="hasRole('USUARIO')" class="nav-item">
+                <li sec:authorize="hasRole('USUARIO')" class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -91,7 +91,7 @@
                         </div>
                     </div>
                 </li>
-                
+
                 <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
@@ -295,8 +295,8 @@
                                 </div>
                                 <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                    <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                                    <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                    <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                                 </div>
                             </div>
                         </div>

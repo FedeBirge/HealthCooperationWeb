@@ -136,8 +136,8 @@
                                                 <li th:each="turno : ${entry.value.turnos}">
                                                     <p>
                                                         <button class="btn btn-info" th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
-                                                           <span th:value="${turno.hora}" th:text="${turno.hora}"></span>
-         
+                                                            <span th:value="${turno.hora}" th:text="${turno.hora}"></span>
+
                                                         </button>
 
 
@@ -154,17 +154,17 @@
 
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {
-                                const scrollContainer = document.getElementById("scroll-container");
-                                const scrollLeftButton = document.getElementById("scroll-left");
-                                const scrollRightButton = document.getElementById("scroll-right");
+                            const scrollContainer = document.getElementById("scroll-container");
+                            const scrollLeftButton = document.getElementById("scroll-left");
+                            const scrollRightButton = document.getElementById("scroll-right");
 
-                                scrollLeftButton.addEventListener("click", function () {
-                                    scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
-                                });
+                            scrollLeftButton.addEventListener("click", function () {
+                            scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
+                            });
 
-                                scrollRightButton.addEventListener("click", function () {
-                                    scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
-                                });
+                            scrollRightButton.addEventListener("click", function () {
+                            scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
+                            });
                             });
                         </script>
 
@@ -211,10 +211,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                            Close
-                                        </button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                                     </div>
                                 </div>
                             </div>
