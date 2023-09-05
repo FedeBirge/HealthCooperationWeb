@@ -20,7 +20,18 @@
 ---------------------------------------------- */
 
 .shake-vertical{animation:shake-vertical 0.8s linear both} @keyframes shake-vertical{0%,100%{transform:translateY(0)}10%,30%,50%,70%{transform:translateY(-8px)}20%,40%,60%{transform:translateY(8px)}80%{transform:translateY(6.4px)}90%{transform:translateY(-6.4px)}}
-
+div span{
+    font-family: 'Poppins', sans-serif;
+}
+    div p{
+    font-family: 'Poppins', sans-serif;
+}
+    div h1 h2 h3 h4 h5 h6 h7{
+    font-family: 'Poppins', sans-serif;
+}
+    div a{
+    font-family: 'Poppins', sans-serif;
+}
 .ocultar{
     display: none;
 }
