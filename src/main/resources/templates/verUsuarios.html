@@ -239,18 +239,15 @@
                                                 <td th:value="${user.apellido}" th:text="${user.apellido}"></td>                                                  
                                                 <td  th:value="${user.rol}" th:text="${user.rol}"> </td>
 
-                                                <td>
-
-
-                                                <td th:if="${user.activo}"> <!-- En esta parte que dice user.activo, tendria que ir user.inactivo??-->
+                                                <td th:disabled="${!user.activo}" >
                                                     <form th:action="@{/admin/cambioRol/__${user.id}__}" method="POST" th:id="'changeRol_' + ${user.id}" >
 
-                                                        <select name="rol" class="estado-select form-control" style="width: auto; display: inline" th:disabled="${not user.activo}">
+                                                        <select th:disabled="${!user.activo}" name="rol" class="estado-select form-control" style="width: auto; display: inline" >
                                                             <option  name="rol"  th:text="${user.rol}" th:value="${user.rol}"></option>
                                                             <option   th:each="rol: ${roles}" th:value="${rol}" th:text="${rol}"></option>
                                                         </select>
 
-                                                        <a th:href="'javascript:void(0)'" class="btn btn-success me-md-2"  th:attr="onclick='showRolPopup(\'' + ${user.id} + '\')'" >↻ </a>
+                                                        <a  type="button" th:href="'javascript:void(0)'" class="btn btn-success me-md-2"  th:attr="onclick='showRolPopup(\'' + ${user.id} + '\')'" >↻ </a>
 
                                                     </form>
                                                 </td>
