@@ -31,6 +31,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class FichaServicio {
 
     @Autowired
+    private HistoriaClinicaServicio historiaServ;
+    @Autowired
     private FichaRepositorio fichaRepositorio;
     @Autowired
     private UsuarioRepositorio UsuarioRepositorio;
@@ -46,7 +48,7 @@ public class FichaServicio {
     public void crearFicha(String fecha_consulta, String nota, String idPaciente) throws MyException {
 
         validar(fecha_consulta, nota);
-
+             System.out.println("ficha crear");
         Ficha ficha = new Ficha();
         ficha.setFecha_consulta(pasoDeStringDate(fecha_consulta));
         ficha.setNota(nota);
@@ -57,19 +59,29 @@ public class FichaServicio {
 
     @Transactional
     // método que usamos internamente (bren)
-    public void guardarFichaEnHCPaciente(Ficha ficha, String idPaciente) {
+    public void guardarFichaEnHCPaciente(Ficha ficha, String idPaciente) throws MyException {
+             System.out.println("ficha guardar paciene");
         List<Ficha> fichas = new ArrayList<>();
         HistoriaClinica hc = new HistoriaClinica();
         // igualo la variable hc a la HistoriaClinica del paciente con el id buscado
+         Paciente paciente = (Paciente) pacienteServicio.getOne(idPaciente);
         hc = historiaClinicaRepositorio.findByPaciente_Id(idPaciente);
+        if(hc == null){
+            hc=historiaServ.crearHistoriaClinica();
+            hc.setPaciente(paciente);
+        }
+        else{
         // igualo la variable fichas a las fichas disponibles en la hc encontrada
         fichas = hc.getFichas();
+        }
+        
         // agrego la nueva fichita al lista de fichas
         fichas.add(ficha);
         // seteo la historia clínica de ese paciente,
         // cargando la HC con las fichas anteriores y la nueva
-        Paciente paciente = (Paciente) pacienteServicio.getOne(idPaciente);
+       hc.setFichas(fichas);
         paciente.setHistoria(hc);
+          System.out.println(paciente.getHistoria());
         historiaClinicaRepositorio.save(paciente.getHistoria());
         pacienteRepositorio.save(paciente);
 
@@ -80,7 +92,7 @@ public class FichaServicio {
     public void agregarFicha(String idPaciente, String fecha_consulta, String nota) throws MyException {
 
         Paciente paciente = (Paciente) pacienteServicio.getOne(idPaciente);
-
+        System.out.println("ficha agregar");
         if (paciente == null) {
             throw new MyException("No existe un paciente con ese ID");
         } else {

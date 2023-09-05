@@ -31,12 +31,27 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Barra lateral - Marca -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/profesionales/dashboard}">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Administrador</div>
+                </a>
+
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('USUARIO')">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Paciente</div>
+                </a>
+
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('MODERADOR')">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
                     <div class="sidebar-brand-text mx-3">Panel Profesional</div>
                 </a>
+
 
                 <!-- Divisor -->
                 <hr class="sidebar-divider my-0">
@@ -61,7 +76,23 @@
 
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
 
-                <li class="nav-item">
+                <li sec:authorize="hasRole('USUARIO')" class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Perfíl</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a sec:authorize="hasRole('USUARIO')" class="collapse-item" th:href="@{/inicio}">Ver mi perfil</a>
+                            <a class="collapse-item" th:href="@{/user/perfil/__${log.id}__}">Modificar mi Perfil</a>
+                            <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}" sec:authorize="hasRole('USUARIO')">Ver mis Turnos</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-hospital-user"></i>
@@ -75,7 +106,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -91,7 +122,7 @@
                     </div>
 
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -107,7 +138,6 @@
                     </div>
 
                 </li>
-
 
 
                 <!-- Divider -->
@@ -231,62 +261,140 @@
                         <hr class="border border-success border-3 opacity-75">
 
                         <!-- a verse que pondre aqui -->
+                        <h1>Lista de Fichas</h1>
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Anotaciones</th>                                        
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr th:if="${historia} != null" th:each="ficha : ${historia.fichas}">
+                                    <td th:text="${#dates.format(ficha.fecha_consulta, 'dd-MM-yyyy')}"></td>
+
+                                    <td th:text="${ficha.nota}"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <a type="button" class="btn btn-success me-md-2" id="agregarBtn">Agregar Ficha</a>
+                        <form th:action="@{/ficha/guardar/__${user.id}__}" method="POST" th:id="'saveForm_' + ${user.id}">
+
+                            <div name="nota" id="fichaForm" style="display: none; padding-top: 2rem;">
+                                <h2>Descripción de la Ficha</h2>
+                                <textarea class="form-control" name="nota" id="fichaTextArea"></textarea>
+
+                                <a class="btn btn-success mt-2" th:href="'javascript:void(0)'"  id="guardarBtn" th:attr="onclick='showSavePopup(\'' + ${user.id} + '\')'">Guardar</a>
+                                <button class="btn btn-danger mt-2"  id="guardarBtn" type="reset" >Borrar</button>
+
+                            </div>
+                        </form>
 
 
                     </div>
+                    <div class="table-responsive">
 
 
-                    <footer class="sticky-footer" style='padding-top: 500px;'>
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>HealtCooperationWeb ©2023</span>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- Envoltura de fin de página -->
 
-                    <!-- Desplácese hasta el botón superior-->
-                    <a class="scroll-to-top rounded" href="#page-top">
-                        <i class="fas fa-angle-up"></i>
-                    </a>
 
-                    <!-- Cierre de sesión modal-->
-                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                    <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+
+                        <footer class="sticky-footer" style='padding-top: 200px;'>
+                            <div class="container my-auto">
+                                <div class="copyright text-center my-auto">
+                                    <span>HealtCooperationWeb ©2023</span>
                                 </div>
                             </div>
+                        </footer>
+                        <!-- Envoltura de fin de página -->
+
+                        <!-- Desplácese hasta el botón superior-->
+                        <a class="scroll-to-top rounded" href="#page-top">
+                            <i class="fas fa-angle-up"></i>
+                        </a>
+
+                        <!-- Cierre de sesión modal-->
+
+                        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <script>
+                            const agregarBtn = document.getElementById("agregarBtn");
+                            const fichaForm = document.getElementById("fichaForm");
 
-                    <!-- Bootstrap core JavaScript-->
-                    <script src="/vendor/jquery/jquery.min.js"></script>
-                    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                            agregarBtn.addEventListener("click", function () {
+                            fichaForm.style.display = "block"; // Mostrar el formulario
+                            });
 
-                    <!-- Core plugin JavaScript-->
-                    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+                            // También puedes agregar lógica para ocultar el formulario cuando se haga clic en "Guardar" si es necesario.
 
-                    <!-- Custom scripts for all pages-->
-                    <script src="/js/sb-admin-2.min.js"></script>
+                            function showSavePopup(userId) {
+                            document.getElementById('savePopup').style.display = 'block';
+                            document.getElementById('overlay').style.display = 'block';
+                            userIdToSave = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                            }
 
-                    <!-- Page level plugins -->
-                    <script src="/vendor/chart.js/Chart.min.js"></script>
+                            function confirmSave() {
 
-                    <!-- Page level custom scripts -->
-                    <script src="/js/demo/chart-area-demo.js"></script>
-                    <script src="/js/demo/chart-pie-demo.js"></script>
+                            document.getElementById('saveForm_' + userIdToSave).submit();
 
-                    </body>
+                            closeSavePopup();
+                            }
 
-                    </html>
+                            function cancelSave() {
+                            closeSavePopup();
+                            }
+
+
+                            function closeSavePopup() {
+                            document.getElementById('savePopup').style.display = 'none';
+                            document.getElementById('overlay').style.display = 'none';
+                            }
+                        </script>
+
+                        <div id="savePopup" class="confirmation-popup">
+                            <p>¿Estás seguro de que quieres guardar esta ficha?</p>
+                            <button id="confirmButton" class="btn btn-success" onclick="confirmSave()">Confirmar</button>
+                            <button id="cancelButton" class="btn btn-danger" onclick="cancelSave()">Cancelar</button>
+                        </div>
+
+
+                        <!-- Bootstrap core JavaScript-->
+                        <script src="/vendor/jquery/jquery.min.js"></script>
+                        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+                        <!-- Core plugin JavaScript-->
+                        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+                        <!-- Custom scripts for all pages-->
+                        <script src="/js/sb-admin-2.min.js"></script>
+
+                        <!-- Page level plugins -->
+                        <script src="/vendor/chart.js/Chart.min.js"></script>
+
+                        <!-- Page level custom scripts -->
+                        <script src="/js/demo/chart-area-demo.js"></script>
+                        <script src="/js/demo/chart-pie-demo.js"></script>
+
+                        </body>
+
+                        </html>

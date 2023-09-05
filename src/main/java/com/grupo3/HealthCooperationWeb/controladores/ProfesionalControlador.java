@@ -52,7 +52,7 @@ public class ProfesionalControlador {
     private TurnoServicio turnoServ;
     @Autowired
     private EmailServicio emailServ;
-     @Autowired
+    @Autowired
     private AgendaServicio servAgenda;
 
     // Listado de todos los pacientes
@@ -91,21 +91,28 @@ public class ProfesionalControlador {
             return "redirect:";
         }
     }
-    
-      @GetMapping("/turnoIndividual/{id}")
-    public String panelTurno(@PathVariable("id") String id,ModelMap modelo, HttpSession session) throws MyException {
+
+    @GetMapping("/turnoIndividual/{id}")
+    public String panelTurno(@PathVariable("id") String id, ModelMap modelo, HttpSession session,
+            RedirectAttributes redirectAttributes)throws MyException {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         modelo.addAttribute("prof", profesionalServicio.getOne(id));
-         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+        List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
 
-        Collections.sort(semanas, (semana1, semana2) -> {
-            Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
-            Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
-            return fecha1.compareTo(fecha2);
-        });
-          modelo.addAttribute("semanas", semanas);
-        return "turneroindividual.html";
+        System.out.println(semanas.size());
+        if (semanas.isEmpty()) {
+            redirectAttributes.addFlashAttribute("vacia", "No existen turnos para mosrtar. Disculpe las molestias");
+         return "redirect:/turno/panel";
+        } else {
+            Collections.sort(semanas, (semana1, semana2) -> {
+                Date fecha1 = semana1.getFechasYTurnos().keySet().iterator().next();
+                Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
+                return fecha1.compareTo(fecha2);
+            });
+            modelo.addAttribute("semanas", semanas);
+            return "turneroindividual.html";
+        }
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR')")
@@ -216,7 +223,7 @@ public class ProfesionalControlador {
     public String modificarUsusarios(MultipartFile archivo, @PathVariable("id") String id,
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
-            @RequestParam String password2, String telefono, String direccion,String descripcion,
+            @RequestParam String password2, String telefono, String direccion, String descripcion,
             String fecha_nac, String especialidad, String valorConsulta, ModelMap modelo, HttpSession session)
             throws IOException, MyException, ParseException {
 
@@ -250,22 +257,22 @@ public class ProfesionalControlador {
     // mismo
     @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
     @GetMapping("/solicitarBaja/{id}")
-    public String darseBaja(@PathVariable("id") String id, ModelMap modelo,  RedirectAttributes redirectAttributes,HttpSession session) {
-             try {
-             Profesional logueado = (Profesional) session.getAttribute("usuariosession");
-        modelo.addAttribute("log", logueado);
+    public String darseBaja(@PathVariable("id") String id, ModelMap modelo, RedirectAttributes redirectAttributes, HttpSession session) {
+        try {
+            Profesional logueado = (Profesional) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
             emailServ.sendEmail(logueado.getNombre(), logueado.getApellido(),
-                    logueado.getEmail(), logueado.getTelefono(), 
+                    logueado.getEmail(), logueado.getTelefono(),
                     logueado.getEspecialidad().toString(), "Solicita la baja de mis servicios en el Sitio");
-            
-            redirectAttributes.addFlashAttribute("exito", "!Solicitud de baja de servicios envíada!");
-            profesionalServicio.darDeBajaProfesional(id);      
 
-              return "redirect:/profesionales/dashboard";
+            redirectAttributes.addFlashAttribute("exito", "!Solicitud de baja de servicios envíada!");
+            profesionalServicio.darDeBajaProfesional(id);
+
+            return "redirect:/profesionales/dashboard";
         } catch (Exception ex) {
-             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        modelo.addAttribute("log", logueado);
-           redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
             return "redirect:/profesionales/dashboard";
         }
     }
@@ -274,23 +281,23 @@ public class ProfesionalControlador {
     @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
     @PostMapping("/solicitarBaja/{id}")
     public String darseBaja(@PathVariable("id") String id, @RequestParam MultipartFile archivo, ModelMap modelo,
-            RedirectAttributes redirectAttributes,HttpSession session)
+            RedirectAttributes redirectAttributes, HttpSession session)
             throws IOException {
         try {
-             Profesional logueado = (Profesional) session.getAttribute("usuariosession");
-        modelo.addAttribute("log", logueado);
+            Profesional logueado = (Profesional) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
             emailServ.sendEmail(logueado.getNombre(), logueado.getApellido(),
-                    logueado.getEmail(), logueado.getTelefono(), 
+                    logueado.getEmail(), logueado.getTelefono(),
                     logueado.getEspecialidad().toString(), "Solicita la baja de mis servicios en el Sitio");
-            
-            redirectAttributes.addFlashAttribute("exito", "!Solicitud de baja de servicios envíada!");
-            profesionalServicio.darDeBajaProfesional(id);      
 
-              return "redirect:/pprofesionales/dashboard";
+            redirectAttributes.addFlashAttribute("exito", "!Solicitud de baja de servicios envíada!");
+            profesionalServicio.darDeBajaProfesional(id);
+
+            return "redirect:/pprofesionales/dashboard";
         } catch (Exception ex) {
-             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        modelo.addAttribute("log", logueado);
-           redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
             return "redirect:/pprofesionales/dashboard";
         }
 
