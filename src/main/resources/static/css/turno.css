@@ -12386,3 +12386,8 @@ td {
     letter-spacing: 1px;
     color: #095a55;
 }
+.text-strikethrough {
+    text-decoration: line-through;
+    /* Agrega otros estilos como color, si es necesario */
+}
+
