@@ -261,13 +261,7 @@
                         <hr class="border border-success border-3 opacity-75">
 
                         <!-- a verse que pondre aqui -->
-
-
-
-
-                    </div>
-                    <div class="table-responsive">
-
+                        <h1>Lista de Fichas</h1>
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
@@ -282,24 +276,33 @@
                                 <tr th:if="${historia} != null" th:each="ficha : ${historia.fichas}">
                                     <td th:text="${#dates.format(ficha.fecha_consulta, 'dd-MM-yyyy')}"></td>
 
-                                    <td th:text="${ficha.nota}"></td>                                
+                                    <td th:text="${ficha.nota}"></td>
+                                </tr>
 
                             </tbody>
                         </table>
                         <a type="button" class="btn btn-success me-md-2" id="agregarBtn">Agregar Ficha</a>
-                        <form th:action="@{/ficha/guardar/__${user.id}__}" method="POST" >
+                        <form th:action="@{/ficha/guardar/__${user.id}__}" method="POST" th:id="'saveForm_' + ${user.id}">
 
-                            <div name="nota" id="fichaForm" style="display: none;">
-                                <textarea name="nota" id="fichaTextArea"></textarea>
-                                <div>
+                            <div name="nota" id="fichaForm" style="display: none; padding-top: 2rem;">
+                                <h2>Descripción de la Ficha</h2>
+                                <textarea class="form-control" name="nota" id="fichaTextArea"></textarea>
 
-                                    <button class="btn btn-success " id="guardarBtn" >Guardar</button>
-                                </div>
+                                <a class="btn btn-success mt-2" th:href="'javascript:void(0)'"  id="guardarBtn" th:attr="onclick='showSavePopup(\'' + ${user.id} + '\')'">Guardar</a>
+                                <button class="btn btn-danger mt-2"  id="guardarBtn" type="reset" >Borrar</button>
 
+                            </div>
                         </form>
 
 
-                        <footer class="sticky-footer" style='padding-top: 500px;'>
+                    </div>
+                    <div class="table-responsive">
+
+
+
+
+
+                        <footer class="sticky-footer" style='padding-top: 200px;'>
                             <div class="container my-auto">
                                 <div class="copyright text-center my-auto">
                                     <span>HealtCooperationWeb ©2023</span>
@@ -314,6 +317,7 @@
                         </a>
 
                         <!-- Cierre de sesión modal-->
+
                         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                              aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -328,7 +332,6 @@
                                     <div class="modal-footer">
                                         <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
                                         <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
-
                                     </div>
 
                                 </div>
@@ -343,7 +346,36 @@
                             });
 
                             // También puedes agregar lógica para ocultar el formulario cuando se haga clic en "Guardar" si es necesario.
+
+                            function showSavePopup(userId) {
+                            document.getElementById('savePopup').style.display = 'block';
+                            document.getElementById('overlay').style.display = 'block';
+                            userIdToSave = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                            }
+
+                            function confirmSave() {
+
+                            document.getElementById('saveForm_' + userIdToSave).submit();
+
+                            closeSavePopup();
+                            }
+
+                            function cancelSave() {
+                            closeSavePopup();
+                            }
+
+
+                            function closeSavePopup() {
+                            document.getElementById('savePopup').style.display = 'none';
+                            document.getElementById('overlay').style.display = 'none';
+                            }
                         </script>
+
+                        <div id="savePopup" class="confirmation-popup">
+                            <p>¿Estás seguro de que quieres guardar esta ficha?</p>
+                            <button id="confirmButton" class="btn btn-success" onclick="confirmSave()">Confirmar</button>
+                            <button id="cancelButton" class="btn btn-danger" onclick="cancelSave()">Cancelar</button>
+                        </div>
 
 
                         <!-- Bootstrap core JavaScript-->
