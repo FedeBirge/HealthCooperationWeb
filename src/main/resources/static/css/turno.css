@@ -55,17 +55,21 @@
 }
 .card2 {
     
-  background-color: rgba(243, 244, 246, 1);
-  padding: 2.5rem;
+
+  padding: 1rem;
   max-width: 600px;
-  border-radius: 10px;
+  
+  
+   background-color: rgba(243, 244, 246, 1);
+  width: 600px;
+  height: 330px;
+  border-radius: 20px;
   box-shadow: 0 20px 30px -20px rgba(5, 5, 5, 0.24);
-  margin-right: 500px: 
-  margin-top: 500px;
+  overflow: hidden;
 }
 
 .header2 {
-  display: flex;
+ display: flex;
   align-items: center;
   grid-gap: 1rem;
   gap: 1rem;
@@ -11519,14 +11523,14 @@ body{
 
 .card5 {
   background-color: #fff;
-  width: 500px;
-  height: 400px;
+  width: 1000px;
+  height: 800px;
   overflow: hidden;
   border: 1px solid #ccc;
   border-radius: 10px;
   position: absolute; /* Cambia a posición absoluta */
-  top: 150px; /* Ajusta la distancia desde la parte superior */
-  right: 10px; /* Ajusta la distancia desde la derecha */
+  top: 10px; /* Ajusta la distancia desde la parte superior */
+  right: 165px; /* Ajusta la distancia desde la derecha */
   margin: 0;
 }
 
@@ -11773,7 +11777,7 @@ td {
 
 .fixed-section {
   position: relative;
-  height: 500px;
+  height: 800px;
 }
 
 .cookie-card {
@@ -11918,3 +11922,30 @@ td {
     .scroll-button {
         cursor: pointer;
     }
+    
+    .botonTurno {
+  color: white;
+  text-decoration: none;
+  font-size: 25px;
+  border: none;
+  background: none;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+
+.botonTurno::before {
+  margin-left: auto;
+}
+
+.botonTurno::after, button::before {
+  content: '';
+  width: 0%;
+  height: 2px;
+  background: #f44336;
+  display: block;
+  transition: 0.5s;
+}
+
+.botonTurno:hover::after, button:hover::before {
+  width: 100%;
+}
