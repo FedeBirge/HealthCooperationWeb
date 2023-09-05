@@ -205,7 +205,7 @@
 
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
-                        <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Modificar </a>
+                        <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
 
                         <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2"  href="#" data-toggle="modal" data-target="#solicitarBaja"> Solicitar Baja </a>
 
