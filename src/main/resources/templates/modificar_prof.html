@@ -236,7 +236,7 @@
                                     <label  class="form-label">Direccion</label>
                                     <input  class="form-control form-control-user" type="text" id="direccion" placeholder="Direccion" name="direccion" th:value="${user.direccion}">
                                 </div>
-                                    <div    class="col-sm-6 mb-3">
+                                <div    class="col-sm-6 mb-3">
                                     <label  class="form-label">Valor Consulta</label>
                                     <input class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" type="" id="valorConsulta"  name="valorConsulta" th:value="${user.valorConsulta}">
                                 </div>
@@ -249,7 +249,7 @@
                                                 th:value="${especialidad}" th:text="${especialidad}"></option>
                                     </select><br>
                                 </div>
-                                
+
                                 <div class="col-sm-6 mb-3">
                                     <p class="form-label">¡Actualice su foto aquí!</p>
                                     <input type="file" class="form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" name="archivo" id="archivoInput" />
@@ -267,15 +267,15 @@
                                 const imagenPerfil = document.getElementById('imagenPerfil');
 
                                 archivoInput.addEventListener('change', function () {
-                                    if (archivoInput.files && archivoInput.files[0]) {
-                                        const reader = new FileReader();
-                                        reader.onload = function (e) {
-                                            imagenPerfil.src = e.target.result;
-                                        };
-                                        reader.readAsDataURL(archivoInput.files[0]);
-                                    } else {
-                                        // No se seleccionó ningún archivo, se mantiene la imagen actual
-                                    }
+                                if (archivoInput.files && archivoInput.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                imagenPerfil.src = e.target.result;
+                                };
+                                reader.readAsDataURL(archivoInput.files[0]);
+                                } else {
+                                // No se seleccionó ningún archivo, se mantiene la imagen actual
+                                }
                                 });
                             </script>
 
@@ -322,8 +322,8 @@
                     </div>
                     <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                        <a class="btn btn-primary" href="login.html">Cerrar sesión</a>
+                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                     </div>
                 </div>
             </div>
