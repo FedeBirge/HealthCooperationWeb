@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 
@@ -60,6 +62,25 @@ public class TurnoControlador {
                 modelo.put("vacia", "No existen profesionales para mosrtar. Disculpe las molestias");
             }
         return "turnero.html";
+    }
+    
+    @GetMapping("/filtrar") // ruta para el panel administrativo
+    public String panelfiltro(ModelMap modelo, HttpSession session,
+            @RequestParam String especialidad,RedirectAttributes redirectAttributes) throws MyException {
+        
+         List<Profesional> profes = profesionalServicio.listarProfesionales();
+         Especialidad[] especialidades = Especialidad.values();
+          List<ObraSocial> obras = obraServ.listarObrasSociales();
+               redirectAttributes.addFlashAttribute("obras", obras);
+            redirectAttributes.addFlashAttribute("profes", profes);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+              redirectAttributes.addFlashAttribute("log", logueado);
+               redirectAttributes.addFlashAttribute("especialidades", especialidades);
+            
+            if(profes.isEmpty()){
+                modelo.put("vacia", "No existen profesionales para mosrtar. Disculpe las molestias");
+            }
+         return "redirect:/turno/filtrar";
     }
     
        @GetMapping("/misturnos/{id}") // ruta para el panel administrativo
