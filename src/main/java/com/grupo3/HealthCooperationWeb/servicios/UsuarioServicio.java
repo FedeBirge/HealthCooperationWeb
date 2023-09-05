@@ -191,6 +191,42 @@ public class UsuarioServicio implements UserDetailsService {
             System.out.println("No es posible dar de alta el ususario");
         }
     }
+    private Rol pasarStringRol(String rol) throws MyException{
+        if(!rol.isEmpty()){
+        switch (rol) {
+                case "USUARIO":
+                   return Rol.USUARIO;
+                   
+                case "ADMINISTRADOR":
+                    return Rol.ADMINISTRADOR;
+                    
+                case "MODERADOR":
+                    return Rol.MODERADOR;
+                   
+               
+                default:
+                    throw new MyException("Rol no valido: " + rol);
+            }
+        }
+        return null;
+    
+    
+        
+    }
+    @Transactional
+    // Metodo para eliminar un usuario, se cambia el estado a inactivo
+    public void cambioRol(String id,String rol) {
+        try {
+            Optional<Usuario> resp = usuarioRepo.findById(id);
+            if (resp.isPresent()) {
+                Usuario user = (Usuario) (resp.get());
+                user.setRol(pasarStringRol(rol));
+                usuarioRepo.save(user);
+            }
+        } catch (Exception e) {
+            System.out.println("No es posible dar de alta el ususario");
+        }
+    }
     // Metodo para listar todos los usuarios, sin tener en cuenta si estan dados de baja
     public List<Usuario> listarTodosUsuarios() {
 
