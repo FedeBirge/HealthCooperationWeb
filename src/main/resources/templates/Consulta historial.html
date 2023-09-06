@@ -223,7 +223,8 @@
                     <div class="container-fluid">
 
                         <h1 >Historia Clinica</h1>
-                               <a sec:authorize="hasRole('MODERADOR')"type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Ir al panel</a>
+                        
+                               <a type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Ir al panel</a>
                                <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verHoy/__${log.id}__}">Turnos Hoy</a>
                                <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verSemana/__${log.id}__}">Turnos Semana</a>
                                <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verTodos/__${log.id}__}"> Ver Todos </a>

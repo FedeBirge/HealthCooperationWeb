@@ -186,7 +186,7 @@
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editarActual/__${log.id}__}">Semana Actual</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editar/__${log.id}__}">Todas las semanas</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarSemanaActual">Cancelar Semana actual</a> 
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarSemanaActual">Cancelar Semana Actual</a> 
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarTodo">Cancelar Todos los Turnos</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#agregarSemanas">Agregar Semanas</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#">Eliminar Agenda</a>

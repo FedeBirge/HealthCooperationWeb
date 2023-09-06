@@ -176,7 +176,7 @@ public class AgendaControlador {
                 modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
                 modelo.addAttribute("obras", servObra.listarObrasSociales());
                 modelo.addAttribute("estados", estados);
-                  modelo.put("exito", "¡Agenda editada!");
+                  
                 return "editarAgenda.html";
 
             } else {
@@ -265,7 +265,7 @@ public class AgendaControlador {
                 modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
                 modelo.addAttribute("obras", servObra.listarObrasSociales());
                 modelo.addAttribute("estados", estados);
-                modelo.put("exito", "Estados cambiados!!");
+            
                 return "editarAgenda.html";
 
             } else {

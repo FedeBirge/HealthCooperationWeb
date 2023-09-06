@@ -216,7 +216,7 @@
                             <h1 th:if="${#strings.trim(user.rol) =='MODERADOR'}" class="h3 mb-0 text-gray-800">Modificar perfil Profesional </h1>
                             <h1 th:if="${#strings.trim(user.rol) =='ADMINISTRADOR'}" class="h3 mb-0 text-gray-800">Modificar perfil</h1>
                         </div>
-
+                                           <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/listar}">Volver</a>
                         <form class= "user" th:if="${session.usuariosession != null}" th:action="@{/user/modificarUsuario/__${id}__}" method="POST" enctype="multipart/form-data">
                             <input hidden th:value="${id}" name="id">
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >

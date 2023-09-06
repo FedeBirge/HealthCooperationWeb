@@ -238,11 +238,13 @@
                         <div class="container-fluid">
                         </div>
                         <!-- Encabezado de página -->
+                        
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 sec:authorize="hasRole('MODERADOR')" class="h3 mb-0 text-gray-800">Turnos y Pacientes</h1>
                             <h1 sec:authorize="hasAnyRole('USUARIO','ADMINISTRADOR')"  class="h3 mb-0 text-gray-800">Turnos</h1>
-
+                            
                         </div>
+                              <a type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Volver</a>
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Error!</h5>
