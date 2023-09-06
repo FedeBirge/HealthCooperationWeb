@@ -40,57 +40,57 @@ public class TurnoControlador {
     private AgendaServicio servAgenda;
     @Autowired
     private PacienteServicio pacServ;
-    
- @Autowired
+
+    @Autowired
     private ProfesionalServicio profesionalServicio;
-   @Autowired
+    @Autowired
     private ObraSocialServicio obraServ;
 
     @GetMapping("/panel") // ruta para el panel administrativo
     public String panelturnos(ModelMap modelo, HttpSession session) throws MyException {
-        
-         List<Profesional> profes = profesionalServicio.listarProfesionales();
-         Especialidad[] especialidades = Especialidad.values();
-          List<ObraSocial> obras = obraServ.listarObrasSociales();
-            modelo.addAttribute("obras", obras);
-         modelo.addAttribute("profes", profes);
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-            modelo.addAttribute("especialidades", especialidades);
-            
-            if(profes.isEmpty()){
-                modelo.put("vacia", "No existen profesionales para mosrtar. Disculpe las molestias");
-            }
+
+        List<Profesional> profes = profesionalServicio.listarProfesionales();
+        Especialidad[] especialidades = Especialidad.values();
+        List<ObraSocial> obras = obraServ.listarObrasSociales();
+        modelo.addAttribute("obras", obras);
+        modelo.addAttribute("profes", profes);
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+        modelo.addAttribute("especialidades", especialidades);
+
+        if (profes.isEmpty()) {
+            modelo.put("vacia", "No existen profesionales para mosrtar. Disculpe las molestias");
+        }
         return "turnero.html";
     }
-    
+
     @GetMapping("/filtrar") // ruta para el panel administrativo
     public String panelfiltro(ModelMap modelo, HttpSession session,
-            @RequestParam String especialidad,RedirectAttributes redirectAttributes) throws MyException {
-        
-         List<Profesional> profes = profesionalServicio.listarProfesionales();
-         Especialidad[] especialidades = Especialidad.values();
-          List<ObraSocial> obras = obraServ.listarObrasSociales();
-               redirectAttributes.addFlashAttribute("obras", obras);
-            redirectAttributes.addFlashAttribute("profes", profes);
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-              redirectAttributes.addFlashAttribute("log", logueado);
-               redirectAttributes.addFlashAttribute("especialidades", especialidades);
-            
-            if(profes.isEmpty()){
-                modelo.put("vacia", "No existen profesionales para mosrtar. Disculpe las molestias");
-            }
-         return "redirect:/turno/filtrar";
+            @RequestParam String especialidad, RedirectAttributes redirectAttributes) throws MyException {
+
+        List<Profesional> profes = profesionalServicio.listarProfesionales();
+        Especialidad[] especialidades = Especialidad.values();
+        List<ObraSocial> obras = obraServ.listarObrasSociales();
+        redirectAttributes.addFlashAttribute("obras", obras);
+        redirectAttributes.addFlashAttribute("profes", profes);
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        redirectAttributes.addFlashAttribute("log", logueado);
+        redirectAttributes.addFlashAttribute("especialidades", especialidades);
+
+        if (profes.isEmpty()) {
+            modelo.put("vacia", "No existen profesionales para mosrtar. Disculpe las molestias");
+        }
+        return "redirect:/turno/filtrar";
     }
-    
-       @GetMapping("/misturnos/{id}") // ruta para el panel administrativo
+
+    @GetMapping("/misturnos/{id}") // ruta para el panel administrativo
     public String misTurnos(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         List<Turno> turnos = turnoServ.misTurnos(id);  // el paciente ve sus turnos
         modelo.addAttribute("turnos", turnos);
 
-        return "verTurnos.html";
+        return "misTurnos.html";
     }
 
     // solo la ve el doctor con este id
@@ -201,7 +201,7 @@ public class TurnoControlador {
         modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
     }
-    
+
     @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/verTodos/{id}") // ruta para el panel administrativo
     public String vertodos(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
@@ -213,5 +213,30 @@ public class TurnoControlador {
 
 //        modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
+    }
+
+   
+
+    @PostMapping("/confirmar/{id}") // ruta para el panel administrativo
+    public String confirmar(@PathVariable("id") String id, @RequestParam String msj, 
+            @RequestParam String idTurno, ModelMap modelo,
+            RedirectAttributes redirectAttributes, HttpSession session)
+            throws MyException {
+       
+        Paciente logueado = (Paciente) session.getAttribute("usuariosession");
+
+        if (logueado == null) {
+            redirectAttributes.addFlashAttribute("error", "!Debe einiciar sesion para obtener un turno!");
+                      
+
+            return "redirect:/login";
+        } else {
+            // asignarturno al paciente
+            pacServ.asignarTurno(logueado,idTurno,id,msj);
+            redirectAttributes.addFlashAttribute("exito", "!Turno reservado !");
+            return "redirect:/profesionales/turnoIndividual/" + id;  // Reemplaza "/exito" con la ruta deseada después de confirmar el turno
+
+        }
+
     }
 }

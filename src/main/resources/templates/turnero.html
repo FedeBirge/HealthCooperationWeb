@@ -113,9 +113,7 @@
                                     <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="name" th:text="'Dra./Dr '+${prof.apellido}+' '+${prof.nombre}" > </a>                                
                                     <p class="name" th:text="'Especialsita en '+${prof.especialidad}"></p>
 
-                                    <div th:text="${prof.reputacion}" class="rating">
-                                        <input th:text="${prof.reputacion}" th:value="${prof.reputacion}" value="5" name="rate" id="star5" type="radio">
-                                    </div>
+                                   
                                 
                                         <div   class="rating">
                                             <span th:if="${prof.reputacion > 0}" th:each="starNum : ${#numbers.sequence(0, prof.reputacion-1)}" class="star filled">&#9733;</span>
