@@ -295,18 +295,17 @@
 
                             </tbody>
                         </table>
-                        <a type="button" class="btn btn-success me-md-2" id="agregarBtn">Agregar Ficha</a>
-                        <form th:action="@{/ficha/guardar/__${user.id}__}" method="POST" th:id="'saveForm_' + ${user.id}">
+                      <a type="button" class="btn btn-success me-md-2" id="agregarBtn">Agregar Ficha</a>
+                    <form th:action="@{/ficha/guardar/__${user.id}__}" method="POST" >
 
-                            <div name="nota" id="fichaForm" style="display: none; padding-top: 2rem;">
-                                <h2>Descripción de la Ficha</h2>
-                                <textarea class="form-control" name="nota" id="fichaTextArea"></textarea>
+                        <div name="nota" id="fichaForm" style="display: none;">
+                            <textarea name="nota" id="fichaTextArea"></textarea>
+                            <div>
 
-                                <a class="btn btn-success mt-2" th:href="'javascript:void(0)'"  id="guardarBtn" th:attr="onclick='showSavePopup(\'' + ${user.id} + '\')'">Guardar</a>
-                                <button class="btn btn-danger mt-2"  id="guardarBtn" type="reset" >Borrar</button>
-
+                                <button class="btn btn-success " id="guardarBtn" >Guardar</button>
                             </div>
-                        </form>
+                        </div>
+                    </form>
 
 
                     </div>
