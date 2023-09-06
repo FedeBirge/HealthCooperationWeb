@@ -224,60 +224,62 @@
                             </div>
                         </div> 
                         <div class="d-sm-flex align-items-center justify-content-center mb-4">
-                            <h1 class="h3 mb-0 text-gray-800" th:text="'Usuario ' + ${user.nombre}"></h1>
+                            <h1 class="h3 mb-0 text-gray-800" th:text="'Bienvenido ' + ${user.nombre}"></h1>
                         </div>
 
-                        <div class="row text-center">
+                        <div class="row">
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Nombre: ' + ${user.nombre}"></h2>
+                                <h3><span class="badge bg-success text-white">Nombre</span> <span th:text=" ${user.nombre}"></span></h3>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Apellido: ' + ${user.apellido}"></h2>
+                                <h3><span class="badge bg-success text-white">Apellido</span> <span th:text=" ${user.apellido}"></span></h3>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Direccion: ' + ${user.direccion}"></h2>
+                                <h3><span class="badge bg-success text-white">Direccion</span> <span th:text=" ${user.direccion}"></span></h3>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Telefono: ' + ${user.telefono}"></h2>
+                                <h3><span class="badge bg-success text-white">Telefono</span> <span th:text=" ${user.telefono}"></span></h3>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Email: ' + ${user.email}"></h2>
+                                <h3><span class="badge bg-success text-white">Email</span> <span th:text=" ${user.email}"></span></h3>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text="'Fecha nacimiento: ' + ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></h2>
-
+                                <h3><span class="badge bg-success text-white">Nacimiento</span> <span th:text="${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></span></h3>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'DNI: '+ ${user.dni}"></h2>
+                                <h3><span class="badge bg-success text-white">DNI</span> <span th:text=" ${user.dni}"></span></h3>
                             </div>   
                             <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
-                                <h2 th:if='${user.grupoSanguineo} != null' th:text="${user.grupoSanguineo}"></h2>
+                                <h3><span class="badge bg-success text-white">Grupo </span> <span th:if='${user.grupoSanguineo} != null' th:text="${user.grupoSanguineo}"></span></h3>
+
                             </div>    
                             <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
-
-                                <h2 th:if='${user.grupoSanguineo} != null' th:text="'Obra Social: '+${user.obraSocial.nombre}"></h2>
+                                <h3><span class="badge bg-success text-white">Obra social </span> <span th:if='${user.grupoSanguineo} != null' th:text="${user.obraSocial.nombre}"></span></h3>
                             </div>
 
                             <div class="col-sm-6 mb-3">
-                                <h2>Tu foto</h2>
+                                <h3><span class="badge bg-success text-white">Foto</span></h3>
                                 <img class="/img-profile rounded-circle"
-                                     th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 150px;">
+                                     th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 75px;">
                             </div>
 
 
-                        </div>
 
+                        </div>
+                        <div class="text-center py-4">
+                            <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/misturnos/__${log.id}__}"> Ver Mis Turnos </a>
+                            <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/panel/}"> Ir al Panel de Turnos </a>
+                        </div>
                     </div>
 
-                    <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/misturnos/__${log.id}__}"> Ver Mis Turnos </a>
-                    <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/panel/}"> Ir al Panel de Turnos </a>
+
 
 
 
                     <!-- Fin del contenido principal -->
 
                     <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
+                    <footer class="sticky-footer" style="padding-top: 200px;">
                         <div class="container my-auto">
                             <div class="copyright text-center my-auto">
                                 <span>HealtCooperationWeb ©2023</span>
@@ -309,10 +311,11 @@
                             </button>
                         </div>
                         <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                        <div class="contenedorFooter">
-                            <a class="btn btnModal" type="button" data-dismiss="modal">Cancelar</a>
-                            <a class="btn btnModal" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                         </div>
+
                     </div>
                 </div>
             </div>
