@@ -124,7 +124,7 @@ public class ProfesionalServicio extends UsuarioServicio {
         if (archivo.isEmpty()) {
             // Si el archivo está vacío, crea el paciente con una imagen predeterminada
             Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la
-                                                                         // imagen predeterminada
+            // imagen predeterminada
             profesional.setImagen(imagenPredeterminada);
         } else {
             // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
@@ -154,11 +154,11 @@ public class ProfesionalServicio extends UsuarioServicio {
 
                 throw new MyException("Debe ingresar una especialidad al profesional");
             }
-            
+
             prof.setEspecialidad(pasarStringEspecialidad(especialidad));
             prof.setValorConsulta(valorConsulta);
             prof.setDescripcion(descripcion);
-           String idImg = null;
+            String idImg = null;
             if (prof.getImagen() != null) {
                 idImg = prof.getImagen().getId();
             }
@@ -312,7 +312,7 @@ public class ProfesionalServicio extends UsuarioServicio {
 
             List<Dias> diasDisponibles = pasarDiasEnum(diasSeleccionados);
             profesional.setDiasDisponibles(diasDisponibles);
-       
+
         }
 
     }
@@ -351,8 +351,6 @@ public class ProfesionalServicio extends UsuarioServicio {
 
     }
 
-   
-
     @Transactional
     public void asignarOferta(String id, String horaInicial, String horaFinal,
             String duracion, String tipoOferta, String direccion,
@@ -387,6 +385,35 @@ public class ProfesionalServicio extends UsuarioServicio {
 
         } else {
             return null;
+        }
+    }
+
+    @Transactional
+    public void valorar(String id, String valor) throws MyException {
+        try {
+            int valoracion = Integer.parseInt(valor);
+
+            if (valoracion >= 1 && valoracion <= 5) {
+                Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+                if (respuesta.isPresent()) {
+                    Profesional profesional = respuesta.get();
+                    if (profesional.getReputacion() == 0) {
+                        profesional.setReputacion(valoracion);
+                    } else {
+                        int reputacion = Math.round((profesional.getReputacion() + valoracion) / 2);
+                        profesional.setReputacion(reputacion);
+
+                    }
+                    profesionalRepositorio.save(profesional);
+                    // Realiza cualquier otra operación necesaria con el profesional
+                } else {
+                    throw new MyException("Profesional no encontrado");
+                }
+            } else {
+                throw new MyException("La valoración debe estar en el rango de 1 a 5");
+            }
+        } catch (NumberFormatException ex) {
+            throw new MyException("El valor de valoración no es un número válido");
         }
     }
 
