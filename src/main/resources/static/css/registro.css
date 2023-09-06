@@ -79,15 +79,16 @@ body{
 }
 
 .imgVolver{
-    height: 40px;
-    width: 30px;
-
+    height: 15px;
+    width: 25px;
+ margin-left: 20px;
+ margin-top: -10px;
 }
 
 .botonVolver{
     border:none;
     background-color: white;
-   
+  
 }
 
 .btnVolver{
@@ -106,15 +107,39 @@ body{
     font-weight: 700;
 }
 
-a {
-  display: block;
-  text-align: right;
-  text-decoration: none;
-  color: #999;
-  font-size: 0.9rem;
-  transition: 0.3s;
+
+
+.titulo1{
+    margin-top: -100px;
+    font-size: 40px;
+   
+
+}
+.btnlogin {
+ display: flex;
+ height: 3em;
+ width: 100px;
+ align-items: center;
+ justify-content: center;
+ background-color: #eeeeee4b;
+ border-radius: 15px;
+ letter-spacing: 1px;
+ transition: all 0.2s linear;
+ cursor: pointer;
+ border: none;
+ background: #fff;
+ font-size: 20px;
+  margin-left: 10px;
 }
 
-a:hover {
-  color: #38d39f;
+.btnlogin > svg {
+ margin-right: 5px;
+ margin-left: 10px;
+ font-size: 20px;
+ transition: all 0.4s ease-in;
+}
+
+.btnlogin:hover > svg {
+ font-size: 1.2em;
+ transform: translateX(-5px);
 }

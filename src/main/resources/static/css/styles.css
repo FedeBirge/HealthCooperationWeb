@@ -2462,7 +2462,7 @@ textarea.form-control-lg {
 .form-floating > .form-control,
 .form-floating > .form-control-plaintext,
 .form-floating > .form-select {
-  height: 5.5rem;
+  height: 4rem;
   line-height: 1.25;
 }
 .form-floating > label {
@@ -10895,7 +10895,19 @@ html {
     line-height: 2.5rem;
   }
 }
-
+.page-section1 {
+  padding: 1.3rem 0;
+}
+.page-section1 .page-section-heading1 {
+  font-size: 2.25rem;
+  line-height: 2rem;
+}
+@media (min-width: 992px) {
+  .page-section1 .page-section-heading1 {
+    font-size: 3rem;
+    line-height: 2.5rem;
+  }
+}
 .divider-custom {
   margin: 1.25rem 0 1.5rem;
   width: 100%;

@@ -159,10 +159,10 @@
             </div>
         </section>
         <!-- Contact Section-->
-        <section class="page-section" id="contact">
+        <section class="page-section1" id="contact">
             <div class="container">
                 <!-- Contact Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Contactanos</h2>
+                <h2 class="page-section-heading1 text-center text-uppercase text-secondary mb-0">Contactanos</h2>
                 <!-- Icon Divider-->
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
@@ -172,13 +172,7 @@
                 <!-- Contact Section Form-->
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-xl-7">
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- * * SB Forms Contact Form * *-->
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- This form is pre-integrated with SB Forms.-->
-                        <!-- To make this form functional, sign up at-->
-                        <!-- https://startbootstrap.com/solution/contact-forms-->
-                        <!-- to get an API token!-->
+                
                         <form th:action="@{/email/publico}" method="POST" id="contactForm"  >
                             <!-- Name input-->
                             <div class="form-floating mb-3">
@@ -201,7 +195,7 @@
                             </div>
                             <!-- Message input-->
                             <div class="form-floating mb-3">
-                                <textarea name="msj" class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" required></textarea>
+                                <textarea name="msj" class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 5rem" required></textarea>
                                 <label for="message">Mensaje</label>
                                 <div class="invalid-feedback" data-sb-feedback="message:required">Se requiere un mensaje.</div>
                             </div>

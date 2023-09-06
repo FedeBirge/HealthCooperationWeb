@@ -40,11 +40,7 @@ body {
   padding: 0 2rem;
 }
 
-.img {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
+
 
 .login-content {
   display: flex;
@@ -197,44 +193,10 @@ a:hover {
   background-position: right;
 }
 
-@media screen and (max-width: 1050px) {
-  .container {
-    grid-gap: 5rem;
-  }
-}
 
-@media screen and (max-width: 1000px) {
-  form {
-    width: 290px;
-  }
 
-  .login-content h2 {
-    font-size: 2.4rem;
-    margin: 8px 0;
-  }
 
-  .img img {
-    width: 400px;
-  }
-}
 
-@media screen and (max-width: 900px) {
-  .container {
-    grid-template-columns: 1fr;
-  }
-
-  .img {
-    display: none;
-  }
-
-  .wave {
-    display: none;
-  }
-
-  .login-content {
-    justify-content: center;
-  }
-}
 
 .contenedor{
     display: flex;
@@ -243,25 +205,32 @@ a:hover {
     margin-left: 20px;
 }
 
-.imgVolver{
-    height: 40px;
-    width: 30px;
+
+.btnlogin {
+ display: flex;
+ height: 3em;
+ width: 100px;
+ align-items: center;
+ justify-content: center;
+ background-color: #eeeeee4b;
+ border-radius: 15px;
+ letter-spacing: 1px;
+ transition: all 0.2s linear;
+ cursor: pointer;
+ border: none;
+ background: #fff;
+ font-size: 20px;
+  margin-left: 10px;
 }
 
-.botonVolver{
-    border:none;
-    background-color: white;
-    margin: 10px;
-    position: static;
+.btnlogin > svg {
+ margin-right: 5px;
+ margin-left: 10px;
+ font-size: 20px;
+ transition: all 0.4s ease-in;
 }
 
-.btnVolver{
-    text-decoration: none;
-    color: black;
-    border: none;
-}
-
-.btnVolver:hover{
-    color: blue;
-    border:none;
+.btnlogin:hover > svg {
+ font-size: 1.2em;
+ transform: translateX(-5px);
 }
