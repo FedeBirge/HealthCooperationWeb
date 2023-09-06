@@ -31,7 +31,7 @@
   width: 8rem;
   border-radius: 9999px;
   object-fit: cover;
-  background-color: royalblue;
+  background-color: rgba(243, 244, 246, 1);
 }
 .cardsection{
     margin: 10px;
@@ -83,7 +83,7 @@
   width: 8rem;
   border-radius: 9999px;
   object-fit: cover;
-  background-color: royalblue;
+  background-color: rgba(243, 244, 246, 1);
 }
 
 
@@ -12300,7 +12300,7 @@ td {
   padding-right: 15px;
   text-transform: uppercase;
   font-family: 'Poppins', sans-serif;
-  color: green; /* Agregamos esta línea para el color rojo */
+  color: #2BA67D; /* Agregamos esta línea para el color rojo */
 }
 
 
