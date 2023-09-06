@@ -269,7 +269,7 @@
                                                     </form>
                                                 </td>
 
-                                                <td th:if="${!user.activo}"> <!-- En esta parte que dice user.activo, tendria que ir user.inactivo??-->
+                                                <td th:if="${!log.activo}"> <!-- En esta parte que dice user.activo, tendria que ir user.inactivo??-->
                                                     <form th:action="@{/admin/darAlta/__${user.id}__}" method="post" th:id="'reactivateForm_' + ${user.id}">
                                                         <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showReactivationPopup(\'' + ${user.id} + '\')'">Alta</a>
                                                     </form>

@@ -116,13 +116,12 @@
                                     <div th:text="${prof.reputacion}" class="rating">
                                         <input th:text="${prof.reputacion}" th:value="${prof.reputacion}" value="5" name="rate" id="star5" type="radio">
                                     </div>
-                                    <a class="rating" href="">
+                                
                                         <div   class="rating">
                                             <span th:if="${prof.reputacion > 0}" th:each="starNum : ${#numbers.sequence(0, prof.reputacion-1)}" class="star filled">&#9733;</span>
                                             <span th:if="${prof.reputacion < 5}" th:each="starNum : ${#numbers.sequence(prof.reputacion + 1 , 5)}" class="star empty">&#9733;</span>
                                         </div>
-                                    </a>
-
+                                
 
 
                                 </div>

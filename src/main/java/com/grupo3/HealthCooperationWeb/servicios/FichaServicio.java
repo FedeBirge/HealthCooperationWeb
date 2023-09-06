@@ -66,14 +66,10 @@ public class FichaServicio {
         // igualo la variable hc a la HistoriaClinica del paciente con el id buscado
          Paciente paciente = (Paciente) pacienteServicio.getOne(idPaciente);
         hc = historiaClinicaRepositorio.findByPaciente_Id(idPaciente);
-        if(hc == null){
-            hc=historiaServ.crearHistoriaClinica();
-            hc.setPaciente(paciente);
-        }
-        else{
+       
         // igualo la variable fichas a las fichas disponibles en la hc encontrada
         fichas = hc.getFichas();
-        }
+       
         
         // agrego la nueva fichita al lista de fichas
         fichas.add(ficha);

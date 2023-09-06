@@ -115,7 +115,7 @@ public class TurnoControlador {
         try {
             List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            if (semanas.size() != 0) {
+            if (!semanas.isEmpty()) {
                 semanas = servAgenda.obtenerSemanaActual(id, semanas);
                 turnoServ.cancelarTurnosSemana(id, semanas);
 
@@ -137,7 +137,7 @@ public class TurnoControlador {
                 return fecha1.compareTo(fecha2);
             });
 
-            if (semanas.size() != 0) {
+            if (!semanas.isEmpty()) {
 
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);

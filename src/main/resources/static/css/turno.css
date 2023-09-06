@@ -11651,10 +11651,13 @@ div span{
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
+       
 
     .scroll-button {
         cursor: pointer;
+         border: none;
+         background-color:#1abc9c;
+    }
     }
 .table {
   width: max-content;
@@ -12245,8 +12248,8 @@ td {
 }
 
 .botonflecha {
-  border: none;
-  background: none;
+  border-radius: 0.5rem;
+      background-color:#1abc9c;
   
 }
 
