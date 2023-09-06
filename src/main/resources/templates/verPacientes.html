@@ -300,7 +300,7 @@
                                                     </td>
                                                     <td >
 
-                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/historia/ver/__${user.id}__}">Ver</a>
+                                                        <a th:if="${user.historia != null}" type="button" class="btn btn-success me-md-2" th:href="@{/historia/ver/__${user.id}__}">Ver</a>
                                                     </td>
 
 

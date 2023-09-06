@@ -363,7 +363,29 @@ public class ProfesionalControlador {
 
         }
     }
+     @PostMapping("/valorar/{id}")
+   
+    public String valorar(@PathVariable("id") String id, @RequestParam String idUser, 
+            @RequestParam String valor, ModelMap modelo,  HttpSession session,
+            RedirectAttributes redirectAttributes) {
 
+        try {
+            System.out.println("valora: "+valor);
+            profesionalServicio.valorar(id,valor);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+             redirectAttributes.addFlashAttribute("log", logueado);
+             redirectAttributes.addFlashAttribute("exito", "Valoración Exitosa!");
+
+            return "redirect:/profesionales/turnoIndividual/"+id;
+
+        } catch (Exception ex) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+             redirectAttributes.addFlashAttribute("log", logueado);
+                 redirectAttributes.addFlashAttribute("error", "Valorar no fue posible!");
+             return "redirect:/profesionales/turnoIndividual/"+id;
+
+        }
+    }
     @GetMapping("/agenda/{id}")
     public String agendaa(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
 

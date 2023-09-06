@@ -48,11 +48,11 @@ public class AgendaServicio {
     @Autowired
     private DiaAgendaServicio diaServ;
 
-    private LocalDate obtenerFecha(DayOfWeek dia, int sem, LocalDate fecha ) {
+    private LocalDate obtenerFecha(DayOfWeek dia, int sem, LocalDate fecha) {
 
         LocalDate fechaActual = fecha.plusDays(7 * sem);
         int daysToAdd = dia.getValue() - fechaActual.getDayOfWeek().getValue();
-   
+
         return fechaActual.plusDays(daysToAdd);
 
     }
@@ -106,7 +106,7 @@ public class AgendaServicio {
         ArrayList<AgendaSemanal> semanas = new ArrayList<>();
 
         Optional<Profesional> respuesta = profRepo.findById(idProf); /// lo traigo pero no asocio aqui con prof
-      
+
         if (respuesta.isPresent()) {
             Profesional prof = respuesta.get();
             if (prof == null) {
@@ -125,11 +125,12 @@ public class AgendaServicio {
                 AgendaSemanal agenda = new AgendaSemanal();
                 TreeMap<Date, DiaAgenda> fechaYTurnos = new TreeMap<>(Comparator.comparingLong(Date::getDay));
 
-                 for (Dias dia : prof.getDiasDisponibles()){       // recorro los dias disponibles
+                for (Dias dia : prof.getDiasDisponibles()) {       // recorro los dias disponibles
                     // si el dia pertenece a los disponibles del prof armo la lista de turnos
 
                     // primero paso el dia Enum a fecha calendario, y d LocalDate a Date(por ahora)
-                    Date fechaturno = Date.from(obtenerFecha(convertirADayOfWeek(dia), i,LocalDate.now()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    Date fechaturno = Date.from(obtenerFecha(convertirADayOfWeek(dia), i, LocalDate.now()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+
                     // armo lsita de turno segun oferta y fecha
                     ArrayList<Turno> turnos = armarTurnos(prof.getOferta(), fechaturno, idProf);
                     //armo el dia de agenda
@@ -141,8 +142,7 @@ public class AgendaServicio {
                 agenda.setFechasYTurnos(fechaYTurnos);
                 agendaRepo.save(agenda);
                 semanas.add(agenda);
-                
-                
+
 //                for (Map.Entry<Date, DiaAgenda> entry : fechaYTurnos.entrySet()) {
 //                    Date key = entry.getKey();
 //                    System.out.println("Dia: ");
@@ -151,17 +151,14 @@ public class AgendaServicio {
 //                    for (Turno turno : value.getTurnos()) {
 //                        System.out.println("turno: " + turno.getId());
 //                    }
-
             }
-          
+
             return semanas;
         }
 
         return null;
 
     }
-
-    @Transactional
 
     /// igual que CrearAgenda pero pasando una fehca especifica
     public Date buscarUltimo(List<AgendaSemanal> semanas) {
@@ -187,29 +184,30 @@ public class AgendaServicio {
     }
 
     public Date proximoLunes(Date ultimo) {
-
-        // Crear un objeto Calendar y establecerlo en la fecha ultimo
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(ultimo);
 
         // Obtener el día de la semana de la fecha actual
         int diaSemana = calendar.get(Calendar.DAY_OF_WEEK);
 
-        int diasHastaLunes = (7 - diaSemana + 2) % 7;
+        // Si el día de la semana es lunes, agregar 7 días
+        if (diaSemana == Calendar.MONDAY) {
+            calendar.add(Calendar.DAY_OF_YEAR, 7);
+        } else {
+            // Calcular días hasta el próximo lunes
+            int diasHastaLunes = (Calendar.SATURDAY - diaSemana + 2) % 7;
+            calendar.add(Calendar.DAY_OF_YEAR, diasHastaLunes);
+        }
 
-        calendar.add(Calendar.DAY_OF_YEAR, diasHastaLunes);
-
-        //fecha del lunes siguiente.
+        // Obtener la fecha del próximo lunes
         Date lunesSiguiente = calendar.getTime();
         return lunesSiguiente;
-
     }
 
     public List<AgendaSemanal> agregarSemanas(String id) throws MyException {
-       
 
         Optional<Profesional> respuesta = profRepo.findById(id); /// lo traigo pero no asocio aqui con prof
-      
+
         if (respuesta.isPresent()) {
             Profesional prof = respuesta.get();
             if (prof == null) {
@@ -221,36 +219,36 @@ public class AgendaServicio {
             if (prof.getOferta() == null) {
                 throw new MyException("No hay Oferta disponible del profesional!");
             }
-           List<AgendaSemanal> semanas = prof.getAgendasSemanales();
-            
+            List<AgendaSemanal> semanas = prof.getAgendasSemanales();
+
             //Buscarultimo dia en agendas
             Date ultimoAgenda = buscarUltimo(prof.getAgendasSemanales());
-            
+            System.out.println("ultimo " + ultimoAgenda);
             Date proximoLunes = proximoLunes(ultimoAgenda);
-          
+            System.out.println("lunes prox " + proximoLunes);
             for (int i = 0; i < 3; i++) { // Recorro 3 veces para armar 3 semanas
                 AgendaSemanal agenda = new AgendaSemanal();
                 Map<Date, DiaAgenda> fechaYTurnos = new TreeMap<>(Comparator.comparingLong(Date::getDay));
-        
+
                 for (Dias dia : prof.getDiasDisponibles()) {             // recorro los dias disponibles
                     // si el dia pertenece a los disponibles del prof armo la lista de turnos
 
                     // primero paso el dia Enum a fecha calendario, y d LocalDate a Date(por ahora)
-                    Date fechaturno = Date.from(obtenerFecha(convertirADayOfWeek(dia), i,proximoLunes.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    Date fechaturno = Date.from(obtenerFecha(convertirADayOfWeek(dia), i, proximoLunes.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).atStartOfDay(ZoneId.systemDefault()).toInstant());
                     // armo lsita de turno segun oferta y fecha
                     ArrayList<Turno> turnos = armarTurnos(prof.getOferta(), fechaturno, id);
+                    System.out.println("FEcha para lista de turnos " + fechaturno);
                     //armo el dia de agenda
                     DiaAgenda diaAgenda = diaServ.crearDia(fechaturno, turnos);
                     fechaYTurnos.put(fechaturno, diaAgenda);
 //                    fechaYTurnos = ordenarMapPorFecha(fechaYTurnos);
-                    
+
                 }
 
                 agenda.setFechasYTurnos(fechaYTurnos);
                 agendaRepo.save(agenda);
                 semanas.add(agenda);
-                
-                     
+
 //                or (Map.Entry<Date, DiaAgenda> entry : fechaYTurnos.entrySet()) {
 //                    Date key = entry.getKey();
 //                    System.out.println("Dia: ");
@@ -259,9 +257,8 @@ public class AgendaServicio {
 //                    for (Turno turno : value.getTurnos()) {
 //                        System.out.println("turno: " + turno.getId());
 //                    }
-
             }
-       
+
             return semanas;
         }
 

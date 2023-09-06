@@ -243,7 +243,7 @@ public class AgendaControlador {
 
     // solo la ve el doctor con este id
     @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
-    @GetMapping("/editarActual/{id}") // Vista principal para el Admin al Logearse (LT)
+    @GetMapping("/editarActual/{id}") 
     public String editarActual(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
         try {
             List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);

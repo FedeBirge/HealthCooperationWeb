@@ -1,3 +1,15 @@
+div span{
+    font-family: 'Poppins', sans-serif;
+}
+    div p{
+    font-family: 'Poppins', sans-serif;
+}
+    div h1 h2 h3 h4 h5 h6 h7{
+    font-family: 'Poppins', sans-serif;
+}
+    div a{
+    font-family: 'Poppins', sans-serif;
+}
 card3 {
     cursor: pointer;
     width: 400px;

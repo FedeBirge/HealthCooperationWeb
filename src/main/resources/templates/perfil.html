@@ -205,7 +205,7 @@
 
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
-                        <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Modificar </a>
+                        <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
 
                         <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2"  href="#" data-toggle="modal" data-target="#solicitarBaja"> Solicitar Baja </a>
 
@@ -223,142 +223,173 @@
                                 <p class="card-text text-center" th:text="${exito}"></p>
                             </div>
                         </div> 
-                        <div class="d-sm-flex align-items-center justify-content-center mb-4">
-                            <h1 class="h3 mb-0 text-gray-800" th:text="'Bienvenido ' + ${user.nombre}"></h1>
+
+
+
+                        <div class="container-cardPerfil">
+                            <div class="card">
+                                <div class="tools">
+                                    <div class="circle">
+                                        <span class="red box"></span>
+                                    </div>
+                                    <div class="circle">
+                                        <span class="yellow box"></span>
+                                    </div>
+                                    <div class="circle">
+                                        <span class="green box"></span>
+                                    </div>
+                                </div>
+                                <div class="card__content">
+
+                                    <div class="row">              
+                                        <div class="col-sm-6 mb-3">
+                                            <h2>Tu foto</h2>
+                                            <img class="img-profile rounded-circle" 
+                                                 th:src="@{/imagen/perfil/__${user.id}__}" 
+                                                 style="max-width: 100%; max-height: 150px;border-radius: 50%;">
+
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <h1 class="h3 mb-0 text-gray-900" th:text="'Usuario ' + ${user.nombre}"></h1>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-sm-6 mb-3 ">
+                                                    <h2 class="textoTitulo"th:text=" 'Nombre: ' + ${user.nombre}"></h2>
+                                                </div>
+                                                <div class="col-sm-6 mb-3">
+                                                    <h2 class="textoTitulo"th:text=" 'Apellido: ' + ${user.apellido}"></h2>
+                                                </div>
+                                                <div class="col-sm-6 mb-3">
+                                                    <h2 class="textoTitulo" th:text=" 'Direccion: ' + ${user.direccion}"></h2>
+                                                </div>
+                                                <div class="col-sm-6 mb-3">
+                                                    <h2 class="textoTitulo" th:text=" 'Telefono: ' + ${user.telefono}"></h2>
+                                                </div>
+                                                <div class="col-sm-6 mb-3">
+                                                    <h2 class="textoTitulo" th:text="'Fecha nacimiento: ' + ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></h2>
+
+                                                </div>
+                                                <div class="col-sm-6 mb-3">
+                                                    <h2 class="textoTitulo" th:text=" 'Email: ' + ${user.email}"></h2>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-3">
+                                                    <h2 class="textoTitulo"th:text=" 'DNI: '+ ${user.dni}"></h2>
+                                                </div>   
+                                                <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
+                                                    <h2 class="textoTitulo" th:if='${user.grupoSanguineo} != null'th:text="'Grupo Sanguineo: ' + ${user.grupoSanguineo}"></h2>
+                                                </div>    
+                                                <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
+
+                                                    <h2 class="textoTitulo" th:if='${user.grupoSanguineo} != null' th:text="'Obra Social: '+${user.obraSocial.nombre}"></h2>
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-sm-6 mb-3">
-                                <h3><span class="badge bg-success text-white">Nombre</span> <span th:text=" ${user.nombre}"></span></h3>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h3><span class="badge bg-success text-white">Apellido</span> <span th:text=" ${user.apellido}"></span></h3>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h3><span class="badge bg-success text-white">Direccion</span> <span th:text=" ${user.direccion}"></span></h3>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h3><span class="badge bg-success text-white">Telefono</span> <span th:text=" ${user.telefono}"></span></h3>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h3><span class="badge bg-success text-white">Email</span> <span th:text=" ${user.email}"></span></h3>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h3><span class="badge bg-success text-white">Nacimiento</span> <span th:text="${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></span></h3>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h3><span class="badge bg-success text-white">DNI</span> <span th:text=" ${user.dni}"></span></h3>
-                            </div>   
-                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
-                                <h3><span class="badge bg-success text-white">Grupo </span> <span th:if='${user.grupoSanguineo} != null' th:text="${user.grupoSanguineo}"></span></h3>
 
-                            </div>    
-                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
-                                <h3><span class="badge bg-success text-white">Obra social </span> <span th:if='${user.grupoSanguineo} != null' th:text="${user.obraSocial.nombre}"></span></h3>
-                            </div>
-
-                            <div class="col-sm-6 mb-3">
-                                <h3><span class="badge bg-success text-white">Foto</span></h3>
-                                <img class="/img-profile rounded-circle"
-                                     th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 75px;">
-                            </div>
-
-
-
-                        </div>
-                        <div class="text-center py-4">
-                            <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/misturnos/__${log.id}__}"> Ver Mis Turnos </a>
-                            <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/panel/}"> Ir al Panel de Turnos </a>
-                        </div>
-                    </div>
-
-
-
-
-
-                    <!-- Fin del contenido principal -->
-
-                    <!-- Footer -->
-                    <footer class="sticky-footer" style="padding-top: 200px;">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>HealtCooperationWeb ©2023</span>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- Fin del Footer -->
-
-                </div>
-                <!-- Fin del contenedor de contenido -->
-
-            </div>
-            <!-- Envoltura de fin de página -->
-
-            <!-- Desplácese hasta el botón superior-->
-            <a class="scroll-to-top rounded" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
-
-            <!-- Cierre de sesión modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
-                            <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
-                        </div>
 
                     </div>
+                    <div class="text-center py-4">
+                        <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/misturnos/__${log.id}__}"> Ver Mis Turnos </a>
+                        <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/panel/}"> Ir al Panel de Turnos </a>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Fin del contenido principal -->
+
+                <!-- Footer -->
+                <footer class="sticky-footer" style="padding-top: 200px;">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>HealtCooperationWeb ©2023</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- Fin del Footer -->
+
+            </div>
+            <!-- Fin del contenedor de contenido -->
+
+        </div>
+        <!-- Envoltura de fin de página -->
+
+        <!-- Desplácese hasta el botón superior-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Cierre de sesión modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                    </div>
+
                 </div>
             </div>
+        </div>
 
 
-            <!-- Modal de darse de baja -->
+        <!-- Modal de darse de baja -->
 
-            <div class="modal fade" id="solicitarBaja" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Seleccione "Dar Baja" a continuación si está listo para dar de baja el usuario.</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
-                            <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
-                        </div>
+        <div class="modal fade" id="solicitarBaja" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Seleccione "Dar Baja" a continuación si está listo para dar de baja el usuario.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="/vendor/jquery/jquery.min.js"></script>
-            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="/vendor/jquery/jquery.min.js"></script>
+        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-            <!-- Core plugin JavaScript-->
-            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-            <!-- Custom scripts for all pages-->
-            <script src="/js/sb-admin-2.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="/js/sb-admin-2.min.js"></script>
 
-            <!-- Page level plugins -->
-            <script src="/vendor/chart.js/Chart.min.js"></script>
+        <!-- Page level plugins -->
+        <script src="/vendor/chart.js/Chart.min.js"></script>
 
-            <!-- Page level custom scripts -->
-            <script src="/js/demo/chart-area-demo.js"></script>
-            <script src="/js/demo/chart-pie-demo.js"></script>
+        <!-- Page level custom scripts -->
+        <script src="/js/demo/chart-area-demo.js"></script>
+        <script src="/js/demo/chart-pie-demo.js"></script>
 
     </body>
 

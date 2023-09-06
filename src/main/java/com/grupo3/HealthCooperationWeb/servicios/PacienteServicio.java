@@ -61,8 +61,9 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     @Autowired
     private TurnoServicio turnoServ;
 
+
     @Transactional
-    public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
+    public Paciente registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2,
             String telefono, String direccion, String fecha_nac, String grupoSanguineo, String obraSocial)
             throws MyException, IOException, ParseException {
@@ -94,10 +95,9 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
             obraRepo.save(obraSocial2);
         }
 
-        paciente.setObraSocial(obraSocial2);
+         paciente.setObraSocial(obraSocial2);
 
-        // paciente.setTurnos(new ArrayList<Turno>());
-        // paciente.setHistoria(new HistoriaClinica());
+      
         paciente.setRol(Rol.USUARIO);
         if (archivo.isEmpty()) {
             // Si el archivo está vacío, crea el paciente con una imagen predeterminada
@@ -111,6 +111,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
         }
 
         pacienteRepositorio.save(paciente);
+        return paciente;
 
     }
 

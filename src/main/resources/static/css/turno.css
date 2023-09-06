@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap');
+</style>
 
 .card1 {
     
@@ -28,7 +31,7 @@
   width: 8rem;
   border-radius: 9999px;
   object-fit: cover;
-  background-color: royalblue;
+  background-color: rgba(243, 244, 246, 1);
 }
 .cardsection{
     margin: 10px;
@@ -80,7 +83,7 @@
   width: 8rem;
   border-radius: 9999px;
   object-fit: cover;
-  background-color: royalblue;
+  background-color: rgba(243, 244, 246, 1);
 }
 
 
@@ -429,7 +432,7 @@ address {
 
 ol,
 ul {
-  padding-left: 2rem;
+  padding-left: 1px;
 }
 
 ol,
@@ -3116,22 +3119,114 @@ textarea.form-control-lg {
   opacity: var(--bs-btn-disabled-opacity);
 }
 
-.btn-primary {
-  --bs-btn-color: #fff;
-  --bs-btn-bg: #1abc9c;
-  --bs-btn-border-color: #1abc9c;
-  --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #16a085;
-  --bs-btn-hover-border-color: #15967d;
-  --bs-btn-focus-shadow-rgb: 60, 198, 171;
-  --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #15967d;
-  --bs-btn-active-border-color: #148d75;
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #1abc9c;
-  --bs-btn-disabled-border-color: #1abc9c;
+.boton-primary {
+ display: inline-block;
+ padding: 12px 24px;
+ border: 1px solid #4f4f4f;
+ border-radius: 40px;
+ transition: all 0.2s ease-in;
+ position: relative;
+ overflow: hidden;
+ font-size: 19px;
+ color: black;
+ z-index: 1;
 }
+
+.boton-primary:before {
+ content: "";
+ position: absolute;
+ left: 50%;
+ transform: translateX(-50%) scaleY(1) scaleX(1.25);
+ top: 100%;
+ width: 140%;
+ height: 180%;
+ background-color: rgba(0, 0, 0, 0.05);
+ border-radius: 50%;
+ display: block;
+ transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+ z-index: -1;
+}
+
+.boton-primary:after {
+ content: "";
+ position: absolute;
+ left: 55%;
+ transform: translateX(-50%) scaleY(1) scaleX(1.45);
+ top: 180%;
+ width: 160%;
+ height: 190%;
+ background-color: #39bda7;
+ border-radius: 50%;
+ display: block;
+ transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+ z-index: -1;
+}
+
+.boton-primary:hover {
+ color: #ffffff;
+ border: 1px solid #39bda7;
+}
+
+.boton-primary:hover:before {
+ top: -35%;
+ background-color: #39bda7;
+ transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+.boton-primary:hover:after {
+ top: -45%;
+ background-color: #39bda7;
+ transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+.boton-secondary {
+ display: inline-block;
+ padding: 12px 24px;
+ border: 1px solid #4f4f4f;
+ border-radius: 40px;
+ transition: all 0.2s ease-in;
+ position: relative;
+ overflow: hidden;
+ font-size: 19px;
+ color: black;
+ z-index: 1;
+}
+
+.boton-secondary:before {
+ content: "";
+ position: absolute;
+ left: 50%;
+ transform: translateX(-50%) scaleY(1) scaleX(1.25);
+ top: 100%;
+ width: 140%;
+ height: 180%;
+ background-color: rgba(0, 0, 0, 0.05);
+ border-radius: 50%;
+ display: block;
+ transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+ z-index: -1;
+}
+
+.boton-secondary:after {
+ content: "";
+ position: absolute;
+ left: 55%;
+ transform: translateX(-50%) scaleY(1) scaleX(1.45);
+ top: 180%;
+ width: 160%;
+ height: 190%;
+ background-color: #39bda7;
+ border-radius: 50%;
+ display: block;
+ transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+ z-index: -1;
+}
+
+.boton-secondary:hover {
+ color: #39bda7;
+ border: 1px solid #39bda7;
+}
+
+
 
 .btn-secondary {
   --bs-btn-color: #fff;
@@ -11253,9 +11348,12 @@ html {
 }
 
 .masthead {
-  padding-top:calc(6rem + 30px);
-  padding-bottom: 6rem;
+  height: auto;
+  weigh: 800px;
+  padding-top: 6rem; /* Ajusta tu valor de padding-top según sea necesario */
+  padding-bottom: 6rem; /* Ajusta tu valor de padding-bottom según sea necesario */
 }
+
 .masthead .masthead-heading {
   font-size: 2.75rem;
   line-height: 2.75rem;
@@ -11523,49 +11621,43 @@ body{
 
 .card5 {
   background-color: #fff;
-  width: 1000px;
-  height: 800px;
-  overflow: hidden;
   border: 1px solid #ccc;
   border-radius: 10px;
   position: absolute; /* Cambia a posición absoluta */
-  top: 10px; /* Ajusta la distancia desde la parte superior */
-  right: 165px; /* Ajusta la distancia desde la derecha */
-  margin: 0;
+  
+  top: 30%; /* Centra verticalmente */
+  left: 60%; /* Centra horizontalmente */
+  
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden; 
+  width: 480px; /* Ancho fijo de 800px *//* Esto oculta el contenido que excede los límites de la tarjeta */
+   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Agrega sombra aquí */
 }
 
-.carousel-container {
-  overflow-y: scroll;
-  white-space: nowrap;
-  width: 100%;
-  height: 100%; /* Cambia la altura al 100% si es necesario */
-}
-/* Estilo de las flechas */
-.arrow {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  color: #333;
-}
 
-.left-arrow {
-  position: absolute;
-  left: 10px; /* Ajusta la posición de la flecha izquierda */
+div span{
+    font-family: 'Poppins', sans-serif;
 }
-
-.right-arrow {
-  position: absolute;
-  right: 10px; /* Ajusta la posición de la flecha derecha */
+    div p{
+    font-family: 'Poppins', sans-serif;
+}
+    div h1 h2 h3 h4 h5 h6 h7{
+    font-family: 'Poppins', sans-serif;
+}
+    div a{
+    font-family: 'Poppins', sans-serif;
 }
   .scroll-buttons {
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
+       
 
     .scroll-button {
         cursor: pointer;
+         border: none;
+         background-color:#1abc9c;
+    }
     }
 .table {
   width: max-content;
@@ -11778,7 +11870,12 @@ td {
 .fixed-section {
   position: relative;
   height: 800px;
+  display: flex;
+  
+  
+   margin-top: calc((100% - 1600px) / 2); /* Calcula el margen superior automáticamente */
 }
+
 
 .cookie-card {
   max-width: 600px;
@@ -11872,11 +11969,88 @@ td {
     background-color:#2c3e50;
     margin-left: 10px; /* Añade un margen a la izquierda para separar el botón del select */
 }
-..rating {
+.rating {
   display: inline-block;
   margin-right: 60px;
 }
 
+
+
+  .lista-horizontal {
+        white-space: nowrap;
+        overflow: hidden; /* Oculta la barra de desplazamiento */
+        width: 100%;
+    }
+
+    .lista-horizontal ul {
+        display: inline-block;
+        margin-right: 0;
+         vertical-align: top; /* Alinea las filas en la parte superior */
+    }
+
+    .scroll-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .scroll-button {
+        cursor: pointer;
+    }
+.botonTurno {
+  border: none;
+  background: none;
+}
+
+.botonTurno span {
+  padding-bottom: 7px;
+  letter-spacing: 4px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+  
+}
+
+
+
+.hover-underline-animation {
+  position: relative;
+  color: black;
+  padding-bottom: 2px;
+}
+
+.hover-underline-animation:after {
+  content: "";
+  position: absolute;
+  width: 70%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+
+
+
+.rating{
+    font-size: 30px;
+}
+/* Estilo básico para todas las estrellas */
+.star.empty {
+ 
+  color: #ccc; /* Color de estrella vacía */
+}
+
+.star.filled {
+  color: #6f00ff; 
+}
+
+
+ Estilo para las estrellas llenas 
 .rating input {
   display: none;
 }
@@ -11902,6 +12076,112 @@ td {
   transition: color 0.3s;
 }
 
+.boton-primary {
+ display: inline-block;
+ padding: 12px 24px;
+ border: 1px solid #4f4f4f;
+ border-radius: 40px;
+ transition: all 0.2s ease-in;
+ position: relative;
+ overflow: hidden;
+ font-size: 19px;
+ color: black;
+ z-index: 1;
+}
+
+.boton-primary:before {
+ content: "";
+ position: absolute;
+ left: 50%;
+ transform: translateX(-50%) scaleY(1) scaleX(1.25);
+ top: 100%;
+ width: 140%;
+ height: 180%;
+ background-color: rgba(0, 0, 0, 0.05);
+ border-radius: 50%;
+ display: block;
+ transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+ z-index: -1;
+}
+
+.boton-primary:after {
+ content: "";
+ position: absolute;
+ left: 55%;
+ transform: translateX(-50%) scaleY(1) scaleX(1.45);
+ top: 180%;
+ width: 160%;
+ height: 190%;
+ background-color: #39bda7;
+ border-radius: 50%;
+ display: block;
+ transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+ z-index: -1;
+}
+
+.boton-primary:hover {
+ color: #ffffff;
+ border: 1px solid #39bda7;
+}
+
+.boton-primary:hover:before {
+ top: -35%;
+ background-color: #39bda7;
+ transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+.boton-primary:hover:after {
+ top: -45%;
+ background-color: #39bda7;
+ transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+.boton-secondary {
+ display: inline-block;
+ padding: 12px 24px;
+ border: 1px solid #4f4f4f;
+ border-radius: 40px;
+ transition: all 0.2s ease-in;
+ position: relative;
+ overflow: hidden;
+ font-size: 19px;
+ color: black;
+ z-index: 1;
+}
+
+.boton-secondary:before {
+ content: "";
+ position: absolute;
+ left: 50%;
+ transform: translateX(-50%) scaleY(1) scaleX(1.25);
+ top: 100%;
+ width: 140%;
+ height: 180%;
+ background-color: rgba(0, 0, 0, 0.05);
+ border-radius: 50%;
+ display: block;
+ transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+ z-index: -1;
+}
+
+.boton-secondary:after {
+ content: "";
+ position: absolute;
+ left: 55%;
+ transform: translateX(-50%) scaleY(1) scaleX(1.45);
+ top: 180%;
+ width: 160%;
+ height: 190%;
+ background-color: #39bda7;
+ border-radius: 50%;
+ display: block;
+ transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+ z-index: -1;
+}
+
+.boton-secondary:hover {
+ color: #39bda7;
+ border: 1px solid #39bda7;
+}
   .lista-horizontal {
         white-space: nowrap;
         overflow: hidden; /* Oculta la barra de desplazamiento */
@@ -11910,7 +12190,8 @@ td {
 
     .lista-horizontal ul {
         display: inline-block;
-        margin-right: 10px;
+        margin-right: 0;
+         vertical-align: top; /* Alinea las filas en la parte superior */
     }
 
     .scroll-buttons {
@@ -11922,30 +12203,193 @@ td {
     .scroll-button {
         cursor: pointer;
     }
-    
-    .botonTurno {
-  color: white;
-  text-decoration: none;
-  font-size: 25px;
+.botonTurno {
   border: none;
   background: none;
-  font-weight: 600;
+}
+
+.botonTurno span {
+  padding-bottom: 7px;
+  letter-spacing: 4px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+  
+}
+
+
+
+.hover-underline-animation {
+  position: relative;
+  color: black;
+  padding-bottom: 2px;
+}
+
+.hover-underline-animation:after {
+  content: "";
+  position: absolute;
+  width: 70%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.botonTurno:hover .hover-underline-animation:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+.lista li {
+  list-style: none; /* Elimina las viñetas */
+}
+
+.botonflecha {
+  border-radius: 0.5rem;
+      background-color:#1abc9c;
+  
+}
+
+.botonflecha span {
+  padding-bottom: 7px;
+  letter-spacing: 4px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
   font-family: 'Poppins', sans-serif;
 }
 
-.botonTurno::before {
-  margin-left: auto;
+.botonCalcelado {
+  border: none;
+  background: none;
 }
 
-.botonTurno::after, button::before {
-  content: '';
-  width: 0%;
-  height: 2px;
-  background: #f44336;
-  display: block;
-  transition: 0.5s;
+.botonCalcelado span {
+  padding-bottom: 7px;
+  letter-spacing: 4px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+  color: red; /* Agregamos esta línea para el color rojo */
 }
 
-.botonTurno:hover::after, button:hover::before {
-  width: 100%;
+.botonReservado {
+  border: none;
+  background: none;
 }
+
+.botonReservado span {
+  padding-bottom: 7px;
+  letter-spacing: 4px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+  color: blue; /* Agregamos esta línea para el color rojo */
+}
+.botonSucces {
+  border: none;
+  background: none;
+}
+
+.botonSucces span {
+  padding-bottom: 7px;
+  letter-spacing: 4px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+  color: #2BA67D; /* Agregamos esta línea para el color rojo */
+}
+
+
+/* Estilos para la ventana emergente */
+.modal1 {
+    display: none;
+     font-family: 'Poppins', sans-serif;
+    position: fixed;
+    top: 200px;
+    
+   width: 470px;
+    
+     background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    padding: 20px;
+    margin-bottom: 60px;
+    margin-left: 4px;
+    font-size: 1.20rem;
+    font-weight: 500;
+    
+    
+   
+   
+}
+
+.modal-content1 {
+    background-color: #fff;
+    padding: 35px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.close1 {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.inputbox.w100
+{
+    width: 100%;
+}
+.inputbox input,
+.inputbox textarea
+{
+    width: 100%;
+    resize: none;
+    padding: 5px 0;
+    font-size: 18px;
+    font-weight: 300;
+    color: #333;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid#777;
+}
+.inputbox textarea
+{
+    margin-bottom: 20px;
+    height: 80px;
+}
+ .inputbox span
+{
+    
+    position: absolute;
+    left: 0;
+    padding: 5px 50px;
+    pointer-events: none;
+    font-size: 18px;
+    font-weight: 300;
+    transition: 0.3s;
+}
+ .inputbox input:focus ~ span,
+ .inputbox input:valid ~ span,
+ .inputbox textarea:focus ~ span,
+ .inputbox textarea:valid ~ span
+{
+    transform: translateY(-20px);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #095a55;
+}
+.text-strikethrough {
+    text-decoration: line-through;
+    /* Agrega otros estilos como color, si es necesario */
+}
+
