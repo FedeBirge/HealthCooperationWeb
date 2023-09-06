@@ -70,7 +70,9 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
 
         super.validar("1", nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         validar(grupoSanguineo, obraSocial);
-
+        if (usuarioServicio.buscarPorDni(dni) != null) {
+            throw new MyException("Existe un usuario con el N° de docuemnto!");
+        }
         Date fecha = pasarStringDate(fecha_nac);
         if (!validarFecha(fecha)) {
             throw new MyException("la fecha no es válida");
@@ -181,21 +183,22 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
             return null;
         }
     }
+
     @Transactional
-    public Turno actualizarTurno( String idTurno,  String msj, EstadoTurno estado) {
+    public Turno actualizarTurno(String idTurno, String msj, EstadoTurno estado) {
         Optional<Turno> turnoOptional = turnoRepositorio.findById(idTurno);
-         if (turnoOptional.isPresent()) {
+        if (turnoOptional.isPresent()) {
             Turno turno = turnoOptional.get();
             turno.setEstado(EstadoTurno.RESERVADO);
             turno.setMotivo(msj);
             turnoRepositorio.save(turno);
             return turno;
-                    
-            
-    }
+
+        }
         return null;
-    
+
     }
+
     @Transactional
     public void asignarTurno(Paciente log, String idTurno, String id, String msj) {
         // Busca el paciente por su ID o cualquier otro criterio de búsqueda
@@ -207,15 +210,15 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
         System.out.println("asigmar turno " + idTurno);
         if (turnoOptional.isPresent()) {
             Turno turno = turnoOptional.get();
-           
+
             System.out.println(turno.getFecha() + turno.getHora() + turno.getMotivo() + turno.getEstado());
-            turno=actualizarTurno(idTurno,msj,EstadoTurno.RESERVADO);
-            
+            turno = actualizarTurno(idTurno, msj, EstadoTurno.RESERVADO);
+
             System.out.println(turno.getFecha() + turno.getHora() + turno.getMotivo() + turno.getEstado());
 
             turnos.add(turno);
             log.setTurnos(turnos);
-            
+
             System.out.println(turno.getFecha() + turno.getHora() + turno.getMotivo() + turno.getEstado());
             // Guarda el paciente actualizado en la base de datos
             pacienteRepositorio.save(log);

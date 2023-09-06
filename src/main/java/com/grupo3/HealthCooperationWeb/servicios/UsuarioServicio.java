@@ -70,6 +70,9 @@ public class UsuarioServicio implements UserDetailsService {
         if (usuarioRepo.buscarPorEmail(email) != null) {
             throw new MyException("EL mail ingresado ya existe! Ingreso otro!");
         }
+        if (usuarioRepo.buscarPorDni(dni) != null) {
+            throw new MyException("Existe un usuario con el N° de docuemnto!");
+        }
 
         Date fecha = pasarStringDate(fecha_nac);
         if (!validarFecha(fecha)) {
@@ -255,7 +258,9 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
-
+      public Usuario buscarPorDni(String dni) {
+        return usuarioRepo.buscarPorEmail(dni);
+    }
     public Usuario buscarPorMail(String email) {
         return usuarioRepo.buscarPorEmail(email);
     }
