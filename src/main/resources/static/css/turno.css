@@ -35,7 +35,7 @@
 }
 .cardsection{
     margin: 10px;
-  padding: 0 50px; /* Ajusta el espaciado izquierdo y derecho */
+  padding: 0 200px; /* Ajusta el espaciado izquierdo y derecho */
   font-family: 'Poppins', sans-serif;
   display: flex;
   flex-direction: column; /* Alinea el contenido verticalmente */
@@ -58,17 +58,17 @@
 }
 .card2 {
     
-
+top: 30%;
   padding: 1rem;
   max-width: 575px;
   margin-right: 15px;
   
    background-color: rgba(243, 244, 246, 1);
   width: 600px;
-  height: 400px;
+  height: auto;
   border-radius: 20px;
   box-shadow: 0 20px 30px -20px rgba(5, 5, 5, 0.24);
- 
+  
 }
 
 .header2 {
@@ -98,7 +98,15 @@
     min-height: auto;
 }
 
-
+.cartasection p.message {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  line-height: 1; /* Ajusta el interlineado según tus preferencias */
+  margin: 10px 0;
+   margin-top: 10px; 
+    margin-right:  50px;
+}
 
  
 .name {
@@ -11632,7 +11640,7 @@ body{
   border-radius: 20px;
   position: absolute; /* Cambia a posición absoluta */
   height: auto;
-  top: 25%; /* Centra verticalmente */
+  top: 30%; /* Centra verticalmente */
   left: 60%; /* Centra horizontalmente */
   
   font-family: 'Poppins', sans-serif;
@@ -11663,7 +11671,7 @@ div span{
     .scroll-button {
         cursor: pointer;
          border: none;
-         background-color:#1abc9c;
+        
     }
     }
 .table {
@@ -12043,28 +12051,15 @@ td {
 
 
 
-.rating{
-    font-size: 30px;
-}
-/* Estilo básico para todas las estrellas */
-.star.empty {
- 
-  color: #ccc; /* Color de estrella vacía */
+.rating {
+  display: inline-block;
 }
 
-.star.filled {
-  color: #6f00ff; 
-}
-
-
- Estilo para las estrellas llenas 
 .rating input {
   display: none;
 }
 
-.rating label 
-{
-    
+.rating label {
   float: right;
   cursor: pointer;
   color: #ccc;
@@ -12082,6 +12077,7 @@ td {
   color: #6f00ff;
   transition: color 0.3s;
 }
+    
 
 .boton-primary {
  display: inline-block;
@@ -12255,9 +12251,8 @@ td {
 }
 
 .botonflecha {
-  border-radius: 0.5rem;
-      background-color:#1abc9c;
-  
+border: none;
+  background: none;
 }
 
 .botonflecha span {
@@ -12267,7 +12262,62 @@ td {
   padding-right: 15px;
   text-transform: uppercase;
   font-family: 'Poppins', sans-serif;
+  
 }
+.botonvalorar {
+ --color: #00A97F;
+ padding: 0.8em 1.7em;
+ background-color: transparent;
+ border-radius: .3em;
+ position: relative;
+ overflow: hidden;
+ cursor: pointer;
+ transition: .5s;
+ font-weight: 400;
+ font-size: 17px;
+ border: 1px solid;
+ font-family: inherit;
+ text-transform: uppercase;
+ color: var(--color);
+ z-index: 1;
+}
+
+.botonvalorar::before, .button::after {
+ content: '';
+ display: block;
+ width: 50px;
+ height: 50px;
+ transform: translate(-50%, -50%);
+ position: absolute;
+ border-radius: 50%;
+ z-index: -1;
+ background-color: #1abc9c;
+ transition: 1s ease;
+}
+
+.botonvalorar::before {
+ top: -1em;
+ left: -1em;
+}
+
+.botonvalorar::after {
+ left: calc(100% + 1em);
+ top: calc(100% + 1em);
+}
+
+.botonvalorar:hover::before, .button:hover::after {
+ height: 410px;
+ width: 410px;
+}
+
+.botonvalorar:hover {
+ color: rgb(10, 25, 30);
+}
+
+.botonvalorar:active {
+ filter: brightness(.8);
+}
+
 
 .botonCalcelado {
   border: none;
@@ -12401,4 +12451,112 @@ td {
 }
 #confirmacionTurno {
     display: none; /* Inicialmente oculto */
+}
+
+.modal2 {
+    display: none;
+     font-family: 'Poppins', sans-serif;
+    position:absolute;
+    top:410px;
+    
+   width: 420px;
+    
+     background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    padding: 20px;
+    margin-bottom: 60px;
+    margin-left: 4px;
+    font-size: 1.20rem;
+    font-weight: 500;
+    
+    
+   
+   
+}
+
+.modal-content2 {
+    background-color: #fff;
+    padding: 35px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.close2 {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.inputbox.w100
+{
+    width: 100%;
+}
+.inputbox input,
+.inputbox textarea
+{
+    width: 100%;
+    resize: none;
+    padding: 5px 0;
+    font-size: 18px;
+    font-weight: 300;
+    color: #333;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid#777;
+}
+.inputbox textarea
+{
+    margin-bottom: 20px;
+    height: 80px;
+}
+ .inputbox span
+{
+    
+    position: absolute;
+    left: 0;
+    padding: 5px 50px;
+    pointer-events: none;
+    font-size: 18px;
+    font-weight: 300;
+    transition: 0.3s;
+}
+ .inputbox input:focus ~ span,
+ .inputbox input:valid ~ span,
+ .inputbox textarea:focus ~ span,
+ .inputbox textarea:valid ~ span
+{
+    transform: translateY(-20px);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #095a55;
+}
+.text-strikethrough {
+    text-decoration: line-through;
+    /* Agrega otros estilos como color, si es necesario */
+}
+#confirmacionTurno {
+    display: none; /* Inicialmente oculto */
+}
+
+.form-container1 {
+  margin-left:250px; /* Agrega espacio entre los selectores */
+}
+.form-container2 {
+  margin-left: 2px; /* Agrega espacio entre los selectores */
+}
+
+
+
+
+
+.staticmap {
+    position: fixed;
+    top: 50%; /* Ajusta la posición vertical (por ejemplo, 50% para centrar verticalmente) */
+    height: 500px;
+    right: 0; /* Ajusta la posición horizontal (en este caso, a la derecha) */
+    transform: translateY(-50%); /* Ajusta la posición vertical después de centrar */
+    margin-right: 90px;
 }
