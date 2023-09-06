@@ -11,8 +11,12 @@ import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.PacienteRepositorio;
 import com.grupo3.HealthCooperationWeb.repositorios.TurnoRepositorio;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -173,8 +177,8 @@ public class TurnoServicio {
 
             for (Turno turno : turnos) {
                 if (turno.getProfesional().getId().equals(prof.getId())) {
-              
-                    System.out.println("cancelando");
+
+                   
                     cancelarTurno(turno.getId());
                 }
             }
@@ -192,6 +196,9 @@ public class TurnoServicio {
             Optional<Paciente> respuesta = pacienteRepo.findById(id);
             if (respuesta.isPresent()) {
                 Paciente pace = respuesta.get();
+                for (Turno turno : pace.getTurnos()) {
+                 
+                }
                 return pace.getTurnos();
             }
 
@@ -200,6 +207,35 @@ public class TurnoServicio {
             return null;
         }
         return null;
+    }
+
+    public List<Turno> ordenarTurnos(List<Turno> turnos) {
+
+       try {
+        // Define un comparador personalizado para ordenar por fecha y hora
+        Comparator<Turno> comparadorTurno = new Comparator<Turno>() {
+            @Override
+            public int compare(Turno turno1, Turno turno2) {
+                try {
+                    SimpleDateFormat formatoFechaHora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    Date fechaHora1 = formatoFechaHora.parse(turno1.getFecha() + " " + turno1.getHora());
+                    Date fechaHora2 = formatoFechaHora.parse(turno2.getFecha() + " " + turno2.getHora());
+                    return fechaHora1.compareTo(fechaHora2);
+                } catch (ParseException e) {
+                    // Manejo de excepción en caso de que las fechas o horas no sean válidas
+                    e.printStackTrace();
+                    return 0; // O maneja la excepción de acuerdo a tus necesidades
+                }
+            }
+        };
+
+        Collections.sort(turnos, comparadorTurno);
+
+        return turnos;
+    } catch (Exception e) {
+        System.out.println("Turno: No pudieron ser listados");
+        return null;
+    }
     }
 
     protected void validar(String fecha, String hora, EstadoTurno estado, String motivo, String idProf)
@@ -259,7 +295,7 @@ public class TurnoServicio {
             DiaAgenda value = entry.getValue();
             List<Turno> turnos = value.getTurnos();
             for (Turno turno : turnos) {
-               
+
                 cancelarTurno(turno.getId());
             }
 

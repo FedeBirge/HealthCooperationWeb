@@ -64,10 +64,10 @@
                 </li>
 
                 <!-- Divisor -->
-             
+
 
                 <!-- Heading -->
-              
+
 
 
 
@@ -221,51 +221,56 @@
                     <!-- Comenzar contenido de la página -->
 
                     <div class="container-fluid">
-   
-                   <h1 >Historia Clinica</h1>
-<div class="cardx">
-    <div class="card-1">
-         <img class="img-profile " 
-                 th:src="@{/imagen/perfil/__${user.id}__}" 
-                 style="max-width: 100%; max-height: 150px;">
-    </div>
-    <div class="right">
-            <div class="card-2">
-                <span class="badge bg-success text-white">Nombre</span> <span th:text=" ${user.nombre}"></span>
-            </div>
-         <div class="card-2">
-                <span class="badge bg-success text-white">Apellido</span> <span th:text=" ${user.apellido}"></span>
-            </div>
-        <div class="card-2">
-                <span class="badge bg-success text-white">Direccion</span> <span th:text=" ${user.direccion}"></span>
-            </div>
-            <div class="card-3">
-              <span class="badge bg-success text-white">Telefono</span> <span th:text=" ${user.telefono}">
-            </div>
-            <div class="card-3">
-                  <span class="badge bg-success text-white">Obra Social</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.obraSocial.nombre}"></span>
-            </div>
-            <div class="card-3">
-                <span class="badge bg-success text-white">Nacimiento</span> <span th:text=" ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></span>
-            </div>
-            <div class="card-3">
-               <span class="badge bg-success text-white">Email</span> <span th:text=" ${user.email}"></span>
-        </div>
-              <div class="card-3">
-            <span class="badge bg-success text-white">DNI</span> <span th:text=" ${user.dni}">
-        </div>
-          <div class="card-3">
-              <span class="badge bg-success text-white">Grupo Sanguíneo</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.grupoSanguineo}"></span>
-        </div>
-      
-        </div>
-    </div>
-</div>
+
+                        <h1 >Historia Clinica</h1>
+                               <a sec:authorize="hasRole('MODERADOR')"type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Ir al panel</a>
+                               <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verHoy/__${log.id}__}">Turnos Hoy</a>
+                               <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verSemana/__${log.id}__}">Turnos Semana</a>
+                               <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verTodos/__${log.id}__}"> Ver Todos </a>
+                        <div class="cardx">
+                            
+                            <div class="card-1">
+                                <img class="img-profile " 
+                                     th:src="@{/imagen/perfil/__${user.id}__}" 
+                                     style="max-width: 100%; max-height: 150px;">
+                            </div>
+                            <div class="right">
+                                <div class="card-2">
+                                    <span class="badge bg-success text-white">Nombre</span> <span th:text=" ${user.nombre}"></span>
+                                </div>
+                                <div class="card-2">
+                                    <span class="badge bg-success text-white">Apellido</span> <span th:text=" ${user.apellido}"></span>
+                                </div>
+                                <div class="card-2">
+                                    <span class="badge bg-success text-white">Direccion</span> <span th:text=" ${user.direccion}"></span>
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">Telefono</span> <span th:text=" ${user.telefono}">
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">Obra Social</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.obraSocial.nombre}"></span>
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">Nacimiento</span> <span th:text=" ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></span>
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">Email</span> <span th:text=" ${user.email}"></span>
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">DNI</span> <span th:text=" ${user.dni}">
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">Grupo Sanguíneo</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.grupoSanguineo}"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
 
-                        
-                        
-                        
+
+
+
                     <div> 
 
                         <!-- a verse que pondre aqui -->
@@ -304,7 +309,7 @@
 
 
                     </div>
-                    
+
                     <div class="table-responsive">
 
 
@@ -351,32 +356,32 @@
                             const fichaForm = document.getElementById("fichaForm");
 
                             agregarBtn.addEventListener("click", function () {
-                            fichaForm.style.display = "block"; // Mostrar el formulario
+                                fichaForm.style.display = "block"; // Mostrar el formulario
                             });
 
                             // También puedes agregar lógica para ocultar el formulario cuando se haga clic en "Guardar" si es necesario.
 
                             function showSavePopup(userId) {
-                            document.getElementById('savePopup').style.display = 'block';
-                            document.getElementById('overlay').style.display = 'block';
-                            userIdToSave = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                                document.getElementById('savePopup').style.display = 'block';
+                                document.getElementById('overlay').style.display = 'block';
+                                userIdToSave = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
                             }
 
                             function confirmSave() {
 
-                            document.getElementById('saveForm_' + userIdToSave).submit();
+                                document.getElementById('saveForm_' + userIdToSave).submit();
 
-                            closeSavePopup();
+                                closeSavePopup();
                             }
 
                             function cancelSave() {
-                            closeSavePopup();
+                                closeSavePopup();
                             }
 
 
                             function closeSavePopup() {
-                            document.getElementById('savePopup').style.display = 'none';
-                            document.getElementById('overlay').style.display = 'none';
+                                document.getElementById('savePopup').style.display = 'none';
+                                document.getElementById('overlay').style.display = 'none';
                             }
                         </script>
 

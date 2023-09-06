@@ -237,7 +237,7 @@ public class AgendaServicio {
                     Date fechaturno = Date.from(obtenerFecha(convertirADayOfWeek(dia), i, proximoLunes.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).atStartOfDay(ZoneId.systemDefault()).toInstant());
                     // armo lsita de turno segun oferta y fecha
                     ArrayList<Turno> turnos = armarTurnos(prof.getOferta(), fechaturno, id);
-                    System.out.println("FEcha para lista de turnos " + fechaturno);
+                    
                     //armo el dia de agenda
                     DiaAgenda diaAgenda = diaServ.crearDia(fechaturno, turnos);
                     fechaYTurnos.put(fechaturno, diaAgenda);
@@ -328,8 +328,8 @@ public class AgendaServicio {
         return null;
     }
 
-    public AgendaSemanal eliminarAgenda(AgendaSemanal agenda) {
-        return null;
+    public void eliminarAgenda(String id) {
+        
     }
 
     public AgendaSemanal mostrarAgenda(AgendaSemanal agenda) {

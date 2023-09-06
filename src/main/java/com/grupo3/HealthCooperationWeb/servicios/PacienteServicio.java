@@ -18,9 +18,15 @@ import com.grupo3.HealthCooperationWeb.repositorios.TurnoRepositorio;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -142,7 +148,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
             // }
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
-            System.out.println("obra Cont " + obraSocial);
+         
             ObraSocial obraSocial2 = obraSocialServicio.buscarXNombre(obraSocial);
 
             pas.setObraSocial(obraSocial2);
@@ -191,6 +197,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
             Turno turno = turnoOptional.get();
             turno.setEstado(EstadoTurno.RESERVADO);
             turno.setMotivo(msj);
+         
             turnoRepositorio.save(turno);
             return turno;
 
@@ -203,23 +210,23 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     public void asignarTurno(Paciente log, String idTurno, String id, String msj) {
         // Busca el paciente por su ID o cualquier otro criterio de búsqueda
 
-        List<Turno> turnos = new ArrayList<>();
+        List<Turno> turnos = turnoServ.misTurnos(log.getId());
 
         // Busca el turno existente por su ID
         Optional<Turno> turnoOptional = turnoRepositorio.findById(idTurno);
-        System.out.println("asigmar turno " + idTurno);
+       
         if (turnoOptional.isPresent()) {
             Turno turno = turnoOptional.get();
 
-            System.out.println(turno.getFecha() + turno.getHora() + turno.getMotivo() + turno.getEstado());
+            
             turno = actualizarTurno(idTurno, msj, EstadoTurno.RESERVADO);
 
-            System.out.println(turno.getFecha() + turno.getHora() + turno.getMotivo() + turno.getEstado());
+       
 
             turnos.add(turno);
             log.setTurnos(turnos);
 
-            System.out.println(turno.getFecha() + turno.getHora() + turno.getMotivo() + turno.getEstado());
+      
             // Guarda el paciente actualizado en la base de datos
             pacienteRepositorio.save(log);
 
@@ -264,35 +271,82 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
 
     }
 
+    public Map<Turno, Paciente> ordenarMapPorTurno(Map<Turno, Paciente> turnoYpaciente) {
+        try {
+            // Convierte el Map en una lista de pares clave-valor
+            List<Map.Entry<Turno, Paciente>> listaTurnos = new ArrayList<>(turnoYpaciente.entrySet());
+
+            // Defino un comparador con Turno
+            Comparator<Map.Entry<Turno, Paciente>> comparadorTurno = (entry1, entry2) -> {
+                Turno turno1 = entry1.getKey();
+                Turno turno2 = entry2.getKey();
+
+                // Comparo por fecha
+                int comparacionFecha = turno1.getFecha().compareTo(turno2.getFecha());
+                if (comparacionFecha != 0) {
+                    return comparacionFecha;
+                }
+
+                // Si las fechas son iguales, comparar por hora
+                return turno1.getHora().compareTo(turno2.getHora());
+            };
+
+            // Ordena la lista de pares clave-valor utilizando el comparador
+            Collections.sort(listaTurnos, comparadorTurno);
+
+            // Crea un nuevo LinkedHashMap para almacenar los elementos ordenados
+            Map<Turno, Paciente> mapaOrdenado = new LinkedHashMap<>();
+            for (Map.Entry<Turno, Paciente> entry : listaTurnos) {
+                mapaOrdenado.put(entry.getKey(), entry.getValue());
+            }
+
+            return mapaOrdenado;
+        } catch (Exception e) {
+            System.out.println("Error al ordenar el mapa por Turno");
+            return null;
+        }
+    }
+
     // Mapeo los turnos y paciente filtraos por profesional para el dia de hoy.
     // para la vista de turnos hoy
-    public Map<Turno, Paciente> mapearPacientesXprofHoy(String idProfesional) {
+    public Map<Turno, Paciente> mapearPacientesXprofHoy(String idProfesional) throws MyException {
 
         // preparo la lsita de pacietnes que voy a devolver
         List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
-
-        // Repo de turnos
+        
         List<Turno> turnos = new ArrayList<>();
 
-        // en esa lista de turnos, cada turno tiene un profesional:
-        Profesional profesional = profesionalRepositorio.getOne(idProfesional);
+        SimpleDateFormat formatoDeseado = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        Date fechaActual = new Date();
+        fechaActual.setHours(0);
+        fechaActual.setMinutes(0);
+        fechaActual.setSeconds(0);
+        
+
         Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
+
         try {
-            for (Paciente paciente : pacientesXProfesional) {
-                if (paciente.getTurnos() != null) {
+            if (pacientesXProfesional != null) {
+                for (Paciente paciente : pacientesXProfesional) {
+                
+
                     turnos = paciente.getTurnos();
                     for (Turno turno : turnos) {
-                        if (turno.getFecha().equals(new Date())) {
+
+                      
+                        if ((turno.getFecha()).equals(fechaActual.toLocaleString())) {
                             turnoYpaciente.put(turno, paciente);
 
                         }
                     }
+
                 }
             }
-            return turnoYpaciente;
+            return ordenarMapPorTurno(turnoYpaciente);
         } catch (Exception e) {
-            System.out.println("Servicio paciente: Hubo un error al mapear pacientes por profesional");
-            return null;
+            throw new MyException("Servicio paciente: Hubo un error al mapear pacientes por profesional");
+
         }
 
     }
@@ -332,7 +386,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
                 }
             }
 
-            return turnoYpaciente;
+              return ordenarMapPorTurno(turnoYpaciente);
         } catch (Exception e) {
             System.out.println("Servicio paciente: Hubo un error al mapear pacientes por profesional");
             return null;
@@ -340,8 +394,8 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
 
     }
 
-    // Mapeo los turnos y paciente filtraos por profesional para el dia de hoy.
-    // para la vista de turnos hoy
+    // Mapeo los turnos y paciente filtraos por profesional
+    // para la vista de todos los turnos 
     public Map<Turno, Paciente> mapearPacientesXprofTodos(String idProfesional) {
 
         // preparo la lsita de pacietnes que voy a devolver
@@ -363,7 +417,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
                     }
                 }
             }
-            return turnoYpaciente;
+          return ordenarMapPorTurno(turnoYpaciente);
         } catch (Exception e) {
             System.out.println("Servicio paciente: Hubo un error al mapear pacientes por profesional");
             return null;

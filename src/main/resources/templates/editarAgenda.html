@@ -55,10 +55,7 @@
                 <!-- Divisor -->
                 <hr class="sidebar-divider">
 
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Gestion
-                </div>
+             
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -165,7 +162,7 @@
                                 <p class="card-text text-center" th:text="${error}"></p>
                             </div>
                         </div>
-                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                        <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Exito!</h5>
                                 <p class="card-text text-center" th:text="${exito}"></p>
@@ -192,6 +189,7 @@
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarSemanaActual">Cancelar Semana actual</a> 
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarTodo">Cancelar Todos los Turnos</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#agregarSemanas">Agregar Semanas</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#">Eliminar Agenda</a>
 
 
                             </div>
@@ -221,7 +219,7 @@
 
                                                                     <button block
                                                                             th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
-                                                                            (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
+                                                                            (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-secondary' : 
                                                                             (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
                                                                             th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
                                                                         <span th:text="${turno.hora}"></span>
