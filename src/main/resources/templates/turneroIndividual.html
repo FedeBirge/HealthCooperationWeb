@@ -47,6 +47,26 @@
             </nav>
 
             <main class="masthead bg-primary1 ">
+                <div th:if="${error != null}" class="card text-white bg-info mb-3 mensajeError" >
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Error!</h5>
+                        <p class="card-text text-center" th:text="${error}"></p>
+                    </div>
+                </div>
+                <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Exito!</h5>
+                        <p class="card-text text-center" th:text="${exito}"></p>
+                    </div>
+                </div> 
+                <div th:if="${vacia != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Atencion!</h5>
+                        <p class="card-text text-center" th:text="${vacia}"></p>
+                    </div>
+
+                </div> 
+
                 <section class="fixed-section">
 
                     <section class="cartasection">
@@ -65,19 +85,19 @@
 
                                             <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="name" th:text="'Dra./Dr '+${prof.apellido}+' '+${prof.nombre}" > </a>                                
                                             <p class="name" th:text="'Especialsita en '+${prof.especialidad}"></p>
-                                                                                 
-                                                <div   class="rating">
-                                                                                                              <form th:if="${session.usuariosession != null and #strings.trim(log.rol) == 'USUARIO'}" th:action="@{/profesionales/valorar/__${prof.id}__}" method="post" >
+
+                                            <div   class="rating">
+                                                <form th:if="${session.usuariosession != null and #strings.trim(log.rol) == 'USUARIO'}" th:action="@{/profesionales/valorar/__${prof.id}__}" method="post" >
 
                                                     <span th:if="${prof.reputacion > 0}" th:each="starNum : ${#numbers.sequence(0, prof.reputacion-1)}" class="star filled">&#9733;</span>
                                                     <span th:if="${prof.reputacion < 5}" th:each="starNum : ${#numbers.sequence(prof.reputacion + 1 , 5)}" class="star empty">&#9733;</span>
                                                     <input type="hidden" name="valor" value="4">            
                                                     <input type="hidden" name="idUser" th:value="${log.id}">            
-                                                <button class="botonflecha"  type="submit" >Valorar
-                                                </button>
-                                            </form>
-                                                </div>
-                                             
+                                                    <button class="botonflecha"  type="submit" >Valorar
+                                                    </button>
+                                                </form>
+                                            </div>
+
 
                                         </div>
                                     </div>
@@ -108,21 +128,24 @@
 
                                                 <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
                                                 <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
-                                                <ul >
-                                                    <li class="lista-elemento" th:each="turno : ${entry.value.turnos}">
+                                                <ul>
+                                                    <li class="lista-elemento" th:data-id-turno="${turno.id}"      th:each="turno : ${entry.value.turnos}">
                                                         <p>
                                                             <button th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'botonTurno botonCalcelado' : 
                                                                     (#strings.trim(turno.estado) == 'RESERVADO' ? 'botonTurno botonReservado' : 
                                                                     (#strings.trim(turno.estado) == 'COMPLETADO' ? 'botonTurno btn-info' : 'botonTurno botonSucces'))}"
-                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
+                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}"
+                                                                    data-toggle="modal1"
+                                                                    data-target="#modal1"   class="lista-elemento"     >
                                                                 <span th:if="${#strings.trim(turno.estado) == 'DISPONIBLE'}" class="hover-underline-animation" th:text="${turno.hora}"></span>
                                                                 <span th:if="${#strings.trim(turno.estado) != 'DISPONIBLE'}" class="text-strikethrough" th:text="${turno.hora}"></span>
                                                             </button>
-
-
-
+                                                        </p>
                                                     </li>
                                                 </ul>
+
+
+
                                             </ul>
                                         </li>
                                     </ul>
@@ -131,28 +154,16 @@
                                 <button type="button" class="scroll-button botonflecha " id="scroll-right">→</button>
                             </div>
 
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                                    const scrollContainer = document.getElementById("scroll-container");
-                                    const scrollLeftButton = document.getElementById("scroll-left");
-                                    const scrollRightButton = document.getElementById("scroll-right");
 
-                                    scrollLeftButton.addEventListener("click", function () {
-                                        scrollContainer.scrollLeft -= 300; // Ajusta el valor de desplazamiento
-                                    });
-
-                                    scrollRightButton.addEventListener("click", function () {
-                                        scrollContainer.scrollLeft += 300; // Ajusta el valor de desplazamiento
-                                    });
-                                });
-                            </script>
-
+                            <!-- Agrega solo las clases generales al modal -->
                             <div id="modal1" class="modal1">
                                 <div class="modal-content1">
                                     <span class="close1" id="close-modal1">&times;</span>
                                     <h2>Motivo de la consulta</h2>
                                     <br>
-                                    <form id="modal-form">
+                                    <form th:action="@{/turno/confirmar/__${prof.id}__}" method="POST" id="modal-form">
+                                        <input type="hidden" name="idTurno" id="turnoId" value="">
+
                                         <div class="inputbox w100">
                                             <textarea required id="msj" name="msj"></textarea>
                                             <span>Motivo de la consulta....</span>
@@ -162,6 +173,8 @@
                                     </form>
                                 </div>
                             </div>
+
+
                         </div>
                     </section>
                 </section>
@@ -207,6 +220,17 @@
             </div>
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
+                    const scrollContainer = document.getElementById("scroll-container");
+                    const scrollLeftButton = document.getElementById("scroll-left");
+                    const scrollRightButton = document.getElementById("scroll-right");
+
+                    scrollLeftButton.addEventListener("click", function () {
+                        scrollContainer.scrollLeft -= 300; // Ajusta el valor de desplazamiento
+                    });
+
+                    scrollRightButton.addEventListener("click", function () {
+                        scrollContainer.scrollLeft += 300; // Ajusta el valor de desplazamiento
+                    });
                     const modal = document.getElementById("modal1");
                     const closeModalButton = document.getElementById("close-modal1");
                     const showModalButton = document.querySelectorAll(".lista-elemento");
@@ -214,7 +238,15 @@
                     const modalForm = document.getElementById("modal-form");
 
                     // Función para mostrar el modal
-                    function mostrarModal() {
+                    function mostrarModal(event) {
+                        const idTurno = event.currentTarget.getAttribute("data-id-turno");
+
+                        console.log("turno id: " + idTurno);
+
+
+                        // Configura los campos ocultos del formulario con los IDs
+                        document.getElementById("turnoId").value = idTurno;
+
                         modal.style.display = "block";
                     }
 
@@ -228,7 +260,14 @@
                         elemento.addEventListener("click", mostrarModal);
                     });
 
+                    const confirmarButton = document.getElementById("confirmar-modal");
+                    confirmarButton.addEventListener("click", function () {
+                        // Aquí puedes agregar una lógica adicional si es necesario
+                        // Por ejemplo, verificar si un usuario está logueado antes de enviar el formulario
 
+                        // Envía el formulario
+                        modalForm.submit();
+                    });
                     cancelarButton.addEventListener("click", ocultarModal);
 
                     modalForm.addEventListener("submit", function (event) {
@@ -240,7 +279,7 @@
 
 
                     window.addEventListener("click", function (event) {
-                        if (event.target === modal) {
+                        if (event.target === modal1) {
                             ocultarModal();
                         }
                     });

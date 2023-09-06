@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en"html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <head>
@@ -9,10 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
-        <title>Mi Perfil</title>
 
+        <title>Profesional</title>
 
+        <style>
+
+        </style>
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
@@ -23,6 +24,7 @@
         <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
     </head>
+
     <body id="page-top">
 
         <!-- Contenedor de páginas-->
@@ -70,8 +72,8 @@
                 <div class="sidebar-heading">
                     Gestion
                 </div>
-
-                <li sec:authorize="hasRole('USUARIO')" class="nav-item">
+                <!-- Elemento de navegación - Menú Contraer utilidades -->
+                <li  sec:authorize="hasRole('USUARIO')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -86,7 +88,55 @@
                         </div>
                     </div>
                 </li>
+                <li sec:authorize="hasRole('ADMINISTRADOR')"  class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-hospital-user"></i>
+                        <span>Profesionales</span>
+                    </a>
 
+
+                    <div  id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Acciones</h6>
+                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
+                            <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Elemento de navegación - Menú Contraer utilidades -->
+                <li sec:authorize="hasRole('ADMINISTRADOR')"  class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                           
+                            <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
+
+                        </div>
+                    </div>
+                </li>
+                <li sec:authorize="hasRole('ADMINISTRADOR')"  class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Usuarios</span>
+                    </a>
+                    <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+
+                            <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
+
+
+                        </div>
+                    </div>
+                </li>   
                 <li sec:authorize="hasRole('MODERADOR')" class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
@@ -117,7 +167,7 @@
                     </div>
 
                 </li>
-                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')" class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -127,49 +177,33 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
 
-                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Mis Pacientes</a>
+                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Pacientes</a>
 
                         </div>
                     </div>
 
                 </li>
-
-
-
-
                 <!-- Divider -->
-                <hr class="sidebar-divider d-none d-md-block">
-
+                <hr class="sidebar-divider">
                 <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
                 </div>
-
             </ul>
             <!-- Fin de la barra lateral -->
-
             <!-- Contenedor de contenido -->
             <div id="content-wrapper" class="d-flex flex-column">
-
                 <!-- Contenido principal -->
                 <div id="content">
-
                     <!-- Barra superior -->
                     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                         <!-- Alternar barra lateral (barra superior) -->
                         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                             <i class="fa fa-bars"></i>
                         </button>
-
-
-
                         <!-- Barra superior Barra de navegación -->
                         <ul class="navbar-nav ml-auto">
-
-
-
-
+                            <div class="topbar-divider d-none d-sm-block"></div>
                             <!--Información del usuario -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -181,36 +215,34 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}" >
+                                    <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                                    <a class="dropdown-item" th:href="@{/inicio}" sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')">
-
+                                    <a class="dropdown-item"sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" th:href="@{/inicio}">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Mi Área
                                     </a>
-                                    <div class="dropdown-divider" sec:authorize="hasRole('ADMINISTRADOR')"></div>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Cerrar sesión
                                     </a>
                                 </div>
                             </li>
-
                         </ul>
-
                     </nav>
                     <!-- Fin de la barra superior -->
-
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
-                        <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
-
-                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2"  href="#" data-toggle="modal" data-target="#solicitarBaja"> Solicitar Baja </a>
-
-
+                        <div class="container-fluid">
+                        </div>
                         <!-- Encabezado de página -->
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 sec:authorize="hasRole('MODERADOR')" class="h3 mb-0 text-gray-800">Turnos y Pacientes</h1>
+                            <h1 sec:authorize="hasAnyRole('USUARIO','ADMINISTRADOR')"  class="h3 mb-0 text-gray-800">Turnos</h1>
+
+                        </div>
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Error!</h5>
@@ -223,97 +255,75 @@
                                 <p class="card-text text-center" th:text="${exito}"></p>
                             </div>
                         </div> 
-
-
-                        <div class="container-cardPerfil">
-
-
-                            <div class="card__content">
+                        <div th:if="${vacia != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Atencion!</h5>
+                                <p class="card-text text-center" th:text="${vacia}"></p>
                             </div>
-                            <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/misturnos/__${log.id}__}"> Ver Mis Turnos </a>
-                            <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/panel/}"> Ir al Panel de Turnos </a>
+                        </div> 
+                    </div>
+                    <!-- Pending Requests Card Example -->
+                    <div class="card shadow mb-4">
 
-                        </div>
-                        <div class="row">              
-                            <div class="col-sm-6 mb-3">
-                                <h2>Tu foto</h2>
-                                <img class="img-profile rounded-circle" 
-                                     th:src="@{/imagen/perfil/__${user.id}__}" 
-                                     style="max-width: 100%; max-height: 150px;border-radius: 50%;">
+                        <div class="card-body">
+                            <div class="table-responsive">
 
-                            </div>
-                            <div class="col-md-9">
-                                <div class="d-flex align-items-center mb-4">
-                                    <h1 class="h3 mb-0 text-gray-900" th:text="'Usuario ' + ${user.nombre}"></h1>
-                                </div>
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            
+                                            <th>Estado Truno</th>
+                                            <th>Motivo</th>
+                                            <th>Profsional</th>
 
-                                <div class="row">
-                                    <div class="col-sm-6 mb-3 ">
-                                        <h2 class="textoTitulo"th:text=" 'Nombre: ' + ${user.nombre}"></h2>
-                                    </div>
-                                    <div class="col-sm-6 mb-3">
-                                        <h2 class="textoTitulo"th:text=" 'Apellido: ' + ${user.apellido}"></h2>
-                                    </div>
-                                    <div class="col-sm-6 mb-3">
-                                        <h2 class="textoTitulo" th:text=" 'Direccion: ' + ${user.direccion}"></h2>
-                                    </div>
-                                    <div class="col-sm-6 mb-3">
-                                        <h2 class="textoTitulo" th:text=" 'Telefono: ' + ${user.telefono}"></h2>
-                                    </div>
-                                    <div class="col-sm-6 mb-3">
-                                        <h2 class="textoTitulo" th:text="'Fecha nacimiento: ' + ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></h2>
-
-                                    </div>
-                                    <div class="col-sm-6 mb-3">
-                                        <h2 class="textoTitulo" th:text=" 'Email: ' + ${user.email}"></h2>
-                                    </div>
-
-                                    <div class="col-sm-6 mb-3">
-                                        <h2 class="textoTitulo"th:text=" 'DNI: '+ ${user.dni}"></h2>
-                                    </div>   
-                                    <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
-                                        <h2 class="textoTitulo" th:if='${user.grupoSanguineo} != null'th:text="'Grupo Sanguineo: ' + ${user.grupoSanguineo}"></h2>
-                                    </div>    
-                                    <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
-
-                                        <h2 class="textoTitulo" th:if='${user.grupoSanguineo} != null' th:text="'Obra Social: '+${user.obraSocial.nombre}"></h2>
-                                    </div>
+                                            <th sec:authorize="hasAnyRole('MODERADOR','ADMINISTRADOR')" >Turnos</th>
+                                            <th sec:authorize="hasRole('MODERADOR')">Registrar Atencion</th>
 
 
 
-                                </div>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr th:each="turno: ${turnos}">
+                                            <td th:text="${turno.fecha}"></td>
+                                            <td th:text="${turno.hora}"></td>
+
+                                           
+                                            <td th:text="${turno.estado}">                                        </td>
+                                             <td th:text="${turno.motivo}"></td>
+                                             <td th:text="${turno.profesional.nombre}+' '+${turno.profesional.apellido}"></td>
+                                        </tr>     
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Fin del contenido principal -->
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>HealtCooperationWeb ©2023</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- Fin del Footer -->
                 </div>
-
-
-
-
-
-                <!-- Fin del contenido principal -->
-
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>HealtCooperationWeb ©2023</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- Fin del Footer -->
-
-            </div>
+            </div>                
             <!-- Fin del contenedor de contenido -->
-
         </div>
         <!-- Envoltura de fin de página -->
-
         <!-- Desplácese hasta el botón superior-->
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
         </a>
-
         <!-- Cierre de sesión modal-->
         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -326,28 +336,6 @@
                         </button>
                     </div>
                     <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                    <div class="contenedorFooter">
-                        <a class="btn btnModal" type="button" data-dismiss="modal">Cancelar</a>
-                        <a class="btn btnModal" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Modal de darse de baja -->
-
-        <div class="modal fade" id="solicitarBaja" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Seleccione "Dar Baja" a continuación si está listo para dar de baja el usuario.</div>
                     <div class="modal-footer">
                         <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
                         <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
@@ -355,8 +343,6 @@
                 </div>
             </div>
         </div>
-
-
         <!-- Bootstrap core JavaScript-->
         <script src="/vendor/jquery/jquery.min.js"></script>
         <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -376,5 +362,18 @@
 
     </body>
 
+</html><!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
 </html>
-

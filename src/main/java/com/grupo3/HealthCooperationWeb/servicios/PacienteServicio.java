@@ -7,7 +7,8 @@ import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
-import com.grupo3.HealthCooperationWeb.entidades.Usuario;
+import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
+
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.ObraSocialRepositorio;
@@ -61,7 +62,6 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     @Autowired
     private TurnoServicio turnoServ;
 
-
     @Transactional
     public Paciente registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2,
@@ -95,14 +95,13 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
             obraRepo.save(obraSocial2);
         }
 
-         paciente.setObraSocial(obraSocial2);
+        paciente.setObraSocial(obraSocial2);
 
-      
         paciente.setRol(Rol.USUARIO);
         if (archivo.isEmpty()) {
             // Si el archivo está vacío, crea el paciente con una imagen predeterminada
             Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la
-                                                                         // imagen predeterminada
+            // imagen predeterminada
             paciente.setImagen(imagenPredeterminada);
         } else {
             // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
@@ -182,6 +181,47 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
             return null;
         }
     }
+    @Transactional
+    public Turno actualizarTurno( String idTurno,  String msj, EstadoTurno estado) {
+        Optional<Turno> turnoOptional = turnoRepositorio.findById(idTurno);
+         if (turnoOptional.isPresent()) {
+            Turno turno = turnoOptional.get();
+            turno.setEstado(EstadoTurno.RESERVADO);
+            turno.setMotivo(msj);
+            turnoRepositorio.save(turno);
+            return turno;
+                    
+            
+    }
+        return null;
+    
+    }
+    @Transactional
+    public void asignarTurno(Paciente log, String idTurno, String id, String msj) {
+        // Busca el paciente por su ID o cualquier otro criterio de búsqueda
+
+        List<Turno> turnos = new ArrayList<>();
+
+        // Busca el turno existente por su ID
+        Optional<Turno> turnoOptional = turnoRepositorio.findById(idTurno);
+        System.out.println("asigmar turno " + idTurno);
+        if (turnoOptional.isPresent()) {
+            Turno turno = turnoOptional.get();
+           
+            System.out.println(turno.getFecha() + turno.getHora() + turno.getMotivo() + turno.getEstado());
+            turno=actualizarTurno(idTurno,msj,EstadoTurno.RESERVADO);
+            
+            System.out.println(turno.getFecha() + turno.getHora() + turno.getMotivo() + turno.getEstado());
+
+            turnos.add(turno);
+            log.setTurnos(turnos);
+            
+            System.out.println(turno.getFecha() + turno.getHora() + turno.getMotivo() + turno.getEstado());
+            // Guarda el paciente actualizado en la base de datos
+            pacienteRepositorio.save(log);
+
+        }
+    }
 
     // *****COMPLETAR para traer los pacientes asociados a un profesional(id)
     public List<Paciente> listarPacientesXprof(String idProfesional) {
@@ -224,13 +264,13 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     // Mapeo los turnos y paciente filtraos por profesional para el dia de hoy.
     // para la vista de turnos hoy
     public Map<Turno, Paciente> mapearPacientesXprofHoy(String idProfesional) {
-        
+
         // preparo la lsita de pacietnes que voy a devolver
         List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
 
         // Repo de turnos
         List<Turno> turnos = new ArrayList<>();
-        
+
         // en esa lista de turnos, cada turno tiene un profesional:
         Profesional profesional = profesionalRepositorio.getOne(idProfesional);
         Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
@@ -257,20 +297,20 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     // para la vista de turnos semanal
 
     public Map<Turno, Paciente> mapearPacientesXprofSemana(String idProfesional, List<AgendaSemanal> semana) {
-       
+
         // preparo la lsita de pacietnes que voy a devolver
         List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
         List<Turno> turnosPaciente = new ArrayList<>();
         // Repo de turnos
         //
         try {
-            
+
             Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
-            
+
             AgendaSemanal sem = semana.get(0);
-            
+
             Map<Date, DiaAgenda> fechasTturnos = sem.getFechasYTurnos();
-            
+
             for (Map.Entry<Date, DiaAgenda> entry : fechasTturnos.entrySet()) {
                 Date key = entry.getKey();
                 DiaAgenda value = entry.getValue();
@@ -296,10 +336,11 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
         }
 
     }
+
     // Mapeo los turnos y paciente filtraos por profesional para el dia de hoy.
     // para la vista de turnos hoy
     public Map<Turno, Paciente> mapearPacientesXprofTodos(String idProfesional) {
-     
+
         // preparo la lsita de pacietnes que voy a devolver
         List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
 
@@ -307,17 +348,15 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
         List<Turno> turnos = turnoServ.listarTurnosXProfesional(idProfesional);
 
         // en esa lista de turnos, cada turno tiene un profesional:
-      
         Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
         try {
             for (Paciente paciente : pacientesXProfesional) {
                 if (paciente.getTurnos() != null) {
                     turnos = paciente.getTurnos();
                     for (Turno turno : turnos) {
-                        
-                            turnoYpaciente.put(turno, paciente);
 
-                        
+                        turnoYpaciente.put(turno, paciente);
+
                     }
                 }
             }

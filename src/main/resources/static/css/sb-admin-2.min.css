@@ -501,10 +501,22 @@ border-radius: 2em;
 }
 
 .cards7 .red {
+    color: #ffffff;
   background-color: #1cc88a;;
 }
 
+.cards7 .red .eti {
+    color: #ffffff;
+}
+
+.cards7 .blue .eti {
+    color: #ffffff;
+}
+.cards7 .green .eti {
+    color: #ffffff;
+}
 .cards7 .blue {
+    
   background-color: #1cc88a;;
 }
 
