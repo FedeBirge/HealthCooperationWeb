@@ -11174,8 +11174,22 @@ a{
 .footer { grid-area: footer; }
 
 .error{
-    font-size: 5rem;
-    color: red;
+  color: #5a5c69;
+    font-size: 7rem; /* Agregar unidades, por ejemplo, px o rem */
+    position: relative;
+    line-height: 1;
+    width: 12.5rem; /* Agregar unidades, por ejemplo, px o rem */
+}
+
+.mr-auto,
+.mx-auto {
+    margin-right: auto !important
+}
+
+
+.ml-auto,
+.mx-auto {
+    margin-left: auto !important
 }
 
 .botonIndex {
@@ -11208,3 +11222,4 @@ box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
 .botonIndex:active {
 ransform: translateY(-1px);
 }
+
