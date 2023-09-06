@@ -264,8 +264,10 @@
                     </div>
                     <!-- Pending Requests Card Example -->
                     <div class="card shadow mb-4">
-
+                        
                         <div class="card-body">
+                             <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/panel/}"> Ir al Panel de Profesionales </a>
+
                             <div class="table-responsive">
 
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -290,11 +292,16 @@
                                     <tbody>
 
                                         <tr th:each="turno: ${turnos}">
-                                            <td th:text="${turno.fecha}"></td>
+                                            <td th:text="${#dates.format(turno.fecha, 'MM/dd/yyyy')}"></td>
                                             <td th:text="${turno.hora}"></td>
 
                                            
-                                            <td th:text="${turno.estado}">                                        </td>
+                                            <td>  <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
+                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-secondary' : 
+                                                                    (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
+                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE'}">
+                                                                <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
+                                                            </button>                                      </td>
                                              <td th:text="${turno.motivo}"></td>
                                              <td th:text="${turno.profesional.nombre}+' '+${turno.profesional.apellido}"></td>
                                         </tr>     

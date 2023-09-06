@@ -54,7 +54,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/}">
 
-                        <span>Index</span></a>
+                        <span>Home</span></a>
                 </li>
 
                 <!-- Divisor -->
@@ -154,6 +154,12 @@
                         </div>
                     </div>
                 </li>
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
             </ul>
             <!-- Fin de la barra lateral -->
             <!-- Contenedor de contenido -->
@@ -206,13 +212,13 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Mi Agenda</h1>
                         </div>
-                        <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                        <div th:if="${error != null}" class="card text-white bg-info mb-3 mensajeError" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Error!</h5>
                                 <p class="card-text text-center" th:text="${error}"></p>
                             </div>
                         </div>
-                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                        <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Exito!</h5>
                                 <p class="card-text text-center" th:text="${exito}"></p>
@@ -258,9 +264,9 @@
                                                     <li th:each="turno : ${entry.value.turnos}">
                                                         <p>
                                                             <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
-                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
+                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-secondary' : 
                                                                     (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
-                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
+                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE'}">
                                                                 <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
                                                             </button>
                                                         </p>

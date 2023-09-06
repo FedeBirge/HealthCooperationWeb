@@ -314,7 +314,9 @@ div a{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 75vh;
+  
+   
 }
 
 .custom-card {
@@ -323,6 +325,7 @@ div a{
     background-color: #32be8f;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(44, 40, 40, 0.1);
+    
     margin: 20px;
     overflow: hidden;
     display: flex;
@@ -630,7 +633,13 @@ border-radius: 2em;
   margin-right: auto;
 }
 
-
+ul {
+     text-align: center;
+  list-style-type: none; /* Elimina la viñeta de la lista */
+}
+.fecha {
+      font-weight: bold; /* Hace que el texto del párrafo esté en negrita */
+    }
 
 @keyframes pulse {
   to {

@@ -176,6 +176,7 @@ public class AgendaControlador {
                 modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
                 modelo.addAttribute("obras", servObra.listarObrasSociales());
                 modelo.addAttribute("estados", estados);
+                  modelo.put("exito", "¡Agenda editada!");
                 return "editarAgenda.html";
 
             } else {
@@ -230,7 +231,7 @@ public class AgendaControlador {
             }
 
             servTurno.actualizarEstados(turnos);
-            modelo.put("Exito", "Estados cambiados!!");
+            modelo.put("exito", "Estados cambiados!!");
             return verrAgenda(id, modelo, session);
         } catch (MyException e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -264,7 +265,7 @@ public class AgendaControlador {
                 modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
                 modelo.addAttribute("obras", servObra.listarObrasSociales());
                 modelo.addAttribute("estados", estados);
-                modelo.put("Exito", "Estados cambiados!!");
+                modelo.put("exito", "Estados cambiados!!");
                 return "editarAgenda.html";
 
             } else {
@@ -333,7 +334,7 @@ public class AgendaControlador {
     public String eliminarAgenda(@PathVariable("id") String id, ModelMap modelo) {
 
         try {
-            eliminarAgenda(id, modelo);
+            servAgenda.eliminarAgenda(id);
             modelo.put("exito", "Agenda eliminada con exito!");
             return "redirect:";
         } catch (Exception ex) {

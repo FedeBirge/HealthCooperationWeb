@@ -88,6 +88,7 @@ public class TurnoControlador {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         List<Turno> turnos = turnoServ.misTurnos(id);  // el paciente ve sus turnos
+        turnos = turnoServ.ordenarTurnos(turnos);
         modelo.addAttribute("turnos", turnos);
 
         return "misTurnos.html";
@@ -109,7 +110,8 @@ public class TurnoControlador {
     // solo la ve el doctor con este id
     @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/cancelarSemana/{id}") // ruta para el panel administrativo
-    public String cancelarSemana(@PathVariable("id") String id, ModelMap modelo, HttpSession session)
+    public String cancelarSemana(@PathVariable("id") String id, ModelMap modelo, 
+             RedirectAttributes redirectAttributes,HttpSession session)
             throws MyException {
 
         try {
@@ -121,8 +123,8 @@ public class TurnoControlador {
 
                 modelo.addAttribute("semanas", semanas);
                 modelo.addAttribute("log", logueado);
-                modelo.put("Exito", "Estados cancelados!!");
-                return "verAgenda.html";
+               redirectAttributes.addFlashAttribute("exito", "Estados cancelados!!");
+                  return "redirect:/agenda/editar/"+id;
             } else {
                 modelo.addAttribute("log", logueado);
                 modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
@@ -152,21 +154,22 @@ public class TurnoControlador {
     // solo la ve el doctor con este id
     @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @PostMapping("/cancelarSemana/{id}") // ruta para el panel administrativo
-    public String cancelarSemanaActual(@PathVariable("id") String id, ModelMap modelo, HttpSession session)
+    public String cancelarSemanaActual(@PathVariable("id") String id, ModelMap modelo,
+            RedirectAttributes redirectAttributes, HttpSession session)
             throws MyException {
 
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
 
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
 
-        if (semanas.size() != 0) {
+        if (!semanas.isEmpty()) {
             semanas = servAgenda.obtenerSemanaActual(id, semanas);
             turnoServ.cancelarTurnosSemana(id, semanas);
 
             modelo.addAttribute("semanas", semanas);
             modelo.addAttribute("log", logueado);
-            modelo.put("Exito", "Estados cancelados!!");
-            return "verAgenda.html";
+              redirectAttributes.addFlashAttribute("exito", "Estados cancelados!!");
+            return "redirect:/agenda/editar/"+id;
         } else {
             modelo.addAttribute("log", logueado);
             modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
@@ -178,12 +181,14 @@ public class TurnoControlador {
     // solo la ve el doctor con este id
     @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/verHoy/{id}") // ruta para el panel administrativo
-    public String verHoy(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+    public String verHoy(@PathVariable("id") String id, ModelMap modelo, 
+            HttpSession session) throws MyException {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         Map<Turno, Paciente> turnos = pacServ.mapearPacientesXprofHoy(id);
 
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+          //ordernar mapa
         modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
     }
@@ -197,7 +202,7 @@ public class TurnoControlador {
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
         semanas = servAgenda.obtenerSemanaActual(id, semanas);
         Map<Turno, Paciente> turnos = pacServ.mapearPacientesXprofSemana(id, semanas);
-
+   //ordernar mapa
         modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
     }
@@ -207,11 +212,11 @@ public class TurnoControlador {
     public String vertodos(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
-//        List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
-//        semanas = servAgenda.obtenerSemanaActual(id, semanas);
-//        Map<Turno, Paciente> turnos = pacServ.mapearPacientesXprofTodos(id, semanas);
+        List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
+        semanas = servAgenda.obtenerSemanaActual(id, semanas);
+        Map<Turno, Paciente> turnos = pacServ.mapearPacientesXprofTodos(id);
 
-//        modelo.addAttribute("turnos", turnos);
+        modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
     }
 
