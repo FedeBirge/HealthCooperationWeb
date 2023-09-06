@@ -12037,9 +12037,9 @@ td {
     font-size: 30px;
 }
 /* Estilo básico para todas las estrellas */
-.rating.empty {
+.star.empty {
  
-  color: #17a387; /* Color de estrella vacía */
+  color: #ccc; /* Color de estrella vacía */
 }
 
 .star.filled {
@@ -12047,7 +12047,7 @@ td {
 }
 
 
-/* Estilo para las estrellas llenas 
+ Estilo para las estrellas llenas 
 .rating input {
   display: none;
 }
@@ -12071,8 +12071,7 @@ td {
 .rating label:hover ~ label {
   color: #6f00ff;
   transition: color 0.3s;
-}*/
-
+}
 
 .boton-primary {
  display: inline-block;

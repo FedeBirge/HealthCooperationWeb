@@ -105,13 +105,13 @@
                                                 <ul >
                                                     <li class="lista-elemento" th:each="turno : ${entry.value.turnos}">
                                                         <p>
- <button th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'botonTurno botonCalcelado' : 
-                  (#strings.trim(turno.estado) == 'RESERVADO' ? 'botonTurno botonReservado' : 
-                  (#strings.trim(turno.estado) == 'COMPLETADO' ? 'botonTurno btn-info' : 'botonTurno botonSucces'))}"
-        th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
-    <span th:if="${#strings.trim(turno.estado) == 'DISPONIBLE'}" class="hover-underline-animation" th:text="${turno.hora}"></span>
-    <span th:if="${#strings.trim(turno.estado) != 'DISPONIBLE'}" class="text-strikethrough" th:text="${turno.hora}"></span>
-</button>
+                                                            <button th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'botonTurno botonCalcelado' : 
+                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'botonTurno botonReservado' : 
+                                                                    (#strings.trim(turno.estado) == 'COMPLETADO' ? 'botonTurno btn-info' : 'botonTurno botonSucces'))}"
+                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}">
+                                                                <span th:if="${#strings.trim(turno.estado) == 'DISPONIBLE'}" class="hover-underline-animation" th:text="${turno.hora}"></span>
+                                                                <span th:if="${#strings.trim(turno.estado) != 'DISPONIBLE'}" class="text-strikethrough" th:text="${turno.hora}"></span>
+                                                            </button>
 
 
 
