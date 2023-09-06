@@ -48,6 +48,8 @@ public class ProfesionalServicio extends UsuarioServicio {
     private OfertaServicio servOferta;
     @Autowired
     private ObraSocialServicio servObra;
+     @Autowired
+    private UsuarioServicio usuarioServicio;
 
     // listar todos los médicos ACTIVOS
     @Transactional
@@ -101,6 +103,9 @@ public class ProfesionalServicio extends UsuarioServicio {
         Date fecha = pasarStringDate(fecha_nac);
         if (!validarFecha(fecha)) {
             throw new MyException("la fecha no es válida");
+        }
+        if (usuarioServicio.buscarPorDni(dni) != null) {
+            throw new MyException("Existe un usuario con el N° de docuemnto!");
         }
         Profesional profesional = new Profesional();
         profesional.setNombre(nombre);
