@@ -281,7 +281,7 @@ public class UsuarioControlador {
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("user", pacienteServ.getOne(id));
-                redirectAttributes.addFlashAttribute("exito", "¡Usuario eliminado");
+                redirectAttributes.addFlashAttribute("exito", "¡Usuario eliminado!");
          
             }
         } catch (Exception ex) {

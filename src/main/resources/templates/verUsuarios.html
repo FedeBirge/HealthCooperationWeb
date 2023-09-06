@@ -84,7 +84,7 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
 
-                       
+
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
 
@@ -201,6 +201,8 @@
 
                         <!-- Page Heading -->
                         <h1 class="h3 mb-2 text-gray-800">Lista de Usuarios</h1>
+                        <a type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Volver</a>
+
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Error!</h5>
@@ -269,7 +271,7 @@
                                                     </form>
                                                 </td>
 
-                                                <td th:if="${!log.activo}"> <!-- En esta parte que dice user.activo, tendria que ir user.inactivo??-->
+                                                <td th:if="${!user.activo}"> <!-- En esta parte que dice user.activo, tendria que ir user.inactivo??-->
                                                     <form th:action="@{/admin/darAlta/__${user.id}__}" method="post" th:id="'reactivateForm_' + ${user.id}">
                                                         <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showReactivationPopup(\'' + ${user.id} + '\')'">Alta</a>
                                                     </form>
@@ -330,7 +332,7 @@
             </div>
         </div>
 
-       
+
         <!--  Script de comfiramcion de eliminacion-->
         <div id="confirmationPopup" class="confirmation-popup">
             <p>¿Estás seguro de que quieres eliminar este Usuario?</p>
@@ -340,26 +342,26 @@
 
         <script th:inline="javascript">
             function showConfirmationPopup(userId) {
-            document.getElementById('confirmationPopup').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-            userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                document.getElementById('confirmationPopup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
             }
 
             function confirmDeletion() {
 
-            document.getElementById('deleteForm_' + userIdToDelete).submit();
+                document.getElementById('deleteForm_' + userIdToDelete).submit();
 
-            closeConfirmationPopup();
+                closeConfirmationPopup();
             }
 
             function cancelDeletion() {
-            closeConfirmationPopup();
+                closeConfirmationPopup();
             }
 
 
             function closeConfirmationPopup() {
-            document.getElementById('confirmationPopup').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
+                document.getElementById('confirmationPopup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
             }
         </script>
 
@@ -374,29 +376,29 @@
 
         <script th:inline="javascript">
             function showReactivationPopup(userId) {
-            document.getElementById('reactivationPopup').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-            userIdToReactivate = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                document.getElementById('reactivationPopup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                userIdToReactivate = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
             }
 
             function confirmReactivation() {
 
-            document.getElementById('reactivateForm_' + userIdToReactivate).submit();
+                document.getElementById('reactivateForm_' + userIdToReactivate).submit();
 
-            closeReactivationPopup();
+                closeReactivationPopup();
             }
 
             function cancelReactivation() {
-            closeReactivationPopup();
+                closeReactivationPopup();
             }
 
 
             function closeReactivationPopup() {
-            document.getElementById('reactivationPopup').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
+                document.getElementById('reactivationPopup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
             }
         </script>
-        
+
         <!-- script para abrir el modal y cambiar de rol -->
 
         <div id="rolPopup" class="confirmation-popup">
@@ -407,29 +409,29 @@
 
         <script th:inline="javascript">
             function showRolPopup(userId) {
-            document.getElementById('rolPopup').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-            userIdToChangeRol = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                document.getElementById('rolPopup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                userIdToChangeRol = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
             }
 
             function confirmRol() {
 
-            document.getElementById('changeRol_' + userIdToChangeRol).submit();
+                document.getElementById('changeRol_' + userIdToChangeRol).submit();
 
-            closRolPopup();
+                closRolPopup();
             }
 
             function cancelRol() {
-            closeRolPopup();
+                closeRolPopup();
             }
 
 
             function closeRolPopup() {
-            document.getElementById('rolPopup').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
+                document.getElementById('rolPopup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
             }
         </script>
-        
+
         <div id="overlay" class="overlay"></div>
 
         <!-- Bootstrap core JavaScript-->
