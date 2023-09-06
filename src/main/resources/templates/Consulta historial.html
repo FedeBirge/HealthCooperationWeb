@@ -64,13 +64,10 @@
                 </li>
 
                 <!-- Divisor -->
-                <hr class="sidebar-divider">
-
+             
 
                 <!-- Heading -->
-                <div class="sidebar-heading">
-                    Gestion
-                </div>
+              
 
 
 
@@ -224,41 +221,52 @@
                     <!-- Comenzar contenido de la página -->
 
                     <div class="container-fluid">
-                        <h1 >Historia Clinica</h1>
-                        <div class="row">
+   
+                   <h1 >Historia Clinica</h1>
+<div class="cardx">
+    <div class="card-1">
+         <img class="img-profile " 
+                 th:src="@{/imagen/perfil/__${user.id}__}" 
+                 style="max-width: 100%; max-height: 150px;">
+    </div>
+    <div class="right">
+            <div class="card-2">
+                <span class="badge bg-success text-white">Nombre</span> <span th:text=" ${user.nombre}"></span>
+            </div>
+         <div class="card-2">
+                <span class="badge bg-success text-white">Apellido</span> <span th:text=" ${user.apellido}"></span>
+            </div>
+        <div class="card-2">
+                <span class="badge bg-success text-white">Direccion</span> <span th:text=" ${user.direccion}"></span>
+            </div>
+            <div class="card-3">
+              <span class="badge bg-success text-white">Telefono</span> <span th:text=" ${user.telefono}">
+            </div>
+            <div class="card-3">
+                  <span class="badge bg-success text-white">Obra Social</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.obraSocial.nombre}"></span>
+            </div>
+            <div class="card-3">
+                <span class="badge bg-success text-white">Nacimiento</span> <span th:text=" ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></span>
+            </div>
+            <div class="card-3">
+               <span class="badge bg-success text-white">Email</span> <span th:text=" ${user.email}"></span>
+        </div>
+              <div class="card-3">
+            <span class="badge bg-success text-white">DNI</span> <span th:text=" ${user.dni}">
+        </div>
+          <div class="card-3">
+              <span class="badge bg-success text-white">Grupo Sanguíneo</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.grupoSanguineo}"></span>
+        </div>
+      
+        </div>
+    </div>
+</div>
 
-                            <div class="col-sm-6 mb-6">
 
-                                <h2><span class="badge bg-success text-white">Nombre</span> <span th:text=" ${user.nombre}"></span></h2>
-                            </div>
-                            <div class="col-sm-6 mb-6">
-                                <h2><span class="badge bg-success text-white">Apellido</span> <span th:text=" ${user.apellido}"></span></h2>
-                            </div>
-                            <div class="col-sm-6 mb-6">
-                                <h2><span class="badge bg-success text-white">Direccion</span> <span th:text=" ${user.direccion}"></span></h2>
-                            </div>
-                            <div class="col-sm-6 mb-6">
-                                <h2><span class="badge bg-success text-white">Telefono</span> <span th:text=" ${user.telefono}"></span></h2>
-                            </div>
-
-                            <div class="col-sm-6 mb-6">
-                                <h2><span class="badge bg-success text-white">Nacimiento</span> <span th:text=" ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></span></h2>
-                            </div>
-                            <div class="col-sm-6 mb-6">
-                                <h2><span class="badge bg-success text-white">DNI</span> <span th:text=" ${user.dni}"></span></h2>
-                            </div>   
-                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-6">
-                                <h2><span class="badge bg-success text-white">Grupo Sanguíneo</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.grupoSanguineo}"></span></h2>
-                            </div>    
-                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-6">
-                                <h2><span class="badge bg-success text-white">Obra Social</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.obraSocial.nombre}"></span></h2>
-                            </div>
-                            <div class="col-sm-6 mb-6">
-                                <h2><span class="badge bg-success text-white">Email</span> <span th:text=" ${user.email}"></span></h2>
-                            </div> 
-                        </div>
-
-                        <hr class="border border-success border-3 opacity-75">
+                        
+                        
+                        
+                    <div> 
 
                         <!-- a verse que pondre aqui -->
                         <h1>Lista de Fichas</h1>
@@ -296,6 +304,7 @@
 
 
                     </div>
+                    
                     <div class="table-responsive">
 
 
