@@ -116,15 +116,17 @@ public class TurnoServicio {
     }
 
     @Transactional
-    public void reservarTurno(String id) throws MyException {
+    public Turno reservarTurno(String id) throws MyException {
         Optional<Turno> op = turnoRepo.findById(id);
         if (op.isPresent()) {
             Turno turno = op.get();
             turno.setEstado(EstadoTurno.RESERVADO);
             turnoRepo.save(turno);
+            return turno;
         } else {
             throw new MyException("Turno no encontrado(RESERVAR)");
         }
+        
     }
 
     @Transactional

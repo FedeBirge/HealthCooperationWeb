@@ -294,8 +294,10 @@
                                     <tbody>
 
                                         <tr th:each="turno: ${turnos}">
-                                            <td th:text="${#dates.format(turno.fecha, 'MM/dd/yyyy')}"></td>
-                                            <td th:text="${turno.hora}"></td>
+                                       <td th:text="${#strings.substring(turno.fecha, 0, 10)}"></td>
+
+                                       
+                                            <td th:text="${turno.hora}+' Hs.'"></td>
 
                                            
                                             <td>  <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 

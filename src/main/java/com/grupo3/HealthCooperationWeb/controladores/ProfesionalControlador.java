@@ -100,7 +100,7 @@ public class ProfesionalControlador {
         modelo.addAttribute("prof", profesionalServicio.getOne(id));
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
 
-        System.out.println(semanas.size());
+        
         if (semanas.isEmpty()) {
             redirectAttributes.addFlashAttribute("vacia", "No existen turnos para mosrtar. Disculpe las molestias");
          return "redirect:/turno/panel";
@@ -277,31 +277,31 @@ public class ProfesionalControlador {
         }
     }
 
-    // darse de baja con POST
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
-    @PostMapping("/solicitarBaja/{id}")
-    public String darseBaja(@PathVariable("id") String id, @RequestParam MultipartFile archivo, ModelMap modelo,
-            RedirectAttributes redirectAttributes, HttpSession session)
-            throws IOException {
-        try {
-            Profesional logueado = (Profesional) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-            emailServ.sendEmail(logueado.getNombre(), logueado.getApellido(),
-                    logueado.getEmail(), logueado.getTelefono(),
-                    logueado.getEspecialidad().toString(), "Solicita la baja de mis servicios en el Sitio");
-
-            redirectAttributes.addFlashAttribute("exito", "!Solicitud de baja de servicios envíada!");
-            profesionalServicio.darDeBajaProfesional(id);
-
-            return "redirect:/pprofesionales/dashboard";
-        } catch (Exception ex) {
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            modelo.addAttribute("log", logueado);
-            redirectAttributes.addFlashAttribute("error", ex.getMessage());
-            return "redirect:/pprofesionales/dashboard";
-        }
-
-    }
+//    // darse de baja con POST
+//    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR','ROLE_MODERADOR')")
+//    @PostMapping("/solicitarBaja/{id}")
+//    public String darseBaja(@PathVariable("id") String id, @RequestParam MultipartFile archivo, ModelMap modelo,
+//            RedirectAttributes redirectAttributes, HttpSession session)
+//            throws IOException {
+//        try {
+//            Profesional logueado = (Profesional) session.getAttribute("usuariosession");
+//            modelo.addAttribute("log", logueado);
+//            emailServ.sendEmail(logueado.getNombre(), logueado.getApellido(),
+//                    logueado.getEmail(), logueado.getTelefono(),
+//                    logueado.getEspecialidad().toString(), "Solicita la baja de mis servicios en el Sitio");
+//
+//            redirectAttributes.addFlashAttribute("exito", "!Solicitud de baja de servicios envíada!");
+//            profesionalServicio.darDeBajaProfesional(id);
+//
+//            return "redirect:/pprofesionales/dashboard";
+//        } catch (Exception ex) {
+//            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+//            modelo.addAttribute("log", logueado);
+//            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+//            return "redirect:/pprofesionales/dashboard";
+//        }
+//
+//    }
 
     // Listar por especialidad, ordenando según precio consulta:
     // acceden todos
@@ -365,7 +365,7 @@ public class ProfesionalControlador {
     }
      @PostMapping("/valorar/{id}")
    
-    public String valorar(@PathVariable("id") String id, @RequestParam String idUser, 
+    public String valorar(@PathVariable("id") String id,  
             @RequestParam String valor, ModelMap modelo,  HttpSession session,
             RedirectAttributes redirectAttributes) {
 

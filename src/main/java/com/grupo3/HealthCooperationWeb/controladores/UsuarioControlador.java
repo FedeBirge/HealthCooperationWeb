@@ -106,6 +106,7 @@ public class UsuarioControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
+            modelo.addAttribute("log", logueado);
             List<Usuario> users = userServ.listarUsuarios();
             Rol[] roles = Rol.values();
             modelo.addAttribute("roles", roles);

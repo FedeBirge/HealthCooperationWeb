@@ -148,7 +148,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
             // }
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
-         
+
             ObraSocial obraSocial2 = obraSocialServicio.buscarXNombre(obraSocial);
 
             pas.setObraSocial(obraSocial2);
@@ -190,86 +190,67 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
         }
     }
 
-    @Transactional
-    public Turno actualizarTurno(String idTurno, String msj, EstadoTurno estado) {
-        Optional<Turno> turnoOptional = turnoRepositorio.findById(idTurno);
-        if (turnoOptional.isPresent()) {
-            Turno turno = turnoOptional.get();
-            turno.setEstado(EstadoTurno.RESERVADO);
-            turno.setMotivo(msj);
-         
-            turnoRepositorio.save(turno);
-            return turno;
 
+
+    @Transactional
+    public Paciente asignarTurnoPaciente(String idP, String idTurno,  String msj) throws MyException {
+
+        // Busca el paciente por su ID o cualquier otro criterio de búsqueda
+        Optional<Paciente> respuesta = pacienteRepositorio.findById(idP);
+        if (respuesta.isPresent()) {
+            Paciente pas = respuesta.get();
+
+            List<Turno> turnos = new ArrayList<>();
+            System.out.println("como el paciente tiene la lista? " + pas.getTurnos().size());
+            if (pas.getTurnos() != null) {
+                turnos = turnoServ.misTurnos(pas.getId());
+            }
+
+            Turno turno = turnoServ.getOne(idTurno);
+            if (turno != null) {
+                turno.setMotivo(msj);
+                turno = turnoServ.reservarTurno(idTurno);
+                turnos.add(turno);
+                pas.setTurnos(turnos);
+            }
+
+            // Guarda el paciente actualizado en la base de datos
+            pacienteRepositorio.save(pas);
+            return pas;
         }
         return null;
-
     }
 
-    @Transactional
-    public void asignarTurno(Paciente log, String idTurno, String id, String msj) {
-        // Busca el paciente por su ID o cualquier otro criterio de búsqueda
 
-        List<Turno> turnos = turnoServ.misTurnos(log.getId());
+// *****COMPLETAR para traer los pacientes asociados a un profesional(id)
+public List<Paciente> listarPacientesXprof(String idProfesional) {
+    // Creo un paciente
+    List<Paciente> pacientesXProfesional = new ArrayList<>();
 
-        // Busca el turno existente por su ID
-        Optional<Turno> turnoOptional = turnoRepositorio.findById(idTurno);
-       
-        if (turnoOptional.isPresent()) {
-            Turno turno = turnoOptional.get();
+    // Obtengo el profesional
+    Profesional profesional = profesionalRepositorio.getOne(idProfesional);
 
-            
-            turno = actualizarTurno(idTurno, msj, EstadoTurno.RESERVADO);
-
-       
-
-            turnos.add(turno);
-            log.setTurnos(turnos);
-
-      
-            // Guarda el paciente actualizado en la base de datos
-            pacienteRepositorio.save(log);
-
-        }
-    }
-
-    // *****COMPLETAR para traer los pacientes asociados a un profesional(id)
-    public List<Paciente> listarPacientesXprof(String idProfesional) {
-        // un paciente tiene una lista de turnos...
-        // primero creo un paciente
-        List<Paciente> pacientes = new ArrayList<>();
-        // traigo todos los pacientes
-        pacientes = pacienteRepositorio.findAll();
-        // preparo la lsita de pacietnes que voy a devolver
-        List<Paciente> pacientesXProfesional = new ArrayList<>();
-
-        // Repo de turnos
-        List<Turno> turnos = new ArrayList<>();
-        turnos = turnoRepositorio.findAll();
-
-        // en esa lista de turnos, cada turno tiene un profesional
-        // creo un profesional:
-        Profesional profesional = profesionalRepositorio.getOne(idProfesional);
-
-        try {
-            for (Paciente paciente : pacientes) {
-                if (paciente.getTurnos() != null) {
-                    turnos = paciente.getTurnos();
-                    for (Turno turno : turnos) {
-                        if (turno.getProfesional().getId().equals(profesional.getId())) {
+    try {
+        for (Paciente paciente : pacienteRepositorio.findAll()) {
+            if (paciente.getTurnos() != null) {
+                for (Turno turno : paciente.getTurnos()) {
+                    if (turno.getProfesional().getId().equals(profesional.getId())) {
+                        // Solo agrego el paciente una vez, si no está en la lista
+                        if (!pacientesXProfesional.contains(paciente)) {
                             pacientesXProfesional.add(paciente);
-
                         }
+                        // Si ya encontré un turno con el profesional, no es necesario seguir buscando en este paciente
+                        break;
                     }
                 }
             }
-            return pacientesXProfesional;
-        } catch (Exception e) {
-            System.out.println("Servicio paciente: Hubo un error al listar pacientes por profesional");
-            return null;
         }
-
+        return pacientesXProfesional;
+    } catch (Exception e) {
+        System.out.println("Servicio paciente: Hubo un error al listar pacientes por profesional");
+        return null;
     }
+}
 
     public Map<Turno, Paciente> ordenarMapPorTurno(Map<Turno, Paciente> turnoYpaciente) {
         try {
@@ -445,7 +426,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     // agrego esto para indicar permisos particulares de paciente (son los mismos
     // que el rol usuario)
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Paciente paciente = pacienteRepositorio.findByEmail(email);
         if (paciente != null && paciente.getActivo().equals(Boolean.TRUE)) {
             List<GrantedAuthority> permisos = new ArrayList<>();

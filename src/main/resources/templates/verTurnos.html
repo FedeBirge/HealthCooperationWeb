@@ -295,26 +295,51 @@
                                         <tr th:each="entry : ${turnos}">
                                             <td th:text="${entry.value.nombre}"></td>
                                             <td th:text="${entry.value.apellido}"></td>
-                                            <td th:text="${#dates.format(entry.key.fecha, 'MM/dd/yyyy')}"></td>
-                                            
-                                            <td th:text="${entry.key.hora}">                                            </td>
+                                       
+                                            <td th:text="${#strings.substring(entry.key.fecha, 0, 10)}"></td>
+
+                                            <td th:text="${entry.key.hora}+' Hs.'">                                            </td>
                                             <td >
                                                 <button block th:class="${#strings.trim(entry.key.estado) == 'CANCELADO' ? 'btn btn-danger' : 
                                                         (#strings.trim(entry.key.estado) == 'RESERVADO' ? 'btn btn-secondary' : 
                                                         (#strings.trim(entry.key.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
                                                         th:disabled="${#strings.trim(entry.key.estado) != 'DISPONIBLE'}">
-                                                    <span th:text="${#strings.trim(entry.key.estado) == 'COMPLETADO' ? 'COMP' : entry.key.estado}"></span>
+                                                    <span th:text="${#strings.trim(entry.key.estado) == 'COMPLETADO' ? 'COMPLETO' : entry.key.estado}"></span>
                                                 </button>
 
                                             </td>
                                             <td  sec:authorize="hasRole('MODERADOR')">
                                                 <a type="button" class="btn btn-success me-md-2" th:href="@{/historia/ver/__${entry.value.id}__}">Historia Clínica</a>
-                                                <a type="button" class="btn btn-success me-md-2" th:href="@{/historia/ver/__${entry.value.id}__}">Finalizar Turno</a>
+
+                                                <a type="button" class="btn btn-success me-md-2"
+                                                   th:if="${#strings.trim(entry.key.estado) == 'RESERVADO'}"
+                                                    data-toggle="modal" th:attr="data-target='#confirmModal__'+${entry.key.id}" th:data-id="${entry.key.id}">Completar Turno</a>
+
 
                                             </td>
+
+                                    <div class="modal fade" th:id="'confirmModal__' + ${entry.key.id}" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="confirmModalLabel">Confirmar Completar Turno</h5>
+                                                    <button type="button" class="close" th:data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ¿Estás seguro de que deseas completar el turno?
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                                        <a type="button" class="confirmar btn btn-success " th:href="@{/turno/completar/__${entry.key.id}__}" id="confirmBtn__" >Confirmar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         </tr>     
 
-                                    </tbody>
+                                        </tbody>
                                 </table>
                             </div>
                         </div>
@@ -358,6 +383,38 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const confirmButtons = document.querySelectorAll('[data-toggle="modal"]');
+
+                confirmButtons.forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        const turnoId = this.getAttribute("data-id");
+                        console.log(turnoId);
+                        const modal = document.getElementById("confirmModal__" + turnoId);
+                        console.log(modal.id);
+
+                        // Obtén el botón de confirmar dentro del modal
+                        const confirmBtn = modal.querySelector(".confirmar");
+
+                        if (modal && confirmBtn) {
+                            modal.style.display = "block";
+
+                            confirmBtn.addEventListener("click", function () {
+                                // Lógica para confirmar el turno
+                                const confirmUrl = this.getAttribute("th:href");
+                                window.location.href = confirmUrl; // Redirige a la URL de confirmación
+                            });
+                        }
+                    });
+                });
+            });
+
+        </script>
+
+
+
         <!-- Bootstrap core JavaScript-->
         <script src="/vendor/jquery/jquery.min.js"></script>
         <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
