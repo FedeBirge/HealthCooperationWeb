@@ -208,13 +208,13 @@ public class UsuarioControlador {
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("user", profServ.getOne(id));
                 redirectAttributes.addFlashAttribute("exito", "¡Profesional modificado con exito!");
-                return "redirect:/profesionales/dashboard";
+                 return "modificar_user.html";
             }
             if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
                 System.out.println("obra Cont " + obraSocial);
                 pacienteServ.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono,
                         direccion, fecha_nac, gruposanguineo, obraSocial);
-                System.out.println("Post de modificar paciente");
+             
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("user", pacienteServ.getOne(id));
@@ -222,7 +222,7 @@ public class UsuarioControlador {
                 List<ObraSocial> obras = obraServ.listarObrasSociales();
                 modelo.addAttribute("obras", obras);
 
-                return "redirect:/paciente/dashboard";
+               return "modificar_user.html";
             }
 
         } catch (MyException ex) {

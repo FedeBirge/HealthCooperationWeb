@@ -86,7 +86,7 @@
                                             
                                             <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="name" th:text="'Dra./Dr '+${prof.apellido}+' '+${prof.nombre}" > </a>                                
                                             <p class="name" th:text="'Especialsita en '+${prof.especialidad}"></p>
-                                               <button class="botonvalorar"  type="submit" data-target="modalValorar" >
+                                           <button th:if="${session.usuariosession != null}" class="botonvalorar"  type="submit" data-target="modalValorar" >
                                             <div class="rating">
                                         <input disabled value="5" name="rating" id="star5" type="radio" th:checked="${prof.reputacion == 5}">
                                         <label for="star5"></label>

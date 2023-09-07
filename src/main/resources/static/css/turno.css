@@ -45,7 +45,7 @@
 }
 .cardsection p.message {
   max-width: 100%;
-  overflow-x: auto;
+  
   white-space: nowrap;
   line-height: 1; /* Ajusta el interlineado según tus preferencias */
   margin: 10px 0;

@@ -2,11 +2,15 @@
 package com.grupo3.HealthCooperationWeb.controladores;
 
 import com.grupo3.HealthCooperationWeb.entidades.Ficha;
+import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.FichaServicio;
+import com.grupo3.HealthCooperationWeb.servicios.HistoriaClinicaServicio;
+import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,6 +27,10 @@ public class Fichacontrolador {
 
     @Autowired
     private FichaServicio fichaServicio;
+    @Autowired
+    private HistoriaClinicaServicio historiaClinicaServicio;
+     @Autowired
+    private PacienteServicio paciServ; 
 
     // ruta para ver todas las fichas de un paciente
     @GetMapping("/ficha/{id}")
@@ -40,17 +48,20 @@ public class Fichacontrolador {
     // ruta para agregar una ficha GET
     @PostMapping("/guardar/{id}") // ruta para crear una obra social GET
     public String agregarFicha(ModelMap modelo, @PathVariable("id") String id,
-            @RequestParam String nota,RedirectAttributes redirectAttributes) {
+            @RequestParam String nota,HttpSession session) {
         try {
-            System.out.println(nota);
+        
             fichaServicio.agregarFicha(id, LocalDate.now().toString(), nota);
-            redirectAttributes.addFlashAttribute("exito", "!Ficha agregada con exito!");
-         
-            return "redirect:/profesionales/dashboard";
+            modelo.addAttribute("exito", "!Ficha agregada con exito!");
+             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.addAttribute("user", paciServ.getOne(id));
+            modelo.addAttribute("historia", historiaClinicaServicio.mostrarHistoria(id));
+            return "Consulta historial.html";
 
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-      return "redirect:/profesionales/dashboard";
+            modelo.addAttribute("error", e.getMessage());
+         return "Consulta historial.html";
         }
     }
 
