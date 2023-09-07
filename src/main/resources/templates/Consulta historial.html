@@ -228,6 +228,7 @@
                                <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verHoy/__${log.id}__}">Turnos Hoy</a>
                                <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verSemana/__${log.id}__}">Turnos Semana</a>
                                <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verTodos/__${log.id}__}"> Ver Todos </a>
+                                    <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/paciente/listar}">Volver</a>
                         <div class="cardx">
                             
                             <div class="card-1">
@@ -295,7 +296,7 @@
 
                             </tbody>
                         </table>
-                        <a type="button" class="btn btn-success me-md-2" id="agregarBtn">Agregar Ficha</a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" id="agregarBtn">Agregar Ficha</a>
                         <form th:action="@{/ficha/guardar/__${user.id}__}" method="POST" th:id="'saveForm_' + ${user.id}">
 
                             <div name="nota" id="fichaForm" style="display: none; padding-top: 2rem;">

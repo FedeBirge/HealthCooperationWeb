@@ -89,6 +89,10 @@ public class TurnoControlador {
         modelo.addAttribute("log", logueado);
         List<Turno> turnos = turnoServ.misTurnos(id);  // el paciente ve sus turnos
         turnos = turnoServ.ordenarTurnos(turnos);
+        for (Turno turno : turnos) {
+            System.out.println("fecha: "+turno.getFecha()+" hora "+turno.getHora());
+            
+        }
         modelo.addAttribute("turnos", turnos);
 
         return "misTurnos.html";

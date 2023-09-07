@@ -647,28 +647,4 @@ ul {
   }
 }
 
-.cta {
-  border: none;
-  background: none;
-}
 
-.cta span {
-  padding-bottom: 7px;
-  letter-spacing: 4px;
-  font-size: 14px;
-  padding-right: 15px;
-  text-transform: uppercase;
-}
-
-.cta svg {
-  transform: translateX(-8px);
-  transition: all 0.3s ease;
-}
-
-.cta:hover svg {
-  transform: translateX(0);
-}
-
-.cta:active svg {
-  transform: scale(0.9);
-}

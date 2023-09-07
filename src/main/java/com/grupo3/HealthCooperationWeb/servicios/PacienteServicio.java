@@ -224,41 +224,33 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
 
 // *****COMPLETAR para traer los pacientes asociados a un profesional(id)
 public List<Paciente> listarPacientesXprof(String idProfesional) {
-        // un paciente tiene una lista de turnos...
-        // primero creo un paciente
-        List<Paciente> pacientes = new ArrayList<>();
-        // traigo todos los pacientes
-        pacientes = pacienteRepositorio.findAll();
-        // preparo la lsita de pacietnes que voy a devolver
-        List<Paciente> pacientesXProfesional = new ArrayList<>();
+    // Creo un paciente
+    List<Paciente> pacientesXProfesional = new ArrayList<>();
 
-        // Repo de turnos
-        List<Turno> turnos = new ArrayList<>();
-        turnos = turnoRepositorio.findAll();
+    // Obtengo el profesional
+    Profesional profesional = profesionalRepositorio.getOne(idProfesional);
 
-        // en esa lista de turnos, cada turno tiene un profesional
-        // creo un profesional:
-        Profesional profesional = profesionalRepositorio.getOne(idProfesional);
-
-        try {
-            for (Paciente paciente : pacientes) {
-                if (paciente.getTurnos() != null) {
-                    turnos = paciente.getTurnos();
-                    for (Turno turno : turnos) {
-                        if (turno.getProfesional().getId().equals(profesional.getId())) {
+    try {
+        for (Paciente paciente : pacienteRepositorio.findAll()) {
+            if (paciente.getTurnos() != null) {
+                for (Turno turno : paciente.getTurnos()) {
+                    if (turno.getProfesional().getId().equals(profesional.getId())) {
+                        // Solo agrego el paciente una vez, si no está en la lista
+                        if (!pacientesXProfesional.contains(paciente)) {
                             pacientesXProfesional.add(paciente);
-
                         }
+                        // Si ya encontré un turno con el profesional, no es necesario seguir buscando en este paciente
+                        break;
                     }
                 }
             }
-            return pacientesXProfesional;
-        } catch (Exception e) {
-            System.out.println("Servicio paciente: Hubo un error al listar pacientes por profesional");
-            return null;
         }
-
+        return pacientesXProfesional;
+    } catch (Exception e) {
+        System.out.println("Servicio paciente: Hubo un error al listar pacientes por profesional");
+        return null;
     }
+}
 
     public Map<Turno, Paciente> ordenarMapPorTurno(Map<Turno, Paciente> turnoYpaciente) {
         try {
