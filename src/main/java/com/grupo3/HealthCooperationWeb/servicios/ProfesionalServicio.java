@@ -396,7 +396,7 @@ public class ProfesionalServicio extends UsuarioServicio {
     @Transactional
     public void valorar(String id, String valor) throws MyException {
         try {
-            int valoracion = Integer.parseInt(valor);
+            Integer valoracion = Integer.parseInt(valor);
 
             if (valoracion >= 1 && valoracion <= 5) {
                 Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
@@ -405,7 +405,7 @@ public class ProfesionalServicio extends UsuarioServicio {
                     if (profesional.getReputacion() == 0) {
                         profesional.setReputacion(valoracion);
                     } else {
-                        int reputacion = Math.round((profesional.getReputacion() + valoracion) / 2);
+                        Integer reputacion = Math.round((profesional.getReputacion() + valoracion) / 2);
                         profesional.setReputacion(reputacion);
 
                     }

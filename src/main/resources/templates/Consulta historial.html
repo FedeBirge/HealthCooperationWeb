@@ -8,9 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        
+
         <title>Profesional</title>
-         <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
@@ -223,14 +223,14 @@
                     <div class="container-fluid">
 
                         <h1 >Historia Clinica</h1>
-                        
-                               <a type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Ir al panel</a>
-                               <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verHoy/__${log.id}__}">Turnos Hoy</a>
-                               <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verSemana/__${log.id}__}">Turnos Semana</a>
-                               <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verTodos/__${log.id}__}"> Ver Todos </a>
-                                    <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/paciente/listar}">Volver</a>
+
+                        <a type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Ir al panel</a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verHoy/__${log.id}__}">Turnos Hoy</a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verSemana/__${log.id}__}">Turnos Semana</a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verTodos/__${log.id}__}"> Ver Todos </a>
+                        <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/paciente/listar}">Volver</a>
                         <div class="cardx">
-                            
+
                             <div class="card-1">
                                 <img class="img-profile " 
                                      th:src="@{/imagen/perfil/__${user.id}__}" 
@@ -292,31 +292,88 @@
                                     <td th:text="${#dates.format(ficha.fecha_consulta, 'dd-MM-yyyy')}"></td>
 
                                     <td th:text="${ficha.nota}"></td>
+                              
                                 </tr>
 
                             </tbody>
                         </table>
 
-                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" id="agregarBtn">Agregar Ficha</a>
-                        <form th:action="@{/ficha/guardar/__${user.id}__}" method="POST" th:id="'saveForm_' + ${user.id}">
-
-
-                        <div name="nota" id="fichaForm" style="display: none;">
-                            <textarea name="nota" id="fichaTextArea"></textarea>
-                            <div>
-
-                                <button class="btn btn-success " id="guardarBtn" >Guardar</button>
+                        <a type="button" class="btn btn-success me-md-2 agregar">Agregar Ficha</a>
+                        <form th:action="@{/ficha/guardar/__${user.id}__}" method="POST">
+                            <div name="nota" id="fichaForm" style="display: none;">
+                                <textarea class="form-control inputEstilos" name="nota" id="fichaTextArea"></textarea>
+                                <div>
+                                    <button class="btn btn-success" id="guardarBtn">Guardar</button>
+                                </div>
                             </div>
+                        </form>
+
+                        <div class="table-responsive">
+                            <!-- Contenido de la tabla aquí -->
                         </div>
-                    </form>
 
+                        <div id="savePopup" class="confirmation-popup" style="display: none;">
+                            <p>¿Estás seguro de que quieres guardar esta ficha?</p>
+                            <button id="confirmButton" class="btn btn-success">Confirmar</button>
+                            <button id="cancelButton" class="btn btn-danger">Cancelar</button>
+                        </div>
 
-                    </div>
+                        <div id="overlay" style="display: none;"></div>
 
-                    <div class="table-responsive">
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const agregarBtns = document.getElementsByClassName("agregar");
+                                for (const agregarBtn of agregarBtns) {
+                                    agregarBtn.addEventListener("click", function () {
+                                        document.getElementById('fichaForm').style.display = "block";
+                                    });
+                                }
 
+                                document.getElementById("guardarBtn").addEventListener("click", function () {
+                                    // Debes proporcionar userId aquí o utilizar otro método para obtenerlo
+                                    const userId = getUserId();
+                                    showSavePopup(userId);
+                                });
 
+                                document.getElementById("confirmButton").addEventListener("click", function () {
+                                    confirmSave();
+                                });
 
+                                document.getElementById("cancelButton").addEventListener("click", function () {
+                                    cancelSave();
+                                });
+                                document.getElementById("guardarBtn").addEventListener("click", function (event) {
+                                    event.preventDefault(); // Evita el comportamiento predeterminado del formulario
+                                    const userId = getUserId();
+                                    showSavePopup(userId);
+                                });
+
+                                function showSavePopup() {
+                                    document.getElementById('overlay').style.display = 'block';
+                                    document.getElementById('savePopup').style.display = 'block';
+                                }
+
+                                function getUserId() {
+                                    // Aquí debes proporcionar el valor de userId, ya sea a través de un atributo de datos o de alguna otra manera.
+                                    // Ejemplo:
+                                    // return document.getElementById('agregarBtn').getAttribute('data-user-id');
+                                }
+
+                                function cancelSave() {
+                                    closeSavePopup();
+                                }
+                                function confirmSave() {
+                                    showSavePopup(); // Muestra el modal de confirmación
+                                    const form = document.querySelector('form'); // Selecciona el formulario
+                                    form.submit(); // Envía el formulario
+                                }
+
+                                function closeSavePopup() {
+                                    document.getElementById('overlay').style.display = 'none';
+                                    document.getElementById('savePopup').style.display = 'none';
+                                }
+                            });
+                        </script>
 
 
                         <footer class="sticky-footer" style='padding-top: 200px;'>
@@ -326,15 +383,6 @@
                                 </div>
                             </div>
                         </footer>
-                        <!-- Envoltura de fin de página -->
-
-                        <!-- Desplácese hasta el botón superior-->
-                        <a class="scroll-to-top rounded" href="#page-top">
-                            <i class="fas fa-angle-up"></i>
-                        </a>
-
-                        <!-- Cierre de sesión modal-->
-
                         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                              aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -354,45 +402,7 @@
                                 </div>
                             </div>
                         </div>
-                        <script>
-                            const agregarBtn = document.getElementById("agregarBtn");
-                            const fichaForm = document.getElementById("fichaForm");
 
-                            agregarBtn.addEventListener("click", function () {
-                                fichaForm.style.display = "block"; // Mostrar el formulario
-                            });
-
-                            // También puedes agregar lógica para ocultar el formulario cuando se haga clic en "Guardar" si es necesario.
-
-                            function showSavePopup(userId) {
-                                document.getElementById('savePopup').style.display = 'block';
-                                document.getElementById('overlay').style.display = 'block';
-                                userIdToSave = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
-                            }
-
-                            function confirmSave() {
-
-                                document.getElementById('saveForm_' + userIdToSave).submit();
-
-                                closeSavePopup();
-                            }
-
-                            function cancelSave() {
-                                closeSavePopup();
-                            }
-
-
-                            function closeSavePopup() {
-                                document.getElementById('savePopup').style.display = 'none';
-                                document.getElementById('overlay').style.display = 'none';
-                            }
-                        </script>
-
-                        <div id="savePopup" class="confirmation-popup">
-                            <p>¿Estás seguro de que quieres guardar esta ficha?</p>
-                            <button id="confirmButton" class="btn btn-success" onclick="confirmSave()">Confirmar</button>
-                            <button id="cancelButton" class="btn btn-danger" onclick="cancelSave()">Cancelar</button>
-                        </div>
 
 
                         <!-- Bootstrap core JavaScript-->
