@@ -10,6 +10,7 @@
         <meta name="author" content="">
 
         <title>Admin</title>
+        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
 
         <!-- Fuentes personalizadas-->
         <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -51,7 +52,7 @@
                 <!-- Divisor -->
                 <hr class="sidebar-divider">
 
-              
+
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Gestion
@@ -67,7 +68,7 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Acciones</h6>
-                               <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
+                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
                             <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
                         </div>
                     </div>
@@ -84,7 +85,9 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
 
-                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
+
+                            <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
+
 
                         </div>
                     </div>
@@ -98,7 +101,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                          <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -152,28 +155,29 @@
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-search fa-fw"></i>
                                 </a>
-                              
 
-                            <div class="topbar-divider d-none d-sm-block"></div>
 
-                            <!--Información del usuario -->
+                                <div class="topbar-divider d-none d-sm-block"></div>
+
+                                <!--Información del usuario -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
                                     <img class="/img-profile rounded-circle"
                                          th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" th:href="@{/inicio}">
+
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Configuraciones
+                                        Mi Área
                                     </a>
 
                                     <div class="dropdown-divider"></div>
@@ -193,130 +197,260 @@
                     <div class="container-fluid">
 
                         <!-- Encabezado de página -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Admin</h1>
 
+
+
+                        <!-- Page Heading -->
+                        <h1 class="h3 mb-2 text-gray-800">Lista de Usuarios</h1>
+                        <a type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Volver</a>
+
+                        <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Error!</h5>
+                                <p class="card-text text-center" th:text="${error}"></p>
+                            </div>
                         </div>
-                        <!-- Begin Page Content -->
-                        <div class="container-fluid">
+                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Exito!</h5>
+                                <p class="card-text text-center" th:text="${exito}"></p>
+                            </div>
+                        </div> 
+                        <!-- DataTales Example -->
+                        <div class="card shadow mb-4">
 
-                            <!-- Page Heading -->
-                            <h1 class="h3 mb-2 text-gray-800">Lista de Usuarios</h1>
-                            <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Error!</h5>
-                                    <p class="card-text text-center" th:text="${error}"></p>
+                            <div class="card-body">
+                                <div class="table-responsive">
+
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Rol Actual</th>   
+                                                <th>Cambiar Rol</th>   
+                                                <th>Estado</th>   
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>                                           
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr th:each="user : ${users}">
+                                                <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
+                                                <td th:value="${user.apellido}" th:text="${user.apellido}"></td>                                                  
+                                                <td  th:value="${user.rol}" th:text="${user.rol}"> </td>
+
+                                                <td th:disabled="${!user.activo}" >
+                                                    <form th:action="@{/admin/cambioRol/__${user.id}__}" method="POST" th:id="'changeRol_' + ${user.id}" >
+
+                                                        <select th:disabled="${!user.activo}" name="rol" class="estado-select form-control" style="width: auto; display: inline" >
+                                                            <option  name="rol"  th:text="${user.rol}" th:value="${user.rol}"></option>
+                                                            <option   th:each="rol: ${roles}" th:value="${rol}" th:text="${rol}"></option>
+                                                        </select>
+
+                                                        <a  type="button" th:href="'javascript:void(0)'" class="btn btn-success me-md-2"  th:attr="onclick='showRolPopup(\'' + ${user.id} + '\')'" >↻ </a>
+
+                                                    </form>
+                                                </td>
+
+
+                                                <td >
+                                                    <p th:text="${user.activo ? 'Activo' : 'Baja'}"></p>
+
+                                                </td>
+                                                <td>
+                                                    <a type="button" class="btn btn-success "th:href="@{/user/verUsuario/__${user.id}__}">Ver Perfil</a>
+                                                </td>
+                                                <td>
+                                                    <a  type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
+                                                </td>
+                                                <td th:if="${#strings.trim(user.rol) != 'ADMINISTRADOR' && user.activo}">
+                                                    <form  th:action="@{/user/eliminar/__${user.id}__}" method="POST" th:id="'deleteForm_' + ${user.id}">
+                                                        <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showConfirmationPopup(\'' + ${user.id} + '\')'">Eliminar</a>
+                                                    </form>
+                                                </td>
+
+                                                <td th:if="${!user.activo}"> <!-- En esta parte que dice user.activo, tendria que ir user.inactivo??-->
+                                                    <form th:action="@{/admin/darAlta/__${user.id}__}" method="post" th:id="'reactivateForm_' + ${user.id}">
+                                                        <a  class="btn btn-success me-md-2" th:href="'javascript:void(0)'" th:attr="onclick='showReactivationPopup(\'' + ${user.id} + '\')'">Alta</a>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+
+
+                                    </table>
                                 </div>
                             </div>
-                            <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Exito!</h5>
-                                    <p class="card-text text-center" th:text="${exito}"></p>
-                                </div>
-                            </div> 
-                            <!-- DataTales Example -->
-                            <div class="card shadow mb-4">
-                              
-                                <div class="card-body">
-                                    <div class="table-responsive">
-
-                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Apellido</th>
-                                                    <th>Email</th>
-                                                    <th>Rol</th>                                            
-                                                    <th></th>                                           
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-
-                                                <tr th:each="user : ${users}">
-                                                    <td th:value="${user.nombre}" th:text="${user.nombre}" ></td>        
-                                                    <td th:value="${user.apellido}" th:text="${user.apellido}"></td>
-                                                    <td th:value="${user.email}" th:text="${user.email}"></td>
-                                                    <td th:value="${user.rol}" th:text="${user.rol}"></td>
-                                                    <td >
-
-                                                        <a type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
-                                                    </td>
-
-                                                    <td >
-                                                        <form th:action="@{/user/eliminar/__${user.id}__}" method="POST"> 
-                                                            <button   class="btn btn-success me-md-2"  type="summit">Eliminar</button>
-                                                                     </form>
-                                                         </td>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
-                        <!-- /.container-fluid -->
 
                     </div>
-                    <!-- End of Main Content -->
-
-                    <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>HealtCooperationWeb ©2023</span>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- End of Footer -->
+                    <!-- /.container-fluid -->
 
                 </div>
-                <!-- End of Content Wrapper -->
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>HealtCooperationWeb ©2023</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
 
             </div>
-            <!-- End of Page Wrapper -->
+            <!-- End of Content Wrapper -->
 
-            <!-- Scroll to Top Button-->
-            <a class="scroll-to-top rounded" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
+        </div>
+        <!-- End of Page Wrapper -->
 
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="../vendor/jquery/jquery.min.js"></script>
-            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!--  Script de comfiramcion de eliminacion-->
+        <div id="confirmationPopup" class="confirmation-popup">
+            <p>¿Estás seguro de que quieres eliminar este Usuario?</p>
+            <button id="confirmButton" class="btn btn-success" onclick="confirmDeletion()">Confirmar</button>
+            <button id="cancelButton" class="btn btn-danger" onclick="cancelDeletion()">Cancelar</button>
+        </div>
 
-            <!-- Core plugin JavaScript-->
-            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script th:inline="javascript">
+            function showConfirmationPopup(userId) {
+                document.getElementById('confirmationPopup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+            }
 
-            <!-- Custom scripts for all pages-->
-            <script src="../js/sb-admin-2.min.js"></script>
+            function confirmDeletion() {
 
-            <!-- Page level plugins -->
+                document.getElementById('deleteForm_' + userIdToDelete).submit();
 
-            <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+                closeConfirmationPopup();
+            }
 
-            <!-- Page level custom scripts -->
-            <script src="../js/demo/datatables-demo.js"></script>
+            function cancelDeletion() {
+                closeConfirmationPopup();
+            }
+
+
+            function closeConfirmationPopup() {
+                document.getElementById('confirmationPopup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+            }
+        </script>
+
+
+        <!-- script para volver a activar un usuario -->
+
+        <div id="reactivationPopup" class="confirmation-popup">
+            <p>¿Estás seguro de que quieres reactivar este Usuario?</p>
+            <button id="confirmButton" class="btn btn-sucess" onclick="confirmReactivation()">Confirmar</button>
+            <button id="cancelButton" class="btn btn-danger" onclick="cancelReactivation()">Cancelar</button>
+        </div>
+
+        <script th:inline="javascript">
+            function showReactivationPopup(userId) {
+                document.getElementById('reactivationPopup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                userIdToReactivate = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+            }
+
+            function confirmReactivation() {
+
+                document.getElementById('reactivateForm_' + userIdToReactivate).submit();
+
+                closeReactivationPopup();
+            }
+
+            function cancelReactivation() {
+                closeReactivationPopup();
+            }
+
+
+            function closeReactivationPopup() {
+                document.getElementById('reactivationPopup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+            }
+        </script>
+
+        <!-- script para abrir el modal y cambiar de rol -->
+
+        <div id="rolPopup" class="confirmation-popup">
+            <p>¿Estás seguro de que quieres cambiarle el rol a este Usuario?</p>
+            <button id="confirmButton" class="btn btn-sucess" onclick="confirmRol()"style="background-color: #38d39f; color: #fff;">Confirmar</button>
+            <button id="cancelButton" class="btn btn-danger" onclick="cancelRol()" >Cancelar</button>
+        </div>
+
+        <script th:inline="javascript">
+            function showRolPopup(userId) {
+                document.getElementById('rolPopup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                userIdToChangeRol = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+            }
+
+            function confirmRol() {
+
+                document.getElementById('changeRol_' + userIdToChangeRol).submit();
+
+                closRolPopup();
+            }
+
+            function cancelRol() {
+                closeRolPopup();
+            }
+
+
+            function closeRolPopup() {
+                document.getElementById('rolPopup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+            }
+        </script>
+
+        <div id="overlay" class="overlay"></div>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="../js/sb-admin-2.min.js"></script>
+
+        <!-- Page level plugins -->
+
+        <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="../js/demo/datatables-demo.js"></script>
 
     </body>
 

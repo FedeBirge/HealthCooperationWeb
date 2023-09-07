@@ -10,7 +10,7 @@
         <meta name="author" content="">
 
         <title>Admin</title>
-
+        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
         <!-- Fuentes personalizadas-->
         <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
@@ -35,7 +35,7 @@
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Panel de Administrador </div>
+                    <div class="sidebar-brand-text mx-3">Panel Administrador </div>
                 </a>
 
                 <!-- Divisor -->
@@ -45,7 +45,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/}">
 
-                        <span>Index</span></a>
+                        <span>Home</span></a>
                 </li>
 
                 <!-- Divisor -->
@@ -58,7 +58,37 @@
 
           
 
-             
+             <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-hospital-user"></i>
+                        <span>Profesionales</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Acciones</h6>
+                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
+                            <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Elemento de navegación - Menú Contraer utilidades -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                     
+                            <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
+
+                        </div>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
@@ -68,13 +98,14 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/}">Alta Usuarios</a>
-                            <a class="collapse-item" th:href="@{/}">Ver Usuarios</a>
+                            <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+                            <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
                         </div>
                     </div>
                 </li>
+
 
 
                 <!-- Divider -->
@@ -195,8 +226,16 @@
                                     
                                     <input class="form-control form-control-user" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
                                 </div>
+                                  <div  class="col-sm-6 mb-3">
+                                    <label for="largeSelect" class="form-label">Rol</label>
+
+                                    <select class="form-control form-control inputEstilos border-top-0  border-end-0 border-start-0 border border-4" id="especialidad" name="rol">
+                                        <option value="" disabled selected>Seleccione...</option>
+                                        <option th:each="roles : ${roles}"
+                                                th:value="${roles}" th:text="${roles}"></option>
+                                    </select>
                                 <div>
-                                    <img id="imagenPrevia" src="#" alt="" style="max-width: 100%; max-height: 100px;">
+                                    <img id="imagenPrevia" src="#" alt="" style="max-width: 100%; max-height: 25px;">
                                 </div> 
                                 
                                 <div class="grid w-full max-w-xs items-center gap-1.5">
@@ -244,9 +283,9 @@
                         </div>
                         <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
-                        </div>
+                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                    </div>
                     </div>
                 </div>
             </div>

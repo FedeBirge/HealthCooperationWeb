@@ -10,7 +10,7 @@
         <meta name="author" content="">
 
         <title>Admin</title>
-
+        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
         <!-- Fuentes personalizadas-->
         <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
@@ -97,7 +97,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -109,8 +109,7 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
-                <!-- Divider -->
-                <hr class="sidebar-divider d-none d-md-block">
+
 
                 <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">
@@ -122,8 +121,8 @@
 
             <!-- Contenedor de contenido -->
             <div id="content-wrapper" class="d-flex flex-column">
-          
-                 
+
+
                 <!-- Contenido principal -->
                 <div id="content">
 
@@ -154,13 +153,14 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" th:href="@{/inicio}">
+
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Configuraciones
+                                        Mi Área
                                     </a>
 
                                     <div class="dropdown-divider"></div>
@@ -190,7 +190,7 @@
                                     <p class="card-text text-center" th:text="${error}"></p>
                                 </div>
                             </div>
-                            <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                            <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
                                 <div class="card-body">
                                     <h5 class="card-title text-center">Exito!</h5>
                                     <p class="card-text text-center" th:text="${exito}"></p>
@@ -234,43 +234,51 @@
                                 </div>
 
                                 <div  class="col-sm-6 mb-3">
-                                    <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4" for="especialidad">Especialidad</label>
-                                    <select class="form-control form-control inputEstilos border-top-0 border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
+                                    <label for="largeSelect" class="form-label">Especialidad</label>
+
+                                    <select class="form-control form-control inputEstilos border-top-0  border-end-0 border-start-0 border border-4" id="especialidad" name="especialidad">
                                         <option value="" disabled selected>Seleccione...</option>
                                         <option th:each="especialidad : ${especialidades}"
                                                 th:value="${especialidad}" th:text="${especialidad}"></option>
                                     </select>
+
                                 </div>    
-                                 <div class="input-group mb-4">
-                                 <label class="form-control text-center inputEstilos border-top-0 border-end-0 border-start-0 border border-4">Imagen</label>
-                                 
-                                                                                
-                                            <input  type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
-                                        </div>
-                                          <div class="col-sm-6 mb-3">
-                                   
-                                    <class="contenedorImagen">
-                                        <img id="imagenPrevia" src="#" alt="" class="imagenPrevia" style="max-width: 100%; max-height: 100px;">
-                                        </div> 
+                                <div class="col-sm-6 mb-3 ">
+                                    <label for="largeSelect" class="form-label">Imagen</label>
 
-                                        <script>
-                                            function previsualizarImagen() {
-                                                var archivo = document.getElementById('foto').files[0];
-                                                var imagenPrevia = document.getElementById('imagenPrevia');
 
-                                                if (archivo) {
-                                                    var lector = new FileReader();
+                                    <div class="contenedorImagen">
+                                        <img id="imagenPrevia" src="/img/user_logo.png" alt="" class="imagenPrevia" width="100" height="100">
+                                    </div>    
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text">Foto</span>
+                                        <input class="form-control" type="file" id="foto" name="archivo" onchange="previsualizarImagen()">
+                                    </div>
 
-                                                    lector.onload = function (event) {
-                                                        imagenPrevia.src = event.target.result;
-                                                    };
+                                    <script>
+                                        function previsualizarImagen() {
+                                        var archivo = document.getElementById('foto').files[0];
+                                        var imagenPrevia = document.getElementById('imagenPrevia');
+                                        var nombreCampo = "archivo"; // Nombre predeterminado del campo de entrada
 
-                                                    lector.readAsDataURL(archivo);
-                                                } else {
-                                                    imagenPrevia.src = "#";
-                                                }
-                                            }
-                                        </script>
+                                        if (archivo) {
+                                        var lector = new FileReader();
+
+                                        lector.onload = function (event) {
+                                        imagenPrevia.src = event.target.result;
+                                        };
+
+                                        lector.readAsDataURL(archivo);
+                                        } else {
+                                        // Si no se selecciona ningún archivo, cambia el nombre del campo de entrada
+                                        nombreCampo = "imagenPredeterminada";
+                                        imagenPrevia.src = "/ruta/de/imagen/predeterminada.jpg"; // Cambia la ruta según tu imagen predeterminada
+                                        }
+
+                                        // Cambiar el nombre del campo de entrada
+                                        document.getElementById('foto').name = nombreCampo;
+                                        }
+                                    </script>
                                 </div>
 
                             </div>
@@ -315,8 +323,8 @@
                         </div>
                         <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                         </div>
                     </div>
                 </div>

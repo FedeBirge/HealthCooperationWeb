@@ -1,5 +1,6 @@
 package com.grupo3.HealthCooperationWeb.entidades;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Getter
 @Setter
 
-public class Ficha {
+public class Ficha implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -29,13 +30,6 @@ public class Ficha {
 
     private String nota;
 
-    // No comprendo este OneToOne con profesional. Es el paciente el que tiene
-    // fichas (bren)
-    // @OneToOne
-    // private Profesional profesional;
-
-    // agrego esta relación (bren)
-    // muchas fichas tienen una historiaClinica
     @ManyToOne
     private HistoriaClinica historiaClinica;
 }

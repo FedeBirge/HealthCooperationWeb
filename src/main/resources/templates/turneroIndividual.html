@@ -1,0 +1,343 @@
+   
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <meta name="description" content="" />
+            <meta name="author" content="" />
+            <title>Health Cooperation</title>
+            <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+            <!-- Favicon-->
+            <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css">
+            <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+            <!-- Google fonts-->
+            <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+            <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+            <link rel="stylesheet" href="/css/turno.css">
+        </head>
+        <body id="page-top">
+            <!-- Navigation-->
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+                <div class="container">
+                    <a class="navbar-brand" th:href="@{/}">
+                        <img src="/assets/img/biomedical (2).svg" alt="Logo" class="navbar-logo">
+                        <span class="navbar-logo-text">Health Cooperation</span>
+                    </a>
+                    <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        Menu
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">Especialidades</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">About</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contactanos</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}" th:href="@{/paciente/registrar}">Registrarme</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}"  th:href="@{/login}">Login</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"  th:href="@{/email/contacto}">Eres un doctor?</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/logout}">Log out</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/inicio}">Perfil</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <main class="masthead bg-primary1 ">
+                <div th:if="${error != null}" class="card text-white bg-info mb-3 mensajeError" >
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Error!</h5>
+                        <p class="card-text text-center" th:text="${error}"></p>
+                    </div>
+                </div>
+                <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Exito!</h5>
+                        <p class="card-text text-center" th:text="${exito}"></p>
+                    </div>
+                </div> 
+                <div th:if="${vacia != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Atencion!</h5>
+                        <p class="card-text text-center" th:text="${vacia}"></p>
+                    </div>
+
+                </div> 
+
+                <section class="fixed-section">
+
+                    <section class="cartasection">
+
+
+                        <div class="carta-medico">
+                            <section class="cartasection">
+                                <div class="card2">
+                                    <div class="header2">
+                                        <div class="image">
+                                            <img class="/img-profile rounded-circle"
+                                                 th:src="@{/imagen/perfil/__${prof.id}__}" style="max-width: 100%; max-height: 150px;">
+                                        </div>
+                                        <div>
+
+                                            
+                                            <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="name" th:text="'Dra./Dr '+${prof.apellido}+' '+${prof.nombre}" > </a>                                
+                                            <p class="name" th:text="'Especialsita en '+${prof.especialidad}"></p>
+                                           <button th:if="${session.usuariosession != null}" class="botonvalorar"  type="submit" data-target="modalValorar" >
+                                            <div class="rating">
+                                        <input disabled value="5" name="rating" id="star5" type="radio" th:checked="${prof.reputacion == 5}">
+                                        <label for="star5"></label>
+                                        <input disabled value="4" name="rating" id="star4" type="radio" th:checked="${prof.reputacion == 4}">
+                                        <label for="star4"></label>
+                                        <input disabled value="3" name="rating" id="star3" type="radio" th:checked="${prof.reputacion == 3}">
+                                        <label for="star3"></label>
+                                        <input disabled value="2" name="rating" id="star2" type="radio" th:checked="${prof.reputacion == 2}">
+                                        <label for="star2"></label>
+                                        <input disabled value="1" name="rating" id="star1" type="radio" th:checked="${prof.reputacion == 1}">
+                                        <label for="star1"></label>
+                                    </div>
+
+                                       </button>
+                                            <!-- Modal para Valorar -->
+                                            <div id="modalValorar" class="modal2">
+                                                <div class="modal-content2">
+                                                    <span class="close2" id="close-modalValorar">&times;</span>
+                                                    <h2>Valorar</h2>
+                                                    <br>
+                                                    <form th:if="${session.usuariosession != null and #strings.trim(log.rol) == 'USUARIO'}" th:action="@{/profesionales/valorar/__${prof.id}__}" method="post" >
+
+
+                                                        <div class="inputbox w100">
+                                                            <textarea required id="msj" name="valor"></textarea>
+                                                            <span>Escriba su valoracion 1 al 5</span>
+                                                        </div>
+
+                                                        <button class="botonvalorar"  type="submit" >Enviar
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                            <script>
+                                                document.addEventListener("DOMContentLoaded", function () {
+                                                    const valorarButton = document.querySelector(".botonvalorar");
+                                                    const modalValorar = document.getElementById("modalValorar");
+                                                    const closeModalValorar = document.getElementById("close-modalValorar");
+
+                                                    valorarButton.addEventListener("click", function () {
+                                                        modalValorar.style.display = "block";
+                                                    });
+
+                                                    closeModalValorar.addEventListener("click", function () {
+                                                        modalValorar.style.display = "none";
+                                                    });
+                                                });
+                                            </script>
+
+
+                                        </div>
+                                    </div>
+                                    <p class="message" th:text="${prof.descripcion}" >  </p>                      
+                                    <p class="message" th:if='${prof.oferta} != null' th:text="'Modo de Atención '+${prof.oferta.tipo}" >  </p>                      
+                                    <p class="message" th:if='${prof.oferta} != null' th:text="'Horarios  '+${#strings.substring(prof.oferta.horaInicio, 0, 5)}+' a '+${prof.oferta.horaFin}+' Hs.'" >  </p>                      
+                                    <p class="message" th:if='${prof.oferta} != null' th:text="'Lugar de atencion:  '+${prof.oferta.ubicacion}" >  </p>                      
+                                    <p class="message" th:text="'Valor de la consulta $ '+${prof.valorConsulta}" >  </p>       
+                                    <p th:if='${prof.oferta.obrasSociales} != null' class="message"  th:each="obra: ${prof.oferta.obrasSociales}" >
+                                        Obras Sociales: 
+                                        <span th:text="${obra.nombre}" ></span></p>       
+                                </div>
+                                <div>
+
+                            </section>
+
+                        </div>
+
+                        <div class="card5">
+                            <div class="scroll-buttons">
+                                <button type="button" class="scroll-button botonflecha" id="scroll-left">◄ </button>
+                                <div class="lista-horizontal" id="scroll-container">
+                                    <p class="message" th:if="${semanas} ==null" > No existen turnos disponibles </p> 
+                                    <ul th:if="${semanas} !=null" class="lista" th:each="semana : ${semanas}">
+                                        <li  style="display: inline-block; margin-right: 50px;">
+                                            <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
+
+
+                                                <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
+                                                <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
+                                                <ul>
+                                                    <li class="lista-elemento" th:data-id-turno="${turno.id}"      th:each="turno : ${entry.value.turnos}">
+                                                        <p>
+                                                            <button th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'botonTurno botonCalcelado' : 
+                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'botonTurno botonReservado' : 
+                                                                    (#strings.trim(turno.estado) == 'COMPLETADO' ? 'botonTurno btn-info' : 'botonTurno botonSucces'))}"
+                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE'}"
+                                                                    data-toggle="modal1"
+                                                                    data-target="#modal1"   class="lista-elemento"     >
+                                                                <span th:if="${#strings.trim(turno.estado) == 'DISPONIBLE'}" class="hover-underline-animation" th:text="${turno.hora}"></span>
+                                                                <span th:if="${#strings.trim(turno.estado) != 'DISPONIBLE'}" class="text-strikethrough" th:text="${turno.hora}"></span>
+                                                            </button>
+                                                        </p>
+                                                    </li>
+                                                </ul>
+
+
+
+                                            </ul>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                                <button type="button" class="scroll-button botonflecha " id="scroll-right">▶</button>
+                            </div>
+
+
+                            <!-- Agrega solo las clases generales al modal -->
+                            <div id="modal1" class="modal1">
+                                <div class="modal-content1">
+                                    <span class="close1" id="close-modal1">&times;</span>
+                                    <h2>Motivo de la consulta</h2>
+                                    <br>
+                                    <form th:action="@{/turno/confirmar/__${prof.id}__}" method="POST" id="modal-form">
+                                        <input type="hidden" name="idTurno" id="turnoId" value="">
+
+                                        <div class="inputbox w100">
+                                            <textarea required id="msj" name="msj"></textarea>
+                                            <span>Motivo de la consulta....</span>
+                                        </div>
+                                        <button  class="boton-secondary" type="button" id="cancelar-modal">Cancelar</button>
+                                        <button class="boton-primary" type="submit" id="confirmar-modal">Confirmar Turno</button>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </section>
+                </section>
+            </main>
+
+
+            <!-- Footer-->
+            <footer class="footer text-center">
+                <div class="container">
+                    <div class="row">
+                        <!-- Footer Location-->
+                        <div class="col-lg-4 mb-5 mb-lg-0">
+                            <h4 class="text-uppercase mb-4">Direccion</h4>
+                            <p class="lead mb-0">
+                                Buenos Aires, Argentina
+                                <br />
+                                Av.Panamericana
+                            </p>
+                        </div>
+                        <!-- Footer Social Icons-->
+                        <div class="col-lg-4 mb-5 mb-lg-0">
+                            <h4 class="text-uppercase mb-4">Redes</h4>
+                            <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a>
+                            <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-dribbble"></i></a>
+                        </div>
+                        <!-- Footer About Text-->
+                        <div class="col-lg-4">
+                            <h4 class="text-uppercase mb-4">Proyecto Final Egg</h4>
+                            <p class="lead mb-0">
+                                Proyecto Final Grupo 3
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </footer>
+            <!-- Copyright Section-->
+            <div class="copyright py-4 text-center text-white">
+                <div class="container"><small>HealtCooperationWeb ©2023</small></div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const scrollContainer = document.getElementById("scroll-container");
+                    const scrollLeftButton = document.getElementById("scroll-left");
+                    const scrollRightButton = document.getElementById("scroll-right");
+
+                    scrollLeftButton.addEventListener("click", function () {
+                        scrollContainer.scrollLeft -= 300; // Ajusta el valor de desplazamiento
+                    });
+
+                    scrollRightButton.addEventListener("click", function () {
+                        scrollContainer.scrollLeft += 300; // Ajusta el valor de desplazamiento
+                    });
+                    const modal = document.getElementById("modal1");
+                    const closeModalButton = document.getElementById("close-modal1");
+                    const showModalButton = document.querySelectorAll(".lista-elemento");
+                    const cancelarButton = document.getElementById("cancelar-modal");
+                    const modalForm = document.getElementById("modal-form");
+
+                    // Función para mostrar el modal
+                    function mostrarModal(event) {
+                        const idTurno = event.currentTarget.getAttribute("data-id-turno");
+
+                        console.log("turno id: " + idTurno);
+
+
+                        // Configura los campos ocultos del formulario con los IDs
+                        document.getElementById("turnoId").value = idTurno;
+
+                        modal.style.display = "block";
+                    }
+
+                    // Función para ocultar el modal
+                    function ocultarModal() {
+                        modal.style.display = "none";
+                    }
+
+
+                    showModalButton.forEach(function (elemento) {
+                        elemento.addEventListener("click", mostrarModal);
+                    });
+
+                    const confirmarButton = document.getElementById("confirmar-modal");
+                    confirmarButton.addEventListener("click", function () {
+                        // Aquí puedes agregar una lógica adicional si es necesario
+                        // Por ejemplo, verificar si un usuario está logueado antes de enviar el formulario
+
+                        // Envía el formulario
+                        modalForm.submit();
+                    });
+                    cancelarButton.addEventListener("click", ocultarModal);
+
+                    modalForm.addEventListener("submit", function (event) {
+                        event.preventDefault();
+                        ocultarModal();
+                    });
+
+                    closeModalButton.addEventListener("click", ocultarModal);
+
+
+                    window.addEventListener("click", function (event) {
+                        if (event.target === modal1) {
+                            ocultarModal();
+                        }
+                    });
+                });
+
+
+            </script>
+
+            <script src="/vendor/jquery/jquery.min.js"></script>
+            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <!-- Bootstrap core JS-->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Core theme JS-->
+            <script src="/js/scripts.js"></script>
+            <script src="/js/bootstrap1"></script>
+            <script src="js/modals1"></script>
+
+
+            <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        </body>
+
+    </html>

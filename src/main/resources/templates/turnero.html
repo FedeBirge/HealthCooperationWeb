@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <meta name="description" content="" />
+            <meta name="author" content="" />
+            <title>Health Cooperation</title>
+            <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+            <!-- Favicon-->
+            <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css">
+            <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+            <!-- Google fonts-->
+            <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+            <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+            <link rel="stylesheet" href="/css/turno.css">
+        </head>
+        <body>
+
+            <header class="header">
+                <!-- Navigation-->
+                <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+                    <div class="container">
+                        <a class="navbar-brand" th:href="@{/}">
+                            <img src="../assets/img/biomedical (2).svg" alt="Logo" class="navbar-logo">
+                            <span class="navbar-logo-text">Health Cooperation</span>
+                        </a>
+                        <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                            Menu
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarResponsive">
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">Especialidades</a></li>
+                                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">About</a></li>
+                                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contactanos</a></li>
+                                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}" th:href="@{/paciente/registrar}">Registrarme</a></li>
+                                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}"  th:href="@{/login}">Login</a></li>
+                                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"  th:href="@{/email/contacto}">Eres un doctor?</a></li>
+                                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/logout}">Log out</a></li>
+                                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/inicio}">Perfil</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </nav>
+
+            </header>
+
+            <nav class="navFiltro">
+                <div class="containerFiltro">
+                    <div class="select-containerFiltro">
+                        <div class="d-flex justify-content-between"> <!-- Usamos justify-content-between para distribuir los elementos -->
+                            <div class="form-container1">
+                                <select class="form-selectFiltro" name="especialidad" id="filtroEspecialidad">
+                                    <option value="" disabled selected>Filtrar</option>
+                                    <option value="todos">Todos</option>
+                                    <option th:each="especialidad : ${especialidades}" th:value="${especialidad}" th:text="${especialidad}"></option>
+
+                                </select>
+                            </div>
+                            <div class="form-container2">
+                                <select class="form-selectFiltro" name="orden" id="filtroOrden">
+                                    <option disabled selected value="todos">Ordenar</option>
+                                    <option value="sin-orden">Sin Orden</option>
+                                    <option value="valoracion">Valoración</option>
+                                    <option value="consulta">Valor Consulta</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+
+            <main>
+
+                <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Error!</h5>
+                        <p class="card-text text-center" th:text="${error}"></p>
+                    </div>
+                </div>
+                <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Exito!</h5>
+                        <p class="card-text text-center" th:text="${exito}"></p>
+                    </div>
+                </div> 
+                <div th:if="${vacia != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Atencion!</h5>
+                        <p class="card-text text-center" th:text="${vacia}"></p>
+                    </div>
+
+                </div> 
+            </div>
+
+            <div class="lista-profesionales">
+                <div class="carta-medico" th:each="prof : ${profes}" th:if="${prof.agendasSemanales != null}" th:data-especialidad="${prof.especialidad}" th:data-valoracion="${prof.reputacion}" th:data-consulta="${prof.valorConsulta}">
+                    <section class="cardsection" >
+                        <div class="card2">
+                            <div class="header2">
+
+                                <div class="image">
+                                    <img class="img-profile rounded-circle"
+                                         th:src="@{/imagen/perfil/__${prof.id}__}" style="max-width: 100%; max-height: 150px;">
+                                </div>
+                                <div>
+
+
+
+                                    <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="name" th:text="'Dra./Dr '+${prof.apellido}+' '+${prof.nombre}" > </a>                                
+                                    <p class="name" th:text="'Especialsita en '+${prof.especialidad}"></p>
+
+
+                                    <div class="rating">
+                                        <input disabled value="5"  id="star5" type="radio" th:checked="${prof.reputacion == 5}">
+                                        <label for="star5"></label>
+                                        <input disabled value="4"  id="star4" type="radio" th:checked="${prof.reputacion == 4}">
+                                        <label for="star4"></label>
+                                        <input disabled value="3"  id="star3" type="radio" th:checked="${prof.reputacion == 3}">
+                                        <label for="star3"></label>
+                                        <input disabled value="2"  id="star2" type="radio" th:checked="${prof.reputacion == 2}">
+                                        <label for="star2"></label>
+                                        <input disabled value="1"  id="star1" type="radio" th:checked="${prof.reputacion == 1}">
+                                        <label for="star1"></label>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <p class="message" th:text="${prof.descripcion}" >  </p>                      
+                            <p class="message" th:if='${prof.oferta} != null' th:text="'Modo de Atención '+${prof.oferta.tipo}" >  </p>                      
+                            <p class="message" th:if='${prof.oferta} != null' th:text="'Horarios  '+${#strings.substring(prof.oferta.horaInicio, 0, 5)}+' a '+${prof.oferta.horaFin}+' Hs.'" >  </p>                      
+
+                            <p class="message" th:if='${prof.oferta} != null' th:text="'Lugar de atencion:  '+${prof.oferta.ubicacion}" >  </p>                      
+                            <p class="message" th:text="'Valor de la consulta $ '+${prof.valorConsulta}" >  </p>                      
+
+                            <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="boton" type="button"><span>Ver turnos</span></a>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+            <div class="staticmap">
+                <img src="/assets/img/staticmap.png" alt="staticmap">
+            </div>
+        </main>
+
+        <script>
+            const filtroEspecialidad = document.getElementById("filtroEspecialidad");
+            const listaProfesionales = document.querySelectorAll(".lista-profesionales .carta-medico");
+
+            filtroEspecialidad.addEventListener("change", function () {
+                const especialidadSeleccionada = filtroEspecialidad.value; // Eliminar espacios 
+
+                listaProfesionales.forEach(function (profesional) {
+                    const especialidadProfesional = profesional.getAttribute("data-especialidad"); // Eliminar espacios en blanco
+                    console.log("select: " + especialidadSeleccionada)
+                    console.log("value: " + especialidadProfesional);
+                    if (especialidadSeleccionada === "todos" || especialidadSeleccionada === especialidadProfesional) {
+                        profesional.style.display = "block"; // Mostrar el profesional
+                    } else {
+                        profesional.style.display = "none"; // Ocultar el profesional
+                    }
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const filtroOrden = document.getElementById("filtroOrden");
+                const listaProfesionales = document.querySelector(".lista-profesionales");
+                const profesionales = Array.from(listaProfesionales.querySelectorAll(".carta-medico"));
+
+                filtroOrden.addEventListener("change", function () {
+                    const criterioOrden = filtroOrden.value;
+
+                    console.log("Criterio de orden:", criterioOrden); // Verifica si el evento se dispara correctamente
+
+                    if (criterioOrden === "sin-orden") {
+                        // Restaurar la lista original (sin orden)
+                        listaProfesionales.innerHTML = ""; // Vaciar la lista actual
+                        profesionales.forEach(function (profesional) {
+                            listaProfesionales.appendChild(profesional); // Agregar los elementos en su orden original
+                        });
+                    } else {
+                        profesionales.sort(function (a, b) {
+                            const valorA = a.getAttribute(`data-${criterioOrden}`);
+                            const valorB = b.getAttribute(`data-${criterioOrden}`);
+
+                            if (criterioOrden === "valoracion") {
+                                // Si es una ordenación numérica
+                                return parseFloat(valorB) - parseFloat(valorA);
+                            } else if (criterioOrden === "consulta") {
+                                // Si es una ordenación numérica
+                                const numeroA = parseInt(valorA);
+                                const numeroB = parseInt(valorB);
+
+                                if (!isNaN(numeroA) && !isNaN(numeroB)) {
+                                    return numeroA - numeroB;
+                                } else {
+                                    // Manejar valores no válidos, por ejemplo, colocarlos al final de la lista
+                                    return 0; // O cualquier otro valor apropiado
+                                }
+                            } else {
+                                // Si es una ordenación basada en cadenas de texto
+                                return valorB - valorA;
+                            }
+                        });
+
+                        console.log("Profesionales ordenados:", profesionales); // Verifica si la lista se ordena correctamente
+
+                        // Vaciar la lista actual y agregar los elementos ordenados nuevamente.
+                        listaProfesionales.innerHTML = "";
+                        profesionales.forEach(function (profesional) {
+                            listaProfesionales.appendChild(profesional);
+                        });
+                    }
+                });
+
+            });
+
+
+        </script>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/scripts.js"></script>
+
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    </body>
+</html>

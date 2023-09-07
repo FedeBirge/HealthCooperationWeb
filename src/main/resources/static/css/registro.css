@@ -9,7 +9,18 @@ and open the template in the editor.
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
+div span{
+    font-family: 'Poppins', sans-serif;
+}
+    div p{
+    font-family: 'Poppins', sans-serif;
+}
+    div h1 h2 h3 h4 h5 h6 h7{
+    font-family: 'Poppins', sans-serif;
+}
+    div a{
+    font-family: 'Poppins', sans-serif;
+}
 body{
     font-family: "Poppins", sans-serif;
 }
@@ -58,4 +69,77 @@ body{
     max-height: 200px;
     padding-bottom: 5px;
       
+}
+
+.contenedor{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.imgVolver{
+    height: 15px;
+    width: 25px;
+ margin-left: 20px;
+ margin-top: -10px;
+}
+
+.botonVolver{
+    border:none;
+    background-color: white;
+  
+}
+
+.btnVolver{
+    text-decoration: none;
+    color: black;
+    border: none;
+    margin-top: 10px;
+}
+
+.btnVolver:hover{
+    color: blue;
+    border:none;
+}
+
+.textoVolver{
+    font-weight: 700;
+}
+
+
+
+.titulo1{
+    margin-top: -100px;
+    font-size: 40px;
+   
+
+}
+.btnlogin {
+ display: flex;
+ height: 3em;
+ width: 100px;
+ align-items: center;
+ justify-content: center;
+ background-color: #eeeeee4b;
+ border-radius: 15px;
+ letter-spacing: 1px;
+ transition: all 0.2s linear;
+ cursor: pointer;
+ border: none;
+ background: #fff;
+ font-size: 20px;
+  margin-left: 10px;
+}
+
+.btnlogin > svg {
+ margin-right: 5px;
+ margin-left: 10px;
+ font-size: 20px;
+ transition: all 0.4s ease-in;
+}
+
+.btnlogin:hover > svg {
+ font-size: 1.2em;
+ transform: translateX(-5px);
 }

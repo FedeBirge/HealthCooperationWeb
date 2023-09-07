@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en"html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Profesional</title>
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <style>
+
+        </style>
+        <!-- Fuentes personalizadas-->
+        <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Css -->
+        <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+
+    </head>
+
+    <body id="page-top">
+
+        <!-- Contenedor de páginas-->
+        <div id="wrapper">
+
+            <!-- barra lateral -->
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+                <!-- Barra lateral - Marca -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/profesionales/dashboard}">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Profesional</div>
+                </a>
+
+                <!-- Divisor -->
+                <hr class="sidebar-divider my-0">
+
+                <!-- Panel -->
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}">
+
+                        <span>Home</span></a>
+                </li>
+
+                <!-- Divisor -->
+                <hr class="sidebar-divider">
+
+             
+                <!-- Elemento de navegación - Menú Contraer utilidades -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-hospital-user"></i>
+                        <span>Agenda</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" th:href="@{/agenda/verAgenda/__${log.id}__}">Ver Mi Agenda</a>
+
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Oferta y Disponibilidad</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
+
+
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Mis Pacientes</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+            </ul>
+            <!-- Fin de la barra lateral -->
+            <!-- Contenedor de contenido -->
+            <div id="content-wrapper" class="d-flex flex-column">
+                <!-- Contenido principal -->
+                <div id="content">
+                    <!-- Barra superior -->
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                        <!-- Alternar barra lateral (barra superior) -->
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <!-- Barra superior Barra de navegación -->
+                        <ul class="navbar-nav ml-auto">
+                            <div class="topbar-divider d-none d-sm-block"></div>
+                            <!--Información del usuario -->
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
+                                    <img class="/img-profile rounded-circle"
+                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
+                                </a>
+                                <!-- Menú desplegable - Información del usuario-->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                     aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Perfil
+                                    </a>
+                                    <a class="dropdown-item" th:href="@{/inicio}">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Mi Área
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar sesión
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- Fin de la barra superior -->
+                    <!-- Comenzar contenido de la página -->
+                    <div class="container-fluid">
+                        <div class="container-fluid">
+                        </div>
+                        <!-- Encabezado de página -->
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Mi Agenda en bloques semanales</h1>
+                        </div>
+                        <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Error!</h5>
+                                <p class="card-text text-center" th:text="${error}"></p>
+                            </div>
+                        </div>
+                        <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Exito!</h5>
+                                <p class="card-text text-center" th:text="${exito}"></p>
+                            </div>
+                        </div> 
+                        <div th:if="${vacia != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Atencion!</h5>
+                                <p class="card-text text-center" th:text="${vacia}"></p>
+                            </div>
+                        </div> 
+                    </div>
+                    <!-- Pending Requests Card Example -->
+                    <div class="col-xl-4 col-md-7 mb-5">
+                    </div>                    
+                    <form th:action="@{/agenda/editar/__${log.id}__}" method="POST" enctype="multipart/form-data">
+                        <!-- Collapsable Card Example -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Agenda
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editarActual/__${log.id}__}">Semana Actual</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editar/__${log.id}__}">Todas las semanas</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarSemanaActual">Cancelar Semana Actual</a> 
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarTodo">Cancelar Todos los Turnos</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#agregarSemanas">Agregar Semanas</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#">Eliminar Agenda</a>
+
+
+                            </div>
+
+                            <div th:if="${semanas!= null}" class="card-body">
+                                <div class="row gy-3">
+                                    <div class="col-md">
+
+
+                                        <div class="scroll-buttons">
+                                            <button type="button" class="scroll-button btn btn-success" id="scroll-left">←</button>
+                                            <div class="lista-horizontal" id="scroll-container">
+
+
+                                                <ul class="lista" th:each="semana : ${semanas}">
+
+                                                    <li  style="display: inline-block; margin-right: 10px;">
+
+
+
+                                                        <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
+
+                                                            <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
+                                                            <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
+                                                            <ul >
+                                                                <li th:each="turno,index : ${entry.value.turnos}" class="turno-item">
+
+                                                                    <button block
+                                                                            th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
+                                                                            (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-secondary' : 
+                                                                            (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
+                                                                            th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
+                                                                        <span th:text="${turno.hora}"></span>
+                                                                    </button>
+
+
+
+                                                                    <!-- Lista desplegable de estados para el turno -->
+                                                                    <select  name="turnoList" th:value="${turno.id} + ',' + ${turno.estado}" class="estado-select form-control" style="width: auto; display: inline">
+                                                                        <option  th:value="${turno.id} + ',' + ${turno.estado}" th:text="${turno.estado}" ></option>
+                                                                        <option th:each="estado : ${estados}" th:value="${turno.id} + ',' + ${estado}" th:text="${estado}"></option>
+
+                                                                    </select>
+
+                                                                </li>
+
+                                                            </ul>
+                                                        </ul>
+
+                                                    </li>                                           
+
+                                                </ul>
+                                            </div>
+                                            <button type="button" class="scroll-button btn btn-success" id="scroll-right">→</button>
+                                        </div>
+
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                            const scrollContainer = document.getElementById("scroll-container");
+                                            const scrollLeftButton = document.getElementById("scroll-left");
+                                            const scrollRightButton = document.getElementById("scroll-right");
+
+                                            scrollLeftButton.addEventListener("click", function () {
+                                            scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
+                                            });
+
+                                            scrollRightButton.addEventListener("click", function () {
+                                            scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
+                                            });
+                                            });
+                                        </script>
+
+
+
+                                        <div class="d-grid gap-2 col-12 mx-auto text-center">
+                                            <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>
+                                        </div>
+
+                                        </form>
+                                        <script th:inline="javascript">
+                                            /* Función para mostrar la lista desplegable de estados y el botón "Guardar cambios" para el turno específico */
+                                            function mostrarEstados(boton) {
+                                            /* Encuentra el elemento padre <li> que contiene los elementos relacionados con el turno */
+                                            var liElement = boton.closest('.turno-item');
+
+                                            /* Encuentra la lista desplegable y el botón "Guardar cambios" dentro del <li> */
+                                            var selectEstado = liElement.querySelector('.estado-select');
+                                            var botonGuardarCambios = liElement.querySelector('.btn-primary');
+
+                                            /* Mostrar la lista desplegable y el botón "Guardar cambios" */
+                                            selectEstado.style.display = 'inline-block';
+                                            botonGuardarCambios.style.display = 'inline-block';
+
+                                            /* Cuando el usuario seleccione un estado, puedes realizar la lógica necesaria aquí */
+                                            /* Por ejemplo, puedes enviar una solicitud al servidor para actualizar el estado del turno. */
+                                            }
+                                        </script>
+
+
+                                        <!-- Fin del contenido principal -->
+                                        <!-- Footer -->
+                                        <footer class="sticky-footer bg-white">
+                                            <div class="container my-auto">
+                                                <div class="copyright text-center my-auto">
+                                                    <span>HealtCooperationWeb ©2023</span>
+                                                </div>
+                                            </div>
+                                        </footer>
+                                        <!-- Fin del Footer -->
+                                    </div>
+                                </div>                
+                                <!-- Fin del contenedor de contenido -->
+                            </div>
+                            <!-- Envoltura de fin de página -->
+                            <!-- Desplácese hasta el botón superior-->
+                            <a class="scroll-to-top rounded" href="#page-top">
+                                <i class="fas fa-angle-up"></i>
+                            </a>
+                            <!-- Cierre de sesión modal-->
+                            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                            <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- -->
+
+                            <div class="modal fade" id="cancelarSemanaActual" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres cancelar los turnos de tu semana actual?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Cancelar" a continuación si está listo para cancelar los turnos de la semana actual.</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-success" type="button" data-dismiss="modal">Conservar</button>
+                                            <a class="btn btn-danger" th:if="${semanas != null}" th:href="@{/turno/cancelarSemana/__${log.id}__}">Cancelar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="cancelarTodo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres cancelar todos los turnos?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Cancelar" a continuación si está listo para cancelar todos los turnos.</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-success" type="button" data-dismiss="modal">Conservar</button>
+                                            <a class="btn btn-danger" th:if="${semanas != null}" th:href="@{/turno/cancelarTodos/__${log.id}__}">Cancelar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="agregarSemanas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres agregar mas semanas?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Agregar" a continuación si está listo. Se agregan 3 semanas a su agenda.</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                            <a class="btn btn-danger" th:if="${semanas != null}" th:href="@{/agenda/agregar/__${log.id}__}"><span class="text-center">Agregar </span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bootstrap core JavaScript-->
+                            <script src="/vendor/jquery/jquery.min.js"></script>
+                            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+                            <!-- Core plugin JavaScript-->
+                            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+                            <!-- Custom scripts for all pages-->
+                            <script src="/js/sb-admin-2.min.js"></script>
+
+                            <!-- Page level plugins -->
+                            <script src="/vendor/chart.js/Chart.min.js"></script>
+
+                            <!-- Page level custom scripts -->
+                            <script src="/js/demo/chart-area-demo.js"></script>
+                            <script src="/js/demo/chart-pie-demo.js"></script>
+
+                            </body>
+
+                            </html>

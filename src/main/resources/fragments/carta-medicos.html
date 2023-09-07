@@ -1,0 +1,389 @@
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+.carta-medico {
+    
+    background-color: #f2f2f2;
+    border: 1px solid #333; 
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    padding: 0;
+    width: fit-content;
+    margin: 0;
+    
+}
+section {
+    margin: 0;
+    padding: 0 10px;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    min-height: 50vh;
+}
+
+.wrapper {
+    width: 385px;
+    height: 470px;
+    background: #fff;
+    border: 1px solid #333; 
+    border-radius: 10px;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 20px; 
+}
+
+.wrapper h1 {
+    font-size: 24px; /* Tamaño de fuente */
+    color: #333; /* Color del texto */
+    text-align: center; /* Alineación del texto */
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.column-divider-table {
+    border-collapse: collapse;
+  }
+  
+  
+  .column-divider-table td {
+    padding: 8px;
+    text-align: center;
+  }
+  
+  
+  .column-divider-table td:not(:last-child) {
+    border-right: 1px solid black;
+  }
+
+button {
+    width: 60px;
+    height: 30px;
+    border: 2px solid #315cfd;
+    border-radius: 1px;
+    transition: all 0.3s;
+    cursor: pointer;
+    background: white;
+    font-size: 1em;
+    font-weight: 550;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  button:hover {
+    background: #315cfd;
+    color: white;
+    font-size: 0.8em;
+  }
+
+.btn-reserve:hover {
+    background-color: #0056b3;
+}
+.container form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.container {
+    color: #333;
+    font-size: 1rem; /* Ajusta el tamaño de fuente de los días */
+
+}
+.container label {
+    display: flex;
+    cursor: pointer;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.375em;
+}
+
+.container  label input {
+    position: absolute;
+    left: -9999px;
+}
+
+.container label input:checked + span {
+    background-color: #414181;
+    color: white;
+}
+
+.container label input:checked + span:before {
+    box-shadow: inset 0 0 0 0.4375em #00005c;
+}
+
+.container label span {
+    display: flex;
+    align-items: center;
+    padding: 0.375em 0.75em 0.375em 0.375em;
+    border-radius: 99em;
+    transition: 0.25s ease;
+    color: 333;
+}
+
+.container label span:hover {
+    background-color: #d6d6e5;
+}
+
+.container label span:before {
+    display: flex;
+    flex-shrink: 0;
+    content: "";
+    background-color: #fff;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    margin-right: 0.375em;
+    transition: 0.25s ease;
+    box-shadow: inset 0 0 0 0.125em #00005c;
+}
+.card {
+    top: 20px;
+    margin-left: 5px;
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background-color: #f2f2f2;
+    border: 1px solid #333; /* Add border style */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    perspective: 1000px;
+    box-shadow: 0 0 0 5px #ffffff80;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card svg {
+    width: 48px;
+    fill: #333;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+}
+
+.card__content {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f2f2f2;
+    transform: rotateX(-90deg);
+    transform-origin: bottom;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover .card__content {
+    transform: rotateX(0deg);
+}
+
+.card__title {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    font-weight: 700;
+}
+
+.card:hover svg {
+    scale: 0;
+}
+
+.card__description {
+    margin: 10px 0 0;
+    font-size: 14px;
+    color: #777;
+    line-height: 1.4;
+}
+
+.rating {
+    top: 150px;
+    margin-left: 5px;
+    position: relative;
+    border: 1px solid #333; /* Add border style */
+    border-radius: 10px;
+    padding: 10px; /* Add some padding */
+}
+
+.rating:not(:checked) > input {
+  position: absolute;
+  appearance: none;
+}
+
+.rating:not(:checked) > label {
+  float: right;
+  cursor: pointer;
+  font-size: 67px;
+  color: #666;
+}
+
+.rating:not(:checked) > label:before {
+  content: '★';
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+  color: #e58e09;
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+  color: #ff9e0b;
+}
+
+.rating > input:checked ~ label {
+  color: #ffa723;
+}
+  </style>
+  <div class="carta-medico">
+    <section>
+        <div class="card">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
+            <div class="card__content">
+                <p class="card__title">Nombre del medico</p>
+                <p class="card__description">Descripcion</p>
+            </div>
+        </div>
+        <div class="rating">
+          <input value="5" name="rate" id="star5" type="radio">
+          <label title="text" for="star5"></label>
+          <input value="4" name="rate" id="star4" type="radio">
+          <label title="text" for="star4"></label>
+          <input value="3" name="rate" id="star3" type="radio" checked="">
+          <label title="text" for="star3"></label>
+          <input value="2" name="rate" id="star2" type="radio">
+          <label title="text" for="star2"></label>
+          <input value="1" name="rate" id="star1" type="radio">
+          <label title="text" for="star1"></label>
+      </div>
+        <div class="wrapper">
+            <h1>Selecciona el dia y horario</h1>
+            <table class="column-divider-table">
+                <thead>
+                    <tr>
+                        <th>Lun</th>
+                        <th>Mar</th>
+                        <th>Mie</th>
+                        <th>Jue</th>
+                        <th>Vie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="pure-table-odd">
+                        <td><button>8:30</button></td>
+                        <td><button>8:30</button></td>
+                        <td><button>8:30</button></td>
+                        <td><button>8:30</button></td>
+                        <td><button>8:30</button></td>
+                    </tr>
+                    <tr>
+                        <td><button>9:00</button></td>
+                        <td><button>9:00</button></td>
+                        <td><button>9:00</button></td>
+                        <td><button>9:00</button></td>
+                        <td><button>9:00</button></td>
+                    </tr>
+                    <tr class="pure-table-odd">
+                        <td><button>9:30</button></td>
+                        <td><button>9:30</button></td>
+                        <td><button>9:30</button></td>
+                        <td><button>9:30</button></td>
+                        <td><button>9:30</button></td>
+                    </tr>
+                    <tr>
+                        <td><button>10:00</button></td>
+                        <td><button>10:00</button></td>
+                        <td><button>10:00</button></td>
+                        <td><button>10:00</button></td>
+                        <td><button>10:00</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    </div>
+    <script>
+        const daysTag = document.querySelector(".days"),
+currentDate = document.querySelector(".current-date"),
+prevNextIcon = document.querySelectorAll(".icons span");
+
+// getting new date, current year and month
+let date = new Date(),
+currYear = date.getFullYear(),
+currMonth = date.getMonth();
+
+// storing full name of all months in array
+const months = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"];
+
+const renderCalendar = () => {
+    let firstDayofMonth = new Date(currYear, currMonth, 1).getDay(), // getting first day of month
+    lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(), // getting last date of month
+    lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(), // getting last day of month
+    lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate(); // getting last date of previous month
+    let liTag = "";
+
+    for (let i = firstDayofMonth; i > 0; i--) { // creating li of previous month last days
+        liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
+    }
+
+    for (let i = 1; i <= lastDateofMonth; i++) { // creating li of all days of current month
+        // adding active class to li if the current day, month, and year matched
+        let isToday = i === date.getDate() && currMonth === new Date().getMonth() 
+                     && currYear === new Date().getFullYear() ? "active" : "";
+        liTag += `<li class="${isToday}">${i}</li>`;
+    }
+
+    for (let i = lastDayofMonth; i < 6; i++) { // creating li of next month first days
+        liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
+    }
+    currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
+    daysTag.innerHTML = liTag;
+}
+renderCalendar();
+
+prevNextIcon.forEach(icon => { // getting prev and next icons
+    icon.addEventListener("click", () => { // adding click event on both icons
+        // if clicked icon is previous icon then decrement current month by 1 else increment it by 1
+        currMonth = icon.id === "prev" ? currMonth - 1 : currMonth + 1;
+
+        if(currMonth < 0 || currMonth > 11) { // if current month is less than 0 or greater than 11
+            // creating a new date of current year & month and pass it as date value
+            date = new Date(currYear, currMonth, new Date().getDate());
+            currYear = date.getFullYear(); // updating current year with new date year
+            currMonth = date.getMonth(); // updating current month with new date month
+        } else {
+            date = new Date(); // pass the current date as date value
+        }
+        renderCalendar(); // calling renderCalendar function
+    });
+});
+
+ document.addEventListener("DOMContentLoaded", function() {
+        const calendarDays = document.getElementById("calendarDays").querySelectorAll("li");
+        const reservarBtn = document.getElementById("reservarBtn");
+        const appointmentWindow = document.getElementById("horarios");
+
+        calendarDays.forEach(day => {
+            day.addEventListener("click", function() {
+                // Display the appointment window with animation
+                appointmentWindow.classList.add("show");
+            });
+        });
+
+        reservarBtn.addEventListener("click", function() {
+            // Hide the appointment window with animation
+            appointmentWindow.classList.remove("show");
+        });
+    });
+    </script>

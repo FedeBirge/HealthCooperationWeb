@@ -78,7 +78,18 @@
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff3cd;
 }
-
+div span{
+    font-family: 'Poppins', sans-serif;
+}
+    div p{
+    font-family: 'Poppins', sans-serif;
+}
+    div h1 h2 h3 h4 h5 h6 h7{
+    font-family: 'Poppins', sans-serif;
+}
+    div a{
+    font-family: 'Poppins', sans-serif;
+}
 *,
 *::before,
 *::after {
@@ -492,42 +503,35 @@ progress {
   font-size: 1.25rem;
   font-weight: 300;
 }
-.button {
-  position: relative;
-  overflow: hidden;
-  height: 3rem;
-  padding: 0 2rem;
-  border-radius: 1.5rem;
-  background: #3d3a4e;
-  background-size: 400%;
-  color: #fff;
-  border: none;
-  margin-top: 2rem;
+.cssbuttons-io-button {
+    display: flex;
+    align-items: center;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 17px;
+    padding: 0.8em 1.5em 0.8em 1.2em;
+    color: black;
+    background: white;
+    border: none;
+    box-shadow: 0 0.7em 1.5em -0.5em 3d3a4e;
+    letter-spacing: 0.05em;
+    border-radius: 20em;
+    margin-top: 2rem;
+    text-decoration: none;
 }
 
-.button:hover::before {
-  transform: scaleX(1);
+.cssbuttons-io-button svg {
+    margin-right: 8px;
 }
 
-.button-content {
-  position: relative;
-  z-index: 1;
+.cssbuttons-io-button:hover {
+    box-shadow: 0 0.5em 1.5em -0.5em #4d36d0be;
 }
 
-.button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  width: 100%;
-  height: inherit;
-  border-radius: inherit;
-  background: linear-gradient(135deg, #32be8f 10.8%, #38d39f 94.3%);
-  );
-  transition: all 0.475s;
+.cssbuttons-io-button:active {
+    box-shadow: 0 0.3em 1em -0.5em #4d36d0be;
 }
+
 .display-1 {
   font-size: calc(1.625rem + 4.5vw);
   font-weight: 300;
@@ -2458,7 +2462,7 @@ textarea.form-control-lg {
 .form-floating > .form-control,
 .form-floating > .form-control-plaintext,
 .form-floating > .form-select {
-  height: 5.5rem;
+  height: 4rem;
   line-height: 1.25;
 }
 .form-floating > label {
@@ -10891,7 +10895,19 @@ html {
     line-height: 2.5rem;
   }
 }
-
+.page-section1 {
+  padding: 1.3rem 0;
+}
+.page-section1 .page-section-heading1 {
+  font-size: 2.25rem;
+  line-height: 2rem;
+}
+@media (min-width: 992px) {
+  .page-section1 .page-section-heading1 {
+    font-size: 3rem;
+    line-height: 2.5rem;
+  }
+}
 .divider-custom {
   margin: 1.25rem 0 1.5rem;
   width: 100%;
@@ -11033,7 +11049,7 @@ html {
 
 @media (min-width: 992px) {
   .masthead {
-    padding-top: calc(6rem + 104px);
+    padding-top: calc(6rem + 20px);
     padding-bottom: 6rem;
   }
   .masthead .masthead-heading {
@@ -11093,3 +11109,117 @@ html {
 .copyright {
   background-color: #1a252f;
 }
+
+a{
+    text-decoration: none;
+}
+.select-container {
+    width: 600px; /* ajusta el ancho según tus necesidades */
+    margin-left: auto;
+    margin-right: auto;
+}
+.select-container .d-flex {
+    
+    justify-content: center;
+     
+}
+
+.select-container select {
+    border-radius: 1;
+    /* Otros estilos personalizados */
+}
+.btn.btn-outline-secondary {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: none; /* Elimina el borde */
+    border-radius: 1; /* Elimina los bordes redondeados */
+    color: #333;
+    background-color: #32be8f; /* Cambia el color de fondo al deseado */
+}
+
+.container-at-top{
+     margin-top: 110px;
+}
+
+.layout {
+  width: 1366px;
+  height: 768px;
+
+  display: grid;
+  grid:
+    "header" auto
+    "main" 1fr
+    "footer" auto
+    / 1fr;
+  gap: 8px;
+}
+
+.header { grid-area: header; }
+.main { grid-area: main; }
+.footer { grid-area: footer; }
+
+.error{
+  color: #5a5c69;
+    font-size: 7rem; /* Agregar unidades, por ejemplo, px o rem */
+    position: relative;
+    line-height: 1;
+    width: 12.5rem; /* Agregar unidades, por ejemplo, px o rem */
+}
+
+.mr-auto,
+.mx-auto {
+    margin-right: auto !important
+}
+
+
+.ml-auto,
+.mx-auto {
+    margin-left: auto !important
+}
+
+.botonIndex {
+ 
+  padding: 1.3em;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+    margin-left: 10px;
+  margin-top: 20px;
+}
+
+.botonIndex:hover {
+  background-color: #2c3e50;
+box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #fff;
+  transform: translateY(-3px);
+  
+}
+
+.botonIndex:active {
+ransform: translateY(-1px);
+}
+

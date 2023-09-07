@@ -1,6 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
-
+div span{
+    font-family: 'Poppins', sans-serif;
+}
+    div p{
+    font-family: 'Poppins', sans-serif;
+}
+    div h1 h2 h3 h4 h5 h6 h7{
+    font-family: 'Poppins', sans-serif;
+}
+    div a{
+    font-family: 'Poppins', sans-serif;
+}
 .input-div > .w50 {
     position: relative;
 }
@@ -34,14 +45,14 @@
 }
 
 body, h1, h2, h3, p, a, span
- {
+{
     font-family: "Poppins", sans-serif;
-   
+
     font-size: 0.9rem;
-  }
+}
 
 
-  
+
 section
 {
     display: flex;
@@ -52,32 +63,32 @@ section
 }
 section::before
 {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 50%;
-height: 100%;
-background: #00c3a5;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: #00c3a5;
 }
 .container
 {
     position:relative;
-    min-width: 1100px;
+    min-width: 1175px;
     min-height: 550px;
     display: flex;
     z-index: 1000;
-    
+
 }
 .container .contactoInfo
 {
     position: absolute;
     top: 40px;
-    width: 350px;
+    width: 390px;
     height: calc(100% - 88px);
     background: #00c3a5;
     z-index: 1;
-    padding: 30px;
+    padding: 20px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -117,9 +128,9 @@ background: #00c3a5;
 }
 .container .contactoInfo ul.info li span:nth-child(2)
 {
-   color: #fff;
-   margin-left: 10px;
-   font-weight: 300; 
+    color: #fff;
+    margin-left: 10px;
+    font-weight: 300; 
 }
 .container .contactoInfo ul.sci
 {
@@ -129,8 +140,8 @@ background: #00c3a5;
 }
 .container .contactoInfo ul.sci li
 {
-list-style: none;
-margin-right: 15px;
+    list-style: none;
+    margin-right: 15px;
 }
 .container .contactoInfo ul.sci li a
 {
@@ -206,21 +217,21 @@ margin-right: 15px;
     position: absolute;
     left: 0;
     padding: 5px 0;
-pointer-events: none;
-font-size: 18px;
-font-weight: 300;
-transition: 0.3s;
+    pointer-events: none;
+    font-size: 18px;
+    font-weight: 300;
+    transition: 0.3s;
 }
 .container .contanctoFormulario .formulariobox .inputbox input:focus ~ span,
 .container .contanctoFormulario .formulariobox .inputbox input:valid ~ span,
 .container .contanctoFormulario .formulariobox .inputbox textarea:focus ~ span,
 .container .contanctoFormulario .formulariobox .inputbox textarea:valid ~ span
 {
-transform: translateY(-20px);
-font-size: 12px;
-font-weight: 400;
-letter-spacing: 1px;
-color: #095a55;
+    transform: translateY(-20px);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #095a55;
 }
 .container .contanctoFormulario .formulariobox .inputbox input[type="submit"]
 {
@@ -246,3 +257,70 @@ color: #095a55;
 }
 .rounded-box {
     border-radius: 10px; }
+
+.contenedor{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.imgVolver{
+    height: 40px;
+    width: 30px;
+}
+
+.botonVolver{
+    margin-right: 200px;
+    margin-top: 15px;
+    height: 50px;
+    width: 200px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+    background-size: 200%;
+    
+ 
+    font-family: "Poppins", sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.botonVolver1{
+      margin-right: 10px;
+    margin-top: 15px;
+    height: 50px;
+    width: 200px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+    background-size: 200%;
+    
+ 
+    font-family: "Poppins", sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.btnVolver{
+    text-decoration: none;
+    color: black;
+    border: none;
+}
+
+.btnVolver:hover{
+    color: blue;
+    border:none;
+}
+
+.textoVolver{
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.textoVolver:hover{
+    color: #fff;
+}

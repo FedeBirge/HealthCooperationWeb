@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <meta name="description" content="" />
+            <meta name="author" content="" />
+            <title>Health Cooperation</title>
+            <!-- Favicon-->
+            <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+
+            <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+            <!-- Google fonts-->
+            <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+            <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+
+            <link href="/css/styles.css" rel="stylesheet" />
+        </head>
+        <body id="page-top">
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+                <div class="container">
+                    <a class="navbar-brand" href="#page-top">
+                        <img src="/assets/img/biomedical (2).svg" alt="Logo" class="navbar-logo">
+                        <span class="navbar-logo-text">Health Cooperation</span>
+                    </a>
+                    <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        Menu
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">Especialidades</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">About</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contactanos</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}" th:href="@{/paciente/registrar}">Registrarme</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}"  th:href="@{/login}">Login</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"  th:href="@{/email/contacto}">Eres un doctor?</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/logout}">Log out</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/inicio}">Perfil</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Masthead-->
+            <header class="masthead bg-primary text-white text-center">
+                <div class="container d-flex align-items-center flex-column">
+                    <!-- Masthead Avatar Image-->
+                    <img class="masthead-avatar mb-5" src="/assets/img/avatares.png" alt="..." />
+                    <!-- Masthead Heading-->
+                    <p class="error" th:text="'Error ' + ${codigo}" ></p>
+                    <p class="textError"  th:text="${mensaje}"></p>
+                    <!-- Icon Divider-->
+                    <div class="divider-custom divider-light">
+                        <div class="divider-custom-line"></div>
+
+                        <div class="divider-custom-line"></div>
+                    </div>
+                   
+                    
+                    
+                    
+                    
+                    <a class="cssbuttons-io-button aTurno" th:href="@{/}">
+ <path d="M0 0h24v24H0z" fill="none"></path><path d="M1 14.5a6.496 6.496 0 0 1 3.064-5.519 8.001 8.001 0 0 1 15.872 0 6.5 6.5 0 0 1-2.936 12L7 21c-3.356-.274-6-3.078-6-6.5zm15.848 4.487a4.5 4.5 0 0 0 2.03-8.309l-.807-.503-.12-.942a6.001 6.001 0 0 0-11.903 0l-.12.942-.805.503a4.5 4.5 0 0 0 2.029 8.309l.173.013h9.35l.173-.013zM13 12h3l-4 5-4-5h3V8h2v4z" fill="currentColor"></path></svg>
+  <span>Volver</span>
+                    </a>
+                </div>
+            </header>
+            
+            
+        
+        
+        <!-- Footer-->
+        <footer class="footer text-center">
+            <div class="container">
+                <div class="row">
+                    <!-- Footer Location-->
+                    <div class="col-lg-4 mb-5 mb-lg-0">
+                        <h4 class="text-uppercase mb-4">Direccion</h4>
+                        <p class="lead mb-0">
+                            Buenos Aires, Argentina
+                            <br />
+                            Av.Panamericana
+                        </p>
+                    </div>
+                    <!-- Footer Social Icons-->
+                    <div class="col-lg-4 mb-5 mb-lg-0">
+                        <h4 class="text-uppercase mb-4">Redes</h4>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-dribbble"></i></a>
+                    </div>
+                    <!-- Footer About Text-->
+                    <div class="col-lg-4">
+                        <h4 class="text-uppercase mb-4">Proyecto Final Egg</h4>
+                        <p class="lead mb-0">
+                            Proyecto Final Grupo 3
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Copyright Section-->
+        <div class="copyright py-4 text-center text-white">
+            <div class="container"><small>HealtCooperationWeb ©2023</small></div>
+        </div>
+        
+        
+        
+       
+          <script src="/vendor/jquery/jquery.min.js"></script>
+                        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+                        <!-- Core plugin JavaScript-->
+                        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+                        <!-- Custom scripts for all pages-->
+                        <script src="/js/sb-admin-2.min.js"></script>
+
+                        <!-- Page level plugins -->
+                        <script src="/vendor/chart.js/Chart.min.js"></script>
+
+                        <!-- Page level custom scripts -->
+                        <script src="/js/demo/chart-area-demo.js"></script>
+                        <script src="/js/demo/chart-pie-demo.js"></script>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/scripts.js"></script>
+
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    </body>
+</html>

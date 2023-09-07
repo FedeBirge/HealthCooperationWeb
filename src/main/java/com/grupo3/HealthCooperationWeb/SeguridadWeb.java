@@ -21,8 +21,8 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        // acá le digo qué servicio debe usar para autenticar un usuario
         auth.userDetailsService(usuarioServicio).passwordEncoder(new BCryptPasswordEncoder());
-
     }
 
     @Override

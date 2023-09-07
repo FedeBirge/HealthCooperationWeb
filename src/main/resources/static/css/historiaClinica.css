@@ -1,0 +1,139 @@
+div span{
+    font-family: 'Poppins', sans-serif;
+}
+    div p{
+    font-family: 'Poppins', sans-serif;
+}
+    div h1 h2 h3 h4 h5 h6 h7{
+    font-family: 'Poppins', sans-serif;
+}
+    div a{
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: #32be8f;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.nav-left img {
+    width: 30px;
+    height: 30px;
+}
+
+.nav-right a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.search {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+.search label {
+    font-weight: bold;
+}
+
+.search input[type="date"],
+.search input[type="text"],
+.search select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#search-btn {
+    background-color: #32be8f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#search-btn:hover {
+    background-color: #2a9e74;
+}
+
+.results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.patient-card {
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.patient-info {
+    text-align: center;
+}
+
+.patient-avatar {
+    max-width: 100px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+}
+
+.patient-card h2 {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.patient-card p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.patient-files a {
+    background-color: #32be8f;
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.patient-files a:hover {
+    background-color: #2a9e74;
+}
+
+.footer {
+    background-color: #f7f7f7;
+    padding: 20px;
+    text-align: center;
+}
+
+.social-icons a {
+    margin-right: 10px;
+}
+
+.footer h5 {
+    margin-top: 10px;
+}

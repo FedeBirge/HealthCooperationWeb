@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en"html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Profesional</title>
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <!-- Fuentes personalizadas-->
+        <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Css -->
+        <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+    </head>
+
+    <body id="page-top">
+
+        <!-- Contenedor de páginas-->
+        <div id="wrapper">
+
+            <!-- barra lateral -->
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+                <!-- Barra lateral - Marca -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Administrador</div>
+                </a>
+
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('USUARIO')">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Paciente</div>
+                </a>
+
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('MODERADOR')">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Profesional</div>
+                </a>
+
+
+                <!-- Divisor -->
+                <hr class="sidebar-divider my-0">
+
+                <!-- Panel -->
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}">
+
+                        <span>Home</span></a>
+                </li>
+
+                <!-- Divisor -->
+
+
+                <!-- Heading -->
+
+
+
+
+                <!-- Elemento de navegación - Menú Contraer utilidades -->
+
+                <li sec:authorize="hasRole('USUARIO')" class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Perfíl</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a sec:authorize="hasRole('USUARIO')" class="collapse-item" th:href="@{/inicio}">Ver mi perfil</a>
+                            <a class="collapse-item" th:href="@{/user/perfil/__${log.id}__}">Modificar mi Perfil</a>
+                            <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}" sec:authorize="hasRole('USUARIO')">Ver mis Turnos</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-hospital-user"></i>
+                        <span>Agenda</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" th:href="@{/agenda/verAgenda/__${log.id}__}">Ver Mi Agenda</a>
+
+
+                        </div>
+                    </div>
+                </li>
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Oferta y Disponibilidad</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
+
+
+                        </div>
+                    </div>
+
+                </li>
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+
+                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Mis Pacientes</a>
+
+                        </div>
+                    </div>
+
+                </li>
+
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+            </ul>
+            <!-- Fin de la barra lateral -->
+
+            <!-- Contenedor de contenido -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Contenido principal -->
+                <div id="content">
+
+                    <!-- Barra superior -->
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                        <!-- Alternar barra lateral (barra superior) -->
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+
+
+                        <!-- Barra superior Barra de navegación -->
+                        <ul class="navbar-nav ml-auto">
+
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <!--Información del usuario -->
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
+                                    <img class="/img-profile rounded-circle"
+                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
+                                </a>
+                                <!-- Menú desplegable - Información del usuario-->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                     aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Perfil
+                                    </a>
+                                    <a class="dropdown-item" th:href="@{/inicio}">
+
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Mi Área
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar sesión
+                                    </a>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </nav>
+                    <!-- Fin de la barra superior -->
+
+
+                    <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Error!</h5>
+                            <p class="card-text text-center" th:text="${error}"></p>
+                        </div>
+                    </div>
+                    <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Exito!</h5>
+                            <p class="card-text text-center" th:text="${exito}"></p>
+                        </div>
+                    </div> 
+                    <!-- Comenzar contenido de la página -->
+
+                    <div class="container-fluid">
+
+                        <h1 >Historia Clinica</h1>
+
+                        <a type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Ir al panel</a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verHoy/__${log.id}__}">Turnos Hoy</a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verSemana/__${log.id}__}">Turnos Semana</a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/verTodos/__${log.id}__}"> Ver Todos </a>
+                        <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/paciente/listar}">Volver</a>
+                        <div class="cardx">
+
+                            <div class="card-1">
+                                <img class="img-profile " 
+                                     th:src="@{/imagen/perfil/__${user.id}__}" 
+                                     style="max-width: 100%; max-height: 150px;">
+                            </div>
+                            <div class="right">
+                                <div class="card-2">
+                                    <span class="badge bg-success text-white">Nombre</span> <span th:text=" ${user.nombre}"></span>
+                                </div>
+                                <div class="card-2">
+                                    <span class="badge bg-success text-white">Apellido</span> <span th:text=" ${user.apellido}"></span>
+                                </div>
+                                <div class="card-2">
+                                    <span class="badge bg-success text-white">Direccion</span> <span th:text=" ${user.direccion}"></span>
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">Telefono</span> <span th:text=" ${user.telefono}">
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">Obra Social</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.obraSocial.nombre}"></span>
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">Nacimiento</span> <span th:text=" ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></span>
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">Email</span> <span th:text=" ${user.email}"></span>
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">DNI</span> <span th:text=" ${user.dni}">
+                                </div>
+                                <div class="card-3">
+                                    <span class="badge bg-success text-white">Grupo Sanguíneo</span> <span th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text=" ${user.grupoSanguineo}"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div> 
+
+                        <!-- a verse que pondre aqui -->
+                        <h1>Lista de Fichas</h1>
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Anotaciones</th>                                        
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr th:if="${historia} != null" th:each="ficha : ${historia.fichas}">
+                                    <td th:text="${#dates.format(ficha.fecha_consulta, 'dd-MM-yyyy')}"></td>
+
+                                    <td th:text="${ficha.nota}"></td>
+                              
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <a type="button" class="btn btn-success me-md-2 agregar">Agregar Ficha</a>
+                        <form th:action="@{/ficha/guardar/__${user.id}__}" method="POST">
+                            <div name="nota" id="fichaForm" style="display: none;">
+                                <textarea class="form-control inputEstilos" name="nota" id="fichaTextArea"></textarea>
+                                <div>
+                                    <button class="btn btn-success" id="guardarBtn">Guardar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="table-responsive">
+                            <!-- Contenido de la tabla aquí -->
+                        </div>
+
+                        <div id="savePopup" class="confirmation-popup" style="display: none;">
+                            <p>¿Estás seguro de que quieres guardar esta ficha?</p>
+                            <button id="confirmButton" class="btn btn-success">Confirmar</button>
+                            <button id="cancelButton" class="btn btn-danger">Cancelar</button>
+                        </div>
+
+                        <div id="overlay" style="display: none;"></div>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const agregarBtns = document.getElementsByClassName("agregar");
+                                for (const agregarBtn of agregarBtns) {
+                                    agregarBtn.addEventListener("click", function () {
+                                        document.getElementById('fichaForm').style.display = "block";
+                                    });
+                                }
+
+                                document.getElementById("guardarBtn").addEventListener("click", function () {
+                                    // Debes proporcionar userId aquí o utilizar otro método para obtenerlo
+                                    const userId = getUserId();
+                                    showSavePopup(userId);
+                                });
+
+                                document.getElementById("confirmButton").addEventListener("click", function () {
+                                    confirmSave();
+                                });
+
+                                document.getElementById("cancelButton").addEventListener("click", function () {
+                                    cancelSave();
+                                });
+                                document.getElementById("guardarBtn").addEventListener("click", function (event) {
+                                    event.preventDefault(); // Evita el comportamiento predeterminado del formulario
+                                    const userId = getUserId();
+                                    showSavePopup(userId);
+                                });
+
+                                function showSavePopup() {
+                                    document.getElementById('overlay').style.display = 'block';
+                                    document.getElementById('savePopup').style.display = 'block';
+                                }
+
+                                function getUserId() {
+                                    // Aquí debes proporcionar el valor de userId, ya sea a través de un atributo de datos o de alguna otra manera.
+                                    // Ejemplo:
+                                    // return document.getElementById('agregarBtn').getAttribute('data-user-id');
+                                }
+
+                                function cancelSave() {
+                                    closeSavePopup();
+                                }
+                                function confirmSave() {
+                                    showSavePopup(); // Muestra el modal de confirmación
+                                    const form = document.querySelector('form'); // Selecciona el formulario
+                                    form.submit(); // Envía el formulario
+                                }
+
+                                function closeSavePopup() {
+                                    document.getElementById('overlay').style.display = 'none';
+                                    document.getElementById('savePopup').style.display = 'none';
+                                }
+                            });
+                        </script>
+
+
+                        <footer class="sticky-footer" style='padding-top: 200px;'>
+                            <div class="container my-auto">
+                                <div class="copyright text-center my-auto">
+                                    <span>HealtCooperationWeb ©2023</span>
+                                </div>
+                            </div>
+                        </footer>
+                        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Bootstrap core JavaScript-->
+                        <script src="/vendor/jquery/jquery.min.js"></script>
+                        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+                        <!-- Core plugin JavaScript-->
+                        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+                        <!-- Custom scripts for all pages-->
+                        <script src="/js/sb-admin-2.min.js"></script>
+
+                        <!-- Page level plugins -->
+                        <script src="/vendor/chart.js/Chart.min.js"></script>
+
+                        <!-- Page level custom scripts -->
+                        <script src="/js/demo/chart-area-demo.js"></script>
+                        <script src="/js/demo/chart-pie-demo.js"></script>
+
+                        </body>
+
+                        </html>

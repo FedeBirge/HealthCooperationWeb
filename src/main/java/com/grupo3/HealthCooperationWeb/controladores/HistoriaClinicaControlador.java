@@ -1,8 +1,11 @@
 
 package com.grupo3.HealthCooperationWeb.controladores;
 
+import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.servicios.HistoriaClinicaServicio;
+import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,37 +14,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/paciente/historia_clinica")
+@RequestMapping("/historia")
 public class HistoriaClinicaControlador {
 
     @Autowired
     private HistoriaClinicaServicio historiaClinicaServicio;
+     @Autowired
+    private PacienteServicio paciServ; // inyectamos el servicio de usuario
 
-    // (edito: bren)
-    // para que se vea la HC del paciente seleccionado x id
-    // recordar que este {id} corresponde al id del paciente
-    @GetMapping("/verHistoriaClinica/{id}")
-    public String mostrarHistoria(@PathVariable("id") String id, ModelMap modelo) throws MyException {
+    // ruta para ver la historia clínica según id paciente
+    @GetMapping("/ver/{id}")
+    public String mostrarHistoria(@PathVariable("id") String id, ModelMap modelo, HttpSession session)
+            throws MyException {
 
         try {
-            modelo.addAttribute("HistoriaClinica", historiaClinicaServicio.mostrarHistoria(id));
-            return "verHistoriaClinica.html";
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
+            modelo.addAttribute("user", paciServ.getOne(id));
+            modelo.addAttribute("historia", historiaClinicaServicio.mostrarHistoria(id));
+            return "Consulta historial.html";
         } catch (Exception e) {
-            return "redirect: /panelProfesional.html";
+            return "Consulta historial.html";
         }
     }
 
-    // (mariela)
-    /*
-     * @PostMapping("/historia/registro")
-     * public String registro(@RequestParam List<Ficha> fichas, ModelMap modelo)
-     * throws MyException {
-     * 
-     * // historiaClinicaServicio.crearHistoriaClinica( fichas);
-     * // modelo.put("exito", "La historia clinica se registro correctamente");
-     * 
-     * return "index.html";
-     * }
-     */
+    // las Historias Clínicas no se modifican ni se eliminan (pedido del cliente)
 
 }

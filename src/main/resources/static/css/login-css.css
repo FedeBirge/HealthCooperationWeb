@@ -1,4 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+div span{
+    font-family: 'Poppins', sans-serif;
+}
+    div p{
+    font-family: 'Poppins', sans-serif;
+}
+    div h1 h2 h3 h4 h5 h6 h7{
+    font-family: 'Poppins', sans-serif;
+}
+    div a{
+    font-family: 'Poppins', sans-serif;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -27,11 +40,7 @@ body {
   padding: 0 2rem;
 }
 
-.img {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
+
 
 .login-content {
   display: flex;
@@ -184,41 +193,44 @@ a:hover {
   background-position: right;
 }
 
-@media screen and (max-width: 1050px) {
-  .container {
-    grid-gap: 5rem;
-  }
+
+
+
+
+
+.contenedor{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 20px;
 }
 
-@media screen and (max-width: 1000px) {
-  form {
-    width: 290px;
-  }
 
-  .login-content h2 {
-    font-size: 2.4rem;
-    margin: 8px 0;
-  }
-
-  .img img {
-    width: 400px;
-  }
+.btnlogin {
+ display: flex;
+ height: 3em;
+ width: 100px;
+ align-items: center;
+ justify-content: center;
+ background-color: #eeeeee4b;
+ border-radius: 15px;
+ letter-spacing: 1px;
+ transition: all 0.2s linear;
+ cursor: pointer;
+ border: none;
+ background: #fff;
+ font-size: 20px;
+  margin-left: 10px;
 }
 
-@media screen and (max-width: 900px) {
-  .container {
-    grid-template-columns: 1fr;
-  }
+.btnlogin > svg {
+ margin-right: 5px;
+ margin-left: 10px;
+ font-size: 20px;
+ transition: all 0.4s ease-in;
+}
 
-  .img {
-    display: none;
-  }
-
-  .wave {
-    display: none;
-  }
-
-  .login-content {
-    justify-content: center;
-  }
+.btnlogin:hover > svg {
+ font-size: 1.2em;
+ transform: translateX(-5px);
 }
