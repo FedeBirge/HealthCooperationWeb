@@ -10,7 +10,7 @@
         <meta name="author" content="">
 
         <title>Profesional</title>
-
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
         <style>
 
         </style>
@@ -34,11 +34,17 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Barra lateral - Marca -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/profesionales/dashboard}">
+                <a sec:authorize="hasRole('MODERADOR')"  class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/profesionales/dashboard}">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
                     <div class="sidebar-brand-text mx-3">Panel Profesional</div>
+                </a>
+                <a  class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-solid fa-lock"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Panel Administrador</div>
                 </a>
 
                 <!-- Divisor -->
@@ -48,7 +54,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/}">
 
-                        <span>Index</span></a>
+                        <span>Home</span></a>
                 </li>
 
                 <!-- Divisor -->
@@ -59,7 +65,7 @@
                     Gestion
                 </div>
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-hospital-user"></i>
@@ -72,7 +78,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -87,7 +93,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
@@ -97,6 +103,54 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Mis Pacientes</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-hospital-user"></i>
+                        <span>Profesionales</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Acciones</h6>
+                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
+                            <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Elemento de navegación - Menú Contraer utilidades -->
+                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+
+                            <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
+
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Usuarios</span>
+                    </a>
+                    <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+
+                            <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
+
+
                         </div>
                     </div>
                 </li>
@@ -158,13 +212,13 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Mi Agenda</h1>
                         </div>
-                        <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                        <div th:if="${error != null}" class="card text-white bg-info mb-3 mensajeError" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Error!</h5>
                                 <p class="card-text text-center" th:text="${error}"></p>
                             </div>
                         </div>
-                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                        <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Exito!</h5>
                                 <p class="card-text text-center" th:text="${exito}"></p>
@@ -183,61 +237,69 @@
                     <form th:action="@{/oferta/editar/__${log.id}__}" method="POST" enctype="multipart/form-data">
                         <!-- Collapsable Card Example -->
                         <div class="card mb-4">
-                           
-                                <small>Nota: si no visualiza ninguna semana deberá generarla en Administrar Agenda</small>
-                                 <div class="card-header">
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editar/__${log.id}__}">Administrar Agenda</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
+
+                            <small>Nota: si no visualiza ninguna semana deberá generarla en Administrar Agenda</small>
+                            <div class="card-header">
+                                <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editar/__${log.id}__}">Administrar Agenda</a>
+                                <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
 
                             </div>
 
-                            <div class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <div class="card-body">
-                                            <h1>Mi Agenda en bloques semanales</h1>
-                                            <ul th:each="semana : ${semanas}">
-                                                <li  style="display: inline-block; margin-right: 10px;">
-                                                    <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
 
 
-                                                        <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
-                                                        <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
-                                                        <ul >
-                                                            <li th:each="turno : ${entry.value.turnos}">
-                                                                <p>
-                                                                    <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
-                                                                            (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
-                                                                            (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
-                                                                            th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
-                                                                        <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
-                                                                    </button>
-                                                                </p>
-                                                            </li>
-                                                        </ul>
-                                                    </ul>
-                                                </li>
+                            <h1>Mi Agenda en bloques semanales</h1>
+
+                            <div class="scroll-buttons">
+                                <button type="button" class="scroll-button btn btn-success" id="scroll-left">←</button>
+                                <div class="lista-horizontal" id="scroll-container">
+
+                                    <ul class="lista" th:each="semana : ${semanas}">
+                                        <li  style="display: inline-block; margin-right: 10px;">
+                                            <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
+
+
+                                                <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
+                                                <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
+                                                <ul >
+                                                    <li th:each="turno : ${entry.value.turnos}">
+                                                        <p>
+                                                            <button block th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
+                                                                    (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-secondary' : 
+                                                                    (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
+                                                                    th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE'}">
+                                                                <span th:text="${#strings.trim(turno.estado) == 'CANCELADO' || #strings.trim(turno.estado) == 'RESERVADO' ? turno.hora +' '+ turno.estado : #strings.trim(turno.estado) == 'COMPLETADO' ? turno.hora + ' COMP' : turno.hora}"></span>
+                                                            </button>
+                                                        </p>
+                                                    </li>
+                                                </ul>
                                             </ul>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class="card-body">
-                                            <h1>Otro bloque de agenda</h1>
-                                            <p>Este es otro bloque de agenda, con un contenido diferente.</p>
-                                        </div>
-                                    </div>
+                                        </li>
+                                    </ul>
+
                                 </div>
-                                <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Anterior</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Siguiente</span>
-                                </a>
-                            </div>              
-                            <!-- Fin del contenedor de contenido -->
-                        </div>
+                                <button type="button" class="scroll-button btn btn-success" id="scroll-right">→</button>
+                            </div>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                const scrollContainer = document.getElementById("scroll-container");
+                                const scrollLeftButton = document.getElementById("scroll-left");
+                                const scrollRightButton = document.getElementById("scroll-right");
+
+                                scrollLeftButton.addEventListener("click", function () {
+                                scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
+                                });
+
+                                scrollRightButton.addEventListener("click", function () {
+                                scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
+                                });
+                                });
+                            </script>
+
+
+
+
+
                     </form>
                     <footer class="sticky-footer bg-white">
                         <div class="container my-auto">
@@ -264,12 +326,13 @@
                                 </div>
                                 <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                    <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                                    <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                    <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <!-- Bootstrap core JavaScript-->
                     <script src="/vendor/jquery/jquery.min.js"></script>
                     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

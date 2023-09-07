@@ -51,9 +51,25 @@ public class UsuarioControlador {
     public String verPerfilUsusario(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
-    
-        modelo.addAttribute("user", userServ.getOne(id));
-      
+
+        if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
+            System.out.println("veo admin");
+
+            modelo.addAttribute("user", profServ.getOne(id));
+        }
+        if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
+            System.out.println("veo usuario");
+
+            modelo.addAttribute("user", pacienteServ.getOne(id));
+
+        }
+        if (userServ.getOne(id).getRol().toString().equals("ADMINISTRADOR")) {
+            System.out.println("veo prof");
+            modelo.addAttribute("user", pacienteServ.getOne(id));
+
+        }
+     System.out.println("veo ver usuaraio");
+
         return "perfil.html";
 
     }
@@ -89,6 +105,7 @@ public class UsuarioControlador {
     public String listarUsusario(ModelMap modelo, HttpSession session) {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("log", logueado);
             modelo.addAttribute("log", logueado);
             List<Usuario> users = userServ.listarUsuarios();
             Rol[] roles = Rol.values();
@@ -163,7 +180,7 @@ public class UsuarioControlador {
             @RequestParam String nombre, @RequestParam String apellido,
             String dni, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, String telefono, String direccion,
-            String fecha_nac, String obraSocial, String gruposanguineo,
+            String fecha_nac, String obraSocial, String gruposanguineo, String descripcion,
             String especialidad, String valorConsulta, ModelMap modelo, HttpSession session,
             RedirectAttributes redirectAttributes)
             throws IOException, MyException, ParseException {
@@ -178,23 +195,23 @@ public class UsuarioControlador {
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("user", userServ.getOne(id));
-                modelo.put("exito", "¡Admin modificado con exito!");
-                return "modificar_user.html";
+                redirectAttributes.addFlashAttribute("exito", "¡Admin modificado con exito!");
+                return "redirect:/admin/dashboard";
             }
             if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
 
                 profServ.modificarProfesional(id, archivo, nombre, apellido, dni, email, password, password2, telefono,
-                        direccion, fecha_nac, especialidad, valorConsulta);
+                        direccion, fecha_nac, especialidad, valorConsulta,descripcion);
                 Especialidad[] especialidades = Especialidad.values();
                 modelo.addAttribute("especialidades", especialidades);
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("user", profServ.getOne(id));
-                modelo.put("exito", "¡Profesional modificado con exito!");
-                return "modificar_user.html";
+                redirectAttributes.addFlashAttribute("exito", "¡Profesional modificado con exito!");
+                return "redirect:/profesionales/dashboard";
             }
             if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
-                System.out.println("obra Cont "+obraSocial);
+                System.out.println("obra Cont " + obraSocial);
                 pacienteServ.modificarPaciente(id, archivo, nombre, apellido, dni, email, password, password2, telefono,
                         direccion, fecha_nac, gruposanguineo, obraSocial);
                 System.out.println("Post de modificar paciente");
@@ -204,9 +221,8 @@ public class UsuarioControlador {
                 redirectAttributes.addFlashAttribute("exito", "¡Usuario modificado con exito!");
                 List<ObraSocial> obras = obraServ.listarObrasSociales();
                 modelo.addAttribute("obras", obras);
-               
-          
-            return "redirect:/paciente/dashboard";
+
+                return "redirect:/paciente/dashboard";
             }
 
         } catch (MyException ex) {
@@ -245,37 +261,38 @@ public class UsuarioControlador {
     @PostMapping("/eliminar/{id}") // ********************** ruta para eliminar un usuario
     // (no tiene una vista, es para un boton de la //
     // vista listar_usuarios)
-    public String eliminarUser(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+    public String eliminarUser(@PathVariable("id") String id, ModelMap modelo,
+            HttpSession session,RedirectAttributes redirectAttributes) {
 
         try {
             userServ.eliminarUsuario(id);
             modelo.put("exito", "Usuario eliminado con exito!");
             System.out.println("post eliminar");
             if (userServ.getOne(id).getRol().toString().equals("MODERADOR")) {
-                System.out.println("post eliminar prof");
+              
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("user", profServ.getOne(id));
-                modelo.put("exito", "¡Profesional modificado con exito!");
-                return "redirect:/profesionales/listar";
+                redirectAttributes.addFlashAttribute("exito", "¡Profesional eliminado!");
+            
 
             }
             if (userServ.getOne(id).getRol().toString().equals("USUARIO")) {
-                System.out.println("post eliminar pacietne");
+              
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
                 modelo.addAttribute("user", pacienteServ.getOne(id));
-                modelo.put("exito", "¡Usuario modificado con exito!");
-                return "redirect:/paciente/listar";
+                redirectAttributes.addFlashAttribute("exito", "¡Usuario eliminado!");
+         
             }
         } catch (Exception ex) {
             modelo.addAttribute("user", userServ.getOne(id));
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            modelo.put("error", ex.getMessage());
-            return "redirect:/admin/dashboard";
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+          
         }
-        return "redirect:/admin/dashboard";
+        return "redirect:/user/listar";
     }
 
 }

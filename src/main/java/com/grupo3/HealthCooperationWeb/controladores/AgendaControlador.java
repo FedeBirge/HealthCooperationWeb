@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/agenda")
@@ -52,7 +53,7 @@ public class AgendaControlador {
 
     // todos pueden ver la agenda del controlador profesional, pero esta agenda
     // solo la ve el doctor con este id
-    @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERADOR','ADMINISTRADOR')")
     @GetMapping("/verAgenda/{id}") // Vista principal para el Admin al Logearse (LT)
     public String verrAgenda(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
 
@@ -175,6 +176,7 @@ public class AgendaControlador {
                 modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
                 modelo.addAttribute("obras", servObra.listarObrasSociales());
                 modelo.addAttribute("estados", estados);
+                  
                 return "editarAgenda.html";
 
             } else {
@@ -229,7 +231,7 @@ public class AgendaControlador {
             }
 
             servTurno.actualizarEstados(turnos);
-            modelo.put("Exito", "Estados cambiados!!");
+            modelo.put("exito", "Estados cambiados!!");
             return verrAgenda(id, modelo, session);
         } catch (MyException e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -242,7 +244,7 @@ public class AgendaControlador {
 
     // solo la ve el doctor con este id
     @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
-    @GetMapping("/editarActual/{id}") // Vista principal para el Admin al Logearse (LT)
+    @GetMapping("/editarActual/{id}") 
     public String editarActual(@PathVariable("id") String id, ModelMap modelo, HttpSession session) throws MyException {
         try {
             List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
@@ -253,7 +255,7 @@ public class AgendaControlador {
                 Date fecha2 = semana2.getFechasYTurnos().keySet().iterator().next();
                 return fecha1.compareTo(fecha2);
             });
-
+       
             if (semanas.size() != 0) {
 
                 EstadoTurno[] estados = EstadoTurno.values();
@@ -263,14 +265,14 @@ public class AgendaControlador {
                 modelo.addAttribute("dias", profesionalServicio.getOne(id).getDiasDisponibles());
                 modelo.addAttribute("obras", servObra.listarObrasSociales());
                 modelo.addAttribute("estados", estados);
-                modelo.put("Exito", "Estados cambiados!!");
+            
                 return "editarAgenda.html";
 
             } else {
 
                 Usuario logueado = (Usuario) session.getAttribute("usuariosession");
                 modelo.addAttribute("log", logueado);
-                modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
+                modelo.put("vacia", "¡No existe informacion para la semana actual");
                 return "editarAgenda.html";
 
             }
@@ -300,7 +302,8 @@ public class AgendaControlador {
     // solo la ve el doctor con este id
     @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/agregar/{id}")
-    public String agregarsemamas(@PathVariable("id") String id, ModelMap modelo, HttpSession session)
+    public String agregarsemamas(@PathVariable("id") String id, ModelMap modelo, HttpSession session,
+            RedirectAttributes redirectAttributes)
             throws MyException {
 
         Oferta oferta = servOferta.obtenerOfertaxProf(id);
@@ -308,8 +311,9 @@ public class AgendaControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
             modelo.addAttribute("oferta", oferta);
-
-            return "crearAgenda.html";
+            redirectAttributes.addFlashAttribute("exito", "¡Se agregaron 3 semanas a su agenda, de acuerdo a su disponibilidad");
+                profesionalServicio.asignarAgenda(id, servAgenda.agregarSemanas(id));
+          return "redirect:/profesionales/dashboard";
         } else {
 
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -330,7 +334,7 @@ public class AgendaControlador {
     public String eliminarAgenda(@PathVariable("id") String id, ModelMap modelo) {
 
         try {
-            eliminarAgenda(id, modelo);
+            servAgenda.eliminarAgenda(id);
             modelo.put("exito", "Agenda eliminada con exito!");
             return "redirect:";
         } catch (Exception ex) {

@@ -10,7 +10,7 @@
         <meta name="author" content="">
 
         <title>Agenda Profesional</title>
-
+        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
@@ -222,8 +222,8 @@
                     </div>
                     <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                        <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                     </div>
                 </div>
             </div>

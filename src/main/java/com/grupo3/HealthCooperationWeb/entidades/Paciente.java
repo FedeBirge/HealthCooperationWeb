@@ -4,6 +4,7 @@ package com.grupo3.HealthCooperationWeb.entidades;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -22,7 +23,7 @@ public class Paciente extends Usuario implements Serializable {
 
     protected String grupoSanguineo;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Turno> turnos;
     @OneToOne
     private HistoriaClinica historia;

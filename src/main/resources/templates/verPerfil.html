@@ -9,9 +9,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+        
         <title>Mi Perfil</title>
-
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
 
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -67,9 +67,7 @@
                 <hr class="sidebar-divider">
 
                 <!-- Heading -->
-                <div class="sidebar-heading">
-                    Gestion
-                </div>
+            
 
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
                 <li class="nav-item">
@@ -274,8 +272,11 @@
                         </div>
                         <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                            <a class="cta1" type="button" data-dismiss="modal"> <span class="hover-underline-animation1"> Cancelar </span></a>
+                                     <a class="cta" th:if="${session.usuariosession != null}" th:href="@{/logout}"><span class="hover-underline-animation"> Cerrar sesión </span>
+    <svg viewBox="0 0 46 16" height="10" width="30" xmlns="http://www.w3.org/2000/svg" id="arrow-horizontal">
+        <path transform="translate(30)" d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" data-name="Path 10" id="Path_10"></path>
+    </svg></a>
                         </div>
                     </div>
                 </div>

@@ -31,11 +31,11 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Barra lateral - Marca -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/admin/dashboard}">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/profesionales/dashboard}">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Panel Administrador </div>
+                    <div class="sidebar-brand-text mx-3">Panel Moderador</div>
                 </a>
 
                 <!-- Divisor -->
@@ -56,9 +56,8 @@
                     Gestion
                 </div>
 
-          
-
-             <li class="nav-item">
+                <!-- Elemento de navegación: menú Contraer páginas -->
+                <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-hospital-user"></i>
@@ -83,7 +82,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                     
+                            <a class="collapse-item" th:href="@{/paciente/crear}">Alta Paciente</a>
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -98,7 +97,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/admin/registrar}">Alta Usuario</a>
+
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -107,23 +106,22 @@
                 </li>
 
 
-
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
 
-<!-- Divider -->
-                <hr class="sidebar-divider d-none d-md-block">
 
                 <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
                 </div>
+
             </ul>
             <!-- Fin de la barra lateral -->
 
             <!-- Contenedor de contenido -->
             <div id="content-wrapper" class="d-flex flex-column">
+
 
                 <!-- Contenido principal -->
                 <div id="content">
@@ -142,25 +140,27 @@
                         <ul class="navbar-nav ml-auto">
 
 
-
+                            <div class="topbar-divider d-none d-sm-block"></div>
 
                             <!--Información del usuario -->
                             <li class="nav-item dropdown no-arrow">
-                                <a th:if="${session.usuariosession != null}" class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text = "'Hi! '+ ${log.nombre}"></span>
-                                    <img class="/img-profile rounded-circle" th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
+                                    <img class="/img-profile rounded-circle"
+                                         th:src="@{/imagen/perfil/__${log.id}__}" style="max-width: 100%; max-height: 25px;">
                                 </a>
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" th:href="@{/inicio}">
+
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Configuraciones
+                                        Mi Área
                                     </a>
 
                                     <div class="dropdown-divider"></div>
@@ -179,36 +179,24 @@
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
 
-                        <!-- Encabezado de página -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Alta Usuario</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Alta Paciente</h1>
                         </div>
-                        <form class= "user" th:action="@{/user/crearUsuario}" method="POST" enctype="multipart/form-data">
+                        <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Error!</h5>
+                                <p class="card-text text-center" th:text="${error}"></p>
+                            </div>
+                        </div>
+                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Exito!</h5>
+                                <p class="card-text text-center" th:text="${exito}"></p>
+                            </div>
+                        </div> 
+                        <form class= "user" th:action="@{/paciente/crear}" method="POST" enctype="multipart/form-data">
 
-                            <div class="form-group row">
-                                <div class="col-sm-6 mb-3">
-                                    <input type="text" class="form-control form-control-user"  id="name" placeholder="Nombre" name="nombre" th:value="${nombre}">
-                                </div>
-                                <div class="col-sm-6 mb-3">
-                                    <input type="text" class="form-control form-control-user"   id="last-name" placeholder="Apellido" name="apellido" th:value="${apellido}">
-                                </div>
-                                <div class="col-sm-6 mb-3">
-
-                                    <input class="form-control form-control-user" type="number" id="dni" placeholder="DNI" name="dni" th:value="${dni}">
-                                </div>
-                                <div class="col-sm-6 mb-3">
-                                    <input class="form-control form-control-user" type="number" id="telefono" placeholder="Telefono" name="telefono" th:value="${telefono}">
-                                </div>
-                                <div class="col-sm-6 mb-3">
-                                    <input class="form-control form-control-user" type="email" id="email" placeholder="Correo electrónico" name="email" th:value="${email}">
-                                </div>
-
-                                <div class="col-sm-6 mb-3">
-
-                                    <input class="form-control form-control-user" type="date" id="fecha-nac" name="fecha_nac" th:value="${fecha_nac}">
-                                </div>
-
-                                
+                            <div class="form-group row">   
                                 <div class="col-sm-6 mb-3">
                                     <input  class="form-control form-control-user" type="password" id="password" placeholder="Contraseña" name="password" th:value="${password}">
                                 </div>
@@ -219,94 +207,78 @@
                                     <input  class="form-control form-control-user" type="text" id="address" placeholder="Direccion" name="direccion" th:value="${direccion}">
                                 </div>
                                 <div  class="col-sm-6 mb-3">
-                  
+
                                     <input class="form-control form-control-user" type="text" id="obra" placeholder="Obra Social" name="obrasocial" th:value="${obrasocial}">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    
+
                                     <input class="form-control form-control-user" type="text" id="dni" placeholder="Grupo Sanguineo" name="gruposanguineo" th:value="${gruposanguineo}">
                                 </div>
-                                  <div  class="col-sm-6 mb-3">
-                                    <label for="largeSelect" class="form-label">Rol</label>
 
-                                    <select class="form-control form-control inputEstilos border-top-0  border-end-0 border-start-0 border border-4" id="especialidad" name="rol">
-                                        <option value="" disabled selected>Seleccione...</option>
-                                        <option th:each="roles : ${roles}"
-                                                th:value="${roles}" th:text="${roles}"></option>
-                                    </select>
-                                <div>
-                                    <img id="imagenPrevia" src="#" alt="" style="max-width: 100%; max-height: 25px;">
-                                </div> 
-                                
-                                <div class="grid w-full max-w-xs items-center gap-1.5">
-                                    <label class="text-sm text-gray-400 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Imagen</label>
-                                    <input id="picture" type="file" class="flex h-10 w-full rounded-full border border-input bg-white px-3 py-2 text-sm text-gray-400 file:border-0 file:bg-transparent file:text-gray-600 file:text-sm file:font-medium">
+                                <div class="d-grid gap-2 col-12 mx-auto text-center">
+                                    <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Dar de Alta</button>
                                 </div>
+                        </form>
+                        <!-- Fin del contenido principal -->
 
-                    <div class="d-grid gap-2 col-12 mx-auto text-center">
-                        <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Dar de Alta</button>
+                        <!-- Footer -->
+                        <footer class="sticky-footer bg-white">
+                            <div class="container my-auto">
+                                <div class="copyright text-center my-auto">
+                                    <span>HealtCooperationWeb ©2023</span>
+                                </div>
+                            </div>
+                        </footer>
+                        <!-- Fin del Footer -->
+
                     </div>
-                    </form>
-                    <!-- Fin del contenido principal -->
+                    <!-- Fin del contenedor de contenido -->
 
-                    <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>HealtCooperationWeb ©2023</span>
+                </div>
+                <!-- Envoltura de fin de página -->
+
+                <!-- Desplácese hasta el botón superior-->
+                <a class="scroll-to-top rounded" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
+
+                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                             </div>
                         </div>
-                    </footer>
-                    <!-- Fin del Footer -->
-
-                </div>
-                <!-- Fin del contenedor de contenido -->
-
-            </div>
-            <!-- Envoltura de fin de página -->
-
-            <!-- Desplácese hasta el botón superior-->
-            <a class="scroll-to-top rounded" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
-
-            <!-- Cierre de sesión modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                        <div class="modal-footer">
-                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
-                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
-                    </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="../vendor/jquery/jquery.min.js"></script>
-            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-            <!-- Core plugin JavaScript-->
-            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+                <!-- Bootstrap core JavaScript-->
+                <script src="../vendor/jquery/jquery.min.js"></script>
+                <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-            <!-- Custom scripts for all pages-->
-            <script src="../js/sb-admin-2.min.js"></script>
+                <!-- Core plugin JavaScript-->
+                <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-            <!-- Page level plugins -->
-            <script src="../vendor/chart.js/Chart.min.js"></script>
+                <!-- Custom scripts for all pages-->
+                <script src="../js/sb-admin-2.min.js"></script>
 
-            <!-- Page level custom scripts -->
-            <script src="../js/demo/chart-area-demo.js"></script>
-            <script src="../js/demo/chart-pie-demo.js"></script>
+                <!-- Page level plugins -->
+                <script src="../vendor/chart.js/Chart.min.js"></script>
 
-    </body>
+                <!-- Page level custom scripts -->
+                <script src="../js/demo/chart-area-demo.js"></script>
+                <script src="../js/demo/chart-pie-demo.js"></script>
 
-</html>
+                </body>
+
+                </html>

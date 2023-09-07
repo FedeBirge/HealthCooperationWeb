@@ -10,7 +10,7 @@
         <meta name="author" content="">
 
         <title>Profesional</title>
-
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
         <style>
 
         </style>
@@ -22,6 +22,7 @@
 
         <!-- Css -->
         <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
 
     </head>
 
@@ -54,10 +55,7 @@
                 <!-- Divisor -->
                 <hr class="sidebar-divider">
 
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Gestion
-                </div>
+             
                 <!-- Elemento de navegación - Menú Contraer utilidades -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -164,7 +162,7 @@
                                 <p class="card-text text-center" th:text="${error}"></p>
                             </div>
                         </div>
-                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                        <div th:if="${exito != null}" class="card text-white bg-info mb-3 mt-3 mensajeExito" >
                             <div class="card-body">
                                 <h5 class="card-title text-center">Exito!</h5>
                                 <p class="card-text text-center" th:text="${exito}"></p>
@@ -188,9 +186,10 @@
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas == null}" th:href="@{/agenda/crear/__${log.id}__}">Generar Agenda</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editarActual/__${log.id}__}">Semana Actual</a>
                                 <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/editar/__${log.id}__}">Todas las semanas</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/turno/cancelarSemana/__${log.id}__}">Cancelar Semana actual</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/turno/cancelarTodos/__${log.id}__}">Cancelar Todos los Turnos</a>
-                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" th:href="@{/agenda/agregar/__${log.id}__}">Agregar Semanas</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarSemanaActual">Cancelar Semana Actual</a> 
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#cancelarTodo">Cancelar Todos los Turnos</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#agregarSemanas">Agregar Semanas</a>
+                                <a type="button" class="btn btn-success me-md-2"  th:if="${semanas != null}" href="#" data-toggle="modal" data-target="#">Eliminar Agenda</a>
 
 
                             </div>
@@ -200,45 +199,70 @@
                                     <div class="col-md">
 
 
-                                        <div class="weeks-container">
-                                            <ul th:each="semana : ${semanas}">
-                                                <li  style="display: inline-block; margin-right: 10px;">
+                                        <div class="scroll-buttons">
+                                            <button type="button" class="scroll-button btn btn-success" id="scroll-left">←</button>
+                                            <div class="lista-horizontal" id="scroll-container">
+
+
+                                                <ul class="lista" th:each="semana : ${semanas}">
+
+                                                    <li  style="display: inline-block; margin-right: 10px;">
 
 
 
-                                                    <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
+                                                        <ul th:if="${!entry.key.before(T(java.util.Calendar).getInstance().time) || #dates.format(entry.key, 'dd/MM/yyyy') == #dates.format(T(java.util.Calendar).getInstance().time, 'dd/MM/yyyy') }"  class="fecha"  th:each="entry : ${semana.fechasYTurnos}">
 
-                                                        <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
-                                                        <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
-                                                        <ul >
-                                                            <li th:each="turno,index : ${entry.value.turnos}" class="turno-item">
+                                                            <span th:text="${#dates.dayOfWeekName(entry.key)}"></span>
+                                                            <p><span th:text="${#dates.format(entry.key, 'dd/MM')}" ></span> </p>
+                                                            <ul >
+                                                                <li th:each="turno,index : ${entry.value.turnos}" class="turno-item">
 
-                                                                <button block
-                                                                        th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
-                                                                        (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-default' : 
-                                                                        (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
-                                                                        th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
-                                                                    <span th:text="${turno.hora}"></span>
-                                                                </button>
+                                                                    <button block
+                                                                            th:class="${#strings.trim(turno.estado) == 'CANCELADO' ? 'btn btn-danger' : 
+                                                                            (#strings.trim(turno.estado) == 'RESERVADO' ? 'btn btn-secondary' : 
+                                                                            (#strings.trim(turno.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
+                                                                            th:disabled="${#strings.trim(turno.estado) != 'DISPONIBLE' || #strings.trim(turno.estado) == 'DISPONIBLE' }">
+                                                                        <span th:text="${turno.hora}"></span>
+                                                                    </button>
 
 
 
-                                                                <!-- Lista desplegable de estados para el turno -->
-                                                                <select  name="turnoList" th:value="${turno.id} + ',' + ${turno.estado}" class="estado-select form-control" style="width: auto; display: inline">
-                                                                    <option  th:value="${turno.id} + ',' + ${turno.estado}" th:text="${turno.estado}" ></option>
-                                                                    <option th:each="estado : ${estados}" th:value="${turno.id} + ',' + ${estado}" th:text="${estado}"></option>
+                                                                    <!-- Lista desplegable de estados para el turno -->
+                                                                    <select  name="turnoList" th:value="${turno.id} + ',' + ${turno.estado}" class="estado-select form-control" style="width: auto; display: inline">
+                                                                        <option  th:value="${turno.id} + ',' + ${turno.estado}" th:text="${turno.estado}" ></option>
+                                                                        <option th:each="estado : ${estados}" th:value="${turno.id} + ',' + ${estado}" th:text="${estado}"></option>
 
-                                                                </select>
+                                                                    </select>
 
-                                                            </li>
+                                                                </li>
 
+                                                            </ul>
                                                         </ul>
-                                                    </ul>
 
-                                                </li>                                           
+                                                    </li>                                           
 
-                                            </ul>
+                                                </ul>
+                                            </div>
+                                            <button type="button" class="scroll-button btn btn-success" id="scroll-right">→</button>
                                         </div>
+
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                            const scrollContainer = document.getElementById("scroll-container");
+                                            const scrollLeftButton = document.getElementById("scroll-left");
+                                            const scrollRightButton = document.getElementById("scroll-right");
+
+                                            scrollLeftButton.addEventListener("click", function () {
+                                            scrollContainer.scrollLeft -= 100; // Ajusta el valor de desplazamiento
+                                            });
+
+                                            scrollRightButton.addEventListener("click", function () {
+                                            scrollContainer.scrollLeft += 100; // Ajusta el valor de desplazamiento
+                                            });
+                                            });
+                                        </script>
+
+
 
                                         <div class="d-grid gap-2 col-12 mx-auto text-center">
                                             <button class="btn btn-lg btn-success rounded-pill btnRegistro" type="submit">Guardar Cambios</button>
@@ -248,19 +272,19 @@
                                         <script th:inline="javascript">
                                             /* Función para mostrar la lista desplegable de estados y el botón "Guardar cambios" para el turno específico */
                                             function mostrarEstados(boton) {
-                                                /* Encuentra el elemento padre <li> que contiene los elementos relacionados con el turno */
-                                                var liElement = boton.closest('.turno-item');
+                                            /* Encuentra el elemento padre <li> que contiene los elementos relacionados con el turno */
+                                            var liElement = boton.closest('.turno-item');
 
-                                                /* Encuentra la lista desplegable y el botón "Guardar cambios" dentro del <li> */
-                                                var selectEstado = liElement.querySelector('.estado-select');
-                                                var botonGuardarCambios = liElement.querySelector('.btn-primary');
+                                            /* Encuentra la lista desplegable y el botón "Guardar cambios" dentro del <li> */
+                                            var selectEstado = liElement.querySelector('.estado-select');
+                                            var botonGuardarCambios = liElement.querySelector('.btn-primary');
 
-                                                /* Mostrar la lista desplegable y el botón "Guardar cambios" */
-                                                selectEstado.style.display = 'inline-block';
-                                                botonGuardarCambios.style.display = 'inline-block';
+                                            /* Mostrar la lista desplegable y el botón "Guardar cambios" */
+                                            selectEstado.style.display = 'inline-block';
+                                            botonGuardarCambios.style.display = 'inline-block';
 
-                                                /* Cuando el usuario seleccione un estado, puedes realizar la lógica necesaria aquí */
-                                                /* Por ejemplo, puedes enviar una solicitud al servidor para actualizar el estado del turno. */
+                                            /* Cuando el usuario seleccione un estado, puedes realizar la lógica necesaria aquí */
+                                            /* Por ejemplo, puedes enviar una solicitud al servidor para actualizar el estado del turno. */
                                             }
                                         </script>
 
@@ -297,12 +321,71 @@
                                         </div>
                                         <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                                         <div class="modal-footer">
-                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                            <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- -->
+
+                            <div class="modal fade" id="cancelarSemanaActual" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres cancelar los turnos de tu semana actual?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Cancelar" a continuación si está listo para cancelar los turnos de la semana actual.</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-success" type="button" data-dismiss="modal">Conservar</button>
+                                            <a class="btn btn-danger" th:if="${semanas != null}" th:href="@{/turno/cancelarSemana/__${log.id}__}">Cancelar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="cancelarTodo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres cancelar todos los turnos?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Cancelar" a continuación si está listo para cancelar todos los turnos.</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-success" type="button" data-dismiss="modal">Conservar</button>
+                                            <a class="btn btn-danger" th:if="${semanas != null}" th:href="@{/turno/cancelarTodos/__${log.id}__}">Cancelar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="agregarSemanas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quieres agregar mas semanas?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Seleccione "Agregar" a continuación si está listo. Se agregan 3 semanas a su agenda.</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                                            <a class="btn btn-danger" th:if="${semanas != null}" th:href="@{/agenda/agregar/__${log.id}__}"><span class="text-center">Agregar </span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Bootstrap core JavaScript-->
                             <script src="/vendor/jquery/jquery.min.js"></script>
                             <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

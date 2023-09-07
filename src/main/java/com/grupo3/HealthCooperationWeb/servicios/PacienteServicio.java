@@ -7,7 +7,8 @@ import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Profesional;
 import com.grupo3.HealthCooperationWeb.entidades.Turno;
-import com.grupo3.HealthCooperationWeb.entidades.Usuario;
+import com.grupo3.HealthCooperationWeb.enumeradores.EstadoTurno;
+
 import com.grupo3.HealthCooperationWeb.enumeradores.Rol;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
 import com.grupo3.HealthCooperationWeb.repositorios.ObraSocialRepositorio;
@@ -17,9 +18,15 @@ import com.grupo3.HealthCooperationWeb.repositorios.TurnoRepositorio;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -62,14 +69,16 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     private TurnoServicio turnoServ;
 
     @Transactional
-    public void registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
+    public Paciente registrarPaciente(MultipartFile archivo, String nombre, String apellido, String dni, String email,
             String password, String password2,
             String telefono, String direccion, String fecha_nac, String grupoSanguineo, String obraSocial)
             throws MyException, IOException, ParseException {
 
         super.validar("1", nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         validar(grupoSanguineo, obraSocial);
-
+        if (usuarioServicio.buscarPorDni(dni) != null) {
+            throw new MyException("Existe un usuario con el N° de docuemnto!");
+        }
         Date fecha = pasarStringDate(fecha_nac);
         if (!validarFecha(fecha)) {
             throw new MyException("la fecha no es válida");
@@ -96,13 +105,11 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
 
         paciente.setObraSocial(obraSocial2);
 
-        // paciente.setTurnos(new ArrayList<Turno>());
-        // paciente.setHistoria(new HistoriaClinica());
         paciente.setRol(Rol.USUARIO);
         if (archivo.isEmpty()) {
             // Si el archivo está vacío, crea el paciente con una imagen predeterminada
             Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la
-                                                                         // imagen predeterminada
+            // imagen predeterminada
             paciente.setImagen(imagenPredeterminada);
         } else {
             // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
@@ -111,6 +118,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
         }
 
         pacienteRepositorio.save(paciente);
+        return paciente;
 
     }
 
@@ -140,7 +148,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
             // }
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
-            System.out.println("obra Cont " + obraSocial);
+
             ObraSocial obraSocial2 = obraSocialServicio.buscarXNombre(obraSocial);
 
             pas.setObraSocial(obraSocial2);
@@ -182,76 +190,144 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
         }
     }
 
-    // *****COMPLETAR para traer los pacientes asociados a un profesional(id)
-    public List<Paciente> listarPacientesXprof(String idProfesional) {
-        // un paciente tiene una lista de turnos...
-        // primero creo un paciente
-        List<Paciente> pacientes = new ArrayList<>();
-        // traigo todos los pacientes
-        pacientes = pacienteRepositorio.findAll();
-        // preparo la lsita de pacietnes que voy a devolver
-        List<Paciente> pacientesXProfesional = new ArrayList<>();
 
-        // Repo de turnos
-        List<Turno> turnos = new ArrayList<>();
-        turnos = turnoRepositorio.findAll();
 
-        // en esa lista de turnos, cada turno tiene un profesional
-        // creo un profesional:
-        Profesional profesional = profesionalRepositorio.getOne(idProfesional);
+    @Transactional
+    public Paciente asignarTurnoPaciente(String idP, String idTurno,  String msj) throws MyException {
 
-        try {
-            for (Paciente paciente : pacientes) {
-                if (paciente.getTurnos() != null) {
-                    turnos = paciente.getTurnos();
-                    for (Turno turno : turnos) {
-                        if (turno.getProfesional().getId().equals(profesional.getId())) {
+        // Busca el paciente por su ID o cualquier otro criterio de búsqueda
+        Optional<Paciente> respuesta = pacienteRepositorio.findById(idP);
+        if (respuesta.isPresent()) {
+            Paciente pas = respuesta.get();
+
+            List<Turno> turnos = new ArrayList<>();
+            System.out.println("como el paciente tiene la lista? " + pas.getTurnos().size());
+            if (pas.getTurnos() != null) {
+                turnos = turnoServ.misTurnos(pas.getId());
+            }
+
+            Turno turno = turnoServ.getOne(idTurno);
+            if (turno != null) {
+                turno.setMotivo(msj);
+                turno = turnoServ.reservarTurno(idTurno);
+                turnos.add(turno);
+                pas.setTurnos(turnos);
+            }
+
+            // Guarda el paciente actualizado en la base de datos
+            pacienteRepositorio.save(pas);
+            return pas;
+        }
+        return null;
+    }
+
+
+// *****COMPLETAR para traer los pacientes asociados a un profesional(id)
+public List<Paciente> listarPacientesXprof(String idProfesional) {
+    // Creo un paciente
+    List<Paciente> pacientesXProfesional = new ArrayList<>();
+
+    // Obtengo el profesional
+    Profesional profesional = profesionalRepositorio.getOne(idProfesional);
+
+    try {
+        for (Paciente paciente : pacienteRepositorio.findAll()) {
+            if (paciente.getTurnos() != null) {
+                for (Turno turno : paciente.getTurnos()) {
+                    if (turno.getProfesional().getId().equals(profesional.getId())) {
+                        // Solo agrego el paciente una vez, si no está en la lista
+                        if (!pacientesXProfesional.contains(paciente)) {
                             pacientesXProfesional.add(paciente);
-
                         }
+                        // Si ya encontré un turno con el profesional, no es necesario seguir buscando en este paciente
+                        break;
                     }
                 }
             }
-            return pacientesXProfesional;
+        }
+        return pacientesXProfesional;
+    } catch (Exception e) {
+        System.out.println("Servicio paciente: Hubo un error al listar pacientes por profesional");
+        return null;
+    }
+}
+
+    public Map<Turno, Paciente> ordenarMapPorTurno(Map<Turno, Paciente> turnoYpaciente) {
+        try {
+            // Convierte el Map en una lista de pares clave-valor
+            List<Map.Entry<Turno, Paciente>> listaTurnos = new ArrayList<>(turnoYpaciente.entrySet());
+
+            // Defino un comparador con Turno
+            Comparator<Map.Entry<Turno, Paciente>> comparadorTurno = (entry1, entry2) -> {
+                Turno turno1 = entry1.getKey();
+                Turno turno2 = entry2.getKey();
+
+                // Comparo por fecha
+                int comparacionFecha = turno1.getFecha().compareTo(turno2.getFecha());
+                if (comparacionFecha != 0) {
+                    return comparacionFecha;
+                }
+
+                // Si las fechas son iguales, comparar por hora
+                return turno1.getHora().compareTo(turno2.getHora());
+            };
+
+            // Ordena la lista de pares clave-valor utilizando el comparador
+            Collections.sort(listaTurnos, comparadorTurno);
+
+            // Crea un nuevo LinkedHashMap para almacenar los elementos ordenados
+            Map<Turno, Paciente> mapaOrdenado = new LinkedHashMap<>();
+            for (Map.Entry<Turno, Paciente> entry : listaTurnos) {
+                mapaOrdenado.put(entry.getKey(), entry.getValue());
+            }
+
+            return mapaOrdenado;
         } catch (Exception e) {
-            System.out.println("Servicio paciente: Hubo un error al listar pacientes por profesional");
+            System.out.println("Error al ordenar el mapa por Turno");
             return null;
         }
-
     }
 
     // Mapeo los turnos y paciente filtraos por profesional para el dia de hoy.
     // para la vista de turnos hoy
-    public Map<Turno, Paciente> mapearPacientesXprofHoy(String idProfesional) {
-        // un paciente tiene una lista de turnos...
-        List<Paciente> pacientes = new ArrayList<>();
-        // traigo todos los pacientes
-        pacientes = pacienteRepositorio.findAll();
+    public Map<Turno, Paciente> mapearPacientesXprofHoy(String idProfesional) throws MyException {
+
         // preparo la lsita de pacietnes que voy a devolver
         List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
+        
+        List<Turno> turnos = new ArrayList<>();
 
-        // Repo de turnos
-        List<Turno> turnos = turnoServ.listarTurnosXProfesional(idProfesional);
+        SimpleDateFormat formatoDeseado = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        // en esa lista de turnos, cada turno tiene un profesional:
-        Profesional profesional = profesionalRepositorio.getOne(idProfesional);
+        Date fechaActual = new Date();
+        fechaActual.setHours(0);
+        fechaActual.setMinutes(0);
+        fechaActual.setSeconds(0);
+        
+
         Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
+
         try {
-            for (Paciente paciente : pacientes) {
-                if (paciente.getTurnos() != null) {
+            if (pacientesXProfesional != null) {
+                for (Paciente paciente : pacientesXProfesional) {
+                
+
                     turnos = paciente.getTurnos();
                     for (Turno turno : turnos) {
-                        if (turno.getFecha().equals(new Date())) {
+
+                      
+                        if ((turno.getFecha()).equals(fechaActual.toLocaleString())) {
                             turnoYpaciente.put(turno, paciente);
 
                         }
                     }
+
                 }
             }
-            return turnoYpaciente;
+            return ordenarMapPorTurno(turnoYpaciente);
         } catch (Exception e) {
-            System.out.println("Servicio paciente: Hubo un error al mapear pacientes por profesional");
-            return null;
+            throw new MyException("Servicio paciente: Hubo un error al mapear pacientes por profesional");
+
         }
 
     }
@@ -259,25 +335,25 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     // para la vista de turnos semanal
 
     public Map<Turno, Paciente> mapearPacientesXprofSemana(String idProfesional, List<AgendaSemanal> semana) {
-        // un paciente tiene una lista de turnos...
-        List<Paciente> pacientes = new ArrayList<>();
-        // traigo todos los pacientes
-        pacientes = pacienteRepositorio.findAll();
+
         // preparo la lsita de pacietnes que voy a devolver
         List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
         List<Turno> turnosPaciente = new ArrayList<>();
         // Repo de turnos
         //
         try {
-            Profesional profesional = profesionalRepositorio.getOne(idProfesional);
+
             Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
+
             AgendaSemanal sem = semana.get(0);
+
             Map<Date, DiaAgenda> fechasTturnos = sem.getFechasYTurnos();
+
             for (Map.Entry<Date, DiaAgenda> entry : fechasTturnos.entrySet()) {
                 Date key = entry.getKey();
                 DiaAgenda value = entry.getValue();
 
-                for (Paciente paciente : pacientes) {
+                for (Paciente paciente : pacientesXProfesional) {
                     if (paciente.getTurnos() != null) {
                         turnosPaciente = paciente.getTurnos();
                         for (Turno turno : turnosPaciente) {
@@ -291,7 +367,38 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
                 }
             }
 
-            return turnoYpaciente;
+              return ordenarMapPorTurno(turnoYpaciente);
+        } catch (Exception e) {
+            System.out.println("Servicio paciente: Hubo un error al mapear pacientes por profesional");
+            return null;
+        }
+
+    }
+
+    // Mapeo los turnos y paciente filtraos por profesional
+    // para la vista de todos los turnos 
+    public Map<Turno, Paciente> mapearPacientesXprofTodos(String idProfesional) {
+
+        // preparo la lsita de pacietnes que voy a devolver
+        List<Paciente> pacientesXProfesional = listarPacientesXprof(idProfesional);
+
+        // Repo de turnos
+        List<Turno> turnos = turnoServ.listarTurnosXProfesional(idProfesional);
+
+        // en esa lista de turnos, cada turno tiene un profesional:
+        Map<Turno, Paciente> turnoYpaciente = new HashMap<>();
+        try {
+            for (Paciente paciente : pacientesXProfesional) {
+                if (paciente.getTurnos() != null) {
+                    turnos = paciente.getTurnos();
+                    for (Turno turno : turnos) {
+
+                        turnoYpaciente.put(turno, paciente);
+
+                    }
+                }
+            }
+          return ordenarMapPorTurno(turnoYpaciente);
         } catch (Exception e) {
             System.out.println("Servicio paciente: Hubo un error al mapear pacientes por profesional");
             return null;
@@ -319,7 +426,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     // agrego esto para indicar permisos particulares de paciente (son los mismos
     // que el rol usuario)
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Paciente paciente = pacienteRepositorio.findByEmail(email);
         if (paciente != null && paciente.getActivo().equals(Boolean.TRUE)) {
             List<GrantedAuthority> permisos = new ArrayList<>();

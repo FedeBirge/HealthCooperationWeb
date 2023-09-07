@@ -10,7 +10,7 @@
         <meta name="author" content="">
 
         <title>Admin</title>
-
+        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
@@ -83,7 +83,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/paciente/crear}">Alta Paciente</a>
+
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -165,12 +165,12 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                     <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
+                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                                   <a class="dropdown-item" th:href="@{/inicio}">
-                                       
+                                    <a class="dropdown-item" th:href="@{/inicio}">
+
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Mi Área
                                     </a>
@@ -198,6 +198,7 @@
 
                             <!-- Page Heading -->
                             <h1 class="h3 mb-2 text-gray-800">Lista de Profesionales</h1>
+                                <a type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Volver</a>
                             <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
                                 <div class="card-body">
                                     <h5 class="card-title text-center">Error!</h5>
@@ -222,8 +223,10 @@
                                                     <th>Nombre</th>
                                                     <th>Apellido</th>
                                                     <th>Email</th>
-                                                    <th>Especialidad</th>                                            
-                                                   
+                                                    <th>Especialidad</th> 
+                                                    <th></th>  
+                                                    <th></th>  
+
                                                 </tr>
                                             </thead>
 
@@ -239,7 +242,7 @@
                                                     <td >
                                                         <a type="button" class="btn btn-success me-md-2" th:href="@{/oferta/verOferta/__${user.id}__}"> Ver Oferta </a>
                                                     </td>
-                                                           
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -276,25 +279,25 @@
 
             <script th:inline="javascript">
                 function showConfirmationPopup(userId) {
-                    document.getElementById('confirmationPopup').style.display = 'block';
-                    document.getElementById('overlay').style.display = 'block';
-                    userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
+                document.getElementById('confirmationPopup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                userIdToDelete = userId; // Guarda el ID para usarlo en las funciones de confirmación y cancelación
                 }
 
                 function confirmDeletion() {
 
-                    document.getElementById('deleteForm_' + userIdToDelete).submit();
+                document.getElementById('deleteForm_' + userIdToDelete).submit();
 
-                    closeConfirmationPopup();
+                closeConfirmationPopup();
                 }
 
                 function cancelDeletion() {
-                    closeConfirmationPopup();
+                closeConfirmationPopup();
                 }
 
                 function closeConfirmationPopup() {
-                    document.getElementById('confirmationPopup').style.display = 'none';
-                    document.getElementById('overlay').style.display = 'none';
+                document.getElementById('confirmationPopup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
                 }
             </script>
 
@@ -318,8 +321,8 @@
                         </div>
                         <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                         </div>
                     </div>
                 </div>

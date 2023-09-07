@@ -46,14 +46,12 @@ public class UsuarioServicio implements UserDetailsService {
     @Autowired
     ImagenRepositorio imagenRepo;
 
-    
-    
-     public static boolean validarFecha(Date fecha) {
+    public static boolean validarFecha(Date fecha) {
         Calendar calendario = Calendar.getInstance();
         calendario.setTime(fecha);
 
         int año = calendario.get(Calendar.YEAR);
-        int mes = calendario.get(Calendar.MONTH) + 1; 
+        int mes = calendario.get(Calendar.MONTH) + 1;
         int dia = calendario.get(Calendar.DAY_OF_MONTH);
 
         if (año >= 1900 && año <= 2099 && mes >= 1 && mes <= 12 && dia >= 1 && dia <= 31) {
@@ -62,6 +60,7 @@ public class UsuarioServicio implements UserDetailsService {
             return false;
         }
     }
+
     @Transactional
     // Metodo para crear un usuario
     public Usuario crearUsuario(MultipartFile archivo, String nombre, String apellido, String dni, String email,
@@ -71,10 +70,13 @@ public class UsuarioServicio implements UserDetailsService {
         if (usuarioRepo.buscarPorEmail(email) != null) {
             throw new MyException("EL mail ingresado ya existe! Ingreso otro!");
         }
-        
+        if (usuarioRepo.buscarPorDni(dni) != null) {
+            throw new MyException("Existe un usuario con el N° de docuemnto!");
+        }
+
         Date fecha = pasarStringDate(fecha_nac);
         if (!validarFecha(fecha)) {
-                throw new MyException("la fecha no es valida");
+            throw new MyException("la fecha no es valida");
         }
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
@@ -89,9 +91,12 @@ public class UsuarioServicio implements UserDetailsService {
 
         usuario.setRol(Rol.USUARIO);
         if (archivo.isEmpty()) {
-            Imagen imagen = imagenServ.guardar(archivo);
-            usuario.setImagen(imagen);
+            // Si el archivo está vacío, crea el paciente con una imagen predeterminada
+            Imagen imagenPredeterminada = obtenerImagenPredeterminada(); // Implementa esta función para obtener la
+            // imagen predeterminada
+            usuario.setImagen(imagenPredeterminada);
         } else {
+            // Si el archivo no está vacío, crea el paciente con la imagen proporcionada
             Imagen imagen = imagenServ.guardar(archivo);
             usuario.setImagen(imagen);
         }
@@ -107,9 +112,9 @@ public class UsuarioServicio implements UserDetailsService {
 
         validar(id, nombre, apellido, dni, email, password, password2, telefono, direccion, fecha_nac);
         Optional<Usuario> respuesta = usuarioRepo.findById(id);
-         Date fecha = pasarStringDate(fecha_nac);
-           if (!validarFecha(fecha)) {
-                throw new MyException("la fecha no es válida");
+        Date fecha = pasarStringDate(fecha_nac);
+        if (!validarFecha(fecha)) {
+            throw new MyException("la fecha no es válida");
         }
         if (respuesta.isPresent()) {
             Usuario usuario = respuesta.get();
@@ -134,7 +139,6 @@ public class UsuarioServicio implements UserDetailsService {
             } else {
                 // No se proporcionó un archivo nuevo, no se actualiza la imagen del usuario
             }
-
 
             usuarioRepo.save(usuario);
 
@@ -176,7 +180,56 @@ public class UsuarioServicio implements UserDetailsService {
             System.out.println("No es posible eliminar el ususario");
         }
     }
-
+  @Transactional
+    // Metodo para eliminar un usuario, se cambia el estado a inactivo
+    public void altaUsuario(String id) {
+        try {
+            Optional<Usuario> resp = usuarioRepo.findById(id);
+            if (resp.isPresent()) {
+                Usuario user = (Usuario) (resp.get());
+                user.setActivo(Boolean.TRUE);
+                usuarioRepo.save(user);
+            }
+        } catch (Exception e) {
+            System.out.println("No es posible dar de alta el ususario");
+        }
+    }
+    private Rol pasarStringRol(String rol) throws MyException{
+        if(!rol.isEmpty()){
+        switch (rol) {
+                case "USUARIO":
+                   return Rol.USUARIO;
+                   
+                case "ADMINISTRADOR":
+                    return Rol.ADMINISTRADOR;
+                    
+                case "MODERADOR":
+                    return Rol.MODERADOR;
+                   
+               
+                default:
+                    throw new MyException("Rol no valido: " + rol);
+            }
+        }
+        return null;
+    
+    
+        
+    }
+    @Transactional
+    // Metodo para eliminar un usuario, se cambia el estado a inactivo
+    public void cambioRol(String id,String rol) {
+        try {
+            Optional<Usuario> resp = usuarioRepo.findById(id);
+            if (resp.isPresent()) {
+                Usuario user = (Usuario) (resp.get());
+                user.setRol(pasarStringRol(rol));
+                usuarioRepo.save(user);
+            }
+        } catch (Exception e) {
+            System.out.println("No es posible cambiar de rol");
+        }
+    }
     // Metodo para listar todos los usuarios, sin tener en cuenta si estan dados de baja
     public List<Usuario> listarTodosUsuarios() {
 
@@ -193,16 +246,9 @@ public class UsuarioServicio implements UserDetailsService {
 
     // Metodo para listar todos los usuarios
     public List<Usuario> listarUsuarios() {
-        List<Usuario> aux = new ArrayList();
-        List<Usuario> usuarios = new ArrayList();
 
         try {
-            aux = usuarioRepo.findAll();
-            for (Usuario usuario : aux) {
-                if (usuario.getActivo().equals(Boolean.TRUE)) {
-                    usuarios.add(usuario);
-                }
-            }
+            List<Usuario> usuarios = usuarioRepo.findAll();
 
             return usuarios;
 
@@ -212,7 +258,9 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
-
+      public Usuario buscarPorDni(String dni) {
+        return usuarioRepo.buscarPorEmail(dni);
+    }
     public Usuario buscarPorMail(String email) {
         return usuarioRepo.buscarPorEmail(email);
     }
@@ -277,7 +325,7 @@ public class UsuarioServicio implements UserDetailsService {
 
             return date;
         } catch (ParseException e) {
-           throw new MyException("La fecha ingresada no es válida");
+            throw new MyException("La fecha ingresada no es válida");
         }
     }
 

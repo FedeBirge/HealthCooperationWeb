@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
@@ -79,6 +81,51 @@ public class AdminControlador {
             // completar ruta
             return "redirect:/";
         }
+    }
+      @PostMapping("/actualizarRoles")
+    public String panelAdministrador(ModelMap modelo, HttpSession session, RedirectAttributes redirectAttributes) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+        redirectAttributes.addFlashAttribute("exito", "!Roles Cambiados!");
+        
+        return "redirect:/user/listar";
+
+    }
+    
+     @PostMapping("/darAlta/{id}")
+    public String alta(@PathVariable("id") String id,ModelMap modelo, HttpSession session, RedirectAttributes redirectAttributes) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+        userServ.altaUsuario(id);
+        redirectAttributes.addFlashAttribute("exito", "!Usuario dado de alta!");
+        
+        return "redirect:/user/listar";
+
+    }
+    @GetMapping("/cambioRol/{id}")
+    public String cambioRol(@PathVariable("id") String id,ModelMap modelo, HttpSession session
+            ,@RequestParam() String rol, RedirectAttributes redirectAttributes) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+        System.out.println("ROL "+rol);
+        userServ.cambioRol(id,rol);
+        redirectAttributes.addFlashAttribute("exito", "!Rol Usuario!");
+        
+        return "redirect:/user/listar";
+
+    }
+    
+    @PostMapping("/cambioRol/{id}")
+    public String cambioRoles(@PathVariable("id") String id,ModelMap modelo, HttpSession session
+            , @RequestParam() String rol, RedirectAttributes redirectAttributes) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+        System.out.println("ROL "+rol);
+        userServ.cambioRol(id,rol);
+        redirectAttributes.addFlashAttribute("exito", "!Rol Usuario cambiado!!");
+        
+        return "redirect:/user/listar";
+
     }
 
 }

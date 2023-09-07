@@ -11,7 +11,7 @@
         <meta name="author" content="">
         <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
         <title>Mi Perfil</title>
-
+          <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
 
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -63,14 +63,7 @@
                         <span>Home</span></a>
                 </li>
 
-                <!-- Divisor -->
-                <hr class="sidebar-divider">
-
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Gestion
-                </div>
-
+ 
                 <li sec:authorize="hasRole('USUARIO')" class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
@@ -86,55 +79,53 @@
                         </div>
                     </div>
                 </li>
-                
-                <li class="nav-item" sec:authorize="hasAnyRole('ADMINISTRADOR')">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePaciente"
-                       aria-expanded="true" aria-controls="collapsePaciente">
-                        <i class="fas fa-user"></i>
-                        <span>Pacientes</span>
-                    </a>
-                    <div id="collapsePaciente" class="collapse" aria-labelledby="headingPaciente"
-                         data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/}" sec:authorize="hasRole('ADMINISTRADOR')">Alta Paciente</a>
-                            <a class="collapse-item" th:href="@{/paciente/listar}" sec:authorize="hasRole('ADMINISTRADOR')">Ver Pacientes</a>
-                        </div>
-                    </div>
-                </li>
-                
-                
-                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')" >
+
+                <li sec:authorize="hasRole('MODERADOR')" class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-hospital-user"></i>
-                        <span>Profesionales</span>
+                        <span>Agenda</span>
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Acciones</h6>
-                            <a class="collapse-item" th:href="@{/profesionales/registrar}">Alta Profesional</a>
-                            <a class="collapse-item" th:href="@{/profesionales/listar}">Ver Profesionales</a>
+                            <a class="collapse-item" th:href="@{/agenda/verAgenda/__${log.id}__}">Ver Mi Agenda</a>
+
 
                         </div>
                     </div>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                <li sec:authorize="hasRole('MODERADOR')" class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-user"></i>
+                        <span>Oferta y Disponibilidad</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" th:href="@{/oferta/verOferta/__${log.id}__}">Mi Oferta</a>
+
+
+                        </div>
+                    </div>
+
+                </li>
+                <li sec:authorize="hasRole('MODERADOR')"  class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-user"></i>
-                        <span>Usuarios</span>
+                        <span>Pacientes</span>
                     </a>
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
 
-                            <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
-
+                            <a class="collapse-item" th:href="@{/paciente/listar/__${log.id}__}">Ver Mis Pacientes</a>
 
                         </div>
                     </div>
-                </li>
 
+                </li>
 
 
 
@@ -207,128 +198,179 @@
 
                     <!-- Comenzar contenido de la página -->
                     <div class="container-fluid">
-                        <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${log.id}__}"> Modificar </a>
+                        <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/perfil/__${user.id}__}"> Modificar </a>
+                        <a sec:authorize="hasRole('ADMINISTRADOR')" type="button" class="btn btn-success me-md-2" th:href="@{/user/listar}">Volver</a>
+                        <a sec:authorize="hasRole('MODERADOR')" type="button" class="btn btn-success me-md-2"  href="#" data-toggle="modal" data-target="#solicitarBaja"> Solicitar Baja </a>
+
+
                         <!-- Encabezado de página -->
                         <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Error!</h5>
-                                    <p class="card-text text-center" th:text="${error}"></p>
-                                </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Error!</h5>
+                                <p class="card-text text-center" th:text="${error}"></p>
                             </div>
-                            <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Exito!</h5>
-                                    <p class="card-text text-center" th:text="${exito}"></p>
-                                </div>
-                            </div> 
-                        <div class="d-sm-flex align-items-center justify-content-center mb-4">
-                            <h1 class="h3 mb-0 text-gray-800" th:text="'Usuario ' + ${user.nombre}"></h1>
                         </div>
-                        
-                        <div class="row text-center">
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Nombre: ' + ${user.nombre}"></h2>
+                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Exito!</h5>
+                                <p class="card-text text-center" th:text="${exito}"></p>
                             </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Apellido: ' + ${user.apellido}"></h2>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Direccion: ' + ${user.direccion}"></h2>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Telefono: ' + ${user.telefono}"></h2>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'Email: ' + ${user.email}"></h2>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text="'Fecha nacimiento: ' + ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></h2>
+                        </div> 
 
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <h2 th:text=" 'DNI: '+ ${user.dni}"></h2>
-                            </div>   
-                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
-                                <h2 th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text="'Grupo Sanguíneo: '+ ${user.grupoSanguineo}"></h2>
-                            </div>    
-                            <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
 
-                                <h2 th:if="${#strings.trim(user.rol) =='USUARIO'}" th:text="'Obra Social: '+${user.obraSocial.nombre}"></h2>
-                            </div>
+                        <div class="container-cardPerfil">
 
+
+                            <div class="card__content">
+                            </div>
+                            <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/misturnos/__${log.id}__}"> Ver Mis Turnos </a>
+                            <a sec:authorize="hasRole('USUARIO')" type="button" class="btn btn-success me-md-2" th:href="@{/turno/panel/}"> Ir al Panel de Profesionales </a>
+
+                        </div>
+                        <div class="row">              
                             <div class="col-sm-6 mb-3">
                                 <h2>Tu foto</h2>
-                                <img class="/img-profile rounded-circle"
-                                     th:src="@{/imagen/perfil/__${user.id}__}" style="max-width: 100%; max-height: 150px;">
+                                <img class="img-profile rounded-circle" 
+                                     th:src="@{/imagen/perfil/__${user.id}__}" 
+                                     style="max-width: 100%; max-height: 150px;border-radius: 50%;">
+
                             </div>
+                            <div class="col-md-9">
+                                <div class="d-flex align-items-center mb-4">
+                                    <h1 class="h3 mb-0 text-gray-900" th:text="'Usuario ' + ${user.nombre}"></h1>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3 ">
+                                        <h2 class="textoTitulo"th:text=" 'Nombre: ' + ${user.nombre}"></h2>
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <h2 class="textoTitulo"th:text=" 'Apellido: ' + ${user.apellido}"></h2>
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <h2 class="textoTitulo" th:text=" 'Direccion: ' + ${user.direccion}"></h2>
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <h2 class="textoTitulo" th:text=" 'Telefono: ' + ${user.telefono}"></h2>
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <h2 class="textoTitulo" th:text="'Fecha nacimiento: ' + ${#dates.format(user.fecha_nac, 'dd/MM/yyyy')}"></h2>
+
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <h2 class="textoTitulo" th:text=" 'Email: ' + ${user.email}"></h2>
+                                    </div>
+
+                                    <div class="col-sm-6 mb-3">
+                                        <h2 class="textoTitulo"th:text=" 'DNI: '+ ${user.dni}"></h2>
+                                    </div>   
+                                    <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
+                                        <h2 class="textoTitulo" th:if='${user.grupoSanguineo} != null'th:text="'Grupo Sanguineo: ' + ${user.grupoSanguineo}"></h2>
+                                    </div>    
+                                    <div th:if="${#strings.trim(user.rol) =='USUARIO'}" class="col-sm-6 mb-3">
+
+                                        <h2 class="textoTitulo" th:if='${user.grupoSanguineo} != null' th:text="'Obra Social: '+${user.obraSocial.nombre}"></h2>
+                                    </div>
 
 
-                        </div>
 
-                        </div>
-                        
-
-
-
-                    <!-- Fin del contenido principal -->
-
-                    <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>HealtCooperationWeb ©2023</span>
+                                </div>
                             </div>
-                        </div>
-                    </footer>
-                    <!-- Fin del Footer -->
-
-                </div>
-                <!-- Fin del contenedor de contenido -->
-
-            </div>
-            <!-- Envoltura de fin de página -->
-
-            <!-- Desplácese hasta el botón superior-->
-            <a class="scroll-to-top rounded" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
-
-            <!-- Cierre de sesión modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                            <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+                <!-- Fin del contenido principal -->
+
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>HealtCooperationWeb ©2023</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- Fin del Footer -->
+
             </div>
+            <!-- Fin del contenedor de contenido -->
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="/vendor/jquery/jquery.min.js"></script>
-            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        </div>
+        <!-- Envoltura de fin de página -->
 
-            <!-- Core plugin JavaScript-->
-            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Desplácese hasta el botón superior-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-            <!-- Custom scripts for all pages-->
-            <script src="/js/sb-admin-2.min.js"></script>
+        <!-- Cierre de sesión modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar.</div>
 
-            <!-- Page level plugins -->
-            <script src="/vendor/chart.js/Chart.min.js"></script>
+                    <div class="contenedorFooter">
+                        <button class="btn btn-success me-md-2" type="button" data-dismiss="modal"> <span class="hover-underline-animation1"> Cancelar </span></button>
+                        <a class="btn btn-danger me-md-2" th:if="${session.usuariosession != null}" th:href="@{/logout}"><span class="hover-underline-animation"> Cerrar sesión </span>
+    <svg viewBox="0 0 46 16" height="10" width="30" xmlns="http://www.w3.org/2000/svg" id="arrow-horizontal">
+        <path transform="translate(30)" d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" data-name="Path 10" id="Path_10"></path>
+    </svg></a>
 
-            <!-- Page level custom scripts -->
-            <script src="/js/demo/chart-area-demo.js"></script>
-            <script src="/js/demo/chart-pie-demo.js"></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal de darse de baja -->
+
+        <div class="modal fade" id="solicitarBaja" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Quieres enviar solicitud de baja?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Seleccione "Solicitar" a continuación para pedir la baja de sus servicios.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="boton-close btn btn-danger" type="summit" th:if="${session.usuariosession != null}" th:href="@{/profesionales/solicitarBaja/__${user.id}__}">Solicitar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="/vendor/jquery/jquery.min.js"></script>
+        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="/js/sb-admin-2.min.js"></script>
+
+        <!-- Page level plugins -->
+        <script src="/vendor/chart.js/Chart.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="/js/demo/chart-area-demo.js"></script>
+        <script src="/js/demo/chart-pie-demo.js"></script>
 
     </body>
 

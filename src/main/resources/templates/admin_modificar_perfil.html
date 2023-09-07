@@ -10,7 +10,7 @@
         <meta name="author" content="">
 
         <title>Admin</title>
-
+        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
         <!-- Fuentes personalizadas-->
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
@@ -87,7 +87,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/}" sec:authorize="hasRole('ADMINISTRADOR')">Alta Paciente</a>
+             
                             <a class="collapse-item" th:href="@{/paciente/listar}" sec:authorize="hasRole('ADMINISTRADOR')">Ver Pacientes</a>
                             <a class="collapse-item" th:href="@{/inicio}">Ver mi Perfil</a>
                             <a class="collapse-item" th:href="@{/turno/misturnos/__${log.id}__}">Ver mis Turnos</a>
@@ -339,8 +339,8 @@
                     </div>
                     <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                        <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                     </div>
                 </div>
             </div>

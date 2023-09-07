@@ -10,7 +10,7 @@
         <meta name="author" content="">
 
         <title>Admin</title>
-
+        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
         <!-- Fuentes personalizadas-->
         <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
@@ -83,7 +83,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                             <a class="collapse-item" th:href="@{/paciente/crear}">Alta Paciente</a>
+
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -98,7 +98,7 @@
                     <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                        
+
                             <a class="collapse-item" th:href="@{/user/listar}">Ver Usuarios</a>
 
 
@@ -157,7 +157,7 @@
                                         Perfil
                                     </a>
                                     <a class="dropdown-item" th:href="@{/inicio}">
-                                       
+
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Mi Área
                                     </a>
@@ -174,93 +174,114 @@
 
                     </nav>
                     <!-- Fin de la barra superior -->
-
-                    <!-- Comenzar contenido de la página -->
-                    <div class="container-fluid">
+                    <section>
+                        <!-- Comenzar contenido de la página -->
                         <div class="container-fluid">
+                            <div class="container-fluid">
 
 
 
-                        </div>
-                        <!-- Encabezado de página -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Hola Administrador!</h1>
-
-                        </div>
-                        <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Error!</h5>
-                                <p class="card-text text-center" th:text="${error}"></p>
                             </div>
-                        </div>
-                        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Exito!</h5>
-                                <p class="card-text text-center" th:text="${exito}"></p>
+                            <!-- Encabezado de página -->
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h1 class="h3 mb-0 text-gray-800">Hola Administrador!</h1>
+
                             </div>
-                        </div> 
-                        <!-- Fin del contenido principal -->
-
-                        </section>
-                        <!-- Footer -->
-                        <footer class="sticky-footer bg-white">
-                            <div class="container my-auto">
-                                <div class="copyright text-center my-auto">
-
-                                    <span>HealtCooperationWeb ©2023</span>
+                            
+                            <div th:if="${error != null}" class="card text-white bg-success mb-3 mensajeError" >
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Error!</h5>
+                                    <p class="card-text text-center" th:text="${error}"></p>
                                 </div>
                             </div>
-                        </footer>
-                        <!-- Fin del Footer -->
+                            <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Exito!</h5>
+                                    <p class="card-text text-center" th:text="${exito}"></p>
+                                </div>
+                            </div> 
 
-                    </div>
-                    <!-- Fin del contenedor de contenido -->
 
+                            <div class="contenedor-carta">
+                                <div class="cards7">
+                                    <div class="card7 red">    <a  class="eti" th:href="@{/profesionales/listar}">
+                                            <p class="tip7">Profesionales</p>
+                                            <p class="second-text7">Ver Profesionales</p></a>
+                                    </div>
+                                    <div class="card7 blue">
+                                        <a class="eti" th:href="@{/paciente/listar}">   
+                                            <p class="tip7">Pacientes</p>   
+                                            <p class="second-text7">Ver Pacientes</p>  </a>
+                                    </div>
+                                    <div class="card7 green"><a class="eti" th:href="@{/user/listar}">
+                                        <p class="tip7">Usuarios</p>
+                                        <p class="second-text7">Ver Usuarios</p></a>
+                                    </div>
+                                </div>
+                                <!-- Fin del contenido principal -->
+
+                                </section>
+                                <!-- Footer -->
+                                <footer class="sticky-footer bg-white">
+                                    <div class="container my-auto">
+                                        <div class="copyright text-center my-auto">
+
+                                            <span>HealtCooperationWeb ©2023</span>
+                                        </div>
+                                    </div>
+                            </div>
+                            </footer>
+                            <!-- Fin del Footer -->
+
+                        </div>
                 </div>
-                <!-- Envoltura de fin de página -->
+                <!-- Fin del contenedor de contenido -->
 
-                <!-- Desplácese hasta el botón superior-->
-                <a class="scroll-to-top rounded" href="#page-top">
-                    <i class="fas fa-angle-up"></i>
-                </a>
+            </div>
+            <!-- Envoltura de fin de página -->
 
-                <!-- Cierre de sesión modal-->
-                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
-                            </div>
+            <!-- Desplácese hasta el botón superior-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
+
+            <!-- Cierre de sesión modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Quieres cerrar sesión ?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Bootstrap core JavaScript-->
-                <script src="../vendor/jquery/jquery.min.js"></script>
-                <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <!-- Bootstrap core JavaScript-->
+            <script src="../vendor/jquery/jquery.min.js"></script>
+            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-                <!-- Core plugin JavaScript-->
-                <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+            <!-- Core plugin JavaScript-->
+            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-                <!-- Custom scripts for all pages-->
-                <script src="../js/sb-admin-2.min.js"></script>
+            <!-- Custom scripts for all pages-->
+            <script src="../js/sb-admin-2.min.js"></script>
 
-                <!-- Page level plugins -->
-                <script src="../vendor/chart.js/Chart.min.js"></script>
+            <!-- Page level plugins -->
+            <script src="../vendor/chart.js/Chart.min.js"></script>
 
-                <!-- Page level custom scripts -->
-                <script src="../js/demo/chart-area-demo.js"></script>
-                <script src="../js/demo/chart-pie-demo.js"></script>
+            <!-- Page level custom scripts -->
+            <script src="../js/demo/chart-area-demo.js"></script>
+            <script src="../js/demo/chart-pie-demo.js"></script>
 
-                </body>
+    </body>
 
-                </html>
+</html>

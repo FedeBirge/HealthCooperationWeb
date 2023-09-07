@@ -10,7 +10,7 @@
         <meta name="author" content="">
 
         <title>Profesional</title>
-
+        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
         <style>
 
         </style>
@@ -38,7 +38,7 @@
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-solid fa-lock"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Panel Admin</div>
+                    <div class="sidebar-brand-text mx-3">Panel Administrador</div>
                 </a>
 
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/inicio}" sec:authorize="hasRole('USUARIO')">
@@ -115,7 +115,7 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" th:href="@{/paciente/crear}">Alta Paciente</a>
+
                             <a class="collapse-item" th:href="@{/paciente/listar}">Ver Pacientes</a>
 
                         </div>
@@ -215,11 +215,11 @@
                                 <!-- Menú desplegable - Información del usuario-->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
+                                    <a sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" class="dropdown-item" th:href="@{/user/verUsuario/__${log.id}__}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
-                                    <a class="dropdown-item" th:href="@{/inicio}">
+                                    <a class="dropdown-item"sec:authorize="hasAnyRole('ADMINISTRADOR','MODERADOR')" th:href="@{/inicio}">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Mi Área
                                     </a>
@@ -239,7 +239,7 @@
                         </div>
                         <!-- Encabezado de página -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 sec:authorize="hasRole('MODERADOR')" class="h3 mb-0 text-gray-800">Turnos y Pacientes para hoy</h1>
+                            <h1 sec:authorize="hasRole('MODERADOR')" class="h3 mb-0 text-gray-800">Turnos y Pacientes</h1>
                             <h1 sec:authorize="hasAnyRole('USUARIO','ADMINISTRADOR')"  class="h3 mb-0 text-gray-800">Turnos</h1>
 
                         </div>
@@ -263,9 +263,12 @@
                         </div> 
                     </div>
                     <!-- Pending Requests Card Example -->
+
                     <div class="card shadow mb-4">
 
                         <div class="card-body">
+                            <a type="button" class="btn btn-success me-md-2" th:href="@{/inicio}">Volver</a>
+
                             <div class="table-responsive">
 
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -273,11 +276,12 @@
                                         <tr>
                                             <th>Nombre</th>
                                             <th>Apellido</th>
+                                            <th>Fecha</th>
                                             <th>Hora</th>
                                             <th>Estado Truno</th>
 
 
-                                            <th sec:authorize="hasAnyRole('MODERADOR','ADMINISTRADOR')" >Turnos</th>
+                                            <th sec:authorize="hasAnyRole('ADMINISTRADOR')" >Turnos</th>
                                             <th sec:authorize="hasRole('MODERADOR')">Registrar Atencion</th>
 
 
@@ -291,33 +295,51 @@
                                         <tr th:each="entry : ${turnos}">
                                             <td th:text="${entry.value.nombre}"></td>
                                             <td th:text="${entry.value.apellido}"></td>
+                                       
+                                            <td th:text="${#strings.substring(entry.key.fecha, 0, 10)}"></td>
 
+                                            <td th:text="${entry.key.hora}+' Hs.'">                                            </td>
                                             <td >
                                                 <button block th:class="${#strings.trim(entry.key.estado) == 'CANCELADO' ? 'btn btn-danger' : 
-                                                        (#strings.trim(entry.key.estado) == 'RESERVADO' ? 'btn btn-default' : 
+                                                        (#strings.trim(entry.key.estado) == 'RESERVADO' ? 'btn btn-secondary' : 
                                                         (#strings.trim(entry.key.estado) == 'COMPLETADO' ? 'btn btn-info' : 'btn btn-success'))}"
                                                         th:disabled="${#strings.trim(entry.key.estado) != 'DISPONIBLE'}">
-                                                    <span th:text="${#strings.trim(entry.key.estado) == 'COMPLETADO' ? 'COMP' : entry.key.estado}"></span>
+                                                    <span th:text="${#strings.trim(entry.key.estado) == 'COMPLETADO' ? 'COMPLETO' : entry.key.estado}"></span>
                                                 </button>
 
+                                            </td>
+                                            <td  sec:authorize="hasRole('MODERADOR')">
+                                                <a type="button" class="btn btn-success me-md-2" th:href="@{/historia/ver/__${entry.value.id}__}">Historia Clínica</a>
 
-
-
+                                                <a type="button" class="btn btn-success me-md-2"
+                                                   th:if="${#strings.trim(entry.key.estado) == 'RESERVADO'}"
+                                                    data-toggle="modal" th:attr="data-target='#confirmModal__'+${entry.key.id}" th:data-id="${entry.key.id}">Completar Turno</a>
 
 
                                             </td>
-                                            <td th:text="${entry.key.hora}">
 
+                                    <div class="modal fade" th:id="'confirmModal__' + ${entry.key.id}" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="confirmModalLabel">Confirmar Completar Turno</h5>
+                                                    <button type="button" class="close" th:data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ¿Estás seguro de que deseas completar el turno?
 
-                                            </td>
-
-                                            <td  sec:authorize="hasRole('MODERADOR')"
-                                                 <a type="button" class="btn btn-success me-md-2" th:href="@{/historia/verHistoria/__${entry.value.id}__}">Historia Clínica</a>>
-
-                                            </td>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                                        <a type="button" class="confirmar btn btn-success " th:href="@{/turno/completar/__${entry.key.id}__}" id="confirmBtn__" >Confirmar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         </tr>     
 
-                                    </tbody>
+                                        </tbody>
                                 </table>
                             </div>
                         </div>
@@ -355,12 +377,44 @@
                     </div>
                     <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                        <a class="btn btn-primary" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
+                        <button class="btn btn-success" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-danger" th:if="${session.usuariosession != null}" th:href="@{/logout}">Cerrar sesión</a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const confirmButtons = document.querySelectorAll('[data-toggle="modal"]');
+
+                confirmButtons.forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        const turnoId = this.getAttribute("data-id");
+                        console.log(turnoId);
+                        const modal = document.getElementById("confirmModal__" + turnoId);
+                        console.log(modal.id);
+
+                        // Obtén el botón de confirmar dentro del modal
+                        const confirmBtn = modal.querySelector(".confirmar");
+
+                        if (modal && confirmBtn) {
+                            modal.style.display = "block";
+
+                            confirmBtn.addEventListener("click", function () {
+                                // Lógica para confirmar el turno
+                                const confirmUrl = this.getAttribute("th:href");
+                                window.location.href = confirmUrl; // Redirige a la URL de confirmación
+                            });
+                        }
+                    });
+                });
+            });
+
+        </script>
+
+
+
         <!-- Bootstrap core JavaScript-->
         <script src="/vendor/jquery/jquery.min.js"></script>
         <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

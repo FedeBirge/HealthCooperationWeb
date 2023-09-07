@@ -22,7 +22,7 @@
             <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
                 <div class="container">
                     <a class="navbar-brand" href="#page-top">
-                        <img src="../assets/img/biomedical (2).svg" alt="Logo" class="navbar-logo">
+                        <img src="/assets/img/biomedical (2).svg" alt="Logo" class="navbar-logo">
                         <span class="navbar-logo-text">Health Cooperation</span>
                     </a>
                     <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contactanos</a></li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}" th:href="@{/paciente/registrar}">Registrarme</a></li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}"  th:href="@{/login}">Login</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"  th:href="@{/email/contacto}">Eres un doctor?</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession == null}" th:href="@{/email/contacto}">Eres un doctor?</a></li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/logout}">Log out</a></li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:if="${session.usuariosession != null}" th:href="@{/inicio}">Perfil</a></li>
                         </ul>
@@ -60,7 +60,7 @@
                     </div>
                 <div class="container d-flex align-items-center flex-column">
                     <!-- Masthead Avatar Image-->
-                    <img class="masthead-avatar mb-5" src="assets/img/avatares.png" alt="..." />
+                    <img class="masthead-avatar mb-5" src="/assets/img/avatares.png" alt="..." />
                     <!-- Masthead Heading-->
                     <h1 class="masthead-heading text-uppercase mb-0">QUIERES SACAR UN TURNO?</h1>
                     <!-- Icon Divider-->
@@ -74,9 +74,11 @@
                     
                     <p class="masthead-subheading font-weight-light mb-0">Presione aquí..</p>
                     
-                    <a class="cssbuttons-io-button aTurno" th:href="@{/turno/panel}">
+
  <path d="M0 0h24v24H0z" fill="none"></path><path d="M1 14.5a6.496 6.496 0 0 1 3.064-5.519 8.001 8.001 0 0 1 15.872 0 6.5 6.5 0 0 1-2.936 12L7 21c-3.356-.274-6-3.078-6-6.5zm15.848 4.487a4.5 4.5 0 0 0 2.03-8.309l-.807-.503-.12-.942a6.001 6.001 0 0 0-11.903 0l-.12.942-.805.503a4.5 4.5 0 0 0 2.029 8.309l.173.013h9.35l.173-.013zM13 12h3l-4 5-4-5h3V8h2v4z" fill="currentColor"></path></svg>
-  <span>TURNOS</span>
+ 
+                    <a th:href="@{/turno/panel}" class="botonIndex" type="button"><span>turnos</span>
+
                     </a>
                 </div>
             </header>
@@ -157,10 +159,10 @@
             </div>
         </section>
         <!-- Contact Section-->
-        <section class="page-section" id="contact">
+        <section class="page-section1" id="contact">
             <div class="container">
                 <!-- Contact Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Contactanos</h2>
+                <h2 class="page-section-heading1 text-center text-uppercase text-secondary mb-0">Contactanos</h2>
                 <!-- Icon Divider-->
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
@@ -170,13 +172,7 @@
                 <!-- Contact Section Form-->
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-xl-7">
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- * * SB Forms Contact Form * *-->
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- This form is pre-integrated with SB Forms.-->
-                        <!-- To make this form functional, sign up at-->
-                        <!-- https://startbootstrap.com/solution/contact-forms-->
-                        <!-- to get an API token!-->
+                
                         <form th:action="@{/email/publico}" method="POST" id="contactForm"  >
                             <!-- Name input-->
                             <div class="form-floating mb-3">
@@ -199,7 +195,7 @@
                             </div>
                             <!-- Message input-->
                             <div class="form-floating mb-3">
-                                <textarea name="msj" class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" required></textarea>
+                                <textarea name="msj" class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 5rem" required></textarea>
                                 <label for="message">Mensaje</label>
                                 <div class="invalid-feedback" data-sb-feedback="message:required">Se requiere un mensaje.</div>
                             </div>

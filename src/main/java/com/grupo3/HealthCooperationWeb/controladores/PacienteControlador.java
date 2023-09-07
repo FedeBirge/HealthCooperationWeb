@@ -4,6 +4,7 @@ import com.grupo3.HealthCooperationWeb.entidades.ObraSocial;
 import com.grupo3.HealthCooperationWeb.entidades.Paciente;
 import com.grupo3.HealthCooperationWeb.entidades.Usuario;
 import com.grupo3.HealthCooperationWeb.excepciones.MyException;
+import com.grupo3.HealthCooperationWeb.servicios.HistoriaClinicaServicio;
 import com.grupo3.HealthCooperationWeb.servicios.ObraSocialServicio;
 import com.grupo3.HealthCooperationWeb.servicios.PacienteServicio;
 import java.io.IOException;
@@ -31,11 +32,19 @@ public class PacienteControlador {
 
     @Autowired
     private ObraSocialServicio obraServ;
+    @Autowired
+    private HistoriaClinicaServicio hisrtoriaServ;
 
     @GetMapping("/dashboard") // ruta para el panel administrativo
+<<<<<<< HEAD
     public String panelAdministrativo(ModelMap modelo, HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+=======
+    public String panelAdministrativo(ModelMap modelo, HttpSession session,RedirectAttributes redirectAttributes) {
+        Paciente logueado = (Paciente) session.getAttribute("usuariosession");
+>>>>>>> developer
         modelo.addAttribute("log", logueado);
+       
         modelo.addAttribute("user", logueado);
 
         return "perfil.html";
@@ -76,10 +85,12 @@ public class PacienteControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            pacienteServicio.registrarPaciente(archivo, nombre, apellido, dni,
+            Paciente pac = pacienteServicio.registrarPaciente(archivo, nombre, apellido, dni,
                     email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
+             
+            pac.setHistoria(hisrtoriaServ.crearHistoriaClinica(pac.getId()));
             redirectAttributes.addFlashAttribute("exito", "¡Usuario registrado con exito!");
-
+            
             return "redirect:/login";
 
         } catch (MyException ex) {
@@ -177,16 +188,16 @@ public class PacienteControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            List<Paciente> users = pacienteServicio.mostrarPacientes();
-            // List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
+      ;
+            List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
 
             modelo.addAttribute("users", users);
             return "verPacientes.html";
         } catch (Exception e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-            List<Paciente> users = pacienteServicio.mostrarPacientes();
-            // List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
+         
+             List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
             modelo.addAttribute("users", users);
             modelo.put("error", e.getMessage());
             return "verPacientes.html";
