@@ -100,7 +100,7 @@ public class ProfesionalControlador {
         modelo.addAttribute("prof", profesionalServicio.getOne(id));
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
 
-        System.out.println(semanas.size());
+        
         if (semanas.isEmpty()) {
             redirectAttributes.addFlashAttribute("vacia", "No existen turnos para mosrtar. Disculpe las molestias");
          return "redirect:/turno/panel";
@@ -365,7 +365,7 @@ public class ProfesionalControlador {
     }
      @PostMapping("/valorar/{id}")
    
-    public String valorar(@PathVariable("id") String id, @RequestParam String idUser, 
+    public String valorar(@PathVariable("id") String id,  
             @RequestParam String valor, ModelMap modelo,  HttpSession session,
             RedirectAttributes redirectAttributes) {
 

@@ -8,7 +8,7 @@
             <meta name="description" content="" />
             <meta name="author" content="" />
             <title>Health Cooperation</title>
-              <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+            <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
             <!-- Favicon-->
             <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css">
@@ -24,7 +24,7 @@
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
                 <div class="container">
-                    <a class="navbar-brand" href="#page-top">
+                    <a class="navbar-brand" th:href="@{/}">
                         <img src="/assets/img/biomedical (2).svg" alt="Logo" class="navbar-logo">
                         <span class="navbar-logo-text">Health Cooperation</span>
                     </a>
@@ -83,24 +83,24 @@
                                         </div>
                                         <div>
 
-
+                                            
                                             <a th:href="@{/profesionales/turnoIndividual/__${prof.id}__}" class="name" th:text="'Dra./Dr '+${prof.apellido}+' '+${prof.nombre}" > </a>                                
                                             <p class="name" th:text="'Especialsita en '+${prof.especialidad}"></p>
-
+                                               <button class="botonvalorar"  type="submit" data-target="modalValorar" >
                                             <div class="rating">
-                                                <input value="5" name="rating" id="star5" type="radio">
-                                                <label for="star5"></label>
-                                                <input value="4" name="rating" id="star4" type="radio">
-                                                <label for="star4"></label>
-                                                <input value="3" name="rating" id="star3" type="radio">
-                                                <label for="star3"></label>
-                                                <input value="2" name="rating" id="star2" type="radio">
-                                                <label for="star2"></label>
-                                                <input value="1" name="rating" id="star1" type="radio">
-                                                <label for="star1"></label>
-                                            </div>
+                                        <input disabled value="5" name="rating" id="star5" type="radio" th:checked="${prof.reputacion == 5}">
+                                        <label for="star5"></label>
+                                        <input disabled value="4" name="rating" id="star4" type="radio" th:checked="${prof.reputacion == 4}">
+                                        <label for="star4"></label>
+                                        <input disabled value="3" name="rating" id="star3" type="radio" th:checked="${prof.reputacion == 3}">
+                                        <label for="star3"></label>
+                                        <input disabled value="2" name="rating" id="star2" type="radio" th:checked="${prof.reputacion == 2}">
+                                        <label for="star2"></label>
+                                        <input disabled value="1" name="rating" id="star1" type="radio" th:checked="${prof.reputacion == 1}">
+                                        <label for="star1"></label>
+                                    </div>
 
-                                            <button class="botonvalorar"  type="submit" data-target="modalValorar" >Valorar</button>
+                                       </button>
                                             <!-- Modal para Valorar -->
                                             <div id="modalValorar" class="modal2">
                                                 <div class="modal-content2">
@@ -109,12 +109,12 @@
                                                     <br>
                                                     <form th:if="${session.usuariosession != null and #strings.trim(log.rol) == 'USUARIO'}" th:action="@{/profesionales/valorar/__${prof.id}__}" method="post" >
 
-                                                        
-                                                         <div class="inputbox w100">
-                                            <textarea required id="msj" name="msj"></textarea>
-                                            <span>Escriba su valoracion 1 al 5</span>
-                                        </div>
-                                                        <input type="hidden" name="idUser" th:value="${log.id}">            
+
+                                                        <div class="inputbox w100">
+                                                            <textarea required id="msj" name="valor"></textarea>
+                                                            <span>Escriba su valoracion 1 al 5</span>
+                                                        </div>
+
                                                         <button class="botonvalorar"  type="submit" >Enviar
                                                         </button>
                                                     </form>
@@ -123,19 +123,20 @@
 
                                             <script>
                                                 document.addEventListener("DOMContentLoaded", function () {
-                                                const valorarButton = document.querySelector(".botonvalorar");
-                                                const modalValorar = document.getElementById("modalValorar");
-                                                const closeModalValorar = document.getElementById("close-modalValorar");
+                                                    const valorarButton = document.querySelector(".botonvalorar");
+                                                    const modalValorar = document.getElementById("modalValorar");
+                                                    const closeModalValorar = document.getElementById("close-modalValorar");
 
-                                                valorarButton.addEventListener("click", function () {
-                                                modalValorar.style.display = "block";
-                                                });
+                                                    valorarButton.addEventListener("click", function () {
+                                                        modalValorar.style.display = "block";
+                                                    });
 
-                                                closeModalValorar.addEventListener("click", function () {
-                                                modalValorar.style.display = "none";
-                                                });
+                                                    closeModalValorar.addEventListener("click", function () {
+                                                        modalValorar.style.display = "none";
+                                                    });
                                                 });
                                             </script>
+
 
                                         </div>
                                     </div>
@@ -156,7 +157,7 @@
 
                         <div class="card5">
                             <div class="scroll-buttons">
-                                <button type="button" class="scroll-button botonflecha" id="scroll-left">←</button>
+                                <button type="button" class="scroll-button botonflecha" id="scroll-left">◄ </button>
                                 <div class="lista-horizontal" id="scroll-container">
                                     <p class="message" th:if="${semanas} ==null" > No existen turnos disponibles </p> 
                                     <ul th:if="${semanas} !=null" class="lista" th:each="semana : ${semanas}">
@@ -189,7 +190,7 @@
                                     </ul>
 
                                 </div>
-                                <button type="button" class="scroll-button botonflecha " id="scroll-right">→</button>
+                                <button type="button" class="scroll-button botonflecha " id="scroll-right">▶</button>
                             </div>
 
 

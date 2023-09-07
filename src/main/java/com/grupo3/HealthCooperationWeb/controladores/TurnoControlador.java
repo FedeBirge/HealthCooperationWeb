@@ -110,8 +110,8 @@ public class TurnoControlador {
     // solo la ve el doctor con este id
     @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/cancelarSemana/{id}") // ruta para el panel administrativo
-    public String cancelarSemana(@PathVariable("id") String id, ModelMap modelo, 
-             RedirectAttributes redirectAttributes,HttpSession session)
+    public String cancelarSemana(@PathVariable("id") String id, ModelMap modelo,
+            RedirectAttributes redirectAttributes, HttpSession session)
             throws MyException {
 
         try {
@@ -123,8 +123,8 @@ public class TurnoControlador {
 
                 modelo.addAttribute("semanas", semanas);
                 modelo.addAttribute("log", logueado);
-               redirectAttributes.addFlashAttribute("exito", "Estados cancelados!!");
-                  return "redirect:/agenda/editar/"+id;
+                redirectAttributes.addFlashAttribute("exito", "Estados cancelados!!");
+                return "redirect:/agenda/editar/" + id;
             } else {
                 modelo.addAttribute("log", logueado);
                 modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
@@ -168,8 +168,8 @@ public class TurnoControlador {
 
             modelo.addAttribute("semanas", semanas);
             modelo.addAttribute("log", logueado);
-              redirectAttributes.addFlashAttribute("exito", "Estados cancelados!!");
-            return "redirect:/agenda/editar/"+id;
+            redirectAttributes.addFlashAttribute("exito", "Estados cancelados!!");
+            return "redirect:/agenda/editar/" + id;
         } else {
             modelo.addAttribute("log", logueado);
             modelo.put("vacia", "¡Su Agenda no ha sido creada! Seleccione el botón Generar Agenda");
@@ -181,14 +181,14 @@ public class TurnoControlador {
     // solo la ve el doctor con este id
     @PreAuthorize("hasAnyRole('ROLE_MODERADOR')")
     @GetMapping("/verHoy/{id}") // ruta para el panel administrativo
-    public String verHoy(@PathVariable("id") String id, ModelMap modelo, 
+    public String verHoy(@PathVariable("id") String id, ModelMap modelo,
             HttpSession session) throws MyException {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
         Map<Turno, Paciente> turnos = pacServ.mapearPacientesXprofHoy(id);
 
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
-          //ordernar mapa
+        //ordernar mapa
         modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
     }
@@ -202,7 +202,7 @@ public class TurnoControlador {
         List<AgendaSemanal> semanas = servAgenda.obtenerAgendaxProf(id);
         semanas = servAgenda.obtenerSemanaActual(id, semanas);
         Map<Turno, Paciente> turnos = pacServ.mapearPacientesXprofSemana(id, semanas);
-   //ordernar mapa
+        //ordernar mapa
         modelo.addAttribute("turnos", turnos);
         return "verTurnos.html";
     }
@@ -220,27 +220,43 @@ public class TurnoControlador {
         return "verTurnos.html";
     }
 
-   
-
     @PostMapping("/confirmar/{id}") // ruta para el panel administrativo
-    public String confirmar(@PathVariable("id") String id, @RequestParam String msj, 
+    public String confirmar(@PathVariable("id") String id, @RequestParam String msj,
             @RequestParam String idTurno, ModelMap modelo,
             RedirectAttributes redirectAttributes, HttpSession session)
             throws MyException {
-       
+
         Paciente logueado = (Paciente) session.getAttribute("usuariosession");
 
         if (logueado == null) {
             redirectAttributes.addFlashAttribute("error", "!Debe einiciar sesion para obtener un turno!");
-                      
 
             return "redirect:/login";
         } else {
             // asignarturno al paciente
-            pacServ.asignarTurno(logueado,idTurno,id,msj);
+
+            logueado = pacServ.asignarTurnoPaciente(logueado.getId(), idTurno, msj);
             redirectAttributes.addFlashAttribute("exito", "!Turno reservado !");
             return "redirect:/profesionales/turnoIndividual/" + id;  // Reemplaza "/exito" con la ruta deseada después de confirmar el turno
 
+        }
+
+    }
+
+    @GetMapping("/completar/{id}") // ruta para el panel administrativo
+    public String completar(@PathVariable("id") String id, ModelMap modelo,
+            RedirectAttributes redirectAttributes, HttpSession session)
+            throws MyException {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modelo.addAttribute("log", logueado);
+        try {
+            turnoServ.completarTurno(id);
+            redirectAttributes.addFlashAttribute("exito", "!Turno Completo!");
+            return "redirect:/profesionales/dashboard/";
+
+        } catch (MyException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/profesionales/dashboard/";
         }
 
     }

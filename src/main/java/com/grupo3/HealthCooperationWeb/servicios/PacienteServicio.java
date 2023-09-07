@@ -148,7 +148,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
             // }
             super.modificarUsuario(archivo, id, nombre, apellido, dni, email, password, password2, telefono, direccion,
                     fecha_nac);
-         
+
             ObraSocial obraSocial2 = obraSocialServicio.buscarXNombre(obraSocial);
 
             pas.setObraSocial(obraSocial2);
@@ -190,51 +190,40 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
         }
     }
 
-    @Transactional
-    public Turno actualizarTurno(String idTurno, String msj, EstadoTurno estado) {
-        Optional<Turno> turnoOptional = turnoRepositorio.findById(idTurno);
-        if (turnoOptional.isPresent()) {
-            Turno turno = turnoOptional.get();
-            turno.setEstado(EstadoTurno.RESERVADO);
-            turno.setMotivo(msj);
-         
-            turnoRepositorio.save(turno);
-            return turno;
 
+
+    @Transactional
+    public Paciente asignarTurnoPaciente(String idP, String idTurno,  String msj) throws MyException {
+
+        // Busca el paciente por su ID o cualquier otro criterio de búsqueda
+        Optional<Paciente> respuesta = pacienteRepositorio.findById(idP);
+        if (respuesta.isPresent()) {
+            Paciente pas = respuesta.get();
+
+            List<Turno> turnos = new ArrayList<>();
+            System.out.println("como el paciente tiene la lista? " + pas.getTurnos().size());
+            if (pas.getTurnos() != null) {
+                turnos = turnoServ.misTurnos(pas.getId());
+            }
+
+            Turno turno = turnoServ.getOne(idTurno);
+            if (turno != null) {
+                turno.setMotivo(msj);
+                turno = turnoServ.reservarTurno(idTurno);
+                turnos.add(turno);
+                pas.setTurnos(turnos);
+            }
+
+            // Guarda el paciente actualizado en la base de datos
+            pacienteRepositorio.save(pas);
+            return pas;
         }
         return null;
-
     }
 
-    @Transactional
-    public void asignarTurno(Paciente log, String idTurno, String id, String msj) {
-        // Busca el paciente por su ID o cualquier otro criterio de búsqueda
 
-        List<Turno> turnos = turnoServ.misTurnos(log.getId());
-
-        // Busca el turno existente por su ID
-        Optional<Turno> turnoOptional = turnoRepositorio.findById(idTurno);
-       
-        if (turnoOptional.isPresent()) {
-            Turno turno = turnoOptional.get();
-
-            
-            turno = actualizarTurno(idTurno, msj, EstadoTurno.RESERVADO);
-
-       
-
-            turnos.add(turno);
-            log.setTurnos(turnos);
-
-      
-            // Guarda el paciente actualizado en la base de datos
-            pacienteRepositorio.save(log);
-
-        }
-    }
-
-    // *****COMPLETAR para traer los pacientes asociados a un profesional(id)
-    public List<Paciente> listarPacientesXprof(String idProfesional) {
+// *****COMPLETAR para traer los pacientes asociados a un profesional(id)
+public List<Paciente> listarPacientesXprof(String idProfesional) {
         // un paciente tiene una lista de turnos...
         // primero creo un paciente
         List<Paciente> pacientes = new ArrayList<>();
@@ -445,7 +434,7 @@ public class PacienteServicio extends UsuarioServicio implements UserDetailsServ
     // agrego esto para indicar permisos particulares de paciente (son los mismos
     // que el rol usuario)
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Paciente paciente = pacienteRepositorio.findByEmail(email);
         if (paciente != null && paciente.getActivo().equals(Boolean.TRUE)) {
             List<GrantedAuthority> permisos = new ArrayList<>();
