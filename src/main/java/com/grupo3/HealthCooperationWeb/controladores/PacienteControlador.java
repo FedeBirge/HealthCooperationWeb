@@ -36,10 +36,10 @@ public class PacienteControlador {
     private HistoriaClinicaServicio hisrtoriaServ;
 
     @GetMapping("/dashboard") // ruta para el panel administrativo
-    public String panelAdministrativo(ModelMap modelo, HttpSession session,RedirectAttributes redirectAttributes) {
+    public String panelAdministrativo(ModelMap modelo, HttpSession session, RedirectAttributes redirectAttributes) {
         Paciente logueado = (Paciente) session.getAttribute("usuariosession");
         modelo.addAttribute("log", logueado);
-       
+
         modelo.addAttribute("user", logueado);
 
         return "perfil.html";
@@ -82,10 +82,10 @@ public class PacienteControlador {
             modelo.addAttribute("log", logueado);
             Paciente pac = pacienteServicio.registrarPaciente(archivo, nombre, apellido, dni,
                     email, password, password2, telefono, direccion, fecha_nac, gruposanguineo, obrasocial);
-             
+
             pac.setHistoria(hisrtoriaServ.crearHistoriaClinica(pac.getId()));
             redirectAttributes.addFlashAttribute("exito", "¡Usuario registrado con exito!");
-            
+
             return "redirect:/login";
 
         } catch (MyException ex) {
@@ -183,7 +183,7 @@ public class PacienteControlador {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-      ;
+            ;
             List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
 
             modelo.addAttribute("users", users);
@@ -191,8 +191,8 @@ public class PacienteControlador {
         } catch (Exception e) {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("log", logueado);
-         
-             List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
+
+            List<Paciente> users = pacienteServicio.listarPacientesXprof(id);
             modelo.addAttribute("users", users);
             modelo.put("error", e.getMessage());
             return "verPacientes.html";
